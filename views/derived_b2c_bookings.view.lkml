@@ -24,6 +24,7 @@ view: derived_b2c_bookings {
   measure: total_beds {
     type: sum
     sql: ${beds} ;;
+    drill_fields: [residence, gender, total_beds, count_of_beds]
   }
 
   measure: count_of_beds {
