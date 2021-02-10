@@ -238,8 +238,23 @@ view: derived_b2c_bookings {
     sql: ${TABLE}.value_applied ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [college_name]
+  measure: booking_count {
+    type: count_distinct
+    sql: ${booking_id} ;;
+  }
+
+  measure: day_count {
+    type: count_distinct
+    sql: ${created_date} ;;
+  }
+
+  measure: total_underwritten {
+    type: sum
+    sql: ${underwritten_price} ;;
+  }
+
+  measure: total_booking_commercial {
+    type: sum
+    sql: ${bc_monthly_rental_net_of_discount} ;;
   }
 }
