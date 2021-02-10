@@ -248,6 +248,11 @@ view: derived_b2c_bookings {
     sql: ${created_date} ;;
   }
 
+  measure: b2c_beds_sold {
+    type: sum
+    sql: ${beds} ;;
+  }
+
   measure: total_underwritten {
     type: sum
     sql: ${underwritten_price} ;;
