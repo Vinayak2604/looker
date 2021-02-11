@@ -319,6 +319,7 @@ view: derived_b2c_bookings {
     sql: ${bc_monthly_rental_net_of_discount} ;;
     filters: [contract_start_date: "last month"]
   }
+}
 
   # parameter: day_filter {
   #   type: number
@@ -338,4 +339,3 @@ view: derived_b2c_bookings {
   # set: raw_data {
   #   fields: [booking_id,booking_type]
   # }
-}
