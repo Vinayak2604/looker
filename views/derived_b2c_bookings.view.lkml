@@ -253,6 +253,11 @@ view: derived_b2c_bookings {
     sql: ${beds} ;;
   }
 
+  measure: l3d {
+    type: sum
+    sql: ${beds} ;;
+    filters: [created_date: "3 days"]
+  }
   measure: total_underwritten {
     type: sum
     sql: ${underwritten_price} ;;
