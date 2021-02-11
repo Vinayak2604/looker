@@ -21,19 +21,15 @@ view: derived_b2c_bookings {
     sql: ${TABLE}.beds ;;
   }
 
-  measure: total_beds {
-    type: sum
-    sql: ${beds} ;;
-    drill_fields: [residence, gender, total_beds, count_of_beds]
-  }
-
-  measure: count_of_beds {
-    type: number
-    sql: COUNT(${beds}) ;;
-  }
+  # measure: total_beds {
+  #   type: sum
+  #   sql: ${beds} ;;
+  #   drill_fields: [residence, gender, total_beds, count_of_beds]
+  # }
 
   dimension: booking_id {
     type: number
+    primary_key: yes
     sql: ${TABLE}.booking_id ;;
   }
 
@@ -244,80 +240,94 @@ view: derived_b2c_bookings {
     type: count_distinct
     sql: ${booking_id} ;;
     drill_fields: [created_month,booking_count]
+    value_format: "#,##0.00"
   }
 
   measure: day_count {
     type: count_distinct
     sql: ${created_date} ;;
+    value_format: "#,##0.00"
   }
 
   measure: b2c_booked_beds {
     type: sum
     sql: ${beds} ;;
+    value_format: "#,##0.00"
   }
 
   measure: bookings_yesterday {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "yesterday"]
+    value_format: "#,##0.00"
   }
 
   measure: bookings_l3d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "3 days ago for 3 days"]
+    value_format: "#,##0.00"
   }
 
   measure: bookings_l7d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "7 days ago for 7 days"]
+    value_format: "#,##0.00"
   }
 
   measure: bookings_l30d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "30 days ago for 30 days"]
+    value_format: "#,##0.00"
   }
 
   measure: expected_move_ins_n3d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [move_in_date: "today for 3 days"]
+    value_format: "#,##0.00"
   }
 
   measure: expected_move_ins_n7d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [move_in_date: "today for 7 days"]
+    value_format: "#,##0.00"
   }
 
   measure: expected_move_ins_n30d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [move_in_date: "today for 30 days"]
+    value_format: "#,##0.00"
   }
 
   measure: net_revenue_last_month_b2c {
     type: sum
     sql: ${bc_monthly_rental_net_of_discount} ;;
     filters: [contract_start_month: "last month"]
+    value_format: "#,##0.00"
   }
 
   measure: total_underwritten {
     type: sum
     sql: ${underwritten_price} ;;
+    value_format: "#,##0.00"
   }
 
   measure: total_booking_commercial {
     type: sum
     sql: ${bc_monthly_rental_net_of_discount} ;;
+    value_format: "#,##0.00"
   }
 
   measure: b2c_last_month_revenue {
     type: sum
     sql: ${bc_monthly_rental_net_of_discount} ;;
     filters: [contract_start_date: "last month"]
+    value_format: "#,##0.00"
   }
 }
 

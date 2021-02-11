@@ -4,6 +4,7 @@ view: derived_residence_attributes {
   dimension: available_beds {
     type: number
     sql: ${TABLE}.available_beds ;;
+    primary_key: yes
   }
 
   dimension: city {
