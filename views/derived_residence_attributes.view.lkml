@@ -106,13 +106,72 @@ view: derived_residence_attributes {
     sql: ${TABLE}.converted_prebookings ;;
   }
 
-  dimension: test {
-    type: number
-    sql: ${TABLE}.test ;;
+  measure: total_beds {
+    type: sum
+    sql: ${live_beds} ;;
+    filters: [date_date: "today"]
   }
 
-  measure: count {
-    type: count
+  measure: total_sold_beds {
+    type: sum
+    sql: ${sold_beds} ;;
+    filters: [date_date: "today"]
+  }
+
+  measure: total_onboarded_beds {
+    type: sum
+    sql: ${onboarded_beds} ;;
+    filters: [date_date: "today"]
+  }
+
+  measure: total_early_exits {
+    type: sum
+    sql: ${early_exits} ;;
+    filters: [date_date: "today"]
+  }
+
+  measure: total_future_move_ins {
+    type: sum
+    sql: ${future_move_ins} ;;
+    filters: [date_date: "today"]
+  }
+
+  measure: total_not_moved_ins {
+    type: sum
+    sql: ${not_moved_in} ;;
+    filters: [date_date: "today"]
+  }
+
+  measure: total_available_beds {
+    type: sum
+    sql: ${available_beds} ;;
+    filters: [date_date: "today"]
+  }
+
+  measure: total_underwritten {
+    type: sum
+    sql: ${underwritten_price} ;;
+    filters: [date_date: "today"]
+  }
+
+  measure: total_prebookings {
+    type: sum
+    sql: ${prebookings} ;;
+    filters: [date_date: "today"]
+  }
+
+
+  measure: total_refunded_prebookings {
+    type: sum
+    sql: ${refunded_prebookings} ;;
+    filters: [date_date: "today"]
+  }
+
+
+  measure: total_converted_prebookings {
+    type: sum
+    sql: ${converted_prebookings} ;;
+    filters: [date_date: "today"]
   }
 
 }
