@@ -9,12 +9,12 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 #
 explore: derived_b2c_bookings {
   join: derived_residence_attributes {
-    relationship: many_to_one
+    relationship: many_to_many
     sql_on: ${derived_b2c_bookings.residence_id} = ${derived_residence_attributes.residence_id} ;;
   }
 #
-#   join: users {
-#     relationship: many_to_one
-#     sql_on: ${users.id} = ${orders.user_id} ;;
-#   }
+  # join: users {
+  #   relationship: many_to_one
+  #   sql_on: ${users.id} = ${orders.user_id} ;;
+  # }
 }
