@@ -106,6 +106,11 @@ view: derived_residence_attributes {
     sql: ${TABLE}.converted_prebookings ;;
   }
 
+  dimension: test {
+    type: number
+    sql: ${TABLE}.test ;;
+  }
+
   measure: count {
     type: count
   }
