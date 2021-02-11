@@ -50,6 +50,7 @@ view: derived_b2c_bookings {
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
+    drill_fields: [micromarket,raw_data*]
   }
 
   dimension: college_name {
@@ -157,6 +158,7 @@ view: derived_b2c_bookings {
   dimension: micromarket {
     type: string
     sql: ${TABLE}.micromarket ;;
+    drill_fields: [residence]
   }
 
   dimension: monthly_amc_mentainance_fee {
@@ -241,6 +243,7 @@ view: derived_b2c_bookings {
   measure: booking_count {
     type: count_distinct
     sql: ${booking_id} ;;
+    drill_fields: [created_month,booking_count]
   }
 
   measure: day_count {
@@ -248,16 +251,59 @@ view: derived_b2c_bookings {
     sql: ${created_date} ;;
   }
 
-  measure: b2c_beds_sold {
+  measure: b2c_booked_beds {
     type: sum
     sql: ${beds} ;;
   }
 
-  measure: l3d {
-    type: sum
-    sql: ${beds} ;;
-    filters: [created_date: "3 days"]
+  measure: sales_run_rate_yesterday {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [created_date: "yesterday"]
   }
+
+  measure: sales_run_rate_l3d {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [created_date: "3 days ago for 3 days"]
+  }
+
+  measure: sales_run_rate_l7d {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [created_date: "7 days ago for 7 days"]
+  }
+
+  measure: sales_run_rate_l30d {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [created_date: "30 days ago for 30 days"]
+  }
+
+  measure: expected_move_ins_n3d {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [move_in_date: "today for 3 days"]
+  }
+
+  measure: expected_move_ins_n7d {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [move_in_date: "today for 7 days"]
+  }
+
+  measure: expected_move_ins_n30d {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [move_in_date: "today for 30 days"]
+  }
+
+  measure: net_revenue_last_month_b2c {
+    type: sum
+    sql: ${bc_monthly_rental_net_of_discount} ;;
+    filters: [contract_start_month: "last month"]
+  }
+
   measure: total_underwritten {
     type: sum
     sql: ${underwritten_price} ;;
@@ -266,5 +312,24 @@ view: derived_b2c_bookings {
   measure: total_booking_commercial {
     type: sum
     sql: ${bc_monthly_rental_net_of_discount} ;;
+  }
+
+  parameter: day_filter {
+    type: number
+
+  }
+
+  dimension: is_within_range {
+    type: yesno
+    sql: ${created_date} >= timestampadd({%parameter day_filter%},day,now()) ;;
+  }
+
+  measure: dynamic_sold_beds_data {
+    type: sum
+    sql: ${beds} ;;
+    filters: [is_within_range: "Yes"]
+  }
+  set: raw_data {
+    fields: [booking_id,booking_type]
   }
 }
