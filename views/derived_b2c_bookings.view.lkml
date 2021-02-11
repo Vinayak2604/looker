@@ -256,25 +256,25 @@ view: derived_b2c_bookings {
     sql: ${beds} ;;
   }
 
-  measure: sales_run_rate_yesterday {
+  measure: bookings_yesterday {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "yesterday"]
   }
 
-  measure: sales_run_rate_l3d {
+  measure: bookings_l3d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "3 days ago for 3 days"]
   }
 
-  measure: sales_run_rate_l7d {
+  measure: bookings_l7d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "7 days ago for 7 days"]
   }
 
-  measure: sales_run_rate_l30d {
+  measure: bookings_l30d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "30 days ago for 30 days"]
