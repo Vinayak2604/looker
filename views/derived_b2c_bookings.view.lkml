@@ -50,7 +50,7 @@ view: derived_b2c_bookings {
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
-    drill_fields: [micromarket,raw_data*]
+    # drill_fields: [micromarket,raw_data*]
   }
 
   dimension: college_name {
@@ -314,22 +314,28 @@ view: derived_b2c_bookings {
     sql: ${bc_monthly_rental_net_of_discount} ;;
   }
 
-  parameter: day_filter {
-    type: number
-
-  }
-
-  dimension: is_within_range {
-    type: yesno
-    sql: ${created_date} >= timestampadd({%parameter day_filter%},day,now()) ;;
-  }
-
-  measure: dynamic_sold_beds_data {
+  measure: b2c_last_month_revenue {
     type: sum
-    sql: ${beds} ;;
-    filters: [is_within_range: "Yes"]
+    sql: ${bc_monthly_rental_net_of_discount} ;;
+    filters: [contract_start_date: "last month"]
   }
-  set: raw_data {
-    fields: [booking_id,booking_type]
-  }
+
+  # parameter: day_filter {
+  #   type: number
+
+  # }
+
+  # dimension: is_within_range {
+  #   type: yesno
+  #   sql: ${created_date} >= timestampadd({%parameter day_filter%},day,now()) ;;
+  # }
+
+  # measure: dynamic_sold_beds_data {
+  #   type: sum
+  #   sql: ${beds} ;;
+  #   filters: [is_within_range: "Yes"]
+  # }
+  # set: raw_data {
+  #   fields: [booking_id,booking_type]
+  # }
 }

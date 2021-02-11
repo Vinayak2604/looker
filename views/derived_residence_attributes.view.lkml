@@ -91,6 +91,21 @@ view: derived_residence_attributes {
     sql: ${TABLE}.underwritten_pricing_incl_gst ;;
   }
 
+  dimension: prebookings {
+    type: number
+    sql: ${TABLE}.prebookings ;;
+  }
+
+  dimension: refunded_prebookings {
+    type: number
+    sql: ${TABLE}.refunded_prebookings ;;
+  }
+
+  dimension: converted_prebookings {
+    type: number
+    sql: ${TABLE}.converted_prebookings ;;
+  }
+
   measure: count {
     type: count
   }
@@ -140,6 +155,26 @@ view: derived_residence_attributes {
   measure: total_underwritten {
     type: sum
     sql: ${underwritten_price} ;;
+    filters: [date_date: "yesterday"]
+  }
+
+  measure: total_prebookings {
+    type: sum
+    sql: ${prebookings} ;;
+    filters: [date_date: "yesterday"]
+  }
+
+
+  measure: total_refunded_prebookings {
+    type: sum
+    sql: ${prebookings} ;;
+    filters: [date_date: "yesterday"]
+  }
+
+
+  measure: total_converted_prebookings {
+    type: sum
+    sql: ${prebookings} ;;
     filters: [date_date: "yesterday"]
   }
 
