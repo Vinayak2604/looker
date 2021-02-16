@@ -7,10 +7,12 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # # Select the views that should be a part of this model,
 # # and define the joins that connect them together.
 #
-explore: derived_b2c_bookings {
-  join: derived_residence_attributes {
-    relationship: many_to_many
-    sql_on: ${derived_b2c_bookings.residence_id} = ${derived_residence_attributes.residence_id} ;;
+explore: derived_residence_attributes {
+  join: derived_b2c_bookings{
+    relationship: one_to_many
+    type: left_outer
+    sql_on: ${derived_residence_attributes.residence_id} = ${derived_b2c_bookings.residence_id};;
+    sql_where:${derived_residence_attributes.date_date} = curdate()  ;;
   }
 #
   # join: users {

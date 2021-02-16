@@ -240,94 +240,135 @@ view: derived_b2c_bookings {
     type: count_distinct
     sql: ${booking_id} ;;
     drill_fields: [created_month,booking_count]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: day_count {
     type: count_distinct
     sql: ${created_date} ;;
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: b2c_booked_beds {
     type: sum
     sql: ${beds} ;;
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: bookings_yesterday {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "yesterday"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: bookings_l3d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "3 days ago for 3 days"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: bookings_l7d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "7 days ago for 7 days"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
+  }
+
+  measure: total_bookings_till_date {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    drill_fields: [created_date,total_bookings_till_date]
+    link: {
+      label: "Show as stacked line"
+      url: "
+      {% assign vis_config = '{
+      \"stacking\" : \"normal\",
+      \"legend_position\" : \"right\",
+      \"x_axis_gridlines\" : false,
+      \"y_axis_gridlines\" : true,
+      \"show_view_names\" : false,
+      \"y_axis_combined\" : true,
+      \"show_y_axis_labels\" : true,
+      \"show_y_axis_ticks\" : true,
+      \"y_axis_tick_density\" : \"default\",
+      \"show_x_axis_label\" : true,
+      \"show_x_axis_ticks\" : true,
+      \"show_null_points\" : false,
+      \"interpolation\" : \"monotone\",
+      \"type\" : \"looker_line\",
+      \"colors\": [
+      \"#5245ed\"
+      ],
+      \"x_axis_label\" : \"Month Number\"
+      }' %}
+      {{ link }}&vis_config={{ vis_config | encode_uri }}&sorts=derived_b2c_bookings.created_date&fields=derived_b2c_bookings.created_date,derived_b2c_bookings.total_bookings_till_date&pivot=derived_b2c_bookings.total_bookings_till_date&toggle=dat,pik,vis&limit=500&column_limit=5"
+    } # NOTE the &pivots=
   }
 
   measure: bookings_l30d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [created_date: "30 days ago for 30 days"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: expected_move_ins_n3d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [move_in_date: "today for 3 days"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: expected_move_ins_n7d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [move_in_date: "today for 7 days"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: expected_move_ins_n30d {
     type: count_distinct
     sql: ${booking_id} ;;
     filters: [move_in_date: "today for 30 days"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: net_revenue_last_month_b2c {
     type: sum
     sql: ${bc_monthly_rental_net_of_discount} ;;
     filters: [contract_start_month: "last month"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: total_underwritten {
     type: sum
     sql: ${underwritten_price} ;;
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: total_booking_commercial {
     type: sum
     sql: ${bc_monthly_rental_net_of_discount} ;;
-    value_format: "#,##0.00"
+    value_format: "#,##0"
   }
 
   measure: b2c_last_month_revenue {
     type: sum
     sql: ${bc_monthly_rental_net_of_discount} ;;
     filters: [contract_start_date: "last month"]
-    value_format: "#,##0.00"
+    value_format: "#,##0"
+  }
+
+  dimension: downsold_flag {
+    type: number
+    sql: case when ${bc_monthly_rental_net_of_discount} < ${underwritten_price} then 1 else 0 end ;;
+  }
+
+  measure: total_downsold_bookings {
+    type: sum
+    sql: ${downsold_flag} ;;
   }
 }
 

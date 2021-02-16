@@ -1,16 +1,29 @@
 view: derived_residence_attributes {
   sql_table_name: looker_demo.derived_residence_attributes ;;
+  drill_fields: [residence_level*,total_beds]
+
+  set: residence_level {
+    fields: [
+      residence
+    ]
+  }
 
   dimension: available_beds {
     type: number
     sql: ${TABLE}.available_beds ;;
-    primary_key: yes
   }
 
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
   }
+
+  # dimension: date_residence {
+  #   type: string
+  #   primary_key: yes
+  #   # hidden: yes
+  #   sql: concat(str(${date_date}),'||',str(${residence_id})) ;;
+  # }
 
   dimension_group: date {
     type: time
@@ -50,6 +63,7 @@ view: derived_residence_attributes {
   dimension: micromarket {
     type: string
     sql: ${TABLE}.micromarket ;;
+    drill_fields: [residence_level*]
   }
 
   dimension: not_moved_in {
@@ -75,6 +89,7 @@ view: derived_residence_attributes {
   dimension: residence_id {
     type: string
     sql: ${TABLE}.residence_id ;;
+    primary_key: yes
   }
 
   dimension: sold_beds {
@@ -110,69 +125,110 @@ view: derived_residence_attributes {
   measure: total_beds {
     type: sum
     sql: ${live_beds} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
+    drill_fields: [date_date, total_beds]
+    link: {
+      label: "micromarket_cut"
+      url: "{{derived_residence_attributes.total_beds_mm._link}}"
+    }
+  }
+
+  measure: total_beds_mm {
+    type:  sum
+    sql: ${live_beds} ;;
+    value_format: "#,##0"
+    hidden: yes
+    drill_fields: [residence,total_beds]
   }
 
   measure: total_sold_beds {
     type: sum
     sql: ${sold_beds} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
   measure: total_onboarded_beds {
     type: sum
     sql: ${onboarded_beds} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
   measure: total_early_exits {
     type: sum
     sql: ${early_exits} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
   measure: total_future_move_ins {
     type: sum
     sql: ${future_move_ins} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
   measure: total_not_moved_ins {
     type: sum
     sql: ${not_moved_in} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
   measure: total_available_beds {
     type: sum
     sql: ${available_beds} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
   measure: total_underwritten {
     type: sum
     sql: ${underwritten_price} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
   measure: total_prebookings {
     type: sum
     sql: ${prebookings} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
 
   measure: total_refunded_prebookings {
     type: sum
     sql: ${refunded_prebookings} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
 
 
   measure: total_converted_prebookings {
     type: sum
     sql: ${converted_prebookings} ;;
-    filters: [date_date: "today"]
+    value_format: "#,##0"
   }
+
+  parameter:  geographical_cuts {
+    type: "string"
+    allowed_value: {
+      label: "residence"
+      value: "residence"
+    }
+    allowed_value: {
+      label: "micromarket"
+      value: "micromarket"
+    }
+    allowed_value: {
+      label: "city"
+      value: "city"
+    }
+  }
+
+  dimension: goegraphy_selector {
+    label_from_parameter: geographical_cuts
+    sql:
+            CASE
+             WHEN {% parameter geographical_cuts %} = 'residence' THEN ${residence}
+             WHEN {% parameter geographical_cuts %} = 'micromarket' THEN ${micromarket}
+             WHEN {% parameter geographical_cuts %} = 'city' THEN ${city}
+             ELSE NULL
+            END ;;
+  }
+
 
 }
