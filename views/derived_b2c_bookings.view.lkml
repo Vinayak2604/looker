@@ -46,7 +46,7 @@ view: derived_b2c_bookings {
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
-    # drill_fields: [micromarket,raw_data*]
+    drill_fields: [residence]
   }
 
   dimension: college_name {
@@ -305,6 +305,28 @@ view: derived_b2c_bookings {
       }' %}
       {{ link }}&vis_config={{ vis_config | encode_uri }}&sorts=derived_b2c_bookings.created_date&fields=derived_b2c_bookings.created_date,derived_b2c_bookings.total_bookings_till_date&pivot=derived_b2c_bookings.total_bookings_till_date&toggle=dat,pik,vis&limit=500&column_limit=5"
     } # NOTE the &pivots=
+    link: {
+      label: "Cut by Month"
+      url: "{{derived_b2c_bookings.total_bookings_till_month._link}}"
+    }
+    link: {
+      label: "Cut by Year"
+      url: "{{derived_b2c_bookings.total_bookings_till_year._link}}"
+    }
+  }
+
+  measure: total_bookings_till_month {
+    hidden: yes
+    type: count_distinct
+    sql: ${booking_id} ;;
+    drill_fields: [created_month,total_bookings_till_date]
+  }
+
+  measure: total_bookings_till_year {
+    hidden: yes
+    type: count_distinct
+    sql: ${booking_id} ;;
+    drill_fields: [created_year,total_bookings_till_date]
   }
 
   measure: bookings_l30d {

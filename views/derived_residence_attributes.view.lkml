@@ -16,6 +16,7 @@ view: derived_residence_attributes {
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
+    drill_fields: [residence]
   }
 
   # dimension: date_residence {
@@ -228,6 +229,7 @@ view: derived_residence_attributes {
              WHEN {% parameter geographical_cuts %} = 'city' THEN ${city}
              ELSE NULL
             END ;;
+    drill_fields: [residence]
   }
 
 
