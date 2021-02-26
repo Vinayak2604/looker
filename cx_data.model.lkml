@@ -64,7 +64,7 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # }
 
 
-explore: test {
+explore: all_level {
     # sql_where:${derived_residence_attributes.date_date} = curdate()  ;;
   }
 

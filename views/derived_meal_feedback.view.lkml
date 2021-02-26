@@ -8,7 +8,7 @@ when {% parameter data_cut %} = 'micromarket' then micromarket
 when {% parameter data_cut %} = 'city' then city
 when {% parameter data_cut %} = 'zone' then zone
 when {% parameter data_cut %} = 'overall' then null
-end as {% parameter data_cut %},
+end as data_cut1,
 case when {% parameter data_cut %} = 'residence' or {% parameter data_cut %} = 'kitchen' THEN micromarket
 when {% parameter data_cut %} = 'micromarket' then city
 when {% parameter data_cut %} = 'city' then zone
@@ -21,9 +21,12 @@ end as data_cut4,
 user_id,
 avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as avg_specified_period,
 avg(case when date(menu_date) = timestampadd(day,-1,curdate()) then rating end) as yesterday,
+avg(case when date(menu_date) >= timestampadd(day,-7,curdate()) and date(menu_date) <= timestampadd(day,-1,curdate()) then rating end) as l7d,
+avg(case when date(menu_date) >= timestampadd(day,-14,curdate()) and date(menu_date) <= timestampadd(day,-8,curdate()) then rating end) as l14d,
 avg(case when month(menu_date) = month(timestampadd(month,-1,curdate())) then rating end) as last_month,
 avg(case when month(menu_date) = month(curdate()) then rating end) as MTD
 from looker_demo.derived_meal_feedback
+where {% condition meal %} meal {% endcondition %}
 group by 1,2,3,4,5 ;;
   }
 
@@ -66,6 +69,40 @@ group by 1,2,3,4,5 ;;
         value: "overall"
       }
     }
+
+    dimension: data_cut1 {
+      type: "string"
+      sql: ${TABLE}.data_cut1 ;;
+      # label: "{% parameter data_cut %}"
+      link: {
+        label: "City View"
+        url: "/looks/2"
+      }
+    }
+
+  parameter: meal {
+    type: "string"
+    allowed_value: {
+      label: "BREAKFAST"
+      value: "BREAKFAST"
+    }
+    allowed_value: {
+      label: "LUNCH"
+      value: "LUNCH"
+    }
+    allowed_value: {
+      label: "DINNER"
+      value: "DINNER"
+    }
+    allowed_value: {
+      label: "EVENING_SNACKS"
+      value: "EVENING_SNACKS"
+    }
+    allowed_value: {
+      label: "LUNCH_TIFFIN"
+      value: "LUNCH_TIFFIN"
+    }
+  }
 
   dimension: data_cut2 {
     type: string
@@ -285,6 +322,7 @@ group by 1,2,3,4,5 ;;
   dimension: zone {
     type: string
     sql: ${TABLE}.zone ;;
+
   }
 
   dimension: overall {
@@ -314,6 +352,16 @@ group by 1,2,3,4,5 ;;
   dimension: MTD {
     type: number
     sql: ${TABLE}.MTD  ;;
+  }
+
+  dimension: L7D {
+    type: number
+    sql: ${TABLE}.L7D  ;;
+  }
+
+  dimension: L14D {
+    type: number
+    sql: ${TABLE}.L14D  ;;
   }
 
   #   dimension: scanned_meal {
@@ -366,6 +414,7 @@ group by 1,2,3,4,5 ;;
     type: sum
     sql: case when ${avg_specified_period} >= 0 and ${avg_specified_period} <= 5 then 1 else 0 end;;
     drill_fields: [user_id]
+    value_format: "#,##0"
   }
 
   measure: promoters_yesterday {
@@ -381,6 +430,7 @@ group by 1,2,3,4,5 ;;
   measure: feedback_yesterday {
     type: sum
     sql: case when ${yesterday} >= 0 and ${yesterday} <= 5 then 1 else 0 end;;
+    value_format: "#,##0"
   }
 
   measure: promoters_last_month {
@@ -396,6 +446,7 @@ group by 1,2,3,4,5 ;;
   measure: feedback_last_month {
     type: sum
     sql: case when ${last_month} >= 0 and ${last_month} <= 5 then 1 else 0 end;;
+    value_format: "#,##0"
   }
 
 
@@ -412,6 +463,75 @@ group by 1,2,3,4,5 ;;
   measure: feedback_MTD {
     type: sum
     sql: case when ${MTD} >= 0 and ${MTD} <= 5 then 1 else 0 end;;
+    value_format: "#,##0"
+  }
+
+  measure: promoters_L7D {
+    type: sum
+    sql: case when ${L7D} >= 4 and ${L7D} <= 5 then 1 else 0 end;;
+  }
+
+  measure: detractors_L7D {
+    type: sum
+    sql: case when ${L7D} >= 1 and ${L7D} < 3 then 1 else 0 end;;
+  }
+
+  measure: feedback_L7D {
+    type: sum
+    sql: case when ${L7D} >= 0 and ${L7D} <= 5 then 1 else 0 end;;
+    value_format: "#,##0"
+  }
+
+  measure: promoters_L14D {
+    type: sum
+    sql: case when ${L14D} >= 4 and ${L14D} <= 5 then 1 else 0 end;;
+  }
+
+  measure: detractors_L14D {
+    type: sum
+    sql: case when ${L14D} >= 1 and ${L14D} < 3 then 1 else 0 end;;
+  }
+
+  measure: feedback_L14D {
+    type: sum
+    sql: case when ${L14D} >= 0 and ${L14D} <= 5 then 1 else 0 end;;
+    value_format: "#,##0"
+  }
+
+  measure: nps_specified_period {
+    type: number
+    sql: (${promoters_specified_period} -  ${detractors_specified_period})/${feedback_users_specified_period} ;;
+    value_format: "0.0%"
+  }
+
+  measure: nps_yesterday {
+    type: number
+    sql: (${promoters_yesterday} -  ${detractors_yesterday})/${feedback_yesterday} ;;
+    value_format: "0.0%"
+  }
+
+  measure: nps_last_month {
+    type: number
+    sql: (${promoters_last_month} -  ${detractors_last_month})/${feedback_last_month} ;;
+    value_format: "0.0%"
+  }
+
+  measure: nps_mtd {
+    type: number
+    sql: (${promoters_MTD} -  ${detractors_MTD})/${feedback_MTD} ;;
+    value_format: "0.0%"
+  }
+
+  measure: nps_L7D {
+    type: number
+    sql: (${promoters_L7D} -  ${detractors_L7D})/${feedback_L7D} ;;
+    value_format: "0.0%"
+  }
+
+  measure: nps_L14D {
+    type: number
+    sql: (${promoters_L14D} -  ${detractors_L14D})/${feedback_L14D} ;;
+    value_format: "0.0%"
   }
 
 
