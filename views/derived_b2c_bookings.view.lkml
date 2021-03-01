@@ -304,7 +304,7 @@ view: derived_b2c_bookings {
       \"x_axis_label\" : \"Month Number\"
       }' %}
       {{ link }}&vis_config={{ vis_config | encode_uri }}&sorts=derived_b2c_bookings.created_date&fields=derived_b2c_bookings.created_date,derived_b2c_bookings.total_bookings_till_date&pivot=derived_b2c_bookings.total_bookings_till_date&toggle=dat,pik,vis&limit=500&column_limit=5"
-    } # NOTE the &pivots=
+    }
     link: {
       label: "Cut by Month"
       url: "{{derived_b2c_bookings.total_bookings_till_month._link}}"

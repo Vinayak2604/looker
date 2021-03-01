@@ -2,12 +2,13 @@ view: all_level {
   # sql_table_name: looker_demo.derived_meal_feedback ;;
   derived_table: {
     sql:
-    select o.zone, o.city, kitchen, o.micromarket, o.residence, o.user_id, avg_specified_period, yesterday, l7d, l14d, last_month, MTD,
+    select o.zone, o.city, o.kitchen, o.micromarket, o.residence, o.user_id, avg_specified_period, yesterday, l7d, l14d, last_month, MTD,
     zone_avg_specified_period, zone_yesterday, zone_l7d, zone_l14d, zone_last_month, zone_MTD,
     city_avg_specified_period, city_yesterday, city_l7d, city_l14d, city_last_month, city_MTD,
+    kitchen_avg_specified_period, kitchen_yesterday, kitchen_l7d, kitchen_l14d, kitchen_last_month, kitchen_MTD,
     micromarket_avg_specified_period, micromarket_yesterday, micromarket_l7d, micromarket_l14d, micromarket_last_month, micromarket_MTD,
     residence_avg_specified_period, residence_yesterday, residence_l7d, residence_l14d, residence_last_month, residence_MTD,
-    micromarket_agg_specified_period_nps, city_agg_specified_period_nps, zone_agg_specified_period_nps
+    micromarket_agg_specified_period_nps, city_agg_specified_period_nps, kitchen_agg_specified_period_nps, zone_agg_specified_period_nps
     from
     (select zone, city, vendor_name as kitchen, micromarket, residence,
 user_id,
@@ -43,6 +44,17 @@ from looker_demo.derived_meal_feedback
 where {% condition meal %} meal {% endcondition %}
 group by 1,2) c on  o.city = c.city and o.user_id = c.user_id
 
+join  (select vendor_name as kitchen, user_id,
+avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as kitchen_avg_specified_period,
+avg(case when date(menu_date) = timestampadd(day,-1,curdate()) then rating end) as kitchen_yesterday,
+avg(case when date(menu_date) >= timestampadd(day,-7,curdate()) and date(menu_date) <= timestampadd(day,-1,curdate()) then rating end) as kitchen_l7d,
+avg(case when date(menu_date) >= timestampadd(day,-14,curdate()) and date(menu_date) <= timestampadd(day,-8,curdate()) then rating end) as kitchen_l14d,
+avg(case when month(menu_date) = month(timestampadd(month,-1,curdate())) then rating end) as kitchen_last_month,
+avg(case when month(menu_date) = month(curdate()) then rating end) as kitchen_MTD
+from looker_demo.derived_meal_feedback
+where {% condition meal %} meal {% endcondition %}
+group by 1,2) k on  o.kitchen = k.kitchen and o.user_id = k.user_id
+
 join  (select micromarket, user_id,
 avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as micromarket_avg_specified_period,
 avg(case when date(menu_date) = timestampadd(day,-1,curdate()) then rating end) as micromarket_yesterday,
@@ -54,16 +66,26 @@ from looker_demo.derived_meal_feedback
 where {% condition meal %} meal {% endcondition %}
 group by 1,2) m on  o.micromarket = m.micromarket and o.user_id = m.user_id
 
+left join  (select kitchen,
+(sum(case when kitchen_avg_specified_period >= 4 and kitchen_avg_specified_period <= 5 then 1 else 0 end)-sum(case when kitchen_avg_specified_period >= 1 and kitchen_avg_specified_period < 3 then 1 else 0 end))/sum(case when kitchen_avg_specified_period >= 0 and kitchen_avg_specified_period <= 5 then 1 else 0 end) as kitchen_agg_specified_period_nps
+from
+(select vendor_name as kitchen, user_id,
+avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as kitchen_avg_specified_period,
+avg(case when date(menu_date) = timestampadd(day,-1,curdate()) then rating end) as kitchen_yesterday,
+avg(case when date(menu_date) >= timestampadd(day,-7,curdate()) and date(menu_date) <= timestampadd(day,-1,curdate()) then rating end) as kitchen_l7d,
+avg(case when date(menu_date) >= timestampadd(day,-14,curdate()) and date(menu_date) <= timestampadd(day,-8,curdate()) then rating end) as kitchen_l14d,
+avg(case when month(menu_date) = month(timestampadd(month,-1,curdate())) then rating end) as kitchen_last_month,
+avg(case when month(menu_date) = month(curdate()) then rating end) as kitchen_MTD
+from looker_demo.derived_meal_feedback
+where {% condition meal %} meal {% endcondition %}
+group by 1,2) x1
+group by 1) k_agg on  o.kitchen = k_agg.kitchen
+
 left join  (select micromarket,
 (sum(case when micromarket_avg_specified_period >= 4 and micromarket_avg_specified_period <= 5 then 1 else 0 end)-sum(case when micromarket_avg_specified_period >= 1 and micromarket_avg_specified_period < 3 then 1 else 0 end))/sum(case when micromarket_avg_specified_period >= 0 and micromarket_avg_specified_period <= 5 then 1 else 0 end) as micromarket_agg_specified_period_nps
 from
 (select micromarket, user_id,
-avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as micromarket_avg_specified_period,
-avg(case when date(menu_date) = timestampadd(day,-1,curdate()) then rating end) as micromarket_yesterday,
-avg(case when date(menu_date) >= timestampadd(day,-7,curdate()) and date(menu_date) <= timestampadd(day,-1,curdate()) then rating end) as micromarket_l7d,
-avg(case when date(menu_date) >= timestampadd(day,-14,curdate()) and date(menu_date) <= timestampadd(day,-8,curdate()) then rating end) as micromarket_l14d,
-avg(case when month(menu_date) = month(timestampadd(month,-1,curdate())) then rating end) as micromarket_last_month,
-avg(case when month(menu_date) = month(curdate()) then rating end) as micromarket_MTD
+avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as micromarket_avg_specified_period
 from looker_demo.derived_meal_feedback
 where {% condition meal %} meal {% endcondition %}
 group by 1,2) x
@@ -73,12 +95,7 @@ left join  (select city,
 (sum(case when city_avg_specified_period >= 4 and city_avg_specified_period <= 5 then 1 else 0 end)-sum(case when city_avg_specified_period >= 1 and city_avg_specified_period < 3 then 1 else 0 end))/sum(case when city_avg_specified_period >= 0 and city_avg_specified_period <= 5 then 1 else 0 end) as city_agg_specified_period_nps
 from
 (select city, user_id,
-avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as city_avg_specified_period,
-avg(case when date(menu_date) = timestampadd(day,-1,curdate()) then rating end) as city_yesterday,
-avg(case when date(menu_date) >= timestampadd(day,-7,curdate()) and date(menu_date) <= timestampadd(day,-1,curdate()) then rating end) as city_l7d,
-avg(case when date(menu_date) >= timestampadd(day,-14,curdate()) and date(menu_date) <= timestampadd(day,-8,curdate()) then rating end) as city_l14d,
-avg(case when month(menu_date) = month(timestampadd(month,-1,curdate())) then rating end) as city_last_month,
-avg(case when month(menu_date) = month(curdate()) then rating end) as city_MTD
+avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as city_avg_specified_period
 from looker_demo.derived_meal_feedback
 where {% condition meal %} meal {% endcondition %}
 group by 1,2) y
@@ -88,12 +105,7 @@ left join  (select zone,
 (sum(case when zone_avg_specified_period >= 4 and zone_avg_specified_period <= 5 then 1 else 0 end)-sum(case when zone_avg_specified_period >= 1 and zone_avg_specified_period < 3 then 1 else 0 end))/sum(case when zone_avg_specified_period >= 0 and zone_avg_specified_period <= 5 then 1 else 0 end) as zone_agg_specified_period_nps
 from
 (select zone, user_id,
-avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as zone_avg_specified_period,
-avg(case when date(menu_date) = timestampadd(day,-1,curdate()) then rating end) as zone_yesterday,
-avg(case when date(menu_date) >= timestampadd(day,-7,curdate()) and date(menu_date) <= timestampadd(day,-1,curdate()) then rating end) as zone_l7d,
-avg(case when date(menu_date) >= timestampadd(day,-14,curdate()) and date(menu_date) <= timestampadd(day,-8,curdate()) then rating end) as zone_l14d,
-avg(case when month(menu_date) = month(timestampadd(month,-1,curdate())) then rating end) as zone_last_month,
-avg(case when month(menu_date) = month(curdate()) then rating end) as zone_MTD
+avg(case when {% condition menu_date %} menu_date {% endcondition %} then rating end) as zone_avg_specified_period
 from looker_demo.derived_meal_feedback
 where {% condition meal %} meal {% endcondition %}
 group by 1,2) z
@@ -121,9 +133,10 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
     fields: [city,nps_last_month]
   }
 
-  parameter: menu_date {
+  filter: menu_date {
     type: date
     convert_tz: no
+
   }
 
   parameter: meal {
@@ -162,17 +175,25 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
     sql: ${TABLE}.residence ;;
   }
 
-  dimension: kitchen {
-    type: string
-    sql: ${TABLE}.kitchen ;;
-  }
-
   dimension: micromarket {
     type: string
     sql: ${TABLE}.micromarket ;;
     link: {
       label: "Residence Wise View"
-      url: "/explore/cx_data/all_level?fields=all_level.residence,all_level.residence_nps_mtd,all_level.residence_nps_last_month,all_level.residence_nps_L7D,all_level.residence_nps_L14D&sorts=all_level.nps_specified_period+desc&f[all_level.micromarket]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}"
+      url: "/explore/cx_data/all_level?fields=all_level.micromarket,all_level.residence,all_level.residence_nps_mtd,all_level.residence_nps_last_month,all_level.residence_nps_L7D,all_level.residence_nps_L14D,all_level.residence_nps_specified_period,all_level.micromarket_agg_specified_period_nps&sorts=all_level.residence_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.micromarket_nps_mtd%22%2C%22id%22%3A%22all_level.micromarket_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.micromarket_nps_last_month%22%2C%22id%22%3A%22all_level.micromarket_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.micromarket_nps_L7D%22%2C%22id%22%3A%22all_level.micromarket_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.micromarket_nps_L14D%22%2C%22id%22%3A%22all_level.micromarket_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.micromarket_nps_specified_period%22%2C%22id%22%3A%22all_level.micromarket_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.micromarket_nps_mtd%22%3A%22MTD%22%2C%22all_level.micromarket_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.micromarket_nps_L7D%22%3A%22L7D%22%2C%22all_level.micromarket_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.micromarket_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.residence_nps_mtd%22%3A%22MTD%22%2C%22all_level.residence_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.residence_nps_L7D%22%3A%22L7D%22%2C%22all_level.residence_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.residence_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.micromarket_agg_specified_period_nps%22%3A%22micromarket+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.micromarket_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.micromarket]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
+    }
+  }
+
+  dimension: kitchen {
+    type: string
+    sql: ${TABLE}.kitchen ;;
+    link: {
+      label: "Micromarket Wise View"
+      url: "/explore/cx_data/all_level?fields=all_level.kitchen,all_level.micromarket,all_level.micromarket_nps_mtd,all_level.micromarket_nps_last_month,all_level.micromarket_nps_L7D,all_level.micromarket_nps_L14D,all_level.micromarket_nps_specified_period,all_level.kitchen_agg_specified_period_nps&sorts=all_level.micromarket_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.kitchen_nps_mtd%22%2C%22id%22%3A%22all_level.kitchen_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_last_month%22%2C%22id%22%3A%22all_level.kitchen_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_L7D%22%2C%22id%22%3A%22all_level.kitchen_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_L14D%22%2C%22id%22%3A%22all_level.kitchen_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_specified_period%22%2C%22id%22%3A%22all_level.kitchen_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.kitchen_nps_mtd%22%3A%22MTD%22%2C%22all_level.kitchen_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.kitchen_nps_L7D%22%3A%22L7D%22%2C%22all_level.kitchen_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.kitchen_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.micromarket_nps_mtd%22%3A%22MTD%22%2C%22all_level.micromarket_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.micromarket_nps_L7D%22%3A%22L7D%22%2C%22all_level.micromarket_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.micromarket_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.kitchen_agg_specified_period_nps%22%3A%22kitchen+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.kitchen_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.kitchen]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
+    }
+    link: {
+      label: "Residence Wise View"
+      url: "/explore/cx_data/all_level?fields=all_level.kitchen,all_level.residence,all_level.residence_nps_mtd,all_level.residence_nps_last_month,all_level.residence_nps_L7D,all_level.residence_nps_L14D,all_level.residence_nps_specified_period,all_level.kitchen_agg_specified_period_nps&sorts=all_level.residence_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.kitchen_nps_mtd%22%2C%22id%22%3A%22all_level.kitchen_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_last_month%22%2C%22id%22%3A%22all_level.kitchen_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_L7D%22%2C%22id%22%3A%22all_level.kitchen_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_L14D%22%2C%22id%22%3A%22all_level.kitchen_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.kitchen_nps_specified_period%22%2C%22id%22%3A%22all_level.kitchen_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.kitchen_nps_mtd%22%3A%22MTD%22%2C%22all_level.kitchen_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.kitchen_nps_L7D%22%3A%22L7D%22%2C%22all_level.kitchen_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.kitchen_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.residence_nps_mtd%22%3A%22MTD%22%2C%22all_level.residence_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.residence_nps_L7D%22%3A%22L7D%22%2C%22all_level.residence_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.residence_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.kitchen_agg_specified_period_nps%22%3A%22kitchen+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.kitchen_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.kitchen]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
     }
   }
 
@@ -180,12 +201,16 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
     type: string
     sql: ${TABLE}.city ;;
     link: {
+      label: "Kitchen Wise View"
+      url: "/explore/cx_data/all_level?fields=all_level.city,all_level.kitchen,all_level.kitchen_nps_mtd,all_level.kitchen_nps_last_month,all_level.kitchen_nps_L7D,all_level.kitchen_nps_L14D,all_level.kitchen_nps_specified_period,all_level.city_agg_specified_period_nps&sorts=all_level.kitchen_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.city_nps_mtd%22%2C%22id%22%3A%22all_level.city_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_last_month%22%2C%22id%22%3A%22all_level.city_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_L7D%22%2C%22id%22%3A%22all_level.city_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_L14D%22%2C%22id%22%3A%22all_level.city_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_specified_period%22%2C%22id%22%3A%22all_level.city_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.city_nps_mtd%22%3A%22MTD%22%2C%22all_level.city_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.city_nps_L7D%22%3A%22L7D%22%2C%22all_level.city_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.city_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.kitchen_nps_mtd%22%3A%22MTD%22%2C%22all_level.kitchen_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.kitchen_nps_L7D%22%3A%22L7D%22%2C%22all_level.kitchen_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.kitchen_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.city_agg_specified_period_nps%22%3A%22city+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.city_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.city]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
+    }
+    link: {
       label: "Micromarket Wise View"
-      url: "/explore/cx_data/all_level?fields=all_level.micromarket,all_level.micromarket_nps_mtd,all_level.micromarket_nps_last_month,all_level.micromarket_nps_L7D,all_level.micromarket_nps_L14D&sorts=all_level.nps_specified_period+desc&f[all_level.city]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}"
+      url: "/explore/cx_data/all_level?fields=all_level.city,all_level.micromarket,all_level.micromarket_nps_mtd,all_level.micromarket_nps_last_month,all_level.micromarket_nps_L7D,all_level.micromarket_nps_L14D,all_level.micromarket_nps_specified_period,all_level.city_agg_specified_period_nps&sorts=all_level.micromarket_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.city_nps_mtd%22%2C%22id%22%3A%22all_level.city_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_last_month%22%2C%22id%22%3A%22all_level.city_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_L7D%22%2C%22id%22%3A%22all_level.city_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_L14D%22%2C%22id%22%3A%22all_level.city_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_specified_period%22%2C%22id%22%3A%22all_level.city_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.city_nps_mtd%22%3A%22MTD%22%2C%22all_level.city_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.city_nps_L7D%22%3A%22L7D%22%2C%22all_level.city_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.city_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.micromarket_nps_mtd%22%3A%22MTD%22%2C%22all_level.micromarket_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.micromarket_nps_L7D%22%3A%22L7D%22%2C%22all_level.micromarket_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.micromarket_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.city_agg_specified_period_nps%22%3A%22city+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.city_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.city]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
     }
     link: {
       label: "Residence Wise View"
-      url: "/explore/cx_data/all_level?fields=all_level.residence,all_level.residence_nps_mtd,all_level.residence_nps_last_month,all_level.residence_nps_L7D,all_level.residence_nps_L14D&sorts=all_level.nps_specified_period+desc&f[all_level.city]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}"
+      url: "/explore/cx_data/all_level?fields=all_level.city,all_level.residence,all_level.residence_nps_mtd,all_level.residence_nps_last_month,all_level.residence_nps_L7D,all_level.residence_nps_L14D,all_level.residence_nps_specified_period,all_level.city_agg_specified_period_nps&sorts=all_level.residence_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.city_nps_mtd%22%2C%22id%22%3A%22all_level.city_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_last_month%22%2C%22id%22%3A%22all_level.city_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_L7D%22%2C%22id%22%3A%22all_level.city_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_L14D%22%2C%22id%22%3A%22all_level.city_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.city_nps_specified_period%22%2C%22id%22%3A%22all_level.city_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.city_nps_mtd%22%3A%22MTD%22%2C%22all_level.city_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.city_nps_L7D%22%3A%22L7D%22%2C%22all_level.city_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.city_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.residence_nps_mtd%22%3A%22MTD%22%2C%22all_level.residence_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.residence_nps_L7D%22%3A%22L7D%22%2C%22all_level.residence_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.residence_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.city_agg_specified_period_nps%22%3A%22city+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.city_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.city]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
     }
   }
 
@@ -194,18 +219,22 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
     sql: ${TABLE}.zone ;;
     link: {
       label: "City Wise View"
-      url: "/explore/cx_data/all_level?fields=all_level.city,all_level.city_nps_mtd,all_level.city_nps_last_month,all_level.city_nps_L7D,all_level.city_nps_L14D&sorts=all_level.nps_specified_period+desc&f[all_level.zone]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}"
+      url: "/explore/cx_data/all_level?fields=all_level.zone,all_level.city,all_level.city_nps_mtd,all_level.city_nps_last_month,all_level.city_nps_L7D,all_level.city_nps_L14D,all_level.city_nps_specified_period,all_level.zone_agg_specified_period_nps&sorts=all_level.city_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.zone_nps_mtd%22%2C%22id%22%3A%22all_level.zone_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_last_month%22%2C%22id%22%3A%22all_level.zone_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L7D%22%2C%22id%22%3A%22all_level.zone_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L14D%22%2C%22id%22%3A%22all_level.zone_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_specified_period%22%2C%22id%22%3A%22all_level.zone_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.zone_nps_mtd%22%3A%22MTD%22%2C%22all_level.zone_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.zone_nps_L7D%22%3A%22L7D%22%2C%22all_level.zone_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.zone_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.city_nps_mtd%22%3A%22MTD%22%2C%22all_level.city_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.city_nps_L7D%22%3A%22L7D%22%2C%22all_level.city_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.city_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.zone_agg_specified_period_nps%22%3A%22Zone+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.zone_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.zone]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
+    }
+    link: {
+      label: "Kitchen Wise View"
+      url: "/explore/cx_data/all_level?fields=all_level.zone,all_level.kitchen,all_level.kitchen_nps_mtd,all_level.kitchen_nps_last_month,all_level.kitchen_nps_L7D,all_level.kitchen_nps_L14D,all_level.kitchen_nps_specified_period,all_level.zone_agg_specified_period_nps&sorts=all_level.kitchen_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.zone_nps_mtd%22%2C%22id%22%3A%22all_level.zone_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_last_month%22%2C%22id%22%3A%22all_level.zone_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L7D%22%2C%22id%22%3A%22all_level.zone_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L14D%22%2C%22id%22%3A%22all_level.zone_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_specified_period%22%2C%22id%22%3A%22all_level.zone_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.zone_nps_mtd%22%3A%22MTD%22%2C%22all_level.zone_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.zone_nps_L7D%22%3A%22L7D%22%2C%22all_level.zone_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.zone_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.kitchen_nps_mtd%22%3A%22MTD%22%2C%22all_level.kitchen_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.kitchen_nps_L7D%22%3A%22L7D%22%2C%22all_level.kitchen_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.kitchen_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.zone_agg_specified_period_nps%22%3A%22Zone+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.zone_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.zone]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
     }
     link: {
       label: "Micromarket Wise View"
-      url: "/explore/cx_data/all_level?fields=all_level.micromarket,all_level.micromarket_nps_mtd,all_level.micromarket_nps_last_month,all_level.micromarket_nps_L7D,all_level.micromarket_nps_L14D&sorts=all_level.nps_specified_period+desc&f[all_level.zone]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}"
+      url: "/explore/cx_data/all_level?fields=all_level.zone,all_level.micromarket,all_level.micromarket_nps_mtd,all_level.micromarket_nps_last_month,all_level.micromarket_nps_L7D,all_level.micromarket_nps_L14D,all_level.micromarket_nps_specified_period,all_level.zone_agg_specified_period_nps&sorts=all_level.micromarket_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.zone_nps_mtd%22%2C%22id%22%3A%22all_level.zone_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_last_month%22%2C%22id%22%3A%22all_level.zone_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L7D%22%2C%22id%22%3A%22all_level.zone_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L14D%22%2C%22id%22%3A%22all_level.zone_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_specified_period%22%2C%22id%22%3A%22all_level.zone_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.zone_nps_mtd%22%3A%22MTD%22%2C%22all_level.zone_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.zone_nps_L7D%22%3A%22L7D%22%2C%22all_level.zone_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.zone_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.micromarket_nps_mtd%22%3A%22MTD%22%2C%22all_level.micromarket_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.micromarket_nps_L7D%22%3A%22L7D%22%2C%22all_level.micromarket_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.micromarket_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.zone_agg_specified_period_nps%22%3A%22Zone+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.zone_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.zone]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
     }
     link: {
       label: "Residence Wise View"
-      url: "/explore/cx_data/all_level?fields=all_level.residence,all_level.residence_nps_mtd,all_level.residence_nps_last_month,all_level.residence_nps_L7D,all_level.residence_nps_L14D&sorts=all_level.nps_specified_period+desc&f[all_level.zone]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}"
+      url: "/explore/cx_data/all_level?fields=all_level.zone,all_level.residence,all_level.residence_nps_mtd,all_level.residence_nps_last_month,all_level.residence_nps_L7D,all_level.residence_nps_L14D,all_level.residence_nps_specified_period,all_level.zone_agg_specified_period_nps&sorts=all_level.residence_nps_mtd+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22all_level.zone_nps_mtd%22%2C%22id%22%3A%22all_level.zone_nps_mtd%22%2C%22name%22%3A%22MTD%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_last_month%22%2C%22id%22%3A%22all_level.zone_nps_last_month%22%2C%22name%22%3A%22Last+Month%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L7D%22%2C%22id%22%3A%22all_level.zone_nps_L7D%22%2C%22name%22%3A%22L7D%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_L14D%22%2C%22id%22%3A%22all_level.zone_nps_L14D%22%2C%22name%22%3A%22L8-L14%22%7D%2C%7B%22axisId%22%3A%22all_level.zone_nps_specified_period%22%2C%22id%22%3A%22all_level.zone_nps_specified_period%22%2C%22name%22%3A%22Filtered+Period%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Afalse%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A5%2C%22type%22%3A%22linear%22%7D%5D%2C%22series_types%22%3A%7B%7D%2C%22series_labels%22%3A%7B%22all_level.zone_nps_mtd%22%3A%22MTD%22%2C%22all_level.zone_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.zone_nps_L7D%22%3A%22L7D%22%2C%22all_level.zone_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.zone_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.residence_nps_mtd%22%3A%22MTD%22%2C%22all_level.residence_nps_last_month%22%3A%22Last+Month%22%2C%22all_level.residence_nps_L7D%22%3A%22L7D%22%2C%22all_level.residence_nps_L14D%22%3A%22L8-L14%22%2C%22all_level.residence_nps_specified_period%22%3A%22Filtered+Period%22%2C%22all_level.zone_agg_specified_period_nps%22%3A%22Zone+FPS+FIltered+Period%22%7D%2C%22column_spacing_ratio%22%3A0.2%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22all_level.zone_promoters_MTD%22%3A%7B%22is_active%22%3Afalse%7D%7D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[all_level.zone]={{ value }}&f[all_level.menu_date]={{ _filters['all_level.menu_date'] | url_encode }}&toggle=dat,pik,vis"
     }
     # drill_fields: [city]
-    # html: <a href="/explore/cx_data/all_level?fields=all_level.city,all_level.nps_last_month&sorts=all_level.nps_last_month+desc&limit=500"> </a> ;;
+    # html: <a href="/explore/cx_data/all_level?fields=all_level.city,all_level.nps_last_month&sorts=all_level.nps_last_month+desc&limit=500"> </a> ;;z
     # link: {
     #   label: "City Level Performance"
     #   url: "
@@ -374,6 +403,52 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
 
 
 
+
+
+
+
+
+#kitchen_dimensions
+
+
+  dimension: kitchen_avg_specified_period {
+    type: number
+    sql: ${TABLE}.kitchen_avg_specified_period  ;;
+  }
+
+  dimension: kitchen_yesterday {
+    type: number
+    sql: ${TABLE}.kitchen_yesterday  ;;
+  }
+
+  dimension: kitchen_last_month {
+    type: number
+    sql: ${TABLE}.kitchen_last_month  ;;
+  }
+
+  dimension: kitchen_MTD {
+    type: number
+    sql: ${TABLE}.kitchen_MTD  ;;
+  }
+
+  dimension: kitchen_L7D {
+    type: number
+    sql: ${TABLE}.kitchen_L7D  ;;
+  }
+
+  dimension: kitchen_L14D {
+    type: number
+    sql: ${TABLE}.kitchen_L14D  ;;
+  }
+
+
+
+
+
+
+
+
+
 #micromarket_dimensions
 
 
@@ -458,19 +533,25 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
   measure: zone_agg_specified_period_nps {
     type: max
     sql: ${TABLE}.zone_agg_specified_period_nps ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: city_agg_specified_period_nps {
     type: max
     sql: ${TABLE}.city_agg_specified_period_nps ;;
-    value_format: "0.0%"
+    value_format: "0%"
+  }
+
+  measure: kitchen_agg_specified_period_nps {
+    type: max
+    sql: ${TABLE}.kitchen_agg_specified_period_nps ;;
+    value_format: "0%"
   }
 
   measure: micromarket_agg_specified_period_nps {
     type: max
     sql: ${TABLE}.micromarket_agg_specified_period_nps ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
 
@@ -611,37 +692,37 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
   measure: nps_specified_period {
     type: number
     sql: (${promoters_specified_period} -  ${detractors_specified_period})/${feedback_users_specified_period} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: nps_yesterday {
     type: number
     sql: (${promoters_yesterday} -  ${detractors_yesterday})/${feedback_yesterday} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: nps_last_month {
     type: number
     sql: (${promoters_last_month} -  ${detractors_last_month})/${feedback_last_month} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: nps_mtd {
     type: number
     sql: (${promoters_MTD} -  ${detractors_MTD})/${feedback_MTD} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: nps_L7D {
     type: number
     sql: (${promoters_L7D} -  ${detractors_L7D})/${feedback_L7D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: nps_L14D {
     type: number
     sql: (${promoters_L14D} -  ${detractors_L14D})/${feedback_L14D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
 
@@ -755,37 +836,37 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
   measure: zone_nps_specified_period {
     type: number
     sql: (${zone_promoters_specified_period} -  ${zone_detractors_specified_period})/${zone_feedback_users_specified_period} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: zone_nps_yesterday {
     type: number
     sql: (${zone_promoters_yesterday} -  ${zone_detractors_yesterday})/${zone_feedback_yesterday} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: zone_nps_last_month {
     type: number
     sql: (${zone_promoters_last_month} -  ${zone_detractors_last_month})/${zone_feedback_last_month} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: zone_nps_mtd {
     type: number
     sql: (${zone_promoters_MTD} -  ${zone_detractors_MTD})/${zone_feedback_MTD} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: zone_nps_L7D {
     type: number
     sql: (${zone_promoters_L7D} -  ${zone_detractors_L7D})/${zone_feedback_L7D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: zone_nps_L14D {
     type: number
     sql: (${zone_promoters_L14D} -  ${zone_detractors_L14D})/${zone_feedback_L14D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
 
@@ -895,38 +976,187 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
   measure: city_nps_specified_period {
     type: number
     sql: (${city_promoters_specified_period} -  ${city_detractors_specified_period})/${city_feedback_users_specified_period} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: city_nps_yesterday {
     type: number
     sql: (${city_promoters_yesterday} -  ${city_detractors_yesterday})/${city_feedback_yesterday} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: city_nps_last_month {
     type: number
     sql: (${city_promoters_last_month} -  ${city_detractors_last_month})/${city_feedback_last_month} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: city_nps_mtd {
     type: number
     sql: (${city_promoters_MTD} -  ${city_detractors_MTD})/${city_feedback_MTD} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: city_nps_L7D {
     type: number
     sql: (${city_promoters_L7D} -  ${city_detractors_L7D})/${city_feedback_L7D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: city_nps_L14D {
     type: number
     sql: (${city_promoters_L14D} -  ${city_detractors_L14D})/${city_feedback_L14D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
+
+
+
+
+
+
+
+
+
+# kitchen_level
+
+
+
+  measure: kitchen_promoters_specified_period {
+    type: count_distinct
+    sql: case when ${kitchen_avg_specified_period} >= 4 and ${kitchen_avg_specified_period} <= 5 then ${user_id} end;;
+  }
+
+  measure: kitchen_detractors_specified_period {
+    type: count_distinct
+    sql: case when ${kitchen_avg_specified_period} >= 1 and ${kitchen_avg_specified_period} < 3 then ${user_id} end;;
+  }
+
+  measure: kitchen_feedback_users_specified_period {
+    type: count_distinct
+    sql: case when ${kitchen_avg_specified_period} >= 0 and ${kitchen_avg_specified_period} <= 5 then ${user_id} end;;
+    value_format: "#,##0"
+  }
+
+  measure: kitchen_promoters_yesterday {
+    type: count_distinct
+    sql: case when ${kitchen_yesterday} >= 4 and ${kitchen_yesterday} <= 5 then ${user_id} end;;
+  }
+
+  measure: kitchen_detractors_yesterday {
+    type: count_distinct
+    sql: case when ${kitchen_yesterday} >= 1 and ${kitchen_yesterday} < 3 then ${user_id} end;;
+  }
+
+  measure: kitchen_feedback_yesterday {
+    type: count_distinct
+    sql: case when ${kitchen_yesterday} >= 0 and ${kitchen_yesterday} <= 5 then ${user_id} end;;
+    value_format: "#,##0"
+  }
+
+  measure: kitchen_promoters_last_month {
+    type: count_distinct
+    sql: case when ${kitchen_last_month} >= 4 and ${kitchen_last_month} <= 5 then ${user_id} end;;
+  }
+
+  measure: kitchen_detractors_last_month {
+    type: count_distinct
+    sql: case when ${kitchen_last_month} >= 1 and ${kitchen_last_month} < 3 then ${user_id} end;;
+  }
+
+  measure: kitchen_feedback_last_month {
+    type: count_distinct
+    sql: case when ${kitchen_last_month} >= 0 and ${kitchen_last_month} <= 5 then ${user_id} end;;
+    value_format: "#,##0"
+  }
+
+
+  measure: kitchen_promoters_MTD {
+    type: count_distinct
+    sql: case when ${kitchen_MTD} >= 4 and ${kitchen_MTD} <= 5 then ${user_id} end;;
+  }
+
+  measure: kitchen_detractors_MTD {
+    type: count_distinct
+    sql: case when ${kitchen_MTD} >= 1 and ${kitchen_MTD} < 3 then ${user_id} end;;
+  }
+
+  measure: kitchen_feedback_MTD {
+    type: count_distinct
+    sql: case when ${kitchen_MTD} >= 0 and ${kitchen_MTD} <= 5 then ${user_id} end;;
+    value_format: "#,##0"
+  }
+
+  measure: kitchen_promoters_L7D {
+    type: count_distinct
+    sql: case when ${kitchen_L7D} >= 4 and ${kitchen_L7D} <= 5 then ${user_id} end;;
+  }
+
+  measure: kitchen_detractors_L7D {
+    type: count_distinct
+    sql: case when ${kitchen_L7D} >= 1 and ${kitchen_L7D} < 3 then ${user_id} end;;
+  }
+
+  measure: kitchen_feedback_L7D {
+    type: count_distinct
+    sql: case when ${kitchen_L7D} >= 0 and ${kitchen_L7D} <= 5 then ${user_id} end;;
+    value_format: "#,##0"
+  }
+
+  measure: kitchen_promoters_L14D {
+    type: count_distinct
+    sql: case when ${kitchen_L14D} >= 4 and ${kitchen_L14D} <= 5 then ${user_id} end;;
+  }
+
+  measure: kitchen_detractors_L14D {
+    type: count_distinct
+    sql: case when ${kitchen_L14D} >= 1 and ${kitchen_L14D} < 3 then ${user_id} end;;
+  }
+
+  measure: kitchen_feedback_L14D {
+    type: count_distinct
+    sql: case when ${kitchen_L14D} >= 0 and ${kitchen_L14D} <= 5 then ${user_id} end;;
+    value_format: "#,##0"
+  }
+
+  measure: kitchen_nps_specified_period {
+    type: number
+    sql: (${kitchen_promoters_specified_period} -  ${kitchen_detractors_specified_period})/${kitchen_feedback_users_specified_period} ;;
+    value_format: "0%"
+  }
+
+  measure: kitchen_nps_yesterday {
+    type: number
+    sql: (${kitchen_promoters_yesterday} -  ${kitchen_detractors_yesterday})/${kitchen_feedback_yesterday} ;;
+    value_format: "0%"
+  }
+
+  measure: kitchen_nps_last_month {
+    type: number
+    sql: (${kitchen_promoters_last_month} -  ${kitchen_detractors_last_month})/${kitchen_feedback_last_month} ;;
+    value_format: "0%"
+  }
+
+  measure: kitchen_nps_mtd {
+    type: number
+    sql: (${kitchen_promoters_MTD} -  ${kitchen_detractors_MTD})/${kitchen_feedback_MTD} ;;
+    value_format: "0%"
+  }
+
+  measure: kitchen_nps_L7D {
+    type: number
+    sql: (${kitchen_promoters_L7D} -  ${kitchen_detractors_L7D})/${kitchen_feedback_L7D} ;;
+    value_format: "0%"
+  }
+
+  measure: kitchen_nps_L14D {
+    type: number
+    sql: (${kitchen_promoters_L14D} -  ${kitchen_detractors_L14D})/${kitchen_feedback_L14D} ;;
+    value_format: "0%"
+  }
+
+
+
+
 
 
 
@@ -1038,37 +1268,37 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
   measure: micromarket_nps_specified_period {
     type: number
     sql: (${micromarket_promoters_specified_period} -  ${micromarket_detractors_specified_period})/${micromarket_feedback_users_specified_period} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: micromarket_nps_yesterday {
     type: number
     sql: (${micromarket_promoters_yesterday} -  ${micromarket_detractors_yesterday})/${micromarket_feedback_yesterday} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: micromarket_nps_last_month {
     type: number
     sql: (${micromarket_promoters_last_month} -  ${micromarket_detractors_last_month})/${micromarket_feedback_last_month} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: micromarket_nps_mtd {
     type: number
     sql: (${micromarket_promoters_MTD} -  ${micromarket_detractors_MTD})/${micromarket_feedback_MTD} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: micromarket_nps_L7D {
     type: number
     sql: (${micromarket_promoters_L7D} -  ${micromarket_detractors_L7D})/${micromarket_feedback_L7D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: micromarket_nps_L14D {
     type: number
     sql: (${micromarket_promoters_L14D} -  ${micromarket_detractors_L14D})/${micromarket_feedback_L14D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
 
@@ -1188,37 +1418,37 @@ group by 1,2) r on  o.residence = r.residence and o.user_id = r.user_id;;
   measure: residence_nps_specified_period {
     type: number
     sql: (${residence_promoters_specified_period} -  ${residence_detractors_specified_period})/${residence_feedback_users_specified_period} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: residence_nps_yesterday {
     type: number
     sql: (${residence_promoters_yesterday} -  ${residence_detractors_yesterday})/${residence_feedback_yesterday} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: residence_nps_last_month {
     type: number
     sql: (${residence_promoters_last_month} -  ${residence_detractors_last_month})/${residence_feedback_last_month} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: residence_nps_mtd {
     type: number
     sql: (${residence_promoters_MTD} -  ${residence_detractors_MTD})/${residence_feedback_MTD} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: residence_nps_L7D {
     type: number
     sql: (${residence_promoters_L7D} -  ${residence_detractors_L7D})/${residence_feedback_L7D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
   measure: residence_nps_L14D {
     type: number
     sql: (${residence_promoters_L14D} -  ${residence_detractors_L14D})/${residence_feedback_L14D} ;;
-    value_format: "0.0%"
+    value_format: "0%"
   }
 
 
