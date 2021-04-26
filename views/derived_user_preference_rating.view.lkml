@@ -53,10 +53,10 @@ view: derived_user_preference_rating {
     sql: ${TABLE}.micromarket ;;
   }
 
-  dimension: moved_in_residents {
-    type: number
-    sql: ${TABLE}.moved_in_residents ;;
-  }
+  # dimension: moved_in_residents {
+  #   type: number
+  #   sql: ${TABLE}.moved_in_residents ;;
+  # }
 
   dimension: rating {
     type: yesno
