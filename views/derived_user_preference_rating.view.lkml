@@ -86,4 +86,8 @@ view: derived_user_preference_rating {
     type: average
     sql: case when ${rating} >0 and ${rating} <= 5 then ${rating} end;;
   }
+  measure: total_orders {
+    type: count_distinct
+    sql:  ${id};;
+  }
 }
