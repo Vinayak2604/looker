@@ -78,16 +78,29 @@ view: derived_user_preference_rating {
     sql: ${TABLE}.user_id ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [id]
-  }
-  measure: avg_rating {
-    type: average
-    sql: case when ${rating} >0 and ${rating} <= 5 then ${rating} end;;
-  }
+  # measure: count {
+  #   type: count
+  #   drill_fields: [id]
+  # }
   measure: total_orders {
     type: count_distinct
     sql:  ${id};;
   }
+  measure: rated_meals {
+    type: count_distinct
+    sql: case when ${rating} >0 then ${id} end;;
+  }
+  measure: uniqe_preference_users_L7D {
+    type: count_distinct
+    sql: case when ${item_base_preference} = 1 and ${date_date} <=  {7}{interval} then ${id} end;;
+  }
+  measure: total_uniqe_users_L7D {
+    type: count_distinct
+    sql: case when ${item_base_preference} = 1 and ${date_date} <=  {7}{interval} then ${id} end;;
+  }
+  measure: orders_with_preference {
+    type: count_distinct
+    sql: case when ${item_base_preference} = 1 then ${id} end;;
+  }
+
 }
