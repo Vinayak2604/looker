@@ -92,11 +92,11 @@ view: derived_user_preference_rating {
   }
   measure: uniqe_preference_users_L7D {
     type: count_distinct
-    sql: case when ${item_base_preference} = 1 and ${date_date} <=  {7}{interval} then ${id} end;;
+    sql: case when ${item_base_preference} = 1 and ${date_date} <=  DATE(DATE_ADD(CURDATE(),INTERVAL -7 day)) then ${user_id} end;;
   }
   measure: total_uniqe_users_L7D {
     type: count_distinct
-    sql: case when ${item_base_preference} = 1 and ${date_date} <=  {7}{interval} then ${id} end;;
+    sql: case when ${date_date} <=  DATE(DATE_ADD(CURDATE(),INTERVAL -7 day)) then ${user_id} end;;
   }
   measure: orders_with_preference {
     type: count_distinct
