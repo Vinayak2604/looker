@@ -19,6 +19,7 @@ view: moved_in_residents {
   }
 
   dimension: residence {
+    primary_key: yes
     type: string
     sql: ${TABLE}.residence ;;
   }
