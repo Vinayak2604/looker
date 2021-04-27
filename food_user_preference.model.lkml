@@ -7,11 +7,13 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # # Select the views that should be a part of this model,
 # # and define the joins that connect them together.
 #
-explore: moved_in_residents {
-  join: derived_user_preference_rating {
-    relationship: many_to_many
+explore: derived_user_preference_rating {
+
+  join: moved_in_residents {
+    relationship: one_to_many
     type: inner
-    sql_on: ${moved_in_residents.residence} = ${derived_user_preference_rating.residence};;
+    sql_on: ${derived_user_preference_rating.residence} = ${moved_in_residents.residence};;
+    sql_where: ${derived_user_preference_rating.dt} = ${moved_in_residents.dt} ;;
   }
   }
 #

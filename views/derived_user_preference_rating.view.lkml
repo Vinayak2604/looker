@@ -16,6 +16,7 @@ view: derived_user_preference_rating {
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
+    drill_fields: [micromarket,residence,meal_type]
   }
 
   dimension_group: date {
@@ -32,6 +33,17 @@ view: derived_user_preference_rating {
     datatype: date
     sql: ${TABLE}.date ;;
   }
+
+  dimension: dt {
+    type: string
+    sql:  ${TABLE}.date;;
+    hidden: yes
+  }
+
+  # parameter: date {
+  #   type: date
+  #   convert_tz: no
+  # }
 
   dimension: food_preference {
     type: string
@@ -53,13 +65,13 @@ view: derived_user_preference_rating {
     sql: ${TABLE}.micromarket ;;
   }
 
-  # dimension: moved_in_residents {
-  #   type: number
-  #   sql: ${TABLE}.moved_in_residents ;;
-  # }
+  measure: moved_in_residents {
+    type: max
+    sql: ${TABLE}.moved_in_residents ;;
+  }
 
   dimension: rating {
-    type: yesno
+    type: number
     sql: ${TABLE}.rating ;;
   }
 
@@ -85,6 +97,7 @@ view: derived_user_preference_rating {
   measure: total_orders {
     type: count_distinct
     sql:  ${id};;
+
   }
   measure: rated_meals {
     type: count_distinct
@@ -92,11 +105,11 @@ view: derived_user_preference_rating {
   }
   measure: uniqe_preference_users_L7D {
     type: count_distinct
-    sql: case when ${item_base_preference} = true and ${date_date} >=  date(CURDATE()-7) then ${user_id} end;;
+    sql: case when ${item_base_preference} = true and ${TABLE}.date >=  date(CURDATE()-7) then ${user_id} end;;
   }
   measure: total_uniqe_users_L7D {
     type: count_distinct
-    sql: case when ${date_date} >=  date(CURDATE()-7) then ${user_id} end;;
+    sql: case when ${TABLE}.date >=  date(CURDATE()-7) then ${user_id} end;;
   }
   measure: orders_with_preference {
     type: count_distinct
