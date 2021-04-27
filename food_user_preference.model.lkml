@@ -15,7 +15,7 @@ explore: derived_user_preference_rating {
     sql_on: ${derived_user_preference_rating.residence} = ${moved_in_residents.residence};;
     sql_where: ${derived_user_preference_rating.dt} = ${moved_in_residents.dt} ;;
   }
-  }
+}
 #
 #   join: users {
 #     relationship: many_to_one
