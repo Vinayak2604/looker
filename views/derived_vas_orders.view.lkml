@@ -131,6 +131,11 @@ view: derived_vas_orders {
     sql: ${TABLE}.user_id ;;
   }
 
+  dimension: phone {
+    type: string
+    sql: ${TABLE}.phone ;;
+  }
+
   dimension: user_type {
     type: string
     sql: ${TABLE}.user_type ;;

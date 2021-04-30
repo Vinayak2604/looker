@@ -1,6 +1,6 @@
 view: derived_user_preference_rating {
   sql_table_name: looker_demo.derived_user_preference_rating ;;
-  drill_fields: [id]
+  drill_fields: [phone]
 
   dimension: id {
     primary_key: yes
@@ -58,6 +58,7 @@ view: derived_user_preference_rating {
   dimension: meal_type {
     type: string
     sql: ${TABLE}.meal_type ;;
+    drill_fields: [phone]
   }
 
   dimension: micromarket {
@@ -88,6 +89,11 @@ view: derived_user_preference_rating {
   dimension: user_id {
     type: string
     sql: ${TABLE}.user_id ;;
+  }
+
+  dimension: phone {
+    type: string
+    sql: ${TABLE}.phone ;;
   }
 
   # measure: count {
