@@ -103,6 +103,13 @@ view: derived_user_preference_rating {
     type: count_distinct
     sql: case when ${rating} >0 then ${id} end;;
   }
+
+  measure: rated_meals_per {
+    type: number
+    sql: ${rated_meals}/${total_orders};;
+    value_format: "0.0%"
+  }
+
   measure: uniqe_preference_users_L7D {
     type: count_distinct
     sql: case when ${item_base_preference} = true and ${TABLE}.date >=  date(CURDATE()-7) then ${user_id} end;;
