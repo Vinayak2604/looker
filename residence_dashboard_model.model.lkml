@@ -2,12 +2,13 @@ connection: "beta"
 
 include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
 # include: "/**/*.view.lkml"                 # include all views in this project
-# include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
+include: "test123.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
 # # Select the views that should be a part of this model,
 # # and define the joins that connect them together.
 #
 explore: new_dashboard_test {
+  # sql_always_where: {% if new_dashboard_test.meal_type._is_filtered %};;
   # join: derived_user_preference_rating {
   #   relationship: many_to_many
   #   type: inner

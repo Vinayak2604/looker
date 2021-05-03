@@ -151,6 +151,17 @@ view: derived_vas_orders {
     sql: ${order_code} ;;
   }
 
+  measure: rated_orders {
+    type: count_distinct
+    sql: case when rating >= 0 then ${order_code} end ;;
+  }
+
+  measure: rated_orders_per {
+    type: number
+    sql: ${rated_orders}/${orders} ;;
+    value_format: "0.00%"
+  }
+
   measure: aov {
     type: average
     sql: ${final_total_amount} ;;

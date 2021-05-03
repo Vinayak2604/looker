@@ -13,6 +13,11 @@ view: derived_user_preference_rating {
     sql: ${TABLE}.cafe_availability ;;
   }
 
+  dimension: preference_available {
+    type: string
+    sql: ${TABLE}.preference_available ;;
+  }
+
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
@@ -120,17 +125,23 @@ link: {
     value_format: "0.0%"
   }
 
-  measure: uniqe_preference_users_L7D {
+  measure: uniqe_preference_users {
     type: count_distinct
-    sql: case when ${item_base_preference} = true and ${TABLE}.date >=  date(CURDATE()-7) then ${user_id} end;;
+    sql: ${user_id};;
   }
-  measure: total_uniqe_users_L7D {
+  measure: total_uniqe_users {
     type: count_distinct
-    sql: case when ${TABLE}.date >=  date(CURDATE()-7) then ${user_id} end;;
+    sql: ${user_id};;
   }
   measure: orders_with_preference {
     type: count_distinct
     sql: case when ${item_base_preference} = true then ${id} end;;
+  }
+
+  measure: preference_meals_per {
+    type: number
+    sql: ${orders_with_preference}/${total_orders};;
+    value_format: "00.0%"
   }
 
 }
