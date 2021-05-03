@@ -17,7 +17,7 @@ and {% condition meal_type %} meal_type {% endcondition %}
 and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
 and {% condition preference_availability_flag %} preference_available {% endcondition %}
 group by 1,2,3) upr
-left join (select residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
+left join (select city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
 from looker_demo.derived_vas_orders vo
 where {% condition date %} date {% endcondition %}
 group by 1) vo on upr.residence = vo.residence
@@ -26,7 +26,7 @@ group by 1) vo on upr.residence = vo.residence
 union
 
 
-select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
+select vo.city, vo.micromarket, vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
 from
 (select upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
 count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
@@ -39,7 +39,7 @@ and {% condition meal_type %} meal_type {% endcondition %}
 and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
 and {% condition preference_availability_flag %} preference_available {% endcondition %}
 group by 1,2,3) upr
-right join (select residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
+right join (select city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
 from looker_demo.derived_vas_orders vo
 where {% condition date %} date {% endcondition %}
 group by 1) vo on upr.residence = vo.residence) x ;;
