@@ -9,8 +9,8 @@ from
 (select upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
 count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
 count(distinct user_id) as meal_users,
-count(distinct case when item_base_preference = 1 then user_id end) as preference_users,
-count(distinct case when item_base_preference = 1 then id end) as preference_meals
+count(distinct case when system_generated = 0 then user_id end) as preference_users,
+count(distinct case when system_generated = 0 then id end) as preference_meals
 from looker_demo.derived_user_preference_rating upr
 where {% condition date %} date {% endcondition %}
 and {% condition meal_type %} meal_type {% endcondition %}
@@ -31,8 +31,8 @@ from
 (select upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
 count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
 count(distinct user_id) as meal_users,
-count(distinct case when item_base_preference = 1 then user_id end) as preference_users,
-count(distinct case when item_base_preference = 1 then id end) as preference_meals
+count(distinct case when system_generated = 0 then user_id end) as preference_users,
+count(distinct case when system_generated = 0 then id end) as preference_meals
 from looker_demo.derived_user_preference_rating upr
 where {% condition date %} date {% endcondition %}
 and {% condition meal_type %} meal_type {% endcondition %}
