@@ -136,6 +136,26 @@ view: derived_vas_orders {
     sql: ${TABLE}.phone ;;
   }
 
+  dimension: name {
+    type: string
+    sql: ${TABLE}.name ;;
+  }
+
+  dimension: email {
+    type: string
+    sql: ${TABLE}.email ;;
+  }
+
+  dimension: gender {
+    type: string
+    sql: ${TABLE}.gender ;;
+  }
+
+  dimension: profession {
+    type: string
+    sql: ${TABLE}.profession ;;
+  }
+
   dimension: user_type {
     type: string
     sql: ${TABLE}.user_type ;;
