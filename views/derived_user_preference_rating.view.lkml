@@ -21,7 +21,7 @@ view: derived_user_preference_rating {
   dimension: city {
     type: string
     sql: ${TABLE}.city ;;
-    drill_fields: [micromarket,residence,meal_type]
+    # drill_fields: [micromarket,residence,meal_type]
   }
 
   dimension_group: date {
