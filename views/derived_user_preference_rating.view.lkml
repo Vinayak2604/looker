@@ -231,12 +231,84 @@ link: {
     sql: case when ${system_generated} = false and ${preference_available} = true then ${id} end;;
   }
 
+  measure: breakfast_orders_with_preference {
+    type: count_distinct
+    sql: case when ${system_generated} = false and ${preference_available} = true and ${meal_type} = 'BREAKFAST' then ${id} end;;
+    hidden: yes
+  }
+
+  measure: lunch_orders_with_preference {
+    type: count_distinct
+    sql: case when ${system_generated} = false and ${preference_available} = true and ${meal_type} = 'LUNCH' then ${id} end;;
+    hidden: yes
+  }
+
+  measure: dinner_orders_with_preference {
+    type: count_distinct
+    sql: case when ${system_generated} = false and ${preference_available} = true and ${meal_type} = 'DINNER' then ${id} end;;
+    hidden: yes
+  }
+
+  measure: evening_snacks_orders_with_preference {
+    type: count_distinct
+    sql: case when ${system_generated} = false and ${preference_available} = true and ${meal_type} = 'EVENING_SNACKS' then ${id} end;;
+    hidden: yes
+  }
+
   measure: preference_available_orders {
     type: count_distinct
     sql: case when ${preference_available} = true then ${id} end;;
   }
 
+  measure: breakfast_preference_available_orders {
+    type: count_distinct
+    sql: case when ${preference_available} = true and ${meal_type} = 'BREAKFAST' then ${id} end;;
+    hidden: yes
+  }
+
+  measure: lunch_preference_available_orders {
+    type: count_distinct
+    sql: case when ${preference_available} = true and ${meal_type} = 'LUNCH' then ${id} end;;
+    hidden: yes
+  }
+
+  measure: dinner_preference_available_orders {
+    type: count_distinct
+    sql: case when ${preference_available} = true and ${meal_type} = 'DINNER' then ${id} end;;
+    hidden: yes
+  }
+
+  measure: evening_snacks_preference_available_orders {
+    type: count_distinct
+    sql: case when ${preference_available} = true and ${meal_type} = 'EVENING_SNACKS' then ${id} end;;
+    hidden: yes
+  }
+
   measure: preference_meals_per {
+    type: number
+    sql: ${orders_with_preference}/${preference_available_orders};;
+    value_format: "00.0%"
+  }
+
+  measure: breakfast_preference_meals_per {
+    type: number
+    sql: ${breakfast_orders_with_preference}/${breakfast_preference_available_orders};;
+    value_format: "00.0%"
+  }
+
+  measure: lunch_preference_meals_per {
+    type: number
+    sql: ${lunch_orders_with_preference}/${lunch_preference_available_orders};;
+    value_format: "00.0%"
+  }
+
+  measure: dinner_preference_meals_per {
+    type: number
+    sql: ${dinner_orders_with_preference}/${dinner_preference_available_orders};;
+    value_format: "00.0%"
+  }
+
+  measure: evening_snacks_preference_meals_per {
     type: number
     sql: ${orders_with_preference}/${preference_available_orders};;
     value_format: "00.0%"
