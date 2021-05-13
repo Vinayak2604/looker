@@ -383,6 +383,13 @@ view: derived_b2c_bookings {
     value_format: "#,##0"
   }
 
+  measure: sales_running_total {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [created_date: "last 7 days"]
+    value_format: "#,##0"
+  }
+
   dimension: downsold_flag {
     type: number
     sql: case when ${bc_monthly_rental_net_of_discount} < ${underwritten_price} then 1 else 0 end ;;
