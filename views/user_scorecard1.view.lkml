@@ -2,11 +2,7 @@ view: user_scorecard1 {
   # sql_table_name: looker_demo.derived_user_preference_rating ;;
   derived_table: {
     sql:
-    select distinct *
-from
-(select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users, avg_order_rating, order_rating_sum
-from
-(select upr.city, upr.micromarket, upr.residence, upr.user_id, upr.name, upr.phone, upr.gender, upr.profession, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+    with upr as (select upr.city, upr.micromarket, upr.residence, upr.user_id, upr.name, upr.phone, upr.gender, upr.profession, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
 count(distinct case when meal_type = 'BREAKFAST' then upr.id end) as breakfast_consumed_meals,
 count(distinct case when meal_type = 'LUNCH' then upr.id end) as lunch_consumed_meals,
 count(distinct case when meal_type = 'DINNER' then upr.id end) as dinner_consumed_meals,
@@ -47,67 +43,28 @@ where {% condition date %} date {% endcondition %}
 and {% condition meal_type %} meal_type {% endcondition %}
 and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
 and {% condition preference_availability_flag %} preference_available {% endcondition %}
-group by 1,2,3,4,5,6,7,8) upr
-left join (select city, micromarket,residence, user_id, name, phone, gender, profession, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users,
+group by 1,2,3,4,5,6,7,8),
+
+vo as (select city, micromarket,residence, user_id, name, phone, gender, profession, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users,
 avg(rating) as avg_order_rating, sum(rating) as order_rating_sum
 from looker_demo.derived_vas_orders vo
 where {% condition date %} date {% endcondition %}
-group by 1,2,3,4,5,6,7,8) vo on upr.user_id = vo.user_id
+group by 1,2,3,4,5,6,7,8)
+
+
+select distinct *
+from
+(select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users, avg_order_rating, order_rating_sum
+from upr
+left join vo on upr.user_id = vo.user_id
 
 
 union
 
 
 select vo.city, vo.micromarket, vo.residence, vo.user_id, vo.name, vo.phone, vo.gender, vo.profession, upr.moved_in_residents, upr.consumed_meals, upr.breakfast_consumed_meals, upr.lunch_consumed_meals, upr.dinner_consumed_meals, upr.evening_snacks_consumed_meals, upr.rated_meals, upr.breakfast_rated_meals, upr.lunch_rated_meals, upr.dinner_rated_meals, upr.evening_snacks_rated_meals, upr.meal_users, upr.breakfast_meal_users, upr.lunch_meal_users, upr.dinner_meal_users, upr.evening_snacks_meal_users, upr.preference_users, upr.breakfast_preference_users, upr.lunch_preference_users, upr.dinner_preference_users, upr.evening_snacks_preference_users, upr.preference_available_users, upr.breakfast_preference_available_users, upr.lunch_preference_available_users, upr.dinner_preference_available_users, upr.evening_snacks_preference_available_users, upr.preference_meals, upr.breakfast_preference_meals, upr.lunch_preference_meals, upr.dinner_preference_meals, upr.evening_snacks_preference_meals, upr.preference_available_meals, upr.breakfast_preference_available_meals, upr.lunch_preference_available_meals, upr.dinner_preference_available_meals, upr.evening_snacks_preference_available_meals, avg_meal_rating, meal_rating_sum, vo.total_orders, vo.rated_orders, aov, total_amount, order_users, avg_order_rating, order_rating_sum
-from
-(select city, micromarket,residence, user_id, name, phone, gender, profession, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users,
-avg(rating) as avg_order_rating, sum(rating) as order_rating_sum
-from looker_demo.derived_vas_orders vo
-where {% condition date %} date {% endcondition %}
-group by 1,2,3,4,5,6,7,8) vo
-left join
-(select upr.city, upr.micromarket, upr.residence, upr.user_id, upr.name, upr.phone, upr.gender, upr.profession, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
-count(distinct case when meal_type = 'BREAKFAST' then upr.id end) as breakfast_consumed_meals,
-count(distinct case when meal_type = 'LUNCH' then upr.id end) as lunch_consumed_meals,
-count(distinct case when meal_type = 'DINNER' then upr.id end) as dinner_consumed_meals,
-count(distinct case when meal_type = 'EVENING_SNACKS' then upr.id end) as evening_snacks_consumed_meals,
-count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
-count(distinct case when meal_type = 'BREAKFAST' and upr.rating is not null then upr.id end) as breakfast_rated_meals,
-count(distinct case when meal_type = 'LUNCH' and upr.rating is not null then upr.id end) as lunch_rated_meals,
-count(distinct case when meal_type = 'DINNER' and upr.rating is not null then upr.id end) as dinner_rated_meals,
-count(distinct case when meal_type = 'EVENING_SNACKS' and upr.rating is not null then upr.id end) as evening_snacks_rated_meals,
-count(distinct user_id) as meal_users,
-count(distinct case when meal_type = 'BREAKFAST' then upr.user_id end) as breakfast_meal_users,
-count(distinct case when meal_type = 'LUNCH' then upr.user_id end) as lunch_meal_users,
-count(distinct case when meal_type = 'DINNER' then upr.user_id end) as dinner_meal_users,
-count(distinct case when meal_type = 'EVENING_SNACKS' then upr.user_id end) as evening_snacks_meal_users,
-count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'BREAKFAST' then user_id end) as breakfast_preference_users,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'LUNCH' then user_id end) as lunch_preference_users,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'DINNER' then user_id end) as dinner_preference_users,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'EVENING_SNACKS' then user_id end) as evening_snacks_preference_users,
-count(distinct case when preference_available = 1 then user_id end) as preference_available_users,
-count(distinct case when preference_available = 1 and meal_type = 'BREAKFAST' then user_id end) as breakfast_preference_available_users,
-count(distinct case when preference_available = 1 and meal_type = 'LUNCH' then user_id end) as lunch_preference_available_users,
-count(distinct case when preference_available = 1 and meal_type = 'DINNER' then user_id end) as dinner_preference_available_users,
-count(distinct case when preference_available = 1 and meal_type = 'EVENING_SNACKS' then user_id end) as evening_snacks_preference_available_users,
-count(distinct case when system_generated = 0 and preference_available = 1 then id end) as preference_meals,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'BREAKFAST' then id end) as breakfast_preference_meals,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'LUNCH' then id end) as lunch_preference_meals,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'DINNER' then id end) as dinner_preference_meals,
-count(distinct case when system_generated = 0 and preference_available = 1 and meal_type = 'EVENING_SNACKS' then id end) as evening_snacks_preference_meals,
-count(distinct case when preference_available = 1 then id end) as preference_available_meals,
-count(distinct case when preference_available = 1 and meal_type = 'BREAKFAST' then id end) as breakfast_preference_available_meals,
-count(distinct case when preference_available = 1 and meal_type = 'LUNCH' then id end) as lunch_preference_available_meals,
-count(distinct case when preference_available = 1 and meal_type = 'DINNER' then id end) as dinner_preference_available_meals,
-count(distinct case when preference_available = 1 and meal_type = 'EVENING_SNACKS' then id end) as evening_snacks_preference_available_meals,
-avg(rating) as avg_meal_rating, sum(rating) as meal_rating_sum
-from looker_demo.derived_user_preference_rating upr
-where {% condition date %} date {% endcondition %}
-and {% condition meal_type %} meal_type {% endcondition %}
-and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
-and {% condition preference_availability_flag %} preference_available {% endcondition %}
-group by 1,2,3,4,5,6,7,8) upr on vo.user_id = upr.user_id) x ;;
+from vo
+left join upr on vo.user_id = upr.user_id) x ;;
   }
 
 
