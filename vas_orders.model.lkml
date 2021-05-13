@@ -10,7 +10,7 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 explore: derived_vas_orders {
 
   join: moved_in_residents {
-    relationship: one_to_many
+    relationship: many_to_many
     type: inner
     sql_on: ${derived_vas_orders.residence} = ${moved_in_residents.residence};;
     sql_where: ${derived_vas_orders.dt} = ${moved_in_residents.dt} ;;
