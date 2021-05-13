@@ -2,11 +2,7 @@ view: new_dashboard_test {
   # sql_table_name: looker_demo.derived_user_preference_rating ;;
   derived_table: {
     sql:
-    select distinct *
-from
-(select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
-from
-(select upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+    with upr as (select upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
 count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
 count(distinct user_id) as meal_users,
 count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
@@ -18,36 +14,26 @@ where {% condition date %} date {% endcondition %}
 and {% condition meal_type %} meal_type {% endcondition %}
 and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
 and {% condition preference_availability_flag %} preference_available {% endcondition %}
-group by 1,2,3) upr
-left join (select city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
+group by 1,2,3),
+
+vo as (select city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
 from looker_demo.derived_vas_orders vo
 where {% condition date %} date {% endcondition %}
-group by 1,2,3) vo on upr.residence = vo.residence
+group by 1,2,3)
 
-
+    select distinct *
+from
+(select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
+from
+upr
+left join vo on upr.residence = vo.residence
 union
 
 
 select vo.city, vo.micromarket, vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
 from
-(select city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders, avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
-from looker_demo.derived_vas_orders vo
-where {% condition date %} date {% endcondition %}
-group by 1,2,3) vo
-left join
-(select upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
-count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
-count(distinct user_id) as meal_users,
-count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
-count(distinct case when preference_available = 1 then user_id end) as preference_available_users,
-count(distinct case when system_generated = 0 and preference_available = 1 then id end) as preference_meals,
-count(distinct case when preference_available = 1 then id end) as preference_available_meals
-from looker_demo.derived_user_preference_rating upr
-where {% condition date %} date {% endcondition %}
-and {% condition meal_type %} meal_type {% endcondition %}
-and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
-and {% condition preference_availability_flag %} preference_available {% endcondition %}
-group by 1,2,3) upr on vo.residence = upr.residence) x ;;
+vo
+left join upr on vo.residence = upr.residence) x ;;
   }
 
 
