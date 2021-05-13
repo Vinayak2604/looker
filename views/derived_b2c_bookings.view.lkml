@@ -384,9 +384,8 @@ view: derived_b2c_bookings {
   }
 
   measure: sales_running_total {
-    type: count_distinct
-    sql: ${booking_id} ;;
-    filters: [created_date: "last 7 days"]
+    type: running_total
+    sql: ${beds} ;;
     value_format: "#,##0"
   }
 
