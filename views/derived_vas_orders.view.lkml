@@ -173,7 +173,7 @@ view: derived_vas_orders {
 
   measure: rated_orders {
     type: count_distinct
-    sql: case when rating >= 0 then ${order_code} end ;;
+    sql: case when rating >= 1 then ${order_code} end ;;
   }
 
   measure: rated_orders_per {
