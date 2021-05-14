@@ -152,7 +152,7 @@ link: {
   measure: rated_meals {
     type: count_distinct
     sql: case when ${rating} >0 then ${id} end;;
-    html: <b> {{value}} </b> <br> {{rated_meals._rendered_value}} ;;
+    # html: <b> {{value}} </b> <br> {{rated_meals._rendered_value}} ;;
   }
 
   measure: rated_meals_breakfast {
