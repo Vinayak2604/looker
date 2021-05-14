@@ -252,6 +252,7 @@ view: derived_b2c_bookings {
   measure: b2c_booked_beds {
     type: sum
     sql: ${beds} ;;
+    drill_fields: [created_date,residence]
     value_format: "#,##0"
   }
 
