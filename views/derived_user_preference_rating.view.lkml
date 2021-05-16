@@ -310,7 +310,7 @@ link: {
 
   measure: evening_snacks_preference_meals_per {
     type: number
-    sql: ${orders_with_preference}/${preference_available_orders};;
+    sql: ${evening_snacks_orders_with_preference}/${evening_snacks_preference_available_orders};;
     value_format: "00.0%"
   }
 
