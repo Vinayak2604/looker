@@ -152,7 +152,7 @@ link: {
   measure: rated_meals {
     type: count_distinct
     sql: case when ${rating} >0 then ${id} end;;
-    html: <b> {{value}} </b> <br> {{rated_meals._rendered_value}} ;;
+    # html: <b> {{value}} </b> <br> {{rated_meals._rendered_value}} ;;
   }
 
   measure: rated_meals_breakfast {
@@ -310,7 +310,7 @@ link: {
 
   measure: evening_snacks_preference_meals_per {
     type: number
-    sql: ${orders_with_preference}/${preference_available_orders};;
+    sql: ${evening_snacks_orders_with_preference}/${evening_snacks_preference_available_orders};;
     value_format: "00.0%"
   }
 
