@@ -406,6 +406,14 @@ view: derived_b2c_bookings {
     filters: [booking_status: "ONBOARDING COMPLETED"]
     value_format: "#,##0"
   }
+
+  measure: future_move_ins {
+    type: sum
+    sql: ${beds} ;;
+    filters: [move_in_date: "after today"]
+    value_format: "#,##0"
+  }
+
 }
 
   # parameter: day_filter {
