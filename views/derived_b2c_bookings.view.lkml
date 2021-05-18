@@ -399,6 +399,13 @@ view: derived_b2c_bookings {
     type: sum
     sql: ${downsold_flag} ;;
   }
+
+  measure: onboarded_beds {
+    type: sum
+    sql: ${beds} ;;
+    filters: [booking_status: "ONBOARDING COMPLETED"]
+    value_format: "#,##0"
+  }
 }
 
   # parameter: day_filter {
