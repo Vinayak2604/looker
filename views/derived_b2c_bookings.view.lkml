@@ -414,6 +414,11 @@ view: derived_b2c_bookings {
     value_format: "#,##0"
   }
 
+  dimension: booking_type_defined {
+    type: string
+    sql:  case when ${booking_type}=0 then "New Closure" when ${booking_type}=1 then "Retention" when ${booking_type}=2 then "Retention" when ${booking_type}=4 then "Suits" end ;;
+
+  }
 
   measure: beds_sold_today {
     type: sum
