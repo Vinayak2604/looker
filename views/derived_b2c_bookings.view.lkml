@@ -338,22 +338,22 @@ view: derived_b2c_bookings {
   }
 
   measure: expected_move_ins_n3d {
-    type: count_distinct
-    sql: ${booking_id} ;;
+    type: sum
+    sql: ${beds} ;;
     filters: [move_in_date: "today for 3 days"]
     value_format: "#,##0"
   }
 
   measure: expected_move_ins_n7d {
-    type: count_distinct
-    sql: ${booking_id} ;;
+    type: sum
+    sql: ${beds} ;;
     filters: [move_in_date: "today for 7 days"]
     value_format: "#,##0"
   }
 
   measure: expected_move_ins_n30d {
-    type: count_distinct
-    sql: ${booking_id} ;;
+    type: sum
+    sql: ${beds} ;;
     filters: [move_in_date: "today for 30 days"]
     value_format: "#,##0"
   }
@@ -423,6 +423,13 @@ view: derived_b2c_bookings {
   }
 
   measure: beds_sold_mtd {
+    type: sum
+    sql: ${beds} ;;
+    filters: [created_date: "30 days ago for 30 days"]
+    value_format: "#,##0"
+  }
+
+  measure: beds_sold_ {
     type: sum
     sql: ${beds} ;;
     filters: [created_date: "30 days ago for 30 days"]
