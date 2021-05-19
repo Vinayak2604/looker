@@ -429,10 +429,10 @@ view: derived_b2c_bookings {
     value_format: "#,##0"
   }
 
-  measure: beds_sold_ {
+  measure: beds_sold_l7d {
     type: sum
     sql: ${beds} ;;
-    filters: [created_date: "30 days ago for 30 days"]
+    filters: [created_date: "7 days ago for 7 days"]
     value_format: "#,##0"
   }
 
