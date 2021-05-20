@@ -8,82 +8,82 @@ view: is_cheat_sheet {
     sql: ${TABLE}.id ;;
   }
 
-  dimension: ac_acquisition {
+  measure: ac_acquisition {
     type: string
     sql: ${TABLE}.ac_acquisition ;;
   }
 
-  dimension: ac_enabled {
+  measure: ac_enabled {
     type: yesno
     sql: ${TABLE}.ac_enabled ;;
   }
 
-  dimension: ac_items {
+  measure: ac_items {
     type: number
     sql: ${TABLE}.ac_items ;;
   }
 
-  dimension: ac_payment_mode {
+  measure: ac_payment_mode {
     type: string
     sql: ${TABLE}.ac_payment_mode ;;
   }
 
-  dimension: ac_rent {
+  measure: ac_rent {
     type: number
     sql: ${TABLE}.ac_rent ;;
   }
 
-  dimension: ac_timing {
+  measure: ac_timing {
     type: string
     sql: ${TABLE}.ac_timing ;;
   }
 
-  dimension: ancillary_services {
+  measure: ancillary_services {
     type: string
     sql: ${TABLE}.ancillary_services ;;
   }
 
-  dimension: attributes {
+  measure: attributes {
     type: string
     sql: ${TABLE}.attributes ;;
   }
 
-  dimension: bio_metric_enabled {
+  measure: bio_metric_enabled {
     type: yesno
     sql: ${TABLE}.bio_metric_enabled ;;
   }
 
-  dimension: blanket_approval {
+  measure: blanket_approval {
     type: yesno
     sql: ${TABLE}.blanket_approval ;;
   }
 
-  dimension: brand {
+  measure: brand {
     type: string
     sql: ${TABLE}.brand ;;
   }
 
-  dimension: breakfast_price {
+  measure: breakfast_price {
     type: number
     sql: ${TABLE}.breakfast_price ;;
   }
 
-  dimension: cafetaria_enabled {
+  measure: cafetaria_enabled {
     type: yesno
     sql: ${TABLE}.cafetaria_enabled ;;
   }
 
-  dimension: cafetaria_timing {
+  measure: cafetaria_timing {
     type: string
     sql: ${TABLE}.cafetaria_timing ;;
   }
 
-  dimension: card_access_enabled {
+  measure: card_access_enabled {
     type: yesno
     sql: ${TABLE}.card_access_enabled ;;
   }
 
-  dimension: category {
+  measure: category {
     type: string
     sql: ${TABLE}.category ;;
   }
@@ -103,62 +103,62 @@ view: is_cheat_sheet {
     sql: ${TABLE}.coffee ;;
   }
 
-  dimension: common_area_days {
+  measure: common_area_days {
     type: number
     sql: ${TABLE}.common_area_days ;;
   }
 
-  dimension: common_area_dth {
+  measure: common_area_dth {
     type: yesno
     sql: ${TABLE}.common_area_dth ;;
   }
 
-  dimension: common_area_enabled {
+  measure: common_area_enabled {
     type: yesno
     sql: ${TABLE}.common_area_enabled ;;
   }
 
-  dimension: common_area_enabled_hk {
+  measure: common_area_enabled_hk {
     type: yesno
     sql: ${TABLE}.common_area_enabled_hk ;;
   }
 
-  dimension: common_area_payment_mode {
+  measure: common_area_payment_mode {
     type: string
     sql: ${TABLE}.common_area_payment_mode ;;
   }
 
-  dimension: common_bathroom_days {
+  measure: common_bathroom_days {
     type: number
     sql: ${TABLE}.common_bathroom_days ;;
   }
 
-  dimension: common_bathroom_enabled {
+  measure: common_bathroom_enabled {
     type: yesno
     sql: ${TABLE}.common_bathroom_enabled ;;
   }
 
-  dimension: common_geyser_acquisition {
+  measure: common_geyser_acquisition {
     type: string
     sql: ${TABLE}.common_geyser_acquisition ;;
   }
 
-  dimension: common_geyser_enabled {
+  measure: common_geyser_enabled {
     type: yesno
     sql: ${TABLE}.common_geyser_enabled ;;
   }
 
-  dimension: common_geyser_items {
+  measure: common_geyser_items {
     type: number
     sql: ${TABLE}.common_geyser_items ;;
   }
 
-  dimension: common_geyser_payment_mode {
+  measure: common_geyser_payment_mode {
     type: string
     sql: ${TABLE}.common_geyser_payment_mode ;;
   }
 
-  dimension: common_geyser_rent {
+  measure: common_geyser_rent {
     type: number
     sql: ${TABLE}.common_geyser_rent ;;
   }
@@ -177,27 +177,27 @@ view: is_cheat_sheet {
     sql: ${TABLE}.common_geyser_timing ;;
   }
 
-  dimension: consumables {
+  measure: consumables {
     type: string
     sql: ${TABLE}.consumables ;;
   }
 
-  dimension: contract_emi_months {
+  measure: contract_emi_months {
     type: number
     sql: ${TABLE}.contract_emi_months ;;
   }
 
-  dimension: contract_is_active {
+  measure: contract_is_active {
     type: yesno
     sql: ${TABLE}.contract_is_active ;;
   }
 
-  dimension: contract_months {
+  measure: contract_months {
     type: number
     sql: ${TABLE}.contract_months ;;
   }
 
-  dimension: contract_type {
+  measure: contract_type {
     type: yesno
     sql: ${TABLE}.contract_type ;;
   }
@@ -221,27 +221,27 @@ view: is_cheat_sheet {
     sql: ${TABLE}.dessert ;;
   }
 
-  dimension: dinner_price {
+  measure: dinner_price {
     type: number
     sql: ${TABLE}.dinner_price ;;
   }
 
-  dimension: double_door_fridge {
+  measure: double_door_fridge {
     type: yesno
     sql: ${TABLE}.double_door_fridge ;;
   }
 
-  dimension: double_door_fridge_acquisition {
+  measure: double_door_fridge_acquisition {
     type: number
     sql: ${TABLE}.double_door_fridge_acquisition ;;
   }
 
-  dimension: double_door_fridge_items {
+  measure: double_door_fridge_items {
     type: yesno
     sql: ${TABLE}.double_door_fridge_items ;;
   }
 
-  dimension: double_door_fridge_rent {
+  measure: double_door_fridge_rent {
     type: number
     sql: ${TABLE}.double_door_fridge_rent ;;
   }
@@ -251,137 +251,137 @@ view: is_cheat_sheet {
     sql: ${TABLE}.egg ;;
   }
 
-  dimension: electricity_enabled {
+  measure: electricity_enabled {
     type: yesno
     sql: ${TABLE}.electricity_enabled ;;
   }
 
-  dimension: fitness_zone___location {
+  measure: fitness_zone___location {
     type: string
     sql: ${TABLE}.fitness_zone___location ;;
   }
 
-  dimension: fitness_zone_enabled {
+  measure: fitness_zone_enabled {
     type: yesno
     sql: ${TABLE}.fitness_zone_enabled ;;
   }
 
-  dimension: fitness_zone_package_enabled {
+  measure: fitness_zone_package_enabled {
     type: yesno
     sql: ${TABLE}.fitness_zone_package_enabled ;;
   }
 
-  dimension: fitness_zone_timing {
+  measure: fitness_zone_timing {
     type: string
     sql: ${TABLE}.fitness_zone_timing ;;
   }
 
-  dimension: fomo_tag_website {
+  measure: fomo_tag_website {
     type: string
     sql: ${TABLE}.fomo_tag_website ;;
   }
 
-  dimension: food_menu_category_cat {
+  measure: food_menu_category_cat {
     type: string
     sql: ${TABLE}.food_menu_category_cat ;;
   }
 
-  dimension: food_menu_enabled {
+  measure: food_menu_enabled {
     type: yesno
     sql: ${TABLE}.food_menu_enabled ;;
   }
 
-  dimension: gender {
+  measure: gender {
     type: string
     sql: ${TABLE}.gender ;;
   }
 
-  dimension: google_map_link_website {
+  measure: google_map_link_website {
     type: string
     sql: ${TABLE}.google_map_link_website ;;
   }
 
-  dimension: house_keeping_enabled {
+  measure: house_keeping_enabled {
     type: yesno
     sql: ${TABLE}.house_keeping_enabled ;;
   }
 
-  dimension: in_suite_bathroom_days {
+  measure: in_suite_bathroom_days {
     type: number
     sql: ${TABLE}.in_suite_bathroom_days ;;
   }
 
-  dimension: in_suite_bathroom_enabled {
+  measure: in_suite_bathroom_enabled {
     type: yesno
     sql: ${TABLE}.in_suite_bathroom_enabled ;;
   }
 
-  dimension: included_till_x_km_ {
+  measure: included_till_x_km_ {
     type: number
     sql: ${TABLE}.included_till_x_km_ ;;
   }
 
-  dimension: internet_devices {
+  measure: internet_devices {
     type: number
     sql: ${TABLE}.internet_devices ;;
   }
 
-  dimension: internet_enabled {
+  measure: internet_enabled {
     type: yesno
     sql: ${TABLE}.internet_enabled ;;
   }
 
-  dimension: internet_offering {
+  measure: internet_offering {
     type: string
     sql: ${TABLE}.internet_offering ;;
   }
 
-  dimension: internet_package_enabled {
+  measure: internet_package_enabled {
     type: yesno
     sql: ${TABLE}.internet_package_enabled ;;
   }
 
-  dimension: internet_vendor {
+  measure: internet_vendor {
     type: string
     sql: ${TABLE}.internet_vendor ;;
   }
 
-  dimension: landmarks_website {
+  measure: landmarks_website {
     type: string
     sql: ${TABLE}.landmarks_website ;;
   }
 
-  dimension: latitude {
+  measure: latitude {
     type: number
     sql: ${TABLE}.latitude ;;
   }
 
-  dimension: laundry_enabled {
+  measure: laundry_enabled {
     type: yesno
     sql: ${TABLE}.laundry_enabled ;;
   }
 
-  dimension: linen_change_days {
+  measure: linen_change_days {
     type: number
     sql: ${TABLE}.linen_change_days ;;
   }
 
-  dimension: linen_change_enabled {
+  measure: linen_change_enabled {
     type: yesno
     sql: ${TABLE}.linen_change_enabled ;;
   }
 
-  dimension: location_website {
+  measure: location_website {
     type: string
     sql: ${TABLE}.location_website ;;
   }
 
-  dimension: longitude {
+  measure: longitude {
     type: number
     sql: ${TABLE}.longitude ;;
   }
 
-  dimension: lunch_price {
+  measure: lunch_price {
     type: number
     sql: ${TABLE}.lunch_price ;;
   }
@@ -391,12 +391,12 @@ view: is_cheat_sheet {
     sql: ${TABLE}.meal_serve_days ;;
   }
 
-  dimension: menu_category_name {
+  measure: menu_category_name {
     type: string
     sql: ${TABLE}.menu_category_name ;;
   }
 
-  dimension: menu_price {
+  measure: menu_price {
     type: number
     sql: ${TABLE}.menu_price ;;
   }
@@ -406,22 +406,22 @@ view: is_cheat_sheet {
     sql: ${TABLE}.micromarket ;;
   }
 
-  dimension: microwave {
+  measure: microwave {
     type: yesno
     sql: ${TABLE}.microwave ;;
   }
 
-  dimension: microwave_acquisition {
+  measure: microwave_acquisition {
     type: string
     sql: ${TABLE}.microwave_acquisition ;;
   }
 
-  dimension: microwave_items {
+  measure: microwave_items {
     type: number
     sql: ${TABLE}.microwave_items ;;
   }
 
-  dimension: microwave_rent {
+  measure: microwave_rent {
     type: number
     sql: ${TABLE}.microwave_rent ;;
   }
@@ -431,7 +431,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.milk ;;
   }
 
-  dimension: night_curfew_enabled {
+  measure: night_curfew_enabled {
     type: yesno
     sql: ${TABLE}.night_curfew_enabled ;;
   }
@@ -450,27 +450,27 @@ view: is_cheat_sheet {
     sql: ${TABLE}.night_curfew_timing ;;
   }
 
-  dimension: occ_stp {
+  measure: occ_stp {
     type: string
     sql: ${TABLE}.occ_stp ;;
   }
 
-  dimension: occupancy {
+  measure: occupancy {
     type: number
     sql: ${TABLE}.occupancy ;;
   }
 
-  dimension: occupancy_pricing {
+  measure: occupancy_pricing {
     type: string
     sql: ${TABLE}.occupancy_pricing ;;
   }
 
-  dimension: other_waterdispenser_acquisition {
+  measure: other_waterdispenser_acquisition {
     type: string
     sql: ${TABLE}.other_waterdispenser_acquisition ;;
   }
 
-  dimension: others_services_enabled {
+  measure: others_services_enabled {
     type: yesno
     sql: ${TABLE}.others_services_enabled ;;
   }
@@ -480,42 +480,42 @@ view: is_cheat_sheet {
     sql: ${TABLE}.paneer ;;
   }
 
-  dimension: payment_terms {
+  measure: payment_terms {
     type: string
     sql: ${TABLE}.payment_terms ;;
   }
 
-  dimension: power_backup_acquisition {
+  measure: power_backup_acquisition {
     type: string
     sql: ${TABLE}.power_backup_acquisition ;;
   }
 
-  dimension: power_backup_enabled {
+  measure: power_backup_enabled {
     type: yesno
     sql: ${TABLE}.power_backup_enabled ;;
   }
 
-  dimension: power_backup_items {
+  measure: power_backup_items {
     type: number
     sql: ${TABLE}.power_backup_items ;;
   }
 
-  dimension: power_backup_rent {
+  measure: power_backup_rent {
     type: number
     sql: ${TABLE}.power_backup_rent ;;
   }
 
-  dimension: power_backup_type {
+  measure: power_backup_type {
     type: string
     sql: ${TABLE}.power_backup_type ;;
   }
 
-  dimension: pre_booking_amount {
+  measure: pre_booking_amount {
     type: number
     sql: ${TABLE}.pre_booking_amount ;;
   }
 
-  dimension: provided_for {
+  measure: provided_for {
     type: string
     sql: ${TABLE}.provided_for ;;
   }
@@ -525,72 +525,72 @@ view: is_cheat_sheet {
     sql: ${TABLE}.residence_name ;;
   }
 
-  dimension: room_days {
+  measure: room_days {
     type: number
     sql: ${TABLE}.room_days ;;
   }
 
-  dimension: room_dth_acquisition {
+  measure: room_dth_acquisition {
     type: string
     sql: ${TABLE}.room_dth_acquisition ;;
   }
 
-  dimension: room_dth_items {
+  measure: room_dth_items {
     type: number
     sql: ${TABLE}.room_dth_items ;;
   }
 
-  dimension: room_dth_rent {
+  measure: room_dth_rent {
     type: number
     sql: ${TABLE}.room_dth_rent ;;
   }
 
-  dimension: room_enabled {
+  measure: room_enabled {
     type: yesno
     sql: ${TABLE}.room_enabled ;;
   }
 
-  dimension: room_enabled_hk {
+  measure: room_enabled_hk {
     type: yesno
     sql: ${TABLE}.room_enabled_hk ;;
   }
 
-  dimension: room_geyser_acquisition {
+  measure: room_geyser_acquisition {
     type: string
     sql: ${TABLE}.room_geyser_acquisition ;;
   }
 
-  dimension: room_geyser_enabled {
+  measure: room_geyser_enabled {
     type: yesno
     sql: ${TABLE}.room_geyser_enabled ;;
   }
 
-  dimension: room_geyser_items {
+  measure: room_geyser_items {
     type: number
     sql: ${TABLE}.room_geyser_items ;;
   }
 
-  dimension: room_geyser_payment_mode {
+  measure: room_geyser_payment_mode {
     type: string
     sql: ${TABLE}.room_geyser_payment_mode ;;
   }
 
-  dimension: room_geyser_rent {
+  measure: room_geyser_rent {
     type: number
     sql: ${TABLE}.room_geyser_rent ;;
   }
 
-  dimension: room_geyser_timing {
+  measure: room_geyser_timing {
     type: string
     sql: ${TABLE}.room_geyser_timing ;;
   }
 
-  dimension: room_payment_mode {
+  measure: room_payment_mode {
     type: string
     sql: ${TABLE}.room_payment_mode ;;
   }
 
-  dimension: room_unit_rate {
+  measure: room_unit_rate {
     type: number
     sql: ${TABLE}.room_unit_rate ;;
   }
@@ -610,57 +610,57 @@ view: is_cheat_sheet {
     sql: ${TABLE}.sec_dep_start_date ;;
   }
 
-  dimension: security_enabled {
+  measure: security_enabled {
     type: yesno
     sql: ${TABLE}.security_enabled ;;
   }
 
-  dimension: single_door_fridge {
+  measure: single_door_fridge {
     type: yesno
     sql: ${TABLE}.single_door_fridge ;;
   }
 
-  dimension: single_door_fridge_acquisition {
+  measure: single_door_fridge_acquisition {
     type: number
     sql: ${TABLE}.single_door_fridge_acquisition ;;
   }
 
-  dimension: single_door_fridge_items {
+  measure: single_door_fridge_items {
     type: number
     sql: ${TABLE}.single_door_fridge_items ;;
   }
 
-  dimension: single_door_fridge_rent {
+  measure: single_door_fridge_rent {
     type: yesno
     sql: ${TABLE}.single_door_fridge_rent ;;
   }
 
-  dimension: snacks_price {
+  measure: snacks_price {
     type: number
     sql: ${TABLE}.snacks_price ;;
   }
 
-  dimension: starting_pric_db {
+  measure: starting_pric_db {
     type: number
     sql: ${TABLE}.starting_pric_db ;;
   }
 
-  dimension: starting_price_website {
+  measure: starting_price_website {
     type: number
     sql: ${TABLE}.starting_price_website ;;
   }
 
-  dimension: student_non_refundable_security_deposit {
+  measure: student_non_refundable_security_deposit {
     type: number
     sql: ${TABLE}.student_non_refundable_security_deposit ;;
   }
 
-  dimension: student_refundable_security_deposit {
+  measure: student_refundable_security_deposit {
     type: number
     sql: ${TABLE}.student_refundable_security_deposit ;;
   }
 
-  dimension: supplies_enabled {
+  measure: supplies_enabled {
     type: string
     sql: ${TABLE}.supplies_enabled ;;
   }
@@ -670,22 +670,22 @@ view: is_cheat_sheet {
     sql: ${TABLE}.tea ;;
   }
 
-  dimension: transport_availability {
+  measure: transport_availability {
     type: string
     sql: ${TABLE}.transport_availability ;;
   }
 
-  dimension: transport_enabled {
+  measure: transport_enabled {
     type: yesno
     sql: ${TABLE}.transport_enabled ;;
   }
 
-  dimension: transport_package_enabled {
+  measure: transport_package_enabled {
     type: yesno
     sql: ${TABLE}.transport_package_enabled ;;
   }
 
-  dimension: transport_schedule {
+  measure: transport_schedule {
     type: string
     sql: ${TABLE}.transport_schedule ;;
   }
@@ -719,66 +719,62 @@ view: is_cheat_sheet {
     sql: ${TABLE}.version_from_date ;;
   }
 
-  dimension: wash_iron_days {
+  measure: wash_iron_days {
     type: number
     sql: ${TABLE}.wash_iron_days ;;
   }
 
-  dimension: wash_iron_enabled {
+  measure: wash_iron_enabled {
     type: yesno
     sql: ${TABLE}.wash_iron_enabled ;;
   }
 
-  dimension: wash_iron_limit {
+  measure: wash_iron_limit {
     type: string
     sql: ${TABLE}.wash_iron_limit ;;
   }
 
-  dimension: washing_machine {
+  measure: washing_machine {
     type: yesno
     sql: ${TABLE}.washing_machine ;;
   }
 
-  dimension: washing_machine_acquisition {
+  measure: washing_machine_acquisition {
     type: string
     sql: ${TABLE}.washing_machine_acquisition ;;
   }
 
-  dimension: washing_machine_items {
+  measure: washing_machine_items {
     type: number
     sql: ${TABLE}.washing_machine_items ;;
   }
 
-  dimension: washing_machine_rent {
+  measure: washing_machine_rent {
     type: number
     sql: ${TABLE}.washing_machine_rent ;;
   }
 
-  dimension: water_dispenser {
+  measure: water_dispenser {
     type: yesno
     sql: ${TABLE}.water_dispenser ;;
   }
 
-  dimension: water_dispenser_items {
+  measure: water_dispenser_items {
     type: number
     sql: ${TABLE}.water_dispenser_items ;;
   }
 
-  dimension: water_dispenser_rent {
+  measure: water_dispenser_rent {
     type: number
     sql: ${TABLE}.water_dispenser_rent ;;
   }
 
-  dimension: nm {
+  measure: nm {
     type: number
     sql: 1 ;;
     hidden: yes
   }
 
-  measure: nmt {
-    type: sum
-    sql: ${nm} ;;
-  }
 
   measure: count {
     type: count
