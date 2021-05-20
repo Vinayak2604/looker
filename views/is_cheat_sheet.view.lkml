@@ -807,4 +807,9 @@ view: is_cheat_sheet {
     type: time
     sql: ${TABLE}.night_curfew_timing ;;
   }
+
+  measure: common_geyser_timing_mesure {
+    type: time
+    sql: ${TABLE}.common_geyser_timing ;;
+  }
 }
