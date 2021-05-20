@@ -252,6 +252,7 @@ view: derived_b2c_bookings {
   measure: b2c_booked_beds {
     type: sum
     sql: ${beds} ;;
+    drill_fields: [created_date,residence]
     value_format: "#,##0"
   }
 
@@ -337,22 +338,22 @@ view: derived_b2c_bookings {
   }
 
   measure: expected_move_ins_n3d {
-    type: count_distinct
-    sql: ${booking_id} ;;
+    type: sum
+    sql: ${beds} ;;
     filters: [move_in_date: "today for 3 days"]
     value_format: "#,##0"
   }
 
   measure: expected_move_ins_n7d {
-    type: count_distinct
-    sql: ${booking_id} ;;
+    type: sum
+    sql: ${beds} ;;
     filters: [move_in_date: "today for 7 days"]
     value_format: "#,##0"
   }
 
   measure: expected_move_ins_n30d {
-    type: count_distinct
-    sql: ${booking_id} ;;
+    type: sum
+    sql: ${beds} ;;
     filters: [move_in_date: "today for 30 days"]
     value_format: "#,##0"
   }
@@ -383,6 +384,12 @@ view: derived_b2c_bookings {
     value_format: "#,##0"
   }
 
+  measure: sales_running_total {
+    type: running_total
+    sql: ${beds} ;;
+    value_format: "#,##0"
+  }
+
   dimension: downsold_flag {
     type: number
     sql: case when ${bc_monthly_rental_net_of_discount} < ${underwritten_price} then 1 else 0 end ;;
@@ -392,6 +399,49 @@ view: derived_b2c_bookings {
     type: sum
     sql: ${downsold_flag} ;;
   }
+
+  measure: onboarded_beds {
+    type: sum
+    sql: ${beds} ;;
+    filters: [booking_status: "ONBOARDING COMPLETED"]
+    value_format: "#,##0"
+  }
+
+  measure: future_move_ins {
+    type: sum
+    sql: ${beds} ;;
+    filters: [move_in_date: "after today"]
+    value_format: "#,##0"
+  }
+
+  dimension: booking_type_defined {
+    type: string
+    sql:  case when ${booking_type}=0 then "New Closure" when ${booking_type}=1 then "Retention" when ${booking_type}=2 then "Retention" when ${booking_type}=4 then "Suits" end ;;
+
+  }
+
+  measure: beds_sold_today {
+    type: sum
+    sql: ${beds} ;;
+    filters: [created_date: "today"]
+    value_format: "#,##0"
+  }
+
+  measure: beds_sold_mtd {
+    type: sum
+    sql: ${beds} ;;
+    filters: [created_date: "30 days ago for 30 days"]
+    value_format: "#,##0"
+  }
+
+  measure: beds_sold_l7d {
+    type: sum
+    sql: ${beds} ;;
+    filters: [created_date: "7 days ago for 7 days"]
+    value_format: "#,##0"
+  }
+
+
 }
 
   # parameter: day_filter {
