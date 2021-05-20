@@ -88,7 +88,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.category ;;
   }
 
-  dimension: chicken {
+  measure: chicken {
     type: number
     sql: ${TABLE}.chicken ;;
   }
@@ -98,7 +98,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.city ;;
   }
 
-  dimension: coffee {
+  measure: coffee {
     type: number
     sql: ${TABLE}.coffee ;;
   }
@@ -216,7 +216,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.created_at ;;
   }
 
-  dimension: dessert {
+  measure: dessert {
     type: number
     sql: ${TABLE}.dessert ;;
   }
@@ -246,7 +246,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.double_door_fridge_rent ;;
   }
 
-  dimension: egg {
+  measure: egg {
     type: number
     sql: ${TABLE}.egg ;;
   }
@@ -386,7 +386,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.lunch_price ;;
   }
 
-  dimension: meal_serve_days {
+  measure: meal_serve_days {
     type: string
     sql: ${TABLE}.meal_serve_days ;;
   }
@@ -426,7 +426,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.microwave_rent ;;
   }
 
-  dimension: milk {
+  measure: milk {
     type: number
     sql: ${TABLE}.milk ;;
   }
@@ -475,7 +475,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.others_services_enabled ;;
   }
 
-  dimension: paneer {
+  measure: paneer {
     type: number
     sql: ${TABLE}.paneer ;;
   }
@@ -665,7 +665,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.supplies_enabled ;;
   }
 
-  dimension: tea {
+  measure: tea {
     type: number
     sql: ${TABLE}.tea ;;
   }
