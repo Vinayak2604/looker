@@ -374,16 +374,8 @@ view: is_cheat_sheet {
   measure: location_website {
     type: string
     sql: ${TABLE}.location_website ;;
+    html:<a href={{ value }}> Google Location</a> ;;
   }
-
-  measure: loca {
-    type: string
-    sql: ${TABLE}.location_website ;;
-    html:{<a href={{ value }}> Location</a> };;
-  }
-
-
-
 
 
 
