@@ -814,14 +814,4 @@ view: is_cheat_sheet {
   }
 
 
-  dimension: loc {
-    type: string
-    sql: ${TABLE}.location_website ;;
-  }
-
-  measure: location{
-    sql: ${TABLE}.location_website;;
-    html: <a href={{loc}}></a> ;;
-  }
-
 }
