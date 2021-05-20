@@ -787,7 +787,19 @@ view: is_cheat_sheet {
 
   measure: list_occ_stp {
     type: string
-    sql: group_concat(${occ_stp}, ', ') ;;
+    sql: group_concat(distinct(is_cheat_sheet.occ_stp)  , ', ') ;;
+  }
+
+
+  measure: list_payment_option {
+    type: string
+    sql: group_concat(distinct(is_cheat_sheet.payment_terms)  , ', ') ;;
+  }
+
+
+  measure: list_tenure_option {
+    type: string
+    sql: group_concat(distinct(is_cheat_sheet.contract_months)  , ', ') ;;
   }
 
 }
