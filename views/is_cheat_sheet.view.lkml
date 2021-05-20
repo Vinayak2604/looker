@@ -790,7 +790,7 @@ view: is_cheat_sheet {
 
   measure: list_occ_stp_temp {
     type: string
-    sql: group_concat(distinct(is_cheat_sheet.occ_stp) SEPARATOR  ',')};;
+    sql: group_concat(distinct(is_cheat_sheet.occ_stp) SEPARATOR  ',');;
     html: {% assign words = value | split: ',' %}
      <ul>
      {% for word in words %}
