@@ -781,21 +781,12 @@ view: is_cheat_sheet {
     drill_fields: [id, residence_name, menu_category_name]
   }
 
-  measure: list_occ_stp {
+  dimension: list_occ_stp {
     type: string
-    sql: group_concat(distinct(is_cheat_sheet.occ_stp)) ;;
+    sql: group_concat(distinct(is_cheat_sheet.occ_stp) SEPARATOR  ',\n') ;;
   }
 
-  measure: list_occ_stp_test {
-    type: string
-    sql: group_concat(distinct(is_cheat_sheet.occ_stp)) ;;
-    html:
-    {% assign words = {{value}} | split: ', ' %}
-    <ul>
-    {% for word in words %}
-    <li>{{ word }}</li>
-    {% endfor %} ;;
-  }
+
 
   measure: list_payment_option {
     type: string
