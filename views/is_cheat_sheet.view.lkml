@@ -802,4 +802,8 @@ view: is_cheat_sheet {
     sql: group_concat(distinct(is_cheat_sheet.contract_months)  , ', ') ;;
   }
 
+  measure: list_landmarks_website {
+    type: string
+    sql: group_concat(distinct(is_cheat_sheet.landmarks_website), ' ,  ') ;;
+  }
 }
