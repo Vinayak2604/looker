@@ -786,6 +786,16 @@ view: is_cheat_sheet {
     sql: group_concat(distinct(is_cheat_sheet.occ_stp)) ;;
   }
 
+  measure: list_occ_stp_test {
+    type: string
+    sql: group_concat(distinct(is_cheat_sheet.occ_stp)) ;;
+    html:
+    {% assign words = {{value}} | split: ', ' %}
+    <ul>
+    {% for word in words %}
+    <li>{{ word }}</li>
+    {% endfor %} ;;
+  }
 
   measure: list_payment_option {
     type: string
