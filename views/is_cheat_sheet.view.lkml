@@ -787,7 +787,7 @@ view: is_cheat_sheet {
 
   measure: list_occ_stp {
     type: string
-    sql: (select listagg(${occ_stp}, ', ') within group (order by ${occupancy})) ;;
+    sql: listagg(${occ_stp}, ', ') within group (order by ${occupancy}) ;;
   }
 
 }
