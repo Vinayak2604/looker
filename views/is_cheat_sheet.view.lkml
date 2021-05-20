@@ -291,7 +291,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.food_menu_enabled ;;
   }
 
-  measure: gender {
+  dimension: gender {
     type: string
     sql: ${TABLE}.gender ;;
   }
