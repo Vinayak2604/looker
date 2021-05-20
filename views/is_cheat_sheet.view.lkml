@@ -784,4 +784,10 @@ view: is_cheat_sheet {
     type: count
     drill_fields: [id, residence_name, menu_category_name]
   }
+
+  measure: list_occ_stp {
+    type: string
+    sql: (select listagg(${occ_stp}, ', ') within group (order by ${occupancy})) ;;
+  }
+
 }
