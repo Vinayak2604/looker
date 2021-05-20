@@ -813,9 +813,15 @@ view: is_cheat_sheet {
     sql: ${TABLE}.common_geyser_timing ;;
   }
 
+
+  dimension: loc {
+    type: string
+    sql: ${TABLE}.location_website ;;
+  }
+
   measure: location{
     sql: ${TABLE}.location_website;;
-    html: <a href=location_website></a> ;;
+    html: <a href=loc></a> ;;
   }
 
 }
