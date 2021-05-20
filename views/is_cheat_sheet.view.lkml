@@ -781,7 +781,7 @@ view: is_cheat_sheet {
     drill_fields: [id, residence_name, menu_category_name]
   }
 
-  dimension: list_occ_stp {
+  measure: list_occ_stp {
     type: string
     sql: group_concat(distinct(is_cheat_sheet.occ_stp) SEPARATOR  ',\n') ;;
   }
