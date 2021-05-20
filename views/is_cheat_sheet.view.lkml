@@ -813,6 +813,10 @@ view: is_cheat_sheet {
     sql: ${TABLE}.common_geyser_timing ;;
   }
 
-
+  measure: location{
+    type: string
+    sql: ${TABLE}.location_website
+    html: html: <a href=location_website><button>Location</button></a> ;;
+  }
 
 }
