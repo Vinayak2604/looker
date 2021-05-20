@@ -809,7 +809,7 @@ view: is_cheat_sheet {
   }
 
   measure: common_geyser_timing_mesure {
-    type: time
+    type: string
     sql: ${TABLE}.common_geyser_timing ;;
   }
 }
