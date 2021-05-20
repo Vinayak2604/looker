@@ -802,4 +802,9 @@ view: is_cheat_sheet {
     type: string
     sql: group_concat(distinct(is_cheat_sheet.landmarks_website), ' ,  ') ;;
   }
+
+  measure: night_curfew_timing_mesure {
+    type: time
+    sql: ${TABLE}.night_curfew_timing ;;
+  }
 }
