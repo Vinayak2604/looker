@@ -376,6 +376,18 @@ view: is_cheat_sheet {
     sql: ${TABLE}.location_website ;;
   }
 
+  measure: loca {
+    type: string
+    sql: ${TABLE}.location_website ;;
+    html:{<a href={{ value }}> Location</a> };;
+  }
+
+
+
+
+
+
+
   measure: longitude {
     type: number
     sql: ${TABLE}.longitude ;;
