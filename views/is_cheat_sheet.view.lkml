@@ -791,7 +791,7 @@ view: is_cheat_sheet {
   measure: list_occ_stp_temp {
     type: string
     sql: ${list_occ_stp};;
-    html: {% assign words = value | split: ', ' %}
+    html: {% assign words = {%value%} | split: ', ' %}
      <ul>
      {% for word in words %}
      <li>{{ word }}</li>
