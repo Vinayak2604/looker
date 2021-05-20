@@ -815,7 +815,7 @@ view: is_cheat_sheet {
 
   measure: location{
     sql: ${TABLE}.location_website;;
-    html: <a href=location_website><button>Location</button></a> ;;
+    html: <a href=location_website></a> ;;
   }
 
 }
