@@ -783,35 +783,43 @@ view: is_cheat_sheet {
 
   measure: list_occ_stp {
     type: string
-    sql: group_concat(distinct(is_cheat_sheet.occ_stp) SEPARATOR  ',') ;;
-  }
-
-
-
-  measure: list_occ_stp_temp {
-    type: string
-    sql: group_concat(distinct(is_cheat_sheet.occ_stp) SEPARATOR  ',');;
+    sql: group_concat(distinct(is_cheat_sheet.occ_stp)) ;;
     html: {% assign words = value | split: ',' %}
-     <ul>
-     {% for word in words %}
-     <li>{{ word }}</li>
-     {% endfor %} ;;
+    <ul>
+    {% for word in words %}
+    <li>{{ word }}</li>
+    {% endfor %} ;;
   }
 
   measure: list_payment_option {
     type: string
     sql: group_concat(distinct(is_cheat_sheet.payment_terms)) ;;
+    html: {% assign words = value | split: ',' %}
+    <ul>
+    {% for word in words %}
+    <li>{{ word }}</li>
+    {% endfor %} ;;
   }
 
 
   measure: list_tenure_option {
     type: string
     sql: group_concat(distinct(is_cheat_sheet.contract_months)) ;;
+    html: {% assign words = value | split: ',' %}
+    <ul>
+    {% for word in words %}
+    <li>{{ word }}</li>
+    {% endfor %} ;;
   }
 
   measure: list_landmarks_website {
     type: string
     sql: group_concat(distinct(is_cheat_sheet.landmarks_website)) ;;
+    html: {% assign words = value | split: ',' %}
+    <ul>
+    {% for word in words %}
+    <li>{{ word }}</li>
+    {% endfor %} ;;
   }
 
   measure: night_curfew_timing_mesure {
