@@ -789,18 +789,18 @@ view: is_cheat_sheet {
 
   measure: list_payment_option {
     type: string
-    sql: group_concat(distinct(is_cheat_sheet.payment_terms)  , ', ') ;;
+    sql: group_concat(distinct(is_cheat_sheet.payment_terms)) ;;
   }
 
 
   measure: list_tenure_option {
     type: string
-    sql: group_concat(distinct(is_cheat_sheet.contract_months)  , ', ') ;;
+    sql: group_concat(distinct(is_cheat_sheet.contract_months)) ;;
   }
 
   measure: list_landmarks_website {
     type: string
-    sql: group_concat(distinct(is_cheat_sheet.landmarks_website), ' ,  ') ;;
+    sql: group_concat(distinct(is_cheat_sheet.landmarks_website)) ;;
   }
 
   measure: night_curfew_timing_mesure {
@@ -812,4 +812,7 @@ view: is_cheat_sheet {
     type: string
     sql: ${TABLE}.common_geyser_timing ;;
   }
+
+
+
 }
