@@ -374,7 +374,7 @@ view: is_cheat_sheet {
   measure: location_website {
     type: string
     sql: ${TABLE}.location_website ;;
-    html:<a href={{ value }}> <Button>Google Location</Button></a> ;;
+    html:<a href={{ value }} target="_blank"> <Button>Google Location</Button></a> ;;
   }
 
 
