@@ -836,5 +836,10 @@ view: is_cheat_sheet {
     sql: ${TABLE}.common_geyser_timing ;;
   }
 
+  dimension: map_location {
+    type: location
+    sql_latitude:${TABLE}.latitude ;;
+    sql_longitude:${TABLE}.longitude ;;
+  }
 
 }
