@@ -168,7 +168,7 @@ view: is_report {
 
   measure: total_calls {
     type: count_distinct
-    sql: ${TABLE}.id ;;
+    sql:  ${id} ;;
   }
 
   measure: connected_calls {
