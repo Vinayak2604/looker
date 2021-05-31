@@ -184,7 +184,7 @@ view: is_report {
 
   measure: qualified_leads {
     type: count_distinct
-    sql: case when ${qualification} = 'Y' then ${id} end  ;;
+    sql: case when ${qualification} = 'Y' and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end  ;;
   }
 
   measure: qualification_per {
@@ -195,7 +195,7 @@ view: is_report {
 
   measure: visit_scheduled_leads {
     type: count_distinct
-    sql: case when ${visit_scheduled} = 'Y' then ${id} end  ;;
+    sql: case when ${visit_scheduled} = 'Y' and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_per {
