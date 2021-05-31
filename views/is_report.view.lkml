@@ -171,6 +171,12 @@ view: is_report {
     sql:  ${id} ;;
   }
 
+  measure: total_leads {
+    type: count_distinct
+    sql:  ${lead_id};;
+  }
+
+
   measure: connected_calls {
     type: count_distinct
     sql: case when ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
@@ -182,25 +188,30 @@ view: is_report {
     value_format: "0.00%"
   }
 
+  measure: leads_connected_calls {
+    type: count_distinct
+    sql: case when ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+  }
+
   measure: qualified_leads {
     type: count_distinct
-    sql: case when ${qualification} = 'Y' and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end  ;;
+    sql: case when ${qualification} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: qualification_per {
     type: number
-    sql: ${qualified_leads}/${total_calls} ;;
+    sql: ${qualified_leads}/ ${leads_connected_calls};;
     value_format: "0.00%"
   }
 
   measure: visit_scheduled_leads {
     type: count_distinct
-    sql: case when ${visit_scheduled} = 'Y' and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end  ;;
+    sql: case when ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_per {
     type: number
-    sql: ${visit_scheduled}/${total_calls} ;;
+    sql: ${visit_scheduled}/${leads_connected_calls} ;;
     value_format: "0.00%"
   }
 
