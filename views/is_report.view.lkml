@@ -114,7 +114,7 @@ view: is_report {
     sql: ${TABLE}.qualified_by ;;
   }
 
-  dimension_group: qualified {
+  dimension_group: qualified_date {
     type: time
     timeframes: [
       raw,
@@ -166,8 +166,31 @@ view: is_report {
     sql: ${TABLE}.visit_scheduled_marked_date ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [id]
+  measure: total_calls {
+    type: count_distinct
+    sql: ${id} ;;
   }
+
+  measure: qualified_leads {
+    type: count_distinct
+    sql: case when ${qualification} = 'Y' then ${id} end  ;;
+  }
+
+  measure: qualification_per {
+    type: number
+    sql: ${qualified_leads}/${total_calls} ;;
+    value_format: "0.00%"
+  }
+
+  measure: visit_scheduled_leads {
+    type: count_distinct
+    sql: case when ${visit_scheduled} = 'Y' then ${id} end  ;;
+  }
+
+  measure: visit_scheduled_per {
+    type: number
+    sql: ${visit_scheduled}/${total_calls} ;;
+    value_format: "0.00%"
+  }
+
 }
