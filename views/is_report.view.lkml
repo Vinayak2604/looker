@@ -171,6 +171,17 @@ view: is_report {
     sql: ${id} ;;
   }
 
+  measure: connected_calls {
+    type: count_distinct
+    sql: case when ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+  }
+
+  measure: connected_calls_per {
+    type: number
+    sql: ${connected_calls}/${total_calls} ;;
+    value_format: "0.00%"
+  }
+
   measure: qualified_leads {
     type: count_distinct
     sql: case when ${qualification} = 'Y' then ${id} end  ;;
