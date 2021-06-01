@@ -173,17 +173,17 @@ view: is_report {
 
   measure: total_calls_yesterday {
     type: count_distinct
-    sql:  case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+    sql:  case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
   }
 
   measure: total_calls_L7D {
     type: count_distinct
-    sql:  case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+    sql:  case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
   }
 
   measure: total_calls_L30D {
     type: count_distinct
-    sql:  case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+    sql:  case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
   }
 
   measure: total_leads {
@@ -193,17 +193,17 @@ view: is_report {
 
   measure: total_leads_yesterday {
     type: count_distinct
-    sql:  case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
+    sql:  case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
   }
 
   measure: total_leads_L7D {
     type: count_distinct
-    sql:case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
+    sql:case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
   }
 
   measure: total_leads_L30D {
     type: count_distinct
-    sql:case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end  ;;
+    sql:case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end  ;;
   }
 
 
@@ -214,17 +214,17 @@ view: is_report {
 
   measure: connected_calls_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
   }
 
   measure: connected_calls_L7D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
   }
 
   measure: connected_calls_L30D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
   }
 
   measure: connected_calls_per {
@@ -259,17 +259,17 @@ view: is_report {
 
   measure: leads_connected_calls_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
   }
 
   measure: leads_connected_calls_L7D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
   }
 
   measure: leads_connected_calls_L30D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
   }
 
   measure: qualified_leads {
@@ -279,17 +279,17 @@ view: is_report {
 
   measure: qualified_leads_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: qualified_leads_L7D {
     type: count_distinct
-    sql: case when  date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+    sql: case when  date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: qualified_leads_L30D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: qualification_per {
@@ -323,17 +323,17 @@ view: is_report {
 
   measure: disqualified_leads_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
   }
 
   measure: disqualified_leads_L7D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
   }
 
   measure: disqualified_leads_L30D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
   }
 
 
@@ -368,17 +368,17 @@ view: is_report {
 
   measure: visit_scheduled_leads_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_leads_L7D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_leads_L30D {
     type: count_distinct
-    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_per {
