@@ -233,14 +233,63 @@ view: is_report {
     value_format: "0.00%"
   }
 
+  measure: connected_calls_per_yesterday {
+    type: number
+    sql: ${connected_calls_yesterday}/${total_calls_yesterday} ;;
+    value_format: "0.00%"
+  }
+
+  measure: connected_calls_per_L7D {
+    type: number
+    sql: ${connected_calls_L7D}/${total_calls_L7D} ;;
+    value_format: "0.00%"
+  }
+
+  measure: connected_calls_per_L30D {
+    type: number
+    sql: ${connected_calls_L30D}/${total_calls_L30D} ;;
+    value_format: "0.00%"
+  }
+
+
   measure: leads_connected_calls {
     type: count_distinct
     sql: case when ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
   }
 
+  measure: leads_connected_calls_yesterday {
+    type: count_distinct
+    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+  }
+
+  measure: leads_connected_calls_L7D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+  }
+
+  measure: leads_connected_calls_L30D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+  }
+
   measure: qualified_leads {
     type: count_distinct
     sql: case when ${qualification} = 'Y' then ${lead_id} end  ;;
+  }
+
+  measure: qualified_leads_yesterday {
+    type: count_distinct
+    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+  }
+
+  measure: qualified_leads_L7D {
+    type: count_distinct
+    sql: case when  date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+  }
+
+  measure: qualified_leads_L30D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: qualification_per {
@@ -249,14 +298,66 @@ view: is_report {
     value_format: "0.00%"
   }
 
+  measure: qualification_per_yesterday {
+    type: number
+    sql: ${qualified_leads_yesterday}/ ${leads_connected_calls_yesterday};;
+    value_format: "0.00%"
+  }
+
+  measure: qualification_per_L7D {
+    type: number
+    sql: ${qualified_leads_L7D}/ ${leads_connected_calls_L7D};;
+    value_format: "0.00%"
+  }
+
+  measure: qualification_per_L30D {
+    type: number
+    sql: ${qualified_leads_L30D}/ ${leads_connected_calls_L30D};;
+    value_format: "0.00%"
+  }
+
   measure: disqualified_leads {
     type: count_distinct
     sql: case when ${qualification} = 'N' then ${lead_id} end  ;;
   }
 
+  measure: disqualified_leads_yesterday {
+    type: count_distinct
+    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+  }
+
+  measure: disqualified_leads_L7D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+  }
+
+  measure: disqualified_leads_L30D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+  }
+
+
   measure: disqualification_per {
     type: number
     sql: ${disqualified_leads}/ ${leads_connected_calls};;
+    value_format: "0.00%"
+  }
+
+  measure: disqualification_per_yesterday {
+    type: number
+    sql: ${disqualified_leads_yesterday}/ ${leads_connected_calls_yesterday};;
+    value_format: "0.00%"
+  }
+
+  measure: disqualification_per_L7D {
+    type: number
+    sql: ${disqualified_leads_L7D}/ ${leads_connected_calls_L7D};;
+    value_format: "0.00%"
+  }
+
+  measure: disqualification_per_L30D {
+    type: number
+    sql: ${disqualified_leads_L30D}/ ${leads_connected_calls_L30D};;
     value_format: "0.00%"
   }
 
@@ -265,9 +366,42 @@ view: is_report {
     sql: case when ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
+  measure: visit_scheduled_leads_yesterday {
+    type: count_distinct
+    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+  }
+
+  measure: visit_scheduled_leads_L7D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+  }
+
+  measure: visit_scheduled_leads_L30D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+  }
+
   measure: visit_scheduled_per {
     type: number
-    sql: ${visit_scheduled}/${leads_connected_calls} ;;
+    sql: ${visit_scheduled_leads}/${leads_connected_calls} ;;
+    value_format: "0.00%"
+  }
+
+  measure: visit_scheduled_per_yesterday {
+    type: number
+    sql: ${visit_scheduled_leads_yesterday}/${leads_connected_calls_yesterday} ;;
+    value_format: "0.00%"
+  }
+
+  measure: visit_scheduled_per_L7D {
+    type: number
+    sql: ${visit_scheduled_leads_L7D}/${leads_connected_calls_L7D} ;;
+    value_format: "0.00%"
+  }
+
+  measure: visit_scheduled_per_L30D {
+    type: number
+    sql: ${visit_scheduled_leads_L30D}/${leads_connected_calls_L30D} ;;
     value_format: "0.00%"
   }
 
