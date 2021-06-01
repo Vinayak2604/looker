@@ -176,9 +176,34 @@ view: is_report {
     sql:  case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
   }
 
+  measure: total_calls_L7D {
+    type: count_distinct
+    sql:  case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+  }
+
+  measure: total_calls_L30D {
+    type: count_distinct
+    sql:  case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+  }
+
   measure: total_leads {
     type: count_distinct
     sql:  ${lead_id};;
+  }
+
+  measure: total_leads_yesterday {
+    type: count_distinct
+    sql:  case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
+  }
+
+  measure: total_leads_L7D {
+    type: count_distinct
+    sql:case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
+  }
+
+  measure: total_leads_L30D {
+    type: count_distinct
+    sql:case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end  ;;
   }
 
 
