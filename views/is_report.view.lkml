@@ -212,6 +212,21 @@ view: is_report {
     sql: case when ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
   }
 
+  measure: connected_calls_yesterday {
+    type: count_distinct
+    sql: case when date(${call_start_date}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+  }
+
+  measure: connected_calls_L7D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+  }
+
+  measure: connected_calls_L30D {
+    type: count_distinct
+    sql: case when date(${call_start_date}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_date}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+  }
+
   measure: connected_calls_per {
     type: number
     sql: ${connected_calls}/${total_calls} ;;
