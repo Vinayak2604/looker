@@ -520,6 +520,4 @@ view: is_report {
     }
 
   }
-
-
 }
