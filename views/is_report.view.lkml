@@ -468,4 +468,26 @@ view: is_report {
     }
   }
 
+
+  measure: pre_booking_leads {
+    type: count_distinct
+    sql: case when ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
+  }
+
+  measure: pre_booking_leads_yesterday {
+    type: count_distinct
+    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
+  }
+
+  measure: pre_booking_leads_L7D {
+    type: count_distinct
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
+  }
+
+  measure: pre_booking_leads_L30D {
+    type: count_distinct
+    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
+  }
+
+
 }
