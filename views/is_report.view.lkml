@@ -8,6 +8,23 @@ view: is_report {
     sql: ${TABLE}.id ;;
   }
 
+
+  dimension_group: lead_created {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.lead_created_time ;;
+  }
+
   dimension_group: call_duration {
     type: time
     timeframes: [time]
@@ -82,6 +99,11 @@ view: is_report {
   dimension: outgoing_call_status {
     type: string
     sql: ${TABLE}.outgoing_call_status ;;
+  }
+
+  dimension: lead_status {
+    type: string
+    sql: ${TABLE}.lead_status ;;
   }
 
   dimension: owner {
@@ -173,12 +195,12 @@ view: is_report {
 
   measure: total_calls_yesterday {
     type: count_distinct
-    sql:  case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+    sql:  case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
   }
 
   measure: total_calls_L7D {
     type: count_distinct
-    sql:  case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+    sql:  case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
 
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.total_calls,is_report.call_start_date&fill_fields=is_report.call_start_date&f[is_report.call_start_date]=8+days&sorts=is_report.call_start_date+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%228%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
@@ -190,7 +212,7 @@ view: is_report {
 
   measure: total_calls_L30D {
     type: count_distinct
-    sql:  case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
+    sql:  case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${id} end  ;;
    link: {
      url: "/explore/inside_sales/is_report?fields=is_report.total_calls,is_report.call_start_week&fill_fields=is_report.call_start_week&f[is_report.call_start_date]=30+days&sorts=is_report.call_start_week+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%2230%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
     label: "Total Calls WOW"
@@ -204,17 +226,17 @@ view: is_report {
 
   measure: total_leads_yesterday {
     type: count_distinct
-    sql:  case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
+    sql:  case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
   }
 
   measure: total_leads_L7D {
     type: count_distinct
-    sql:case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
+    sql:case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end;;
   }
 
   measure: total_leads_L30D {
     type: count_distinct
-    sql:case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end  ;;
+    sql:case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) then ${lead_id} end  ;;
   }
 
 
@@ -225,12 +247,12 @@ view: is_report {
 
   measure: connected_calls_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
   }
 
   measure: connected_calls_L7D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.connected_calls,is_report.call_start_date&fill_fields=is_report.call_start_date&f[is_report.call_start_date]=8+days&sorts=is_report.call_start_date+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%228%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Connected Calls DOD"
@@ -239,7 +261,7 @@ view: is_report {
 
   measure: connected_calls_L30D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${id} end  ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.call_start_week,is_report.connected_calls&fill_fields=is_report.call_start_week&f[is_report.call_start_date]=30+days&sorts=is_report.call_start_week+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%2230%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Connected Calls WOW"
@@ -289,12 +311,12 @@ view: is_report {
 
   measure: leads_connected_calls_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
   }
 
   measure: leads_connected_calls_L7D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.leads_connected_calls,is_report.call_start_date&fill_fields=is_report.call_start_date&f[is_report.call_start_date]=8+days&sorts=is_report.call_start_date+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%228%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Leads on Connected Calls DOD"
@@ -304,7 +326,7 @@ view: is_report {
 
   measure: leads_connected_calls_L30D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${call_status} in ('Received','Attended Dialled','Scheduled Attended Delay') then ${lead_id} end ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.call_start_week,is_report.leads_connected_calls&fill_fields=is_report.call_start_week&f[is_report.call_start_date]=30+days&sorts=is_report.call_start_week+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%2230%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Leads on Connected Calls WOW"
@@ -318,12 +340,12 @@ view: is_report {
 
   measure: qualified_leads_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: qualified_leads_L7D {
     type: count_distinct
-    sql: case when  date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+    sql: case when  date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.call_start_date,is_report.qualified_leads&fill_fields=is_report.call_start_date&f[is_report.call_start_date]=8+days&sorts=is_report.call_start_date+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%228%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Qualified Leads DOD"
@@ -332,7 +354,7 @@ view: is_report {
 
   measure: qualified_leads_L30D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'Y' then ${lead_id} end  ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.qualified_leads,is_report.call_start_week&fill_fields=is_report.call_start_week&f[is_report.call_start_date]=30+days&sorts=is_report.call_start_week+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22series_point_styles%22%3A%7B%22is_report.total_calls%22%3A%22diamond%22%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22single_value_title%22%3A%22Total+Calls+L30D%22%2C%22type%22%3A%22looker_line%22%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%2230%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Qualified Leads WOW"
@@ -378,17 +400,17 @@ view: is_report {
 
   measure: disqualified_leads_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
   }
 
   measure: disqualified_leads_L7D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
   }
 
   measure: disqualified_leads_L30D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${qualification} = 'N' then ${lead_id} end  ;;
   }
 
 
@@ -423,17 +445,17 @@ view: is_report {
 
   measure: visit_scheduled_leads_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_leads_L7D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_leads_L30D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${visit_scheduled} = 'Y' then ${lead_id} end  ;;
   }
 
   measure: visit_scheduled_per {
@@ -476,12 +498,12 @@ view: is_report {
 
   measure: pre_booking_leads_yesterday {
     type: count_distinct
-    sql: case when date(${call_start_time}) = date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
   }
 
   measure: pre_booking_leads_L7D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.pre_booking_leads,is_report.call_start_date&fill_fields=is_report.call_start_date&f[is_report.call_start_date]=8+days&sorts=is_report.call_start_date+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22single_value_title%22%3A%22Pre+Bookings%22%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22type%22%3A%22looker_line%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%228%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Pre Bookings DOD"
@@ -491,7 +513,7 @@ view: is_report {
 
   measure: pre_booking_leads_L30D {
     type: count_distinct
-    sql: case when date(${call_start_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${call_start_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${pre_booking_amount} = 1000 then ${lead_id} end  ;;
     link: {
       url: "/explore/inside_sales/is_report?fields=is_report.pre_booking_leads,is_report.call_start_week&fill_fields=is_report.call_start_week&f[is_report.call_start_date]=30+days&sorts=is_report.call_start_week+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22series_types%22%3A%7B%7D%2C%22custom_color_enabled%22%3Atrue%2C%22show_single_value_title%22%3Atrue%2C%22single_value_title%22%3A%22Pre+Bookings%22%2C%22show_comparison%22%3Afalse%2C%22comparison_type%22%3A%22value%22%2C%22comparison_reverse_colors%22%3Afalse%2C%22show_comparison_label%22%3Atrue%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22type%22%3A%22looker_line%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%22is_report.call_start_date%22%3A%5B%7B%22type%22%3A%22past%22%2C%22values%22%3A%5B%7B%22constant%22%3A%2230%22%2C%22unit%22%3A%22day%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&toggle=dat,pik,vis"
       label: "Pre Bookings WOW"
