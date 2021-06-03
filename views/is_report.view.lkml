@@ -152,9 +152,9 @@ view: is_report {
     sql: ${TABLE}.qualified_date ;;
   }
 
-  dimension: referral_code {
+  dimension: drop_reason {
     type: string
-    sql: ${TABLE}.referral_code ;;
+    sql: ${TABLE}.drop_reason ;;
   }
 
   dimension: team_lead {
@@ -530,4 +530,54 @@ view: is_report {
     }
 
   }
+
+
+  measure: to_be_qualified_leads {
+    type: count_distinct
+    sql: case when ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+  }
+
+  measure: to_be_qualified_leads_yesterday {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+  }
+
+  measure: to_be_qualified_leads_L7D {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+
+
+  }
+
+  measure: to_be_qualified_leads_L30D {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+
+
+  }
+
+  measure: dropped_leads {
+    type: count_distinct
+    sql: case when ${lead_status} in ('Pre Visit Scheduled Drop') and ${owner_email} is not null then ${lead_id} end  ;;
+  }
+
+  measure: dropped_leads_yesterday {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('Pre Visit Scheduled Drop') and ${owner_email} is not null then ${lead_id} end  ;;
+  }
+
+  measure: dropped_leads_L7D {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('Pre Visit Scheduled Drop') and ${owner_email} is not null then ${lead_id} end  ;;
+
+
+  }
+
+  measure: dropped_leads_L30D {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('Pre Visit Scheduled Drop') and ${owner_email} is not null then ${lead_id} end  ;;
+
+
+  }
+
 }
