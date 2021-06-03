@@ -25,6 +25,12 @@ view: is_report {
     sql: ${TABLE}.lead_created_time ;;
   }
 
+  dimension: week_formatted {
+    group_label: "lead_created" label: "Week"
+    sql: ${lead_created_week} ;;
+    html: {{ rendered_value | date: "Week %W" }};;
+  }
+
   dimension_group: call_duration {
     type: time
     timeframes: [time]
