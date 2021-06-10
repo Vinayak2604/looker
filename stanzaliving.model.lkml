@@ -19,11 +19,4 @@ explore: derived_residence_attributes {
 }
 
 explore: derived_b2b_bookings {
-  join: derived_b2c_bookings{
-    relationship: one_to_many
-    type: left_outer
-    sql_on: ${derived_b2b_bookings.residence_id} = ${derived_b2c_bookings.residence_id};;
-
-
   }
-}
