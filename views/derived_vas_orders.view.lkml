@@ -161,6 +161,13 @@ view: derived_vas_orders {
     sql: ${TABLE}.user_type ;;
   }
 
+  dimension: ov_bucket {
+    type: tier
+    tiers: [0,20,40,60,80,100]
+    style: integer
+    sql: ${final_total_amount} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [id]
