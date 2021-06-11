@@ -163,7 +163,7 @@ view: derived_vas_orders {
 
   dimension: ov_bucket {
     type: tier
-    tiers: [0,20,40,60,80,100]
+    tiers: [0,20,40,60,80,100,130]
     style: integer
     sql: ${final_total_amount} ;;
   }
