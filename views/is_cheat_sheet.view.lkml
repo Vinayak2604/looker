@@ -862,7 +862,7 @@ view: is_cheat_sheet {
     sql: ${TABLE}.booked_beds ;;
   }
 
-  measure: occupency_wise_total_available_beds{
+  measure: occupency_wise_total_vs_available_beds{
     type: string
     sql: group_concat(distinct(concat(is_cheat_sheet.occupancy, " : ", is_cheat_sheet.total_beds, " : ", (is_cheat_sheet.total_beds - is_cheat_sheet.booked_beds)))) ;;
     html: {% assign words = value | split: ',' %}
