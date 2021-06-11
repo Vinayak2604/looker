@@ -97,4 +97,10 @@ view: derived_b2b_bookings {
     type: count
     drill_fields: [id, deal_name, residence_name]
   }
+
+  measure: net_upsell_per_bed  {
+    type: number
+    sql: ${net_upsell}/${final_beds} ;;
+
+  }
 }
