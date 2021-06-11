@@ -207,10 +207,4 @@ view: derived_vas_orders {
   }
 
 
-  measure: user_bucket1 {
-    type: number
-    sql: case when ${orders} < 10 then "0-10" when ${orders} < 20 then "10-20" when ${orders} < 30 then "20-30" when ${orders} < 40 then "30-40" when ${orders} < 60 then "40-60" when ${orders} < 80 then "60-80" when ${orders} >= 80 then "80 & above" end  ;;
-  }
-
-
 }
