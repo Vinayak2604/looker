@@ -847,4 +847,19 @@ view: is_cheat_sheet {
     sql: ${TABLE}.residence_type ;;
   }
 
+  measure: brand_name {
+    type: string
+    sql: ${TABLE}.brand_name ;;
+  }
+
+  measure: total_beds {
+    type: number
+    sql: ${TABLE}.total_beds ;;
+  }
+
+  measure: booked_beds {
+    type: number
+    sql: ${TABLE}.booked_beds ;;
+  }
+
 }
