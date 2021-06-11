@@ -862,4 +862,5 @@ view: is_cheat_sheet {
     sql: ${TABLE}.booked_beds ;;
   }
 
+
 }
