@@ -101,6 +101,6 @@ view: derived_b2b_bookings {
   measure: net_upsell_per_bed  {
     type: number
     sql: ${net_upsell}/${final_beds} ;;
-
+    value_format: "#,##0"
   }
 }
