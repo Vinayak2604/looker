@@ -842,4 +842,9 @@ view: is_cheat_sheet {
     sql_longitude:${TABLE}.longitude ;;
   }
 
+  measure: residence_type {
+    type: string
+    sql: ${TABLE}.residence_type ;;
+  }
+
 }
