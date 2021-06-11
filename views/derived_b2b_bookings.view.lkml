@@ -1,14 +1,21 @@
 view: derived_b2b_bookings {
   sql_table_name: looker_demo.derived_b2b_bookings ;;
+  drill_fields: [id]
 
-  dimension: b2b_blended_commercials {
-    type: number
-    sql: ${TABLE}.b2b_blended_commercials ;;
+  dimension: id {
+    primary_key: yes
+    type: string
+    sql: ${TABLE}.id ;;
   }
 
-  dimension: b2b_deal_name {
-    type: string
-    sql: ${TABLE}.b2b_deal_name ;;
+  dimension: blended_mr {
+    type: number
+    sql: ${TABLE}.blended_mr ;;
+  }
+
+  dimension: blended_uw {
+    type: number
+    sql: ${TABLE}.blended_uw ;;
   }
 
   dimension: blocked_beds {
@@ -21,9 +28,34 @@ view: derived_b2b_bookings {
     sql: ${TABLE}.city ;;
   }
 
-  dimension: contract_uuid {
+  dimension: deal_name {
     type: string
-    sql: ${TABLE}.contract_uuid ;;
+    sql: ${TABLE}.deal_name ;;
+  }
+
+  dimension: deal_type {
+    type: string
+    sql: ${TABLE}.deal_type ;;
+  }
+
+  dimension: final_beds {
+    type: number
+    sql: ${TABLE}.final_beds ;;
+  }
+
+  dimension_group: from {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.from_date ;;
   }
 
   dimension: micromarket {
@@ -31,38 +63,38 @@ view: derived_b2b_bookings {
     sql: ${TABLE}.micromarket ;;
   }
 
+  dimension: net_upsell {
+    type: number
+    sql: ${TABLE}.net_upsell ;;
+  }
+
   dimension: occupied_beds {
     type: number
     sql: ${TABLE}.occupied_beds ;;
   }
 
-  dimension: ops_residence_id {
+  dimension: residence_name {
     type: string
-    sql: ${TABLE}.ops_residence_id ;;
+    sql: ${TABLE}.residence_name ;;
   }
 
-  dimension: residence {
-    type: string
-    sql: ${TABLE}.residence ;;
-  }
-
-  dimension: residence_id {
-    type: string
-    sql: ${TABLE}.residence_id ;;
-  }
-
-  dimension: underwritten_price {
-    type: number
-    sql: ${TABLE}.underwritten_price ;;
-  }
-
-  dimension: underwritten_price_incl_gst {
-    type: number
-    sql: ${TABLE}.underwritten_price_incl_gst ;;
+  dimension_group: to {
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    convert_tz: no
+    datatype: date
+    sql: ${TABLE}.to_date ;;
   }
 
   measure: count {
     type: count
-    drill_fields: [b2b_deal_name]
+    drill_fields: [id, deal_name, residence_name]
   }
 }
