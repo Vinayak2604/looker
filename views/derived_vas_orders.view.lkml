@@ -168,6 +168,8 @@ view: derived_vas_orders {
     sql: ${final_total_amount} ;;
   }
 
+
+
   measure: count {
     type: count
     drill_fields: [id]
@@ -176,6 +178,11 @@ view: derived_vas_orders {
   measure: orders {
     type: count_distinct
     sql: ${order_code} ;;
+  }
+
+  measure: users {
+    type: count_distinct
+    sql: ${user_id} ;;
   }
 
   measure: rated_orders {
@@ -198,4 +205,12 @@ view: derived_vas_orders {
       label: "AOV bucket wise orders"
     }
   }
+
+
+  measure: user_bucket {
+    type: number
+    sql: case when ${orders} < 10 then '0-10' when ${orders} < 20 then '10-20' when ${orders} < 30 then '20-30' when ${orders} < 40 then '30-40' when ${orders} < 60 then '40-60' when ${orders} < 80 then '60-80' when ${orders} >= 80 then '80 & abouve' end  ;;
+  }
+
+
 }
