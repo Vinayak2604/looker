@@ -119,7 +119,27 @@ view: is_planning {
 
   measure: total_calls {
     type: count_distinct
-    sql: case when ${call_duration_time} >= 0:00  then ${call_id} end ;;
+    sql: ${call_id} ;;
+  }
+
+  measure: total_connected_calls {
+    type: count_distinct
+    sql: case when ${call_status} in ('Attended Dialled','Received','Scheduled Attended','Scheduled Attended Delay','Overdue')  then ${call_id} end ;;
+  }
+
+  measure: total_calls_before_qt {
+    type: count_distinct
+    sql: case when ${call_start_time} <= ${qualified_time} then ${call_id} end ;;
+  }
+
+  measure: total_connected_calls_before_qt {
+    type: count_distinct
+    sql: case when ${call_start_time} <= ${qualified_time} and ${call_status} in ('Attended Dialled','Received','Scheduled Attended','Scheduled Attended Delay','Overdue')  then ${call_id} end ;;
+  }
+
+  measure: AHT {
+    type: average
+    sql: case when ${call_status} in ('Attended Dialled','Received','Scheduled Attended','Scheduled Attended Delay','Overdue') then ${call_duration_time} end ;;
   }
 
 }
