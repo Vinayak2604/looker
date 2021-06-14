@@ -98,9 +98,9 @@ view: is_planning {
     drill_fields: [id]
   }
 
-  measure: leads {
+  measure: total_leads {
     type: count_distinct
-    sql: ${lead_id}
+    sql: ${lead_id};;
   }
 
   measure: qualified_leads {
