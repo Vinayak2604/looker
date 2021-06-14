@@ -22,6 +22,14 @@ explore: derived_b2b_bookings {
   join: derived_b2c_bookings {
     relationship: many_to_many
     type: left_outer
-    sql_on: ${derived_b2b_bookings.micromarket}= ${derived_b2c_bookings.micromarket};;
+    sql_on: ${derived_b2b_bookings.residence_name}= ${derived_b2c_bookings.residence};;
   }
   }
+
+explore: all_bookings_data {
+  join: derived_b2c_bookings {
+    relationship: many_to_many
+    type: left_outer
+    sql_on: ${all_bookings_data.residence}= ${derived_b2c_bookings.residence};;
+  }
+}
