@@ -112,7 +112,7 @@ view: is_planning {
   }
 
   measure: qualification_per {
-    type: count_distinct
+    type: number
     sql: ${disqualified_leads} / (${disqualified_leads} + ${disqualified_leads}) ;;
     value_format: "0.00%"
   }
