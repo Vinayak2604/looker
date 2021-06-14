@@ -28,8 +28,11 @@ explore: derived_b2b_bookings {
 
 explore: all_bookings_data {
   join: derived_residence_attributes {
-    relationship: many_to_many
+    relationship: one_to_one
     type: left_outer
     sql_on: ${all_bookings_data.residence}= ${derived_residence_attributes.residence};;
+    sql_where:${derived_residence_attributes.date_date} = curdate() ;;
+
+
   }
 }
