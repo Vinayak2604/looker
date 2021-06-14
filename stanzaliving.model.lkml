@@ -27,9 +27,9 @@ explore: derived_b2b_bookings {
   }
 
 explore: all_bookings_data {
-  join: derived_b2c_bookings {
+  join: derived_residence_attributes {
     relationship: many_to_many
     type: left_outer
-    sql_on: ${all_bookings_data.residence}= ${derived_b2c_bookings.residence};;
+    sql_on: ${all_bookings_data.residence}= ${derived_residence_attributes.residence};;
   }
 }
