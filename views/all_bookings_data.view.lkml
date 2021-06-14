@@ -22,12 +22,12 @@ from looker_demo.derived_b2b_bookings group by 1,2,3);;
 
   dimension: micromarket {
     type: string
-    sql: ${TABLE}.city ;;
+    sql: ${TABLE}.micromarket ;;
   }
 
   dimension: residence {
     type: string
-    sql: ${TABLE}.city ;;
+    sql: ${TABLE}.residence ;;
   }
 
   measure: occupied_beds {
