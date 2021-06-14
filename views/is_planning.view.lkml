@@ -129,14 +129,24 @@ view: is_planning {
     sql: case when ${call_duration} > 0  then ${call_id} end ;;
   }
 
-  measure: total_calls_before_qt {
+  measure: total_calls_before_qualification {
     type: count_distinct
-    sql: case when ${call_start_time} <= ${qualified_time} then ${call_id} end ;;
+    sql: case when ${call_start_time} <= ${qualified_time} and ${lead_status} not in ('Disqualified','RNR','New Lead','Called','Pre Qualification Follow Up') then ${call_id} end ;;
   }
 
-  measure: total_connected_calls_before_qt {
+  measure: total_connected_calls_before_qualification {
     type: count_distinct
-    sql: case when ${call_start_time} <= ${qualified_time} and  ${call_duration} > 0  then ${call_id} end ;;
+    sql: case when ${call_start_time} <= ${qualified_time} and ${lead_status} not in ('Disqualified','RNR','New Lead','Called','Pre Qualification Follow Up') and  ${call_duration} > 0  then ${call_id} end ;;
+  }
+
+  measure: total_calls_before_disqualification {
+    type: count_distinct
+    sql: case when ${call_start_time} <= ${qualified_time} and ${lead_status} in ('Disqualified') then ${call_id} end ;;
+  }
+
+  measure: total_connected_calls_before_disqualification {
+    type: count_distinct
+    sql: case when ${call_start_time} <= ${qualified_time} and ${lead_status} in ('Disqualified') and  ${call_duration} > 0  then ${call_id} end ;;
   }
 
   measure: AHT {
