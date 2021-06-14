@@ -115,7 +115,7 @@ view: is_planning {
 
   measure: qualification_per {
     type: number
-    sql: ${disqualified_leads} / (${disqualified_leads} + ${disqualified_leads}) ;;
+    sql: ${qualified_leads} / (${qualified_leads} + ${disqualified_leads}) ;;
     value_format: "0.00%"
   }
 
