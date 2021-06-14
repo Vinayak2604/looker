@@ -11,6 +11,7 @@ view: is_planning {
   dimension_group: call_duration {
     type: time
     timeframes: [time]
+    convert_tz: no
     sql: ${TABLE}.call_duration ;;
   }
 
@@ -30,6 +31,7 @@ view: is_planning {
       quarter,
       year
     ]
+    convert_tz: no
     sql: ${TABLE}.call_start_time ;;
   }
 
@@ -54,6 +56,7 @@ view: is_planning {
       quarter,
       year
     ]
+    convert_tz: no
     sql: ${TABLE}.lead_created_time ;;
   }
 
@@ -88,6 +91,7 @@ view: is_planning {
       quarter,
       year
     ]
+    convert_tz: no
     sql: ${TABLE}.qualified_date ;;
   }
 
