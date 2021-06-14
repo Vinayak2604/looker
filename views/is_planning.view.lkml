@@ -105,12 +105,12 @@ view: is_planning {
 
   measure: qualified_leads {
     type: count_distinct
-    sql: case when ${lead_status} not in ('Disqualified','RNR','New Lead','Called','Pre Qualification Follow Up') then ${lead_id} end ;;
+    sql: case when ${lead_status} not in ('Disqualified','RNR','New Lead','Called','Pre Qualification Follow Up') and and  ${call_duration} > 0  then ${lead_id} end ;;
   }
 
   measure: disqualified_leads {
     type: count_distinct
-    sql: case when ${lead_status} in ('Disqualified') then ${lead_id} end ;;
+    sql: case when ${lead_status} in ('Disqualified') and ${call_duration} > 0 then ${lead_id} end ;;
   }
 
   measure: qualification_per {
@@ -146,7 +146,7 @@ view: is_planning {
 
   measure: total_connected_calls_before_disqualification {
     type: count_distinct
-    sql: case when ${call_start_time} <= ${qualified_time} and ${lead_status} in ('Disqualified') and  ${call_duration} > 0  then ${call_id} end ;;
+    sql: case when ${call_start_time} <= ${qualified_time} and ${lead_status} in ('Disqualified') and ${call_duration} > 0  then ${call_id} end ;;
   }
 
   measure: AHT {
