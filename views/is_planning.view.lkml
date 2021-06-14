@@ -8,10 +8,8 @@ view: is_planning {
     sql: ${TABLE}.id ;;
   }
 
-  dimension_group: call_duration {
-    type: time
-    timeframes: [time]
-    convert_tz: no
+  dimension: call_duration {
+    type: number
     sql: ${TABLE}.call_duration ;;
   }
 
@@ -102,7 +100,7 @@ view: is_planning {
 
   measure: leads {
     type: count_distinct
-    drill_fields: [lead_id]
+    sql: ${lead_id}
   }
 
   measure: qualified_leads {
@@ -128,7 +126,7 @@ view: is_planning {
 
   measure: total_connected_calls {
     type: count_distinct
-    sql: case when ${call_status} in ('Attended Dialled','Received','Scheduled Attended','Scheduled Attended Delay','Overdue')  then ${call_id} end ;;
+    sql: case when ${call_duration} > 0  then ${call_id} end ;;
   }
 
   measure: total_calls_before_qt {
@@ -138,12 +136,12 @@ view: is_planning {
 
   measure: total_connected_calls_before_qt {
     type: count_distinct
-    sql: case when ${call_start_time} <= ${qualified_time} and ${call_status} in ('Attended Dialled','Received','Scheduled Attended','Scheduled Attended Delay','Overdue')  then ${call_id} end ;;
+    sql: case when ${call_start_time} <= ${qualified_time} and  ${call_duration} > 0  then ${call_id} end ;;
   }
 
   measure: AHT {
     type: average
-    sql: case when ${call_status} in ('Attended Dialled','Received','Scheduled Attended','Scheduled Attended Delay','Overdue') then ${call_duration_time} end ;;
+    sql: case when  ${call_duration} > 0 then ${call_duration} end ;;
   }
 
 }
