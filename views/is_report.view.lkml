@@ -551,25 +551,47 @@ view: is_report {
 
   measure: to_be_qualified_leads {
     type: count_distinct
-    sql: case when ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+    sql: case when ${lead_status} in ('RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
   }
 
   measure: to_be_qualified_leads_yesterday {
     type: count_distinct
-    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
   }
 
   measure: to_be_qualified_leads_L7D {
     type: count_distinct
-    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
 
 
   }
 
   measure: to_be_qualified_leads_L30D {
     type: count_distinct
-    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead','RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('RNR','Called','Connected','Pre Qualification Follow Up') then ${lead_id} end  ;;
 
+  }
+
+  measure: to_be_called_leads {
+    type: count_distinct
+    sql: case when ${lead_status} in ('New Lead') then ${lead_id} end  ;;
+  }
+
+  measure: to_be_called_leads_yesterday {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) = date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead') then ${lead_id} end  ;;
+  }
+
+  measure: to_be_called_leads_L7D {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -7 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead') then ${lead_id} end  ;;
+
+
+  }
+
+  measure: to_be_called_leads_L30D {
+    type: count_distinct
+    sql: case when date(${lead_created_time}) >= date_add(current_date,INTERVAL -30 DAY) and date(${lead_created_time}) <= date_add(current_date,INTERVAL -1 DAY) and ${lead_status} in ('New Lead') then ${lead_id} end  ;;
 
   }
 
