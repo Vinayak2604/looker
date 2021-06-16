@@ -134,6 +134,11 @@ view: is_planning {
     sql:case when ${lead_creation_interface} = 'CHATBOT' then ${lead_id} end;;
   }
 
+  measure: total_qualification_form {
+    type: count_distinct
+    sql:case when ${lead_creation_interface} = 'QUALIFICATION_FORM' then ${lead_id} end;;
+  }
+
   measure: qualified_leads {
     type: count_distinct
     sql: case when ${lead_status} not in ('Disqualified','RNR','New Lead','Called','Pre Qualification Follow Up') and  ${call_duration} > 0  then ${lead_id} end ;;
