@@ -131,7 +131,7 @@ view: is_planning {
 
   measure: total_chats {
     type: count_distinct
-    sql:case when ${lead_creation_interface} = 'CHAT' then ${lead_id} end;;
+    sql:case when ${lead_creation_interface} = 'CHATBOT' then ${lead_id} end;;
   }
 
   measure: qualified_leads {
