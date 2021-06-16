@@ -30,7 +30,7 @@ explore: all_bookings_data {
   join: derived_residence_attributes {
     relationship: one_to_many
     type: left_outer
-    sql_on: ${all_bookings_data.residence}= ${derived_residence_attributes.residence};;
+    sql_on: ${derived_residence_attributes.residence} = ${all_bookings_data.residence};;
     sql_where:${derived_residence_attributes.date_date} = curdate() and ${derived_residence_attributes.micromarket} not like '%GMIT%' and ${derived_residence_attributes.micromarket}  not like '%bits%' and ${derived_residence_attributes.residence}  not like '%disable%' ;;
 
 
