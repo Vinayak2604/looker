@@ -129,6 +129,11 @@ view: is_planning {
     sql: ${lead_id};;
   }
 
+  measure: total_chats {
+    type: count_distinct
+    sql:case when ${lead_creation_interface} = 'CHAT' then ${lead_id} end;;
+  }
+
   measure: qualified_leads {
     type: count_distinct
     sql: case when ${lead_status} not in ('Disqualified','RNR','New Lead','Called','Pre Qualification Follow Up') and  ${call_duration} > 0  then ${lead_id} end ;;
