@@ -93,6 +93,32 @@ view: is_planning {
     sql: ${TABLE}.qualified_date ;;
   }
 
+  dimension: gender {
+    type: string
+    sql: ${TABLE}.gender ;;
+  }
+
+  dimension: profession {
+    type: string
+    sql: ${TABLE}.profession ;;
+  }
+
+  dimension: moveindaterange {
+    type: string
+    sql: ${TABLE}.moveindaterange ;;
+  }
+
+  dimension: duration {
+    type: string
+    sql: ${TABLE}.duration ;;
+  }
+
+
+  dimension: lead_creation_interface {
+    type: string
+    sql: ${TABLE}.lead_creation_interface ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [id]
@@ -152,6 +178,15 @@ view: is_planning {
   measure: AHT {
     type: average
     sql: case when  ${call_duration} > 0 then ${call_duration} end ;;
+  }
+
+  measure: question_answered {
+    type: number
+    sql: case when ${gender} is not null and ${profession} is not null and ${moveindaterange} is not null and ${duration} is not null then '4'
+    when ${gender} is not null and ${profession} is not null and ${moveindaterange} is not null and ${duration} is null then '3'
+    when ${gender} is not null and ${profession} is not null and ${moveindaterange} is null and ${duration} is null then '2'
+    when ${gender} is not null and ${profession} is null and ${moveindaterange} is null and ${duration} is null then '1'
+    when ${gender} is null and ${profession} is null and ${moveindaterange} is null and ${duration} is null then '0' end ;;
   }
 
 }
