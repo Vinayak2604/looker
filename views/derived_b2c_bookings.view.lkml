@@ -441,6 +441,11 @@ view: derived_b2c_bookings {
     value_format: "#,##0"
   }
 
+  measure: total_advance_rental {
+    type: sum
+    sql: ${advance_rental_months} ;;
+  }
+
 
 }
 
