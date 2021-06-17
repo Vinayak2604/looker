@@ -842,4 +842,35 @@ view: is_cheat_sheet {
     sql_longitude:${TABLE}.longitude ;;
   }
 
+  measure: residence_type {
+    type: string
+    sql: ${TABLE}.residence_type ;;
+  }
+
+  measure: brand_name {
+    type: string
+    sql: ${TABLE}.brand_name ;;
+  }
+
+  measure: total_beds {
+    type: number
+    sql: ${TABLE}.total_beds ;;
+  }
+
+  measure: booked_beds {
+    type: number
+    sql: ${TABLE}.booked_beds ;;
+  }
+
+  measure: occupancy_wise_total_vs_available_beds{
+    type: string
+    sql: group_concat(distinct(concat(is_cheat_sheet.occupancy, " : ", is_cheat_sheet.total_beds, " : ", (is_cheat_sheet.total_beds - is_cheat_sheet.booked_beds)))) ;;
+    html: {% assign words = value | split: ',' %}
+          <ul>
+          {% for word in words %}
+          <li>{{ word }}</li>
+          {% endfor %} ;;
+  }
+
+
 }

@@ -13,10 +13,26 @@ explore: derived_residence_attributes {
     type: left_outer
     sql_on: ${derived_residence_attributes.residence_id} = ${derived_b2c_bookings.residence_id};;
     sql_where:${derived_residence_attributes.date_date} = curdate()  ;;
+
+
   }
-#
-  # join: users {
-  #   relationship: many_to_one
-  #   sql_on: ${users.id} = ${orders.user_id} ;;
-  # }
+}
+
+explore: derived_b2b_bookings {
+  join: derived_b2c_bookings {
+    relationship: many_to_many
+    type: left_outer
+    sql_on: ${derived_b2b_bookings.residence_name}= ${derived_b2c_bookings.residence};;
+  }
+  }
+
+explore: all_bookings_data {
+  join: derived_residence_attributes {
+    relationship: many_to_many
+    type: left_outer
+    sql_on: ${derived_residence_attributes.residence} = ${all_bookings_data.residence};;
+    sql_where:${derived_residence_attributes.date_date} = curdate() and ${derived_residence_attributes.micromarket} not like '%GMIT%' and ${derived_residence_attributes.micromarket}  not like '%bits%' and ${derived_residence_attributes.residence}  not like '%disable%' ;;
+
+
+  }
 }
