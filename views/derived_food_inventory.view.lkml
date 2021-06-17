@@ -131,4 +131,34 @@ view: derived_food_inventory {
     sql: ${blocked_stock_qty} ;;
     # drill_fields: [item_name, city_name, location_name]
   }
+
+  measure: total_blocked_value {
+    type: sum
+    sql: ${blocked_stock_value}  ;;
+    # drill_fields: [item_name, city_name, location_name]
+  }
+
+  measure: total_available_qty {
+    type: sum
+    sql: ${avail_stock_qty}  ;;
+    # drill_fields: [item_name, city_name, location_name]
+  }
+
+  measure: total_available_value {
+    type: sum
+    sql: ${avail_stock_value}  ;;
+    # drill_fields: [item_name, city_name, location_name]
+  }
+
+  measure: moving_average_price {
+    type: max
+    sql: ${map} ;;
+  }
+
+  measure: local_average {
+    type: sum
+    sql: ${avail_stock_value}/nullif(${avail_stock_qty},0) ;;
+
+  }
+
 }
