@@ -21,3 +21,8 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 explore:  derived_food_inventory {
 
 }
+
+explore: derived_food_invoice {
+
+
+}
