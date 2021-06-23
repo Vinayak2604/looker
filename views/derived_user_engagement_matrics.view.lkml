@@ -199,10 +199,9 @@ view: derived_user_engagement_matrics {
   measure: vas_fps {
     type: number
     sql: avg(case when ${vas_rating} > 0 then ${vas_rating} end) ;;
-    value_format: "0.00%"
   }
 
-  measure: total_rating {
+  dimension: total_rating {
     type: number
     sql: (${meal_rating_breakfast}+${meal_rating_lunch}+${meal_rating_evening_snacks}+${meal_rating_dinner}) /
     ((case when ${meal_rating_breakfast} > 0 then 1 end) + (case when ${meal_rating_lunch} > 0 then 1 end) + (case when ${meal_rating_evening_snacks} > 0 then 1 end)+ (case when ${meal_rating_dinner} > 0 then 1 end))  ;;
