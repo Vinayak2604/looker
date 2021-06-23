@@ -177,7 +177,7 @@ view: derived_user_engagement_matrics {
 
   measure: vas_aov_last_month {
     type: number
-    sql:avg(${vas_ov})  ;;
+    sql:avg(case when ${vas_ov} >0 then ${vas_ov} end)  ;;
   }
 
   measure: total_shared_preference {
@@ -196,7 +196,11 @@ view: derived_user_engagement_matrics {
     value_format: "0.00%"
   }
 
-
+  measure: vas_fps {
+    type: number
+    sql: avg(case when ${vas_rating} > 0 then ${vas_rating} end) ;;
+    value_format: "0.00%"
+  }
 
 
 }
