@@ -203,7 +203,7 @@ view: derived_user_engagement_matrics {
 
   measure: total_rating {
     type: number
-    sql: average((${meal_rating_breakfast}+${meal_rating_lunch}+${meal_rating_evening_snacks}+${meal_rating_dinner}) / ((case when ${meal_rating_breakfast} > 0 then 1 end) + (case when ${meal_rating_lunch} > 0 then 1 end) + (case when ${meal_rating_evening_snacks} > 0 then 1 end)+ (case when ${meal_rating_dinner} > 0 then 1 end)))  ;;
+    sql: sum(${meal_rating_breakfast}+${meal_rating_lunch}+${meal_rating_evening_snacks}+${meal_rating_dinner}) / sum((case when ${meal_rating_breakfast} > 0 then 1 end) + (case when ${meal_rating_lunch} > 0 then 1 end) + (case when ${meal_rating_evening_snacks} > 0 then 1 end)+ (case when ${meal_rating_dinner} > 0 then 1 end))  ;;
   }
 
 
