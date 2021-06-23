@@ -167,7 +167,7 @@ view: derived_user_engagement_matrics {
 
   measure: 3_month_complaints {
     type: number
-    sql:sum(case when ${date_date} >= date_add(current_date,INTERVAL -90 DAY) then ${total_complaints} end)  ;;
+    sql:sum(case when date(${date_date}) >= date_add(current_date,INTERVAL -90 DAY) then ${total_complaints} end)  ;;
 
     }
 
