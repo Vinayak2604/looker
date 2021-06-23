@@ -177,17 +177,17 @@ view: derived_user_engagement_metrics {
 
   measure: vas_aov_last_month {
     type: number
-    sql:avg(case when ${vas_ov} >0 then ${vas_ov} end)  ;;
+    sql:avg(case when ${vas_ov} >0 then ${vas_ov} end) ;;
   }
 
   measure: total_shared_preference {
     type: number
-    sql:sum(${item_base_preference_breakfast} + ${item_base_preference_lunch} + ${item_base_preference_evening_snacks} + ${item_base_preference_dinner})  ;;
+    sql:sum(COALESCE(${item_base_preference_breakfast},0) + COALESCE(${item_base_preference_lunch},0) + COALESCE(${item_base_preference_evening_snacks},0) + COALESCE(${item_base_preference_dinner},0)) ;;
   }
 
   measure: total_consumed_meals {
     type: number
-    sql:sum(${meal_consumed_breakfast} + ${meal_consumed_lunch} + ${meal_consumed_evening_snacks} + ${meal_consumed_dinner})  ;;
+    sql:sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)) ;;
   }
 
   measure: shared_preference_per {
@@ -203,7 +203,7 @@ view: derived_user_engagement_metrics {
 
   measure: total_rating {
     type: number
-    sql: sum(${meal_rating_breakfast}+${meal_rating_lunch}+${meal_rating_evening_snacks}+${meal_rating_dinner}) / sum((case when ${meal_rating_breakfast} > 0 then 1 end) + (case when ${meal_rating_lunch} > 0 then 1 end) + (case when ${meal_rating_evening_snacks} > 0 then 1 end)+ (case when ${meal_rating_dinner} > 0 then 1 end))  ;;
+    sql: sum(COALESCE(${meal_rating_breakfast},0)+COALESCE(${meal_rating_lunch},0)+COALESCE(${meal_rating_evening_snacks},0)+COALESCE(${meal_rating_dinner},0)) / sum((case when ${meal_rating_breakfast} > 0 then 1 end) + (case when ${meal_rating_lunch} > 0 then 1 end) + (case when ${meal_rating_evening_snacks} > 0 then 1 end)+ (case when ${meal_rating_dinner} > 0 then 1 end))  ;;
   }
 
 
