@@ -66,5 +66,11 @@ from looker_demo.derived_b2b_bookings group by 1,2,3);;
     sql: ${TABLE}.underwritten ;;
   }
 
+  measure: occupancy {
+    type:  number
+    sql: sum(${occupied_beds}) ;;
+  }
+
+
 
 }
