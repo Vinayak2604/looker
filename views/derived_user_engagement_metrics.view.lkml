@@ -199,6 +199,7 @@ view: derived_user_engagement_metrics {
   measure: vas_fps {
     type: number
     sql: avg(case when ${vas_rating} > 0 then ${vas_rating} end) ;;
+    value_format: "0.0"
   }
 
   measure: meal_fps {
