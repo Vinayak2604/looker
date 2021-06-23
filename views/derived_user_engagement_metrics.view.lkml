@@ -203,7 +203,7 @@ view: derived_user_engagement_metrics {
 
   measure: meal_fps {
     type: number
-    sql: sum(COALESCE(${meal_rating_breakfast},0)+COALESCE(${meal_rating_lunch},0)+COALESCE(${meal_rating_evening_snacks},0)+COALESCE(${meal_rating_dinner},0)) / sum((case when ${meal_rating_breakfast} > 0 then 1 end) + (case when ${meal_rating_lunch} > 0 then 1 end) + (case when ${meal_rating_evening_snacks} > 0 then 1 end)+ (case when ${meal_rating_dinner} > 0 then 1 end)) ;;
+    sql: sum(COALESCE(${meal_rating_breakfast},0)+COALESCE(${meal_rating_lunch},0)+COALESCE(${meal_rating_evening_snacks},0)+COALESCE(${meal_rating_dinner},0)) / sum(COALESCE(case when ${meal_rating_breakfast} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_lunch} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_evening_snacks} > 0 then 1 end,0)+ COALESCE(case when ${meal_rating_dinner} > 0 then 1 end,0)) ;;
   }
 
 
