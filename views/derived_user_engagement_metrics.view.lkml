@@ -1,5 +1,5 @@
-view: derived_user_engagement_matrics {
-  sql_table_name: stanza.derived_user_engagement_matrics ;;
+view: derived_user_engagement_metrics {
+  sql_table_name: stanza.derived_user_engagement_metrics ;;
 
   dimension: key {
     primary_key: yes
