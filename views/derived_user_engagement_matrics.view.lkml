@@ -164,4 +164,12 @@ view: derived_user_engagement_matrics {
     type: count
     drill_fields: []
   }
+
+  measure: 3_month_complaints {
+    type: number
+    sql:sum(case when ${date_date} >= date_add(current_date,INTERVAL -90 DAY) then ${total_complaints} end)  ;;
+
+    }
+
+
 }
