@@ -168,8 +168,17 @@ view: derived_user_engagement_matrics {
   measure: 3_month_complaints {
     type: number
     sql:sum(case when date(${date_date}) >= date_add(current_date,INTERVAL -90 DAY) then ${total_complaints} end)  ;;
-
     }
+
+  measure: vas_order_last_month {
+    type: number
+    sql:sum(case when date(${date_date}) >= date_add(current_date,INTERVAL -30 DAY) then ${vas_orders} end)  ;;
+  }
+
+  measure: vas_aov_last_month {
+    type: number
+    sql:avg(case when date(${date_date}) >= date_add(current_date,INTERVAL -30 DAY) then ${vas_ov} end)  ;;
+  }
 
 
 }
