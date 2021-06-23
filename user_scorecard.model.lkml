@@ -18,15 +18,3 @@ explore: user_scorecard1 {
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 }
-
-explore: derived_user_engagement_matrics {
-#   join: orders {
-#     relationship: many_to_one
-#     sql_on: ${orders.id} = ${order_items.order_id} ;;
-#   }
-#
-#   join: users {
-#     relationship: many_to_one
-#     sql_on: ${users.id} = ${orders.user_id} ;;
-#   }
-}
