@@ -168,7 +168,7 @@ view: derived_food_invoice {
   # }
   measure: distinct_po {
     type: count_distinct
-    sql: ${po_id} ;;
+    sql: ${po_number} ;;
 
   }
 }
