@@ -508,4 +508,43 @@ view: derived_user_engagement_metrics {
     value_format: "0.00"
   }
 
+
+  measure: engagement_score {
+    type: number
+    sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${engagement_feedback_vas_order_rating},0)+
+    coalesce(${engagement_feedback_smr},0)+coalesce(${engagement_feedback_meal_fps},0)+
+    coalesce(${engagement_feedback_vas_fps},0)+coalesce(${engagement_loyalty_repeat_customer},0)+
+    coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
+    coalesce(${engagement_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
+    coalesce(${engagement_transaction_meals_consumed},0)+coalesce(${engagement_vas_aov},0)+
+    coalesce(${all_vas_orders},0)) / 27 ;;
+    value_format: "0.00%"
+  }
+
+  measure: experience_score {
+    type: number
+    sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${experience_feedback_vas_order_rating},0)+
+          coalesce(${experience_feedback_smr},0)+coalesce(${experience_feedback_meal_fps},0)+
+          coalesce(${experience_feedback_vas_fps},0)+coalesce(${experience_loyalty_repeat_customer},0)+
+          coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
+          coalesce(${experience_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
+          coalesce(${experience_transaction_meals_consumed},0)+coalesce(${experience_vas_aov},0)+
+          coalesce(${all_vas_orders},0)) / 27 ;;
+    value_format: "0.00%"
+  }
+
+  measure: total_score {
+    type: number
+    sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${total_feedback_vas_order_rating},0)+
+          coalesce(${total_feedback_smr},0)+coalesce(${total_feedback_meal_fps},0)+
+          coalesce(${total_feedback_vas_fps},0)+coalesce(${total_loyalty_repeat_customer},0)+
+          coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
+          coalesce(${total_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
+          coalesce(${total_transaction_meals_consumed},0)+coalesce(${total_vas_aov},0)+
+          coalesce(${all_vas_orders},0)) / 27 ;;
+    value_format: "0.00%"
+  }
+
+
+
 }
