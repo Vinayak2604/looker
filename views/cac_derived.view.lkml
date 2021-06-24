@@ -23,12 +23,12 @@ where am.category_name not like '%Discount%'  group by 1,2,3,4,5,6;;
 
   dimension: Category {
     type: string
-    sql: ${TABLE}.zone ;;
+    sql: ${TABLE}.Category ;;
   }
 
   dimension: Subcategory {
     type: string
-    sql: ${TABLE}.zone ;;
+    sql: ${TABLE}.Subcategory ;;
   }
 
   measure: committed {
