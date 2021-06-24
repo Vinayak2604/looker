@@ -36,6 +36,11 @@ from looker_demo.derived_b2b_bookings group by 1,2,3);;
     sql: ${TABLE}.occupied_beds ;;
   }
 
+  measure: onboarded_beds {
+    type: number
+    sql: ${TABLE}.onboarded_beds ;;
+  }
+
   measure: future_move_ins {
     type: number
     sql: ${TABLE}.future_move_ins ;;
