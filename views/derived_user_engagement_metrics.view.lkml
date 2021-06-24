@@ -259,7 +259,7 @@ view: derived_user_engagement_metrics {
 
   measure: meal_ratingq {
     type: number
-    sql: ${rated_meals} / ${total_consumed_meals}  ;;
+    sql: coalesce(${rated_meals},0) / coalesce(${total_consumed_meals},0)  ;;
     value_format: "0.00%"
   }
 
