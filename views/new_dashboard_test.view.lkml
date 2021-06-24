@@ -196,6 +196,46 @@ left join upr on vo.residence = upr.residence) x ;;
       url: "/explore/food_user_preference/derived_user_preference_rating?fields=derived_user_preference_rating.date_date,derived_user_preference_rating.total_meals_breakfast,derived_user_preference_rating.total_meals_lunch,derived_user_preference_rating.total_meals_dinner,derived_user_preference_rating.total_meals_evening_snacks,derived_user_preference_rating.total_orders&fill_fields=derived_user_preference_rating.date_date&sorts=derived_user_preference_rating.date_date+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Afalse%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22normal%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22circle_outline%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22y_axes%22%3A%5B%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22left%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22breakfast%22%2C%22id%22%3A%22breakfast%22%2C%22name%22%3A%22Breakfast%22%7D%2C%7B%22axisId%22%3A%22lunch%22%2C%22id%22%3A%22lunch%22%2C%22name%22%3A%22Lunch%22%7D%2C%7B%22axisId%22%3A%22dinner%22%2C%22id%22%3A%22dinner%22%2C%22name%22%3A%22Dinner%22%7D%2C%7B%22axisId%22%3A%22evening_snacks%22%2C%22id%22%3A%22evening_snacks%22%2C%22name%22%3A%22Evening+Snacks%22%7D%5D%2C%22showLabels%22%3Afalse%2C%22showValues%22%3Atrue%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22type%22%3A%22linear%22%7D%2C%7B%22label%22%3A%22%22%2C%22orientation%22%3A%22right%22%2C%22series%22%3A%5B%7B%22axisId%22%3A%22derived_user_preference_rating.total_orders%22%2C%22id%22%3A%22derived_user_preference_rating.total_orders%22%2C%22name%22%3A%22Consumed+Meals%22%7D%5D%2C%22showLabels%22%3Atrue%2C%22showValues%22%3Atrue%2C%22unpinAxis%22%3Afalse%2C%22tickDensity%22%3A%22default%22%2C%22tickDensityCustom%22%3A3%2C%22type%22%3A%22linear%22%7D%5D%2C%22x_axis_label%22%3A%22Date%22%2C%22limit_displayed_rows_values%22%3A%7B%22show_hide%22%3A%22hide%22%2C%22first_last%22%3A%22first%22%2C%22num_rows%22%3A0%7D%2C%22hide_legend%22%3Afalse%2C%22series_types%22%3A%7B%22derived_user_preference_rating.total_orders%22%3A%22line%22%7D%2C%22series_colors%22%3A%7B%22derived_user_preference_rating.total_orders%22%3A%22%23696491%22%7D%2C%22series_labels%22%3A%7B%22derived_user_preference_rating.total_meals_breakfast%22%3A%22Breakfast%22%2C%22derived_user_preference_rating.total_meals_lunch%22%3A%22Lunch%22%2C%22derived_user_preference_rating.total_meals_dinner%22%3A%22Dinner%22%2C%22derived_user_preference_rating.total_meals_evening_snacks%22%3A%22Evening+Snacks%22%2C%22derived_user_preference_rating.total_orders%22%3A%22Consumed+Meals%22%7D%2C%22series_point_styles%22%3A%7B%22derived_user_preference_rating.total_orders%22%3A%22auto%22%7D%2C%22reference_lines%22%3A%5B%5D%2C%22trend_lines%22%3A%5B%5D%2C%22show_null_points%22%3Atrue%2C%22interpolation%22%3A%22linear%22%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%2C%22hidden_fields%22%3A%5B%22derived_user_preference_rating.total_meals_breakfast%22%2C%22derived_user_preference_rating.total_meals_lunch%22%2C%22derived_user_preference_rating.total_meals_dinner%22%2C%22derived_user_preference_rating.total_meals_evening_snacks%22%5D%7D&filter_config=%7B%7D&dynamic_fields=%5B%7B%22_kind_hint%22%3A%22measure%22%2C%22table_calculation%22%3A%22breakfast%22%2C%22_type_hint%22%3A%22number%22%2C%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22%24%7Bderived_user_preference_rating.total_meals_breakfast%7D%2F%24%7Bderived_user_preference_rating.total_orders%7D%22%2C%22label%22%3A%22Breakfast%22%2C%22value_format%22%3Anull%2C%22value_format_name%22%3A%22percent_1%22%7D%2C%7B%22_kind_hint%22%3A%22measure%22%2C%22table_calculation%22%3A%22lunch%22%2C%22_type_hint%22%3A%22number%22%2C%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22%24%7Bderived_user_preference_rating.total_meals_lunch%7D%2F%24%7Bderived_user_preference_rating.total_orders%7D%22%2C%22label%22%3A%22Lunch%22%2C%22value_format%22%3Anull%2C%22value_format_name%22%3A%22percent_1%22%7D%2C%7B%22_kind_hint%22%3A%22measure%22%2C%22table_calculation%22%3A%22dinner%22%2C%22_type_hint%22%3A%22number%22%2C%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22%24%7Bderived_user_preference_rating.total_meals_dinner%7D%2F%24%7Bderived_user_preference_rating.total_orders%7D%22%2C%22label%22%3A%22Dinner%22%2C%22value_format%22%3Anull%2C%22value_format_name%22%3A%22percent_1%22%7D%2C%7B%22_kind_hint%22%3A%22measure%22%2C%22table_calculation%22%3A%22evening_snacks%22%2C%22_type_hint%22%3A%22number%22%2C%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22%24%7Bderived_user_preference_rating.total_meals_evening_snacks%7D%2F%24%7Bderived_user_preference_rating.total_orders%7D%22%2C%22label%22%3A%22Evening+Snacks%22%2C%22value_format%22%3Anull%2C%22value_format_name%22%3A%22percent_1%22%7D%5D&origin=share-expanded&f[derived_user_preference_rating.city]={{ _filters['new_dashboard_test.city'] | url_encode }}&f[derived_user_preference_rating.micromarket]={{ _filters['new_dashboard_test.micromarket'] | url_encode }}&f[derived_user_preference_rating.residence]={{  _filters['new_dashboard_test.residence'] | url_encode  }}&f[derived_user_preference_rating.date_date]={{ _filters['new_dashboard_test.date'] | url_encode }}&f[derived_user_preference_rating.meal_type]={{ _filters['new_dashboard_test.meal_type'] | url_encode }}&f[derived_user_preference_rating.preference_available]={{ _filters['new_dashboard_test.preference_availability_flag'] | url_encode }}&f[derived_user_preference_rating.cafe_availability]={{ _filters['new_dashboard_test.cafe_availability_flag'] | url_encode }}&toggle=dat,pik,vis&toggle=dat,pik,vis"
       label: "DOD Consumed Meals"
     }
+    drill_fields: [total_amount1, city]
+    link: {
+      label: "Show as scatter plot"
+      url: "
+      {% assign vis_config = '{
+      \"stacking\" : \"\",
+      \"show_value_labels\" : false,
+      \"label_density\" : 25,
+      \"legend_position\" : \"center\",
+      \"x_axis_gridlines\" : true,
+      \"y_axis_gridlines\" : true,
+      \"show_view_names\" : false,
+      \"limit_displayed_rows\" : false,
+      \"y_axis_combined\" : true,
+      \"show_y_axis_labels\" : true,
+      \"show_y_axis_ticks\" : true,
+      \"y_axis_tick_density\" : \"default\",
+      \"y_axis_tick_density_custom\": 5,
+      \"show_x_axis_label\" : false,
+      \"show_x_axis_ticks\" : true,
+      \"x_axis_scale\" : \"auto\",
+      \"y_axis_scale_mode\" : \"linear\",
+      \"show_null_points\" : true,
+      \"point_style\" : \"circle\",
+      \"ordering\" : \"none\",
+      \"show_null_labels\" : false,
+      \"show_totals_labels\" : false,
+      \"show_silhouette\" : false,
+      \"totals_color\" : \"#808080\",
+      \"type\" : \"looker_scatter\",
+      \"interpolation\" : \"linear\",
+      \"series_types\" : {},
+      \"colors\": [
+      \"palette: Santa Cruz\"
+      ],
+      \"series_colors\" : {},
+      \"x_axis_datetime_tick_count\": null
+      }' %}
+      {{ link }}&vis_config={{ vis_config | encode_uri }}&toggle=dat,pik,vis&limit=5000"
+    }
   }
 
   dimension: rated_meals {
