@@ -255,6 +255,14 @@ view: derived_user_engagement_metrics {
 
   }
 
+
+
+  measure: meal_ratingq {
+    type: number
+    sql: ${rated_meals} / ${total_consumed_meals}  ;;
+    value_format: "0.00%"
+  }
+
   measure: vas_rating1 {
     type: number
     sql: nullif(sum(${vas_rating}),0) / sum(${vas_orders}) ;;
