@@ -192,7 +192,7 @@ view: derived_user_engagement_metrics {
 
   measure: shared_preference_per {
     type: number
-    sql: nullif(${total_shared_preference} ,0)/nullif(${total_consumed_meals},0) ;;
+    sql: nullif(sum(COALESCE(${item_base_preference_breakfast},0) + COALESCE(${item_base_preference_lunch},0) + COALESCE(${item_base_preference_evening_snacks},0) + COALESCE(${item_base_preference_dinner},0)),0)/nullif(sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)),0) ;;
     value_format: "0.00%"
   }
 
