@@ -33,12 +33,12 @@ where am.category_name not like '%Discount%'  group by 1,2,3,4,5,6;;
 
   measure: committed {
     type: number
-    sql: ${TABLE}.committed ;;
+    sql: sum(${TABLE}.committed) ;;
   }
 
   measure: actual {
     type: number
-    sql: ${TABLE}.actual ;;
+    sql: sum(${TABLE}.actual) ;;
   }
 
   dimension_group: podate {
