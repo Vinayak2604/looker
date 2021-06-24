@@ -41,6 +41,20 @@ where am.category_name not like '%Discount%'  group by 1,2,3,4,5,6;;
     sql: ${TABLE}.actual ;;
   }
 
+  dimension_group: podate {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.podate ;;
+  }
+
 
 
   }
