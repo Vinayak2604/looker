@@ -466,7 +466,7 @@ view: derived_user_engagement_metrics {
   measure: total_transaction_meals_consumed {
     type: number
     sql: case when ${consumed_meal_per} >= 70% then 2
-          when ${consumed_meal_per} >= 20% then 2*${consumed_meal_per}
+          when ${consumed_meal_per} >= 20% then 0.50*2
             else 0 end ;;
     value_format: "0.00"
   }
