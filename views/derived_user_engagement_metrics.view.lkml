@@ -263,6 +263,21 @@ view: derived_user_engagement_metrics {
     value_format: "0.00%"
   }
 
+  measure: retain_user {
+    type: count_distinct
+    sql: case when ${retained_user} = 1 then ${student_id} end   ;;
+  }
+
+  measure: total_referral {
+    type: number
+    sql: sum(${total_referrals})   ;;
+  }
+
+  measure: total_converted_referral {
+    type: number
+    sql: sum(${total_converted_referrals})   ;;
+  }
+
 
 
 
@@ -371,40 +386,40 @@ view: derived_user_engagement_metrics {
   }
 
 
-  dimension: engagement_loyalty_repeat_customer {
+  measure: engagement_loyalty_repeat_customer {
     type: number
-    sql: case when ${retained_user} = 1 then 2
+    sql: case when ${retain_user} = 1 then 2
             else 0 end ;;
     value_format: "0.00"
   }
 
-  dimension: experience_loyalty_repeat_customer {
+  measure: experience_loyalty_repeat_customer {
     type: number
-    sql:case when ${retained_user} = 1 then 3
+    sql:case when ${retain_user} = 1 then 3
             else 0 end ;;
     value_format: "0.00"
   }
 
-  dimension: total_loyalty_repeat_customer {
+  measure: total_loyalty_repeat_customer {
     type: number
-    sql:case when ${retained_user} = 1 then 2.5
+    sql:case when ${retain_user} = 1 then 2.5
             else 0 end ;;
     value_format: "0.00"
   }
 
 
-  dimension: all_loyalty_referred {
+  measure: all_loyalty_referred {
     type: number
-    sql: case when ${total_referrals} > 1 then 2
-    when ${total_referrals} = 1 then 0.50*2
+    sql: case when ${total_referral} > 1 then 2
+    when ${total_referral} = 1 then 0.50*2
       else 0 end ;;
     value_format: "0.00"
   }
 
-  dimension: all_loyalty_earned {
+  measure: all_loyalty_earned {
     type: number
-    sql: case when ${total_converted_referrals} > 1 then 2
-          when ${total_converted_referrals} = 1 then 0.50*2
+    sql: case when ${total_converted_referral} > 1 then 2
+          when ${total_converted_referral} = 1 then 0.50*2
             else 0 end ;;
     value_format: "0.00"
   }
