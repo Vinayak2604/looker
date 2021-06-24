@@ -7,7 +7,7 @@ view: all_bookings_data {
     "B2C" as booking_type,sum(b2c.net_upsell_downsell) as net_upsell ,
     sum(b2c.bc_monthly_rental_net_of_discount)/sum(beds) as blended_price,
     sum(b2c.underwritten_price)/sum(b2c.beds) as underwritten from looker_demo.derived_residence_attributes rs
-    left join looker_demo.derived_b2c_bookings b2c on rs.residence = b2c.residence group by 1,2,3,6
+    left join looker_demo.derived_b2c_bookings b2c on rs.residence = b2c.residence group by 1,2,3,7
 
 union (select city, micromarket, residence_name as residence, sum(final_beds) as occupied_beds,sum(final_beds) as onboarded_beds,
 0 as future_move_ins,"B2B" as resident_type, "B2B" as booking_type,
