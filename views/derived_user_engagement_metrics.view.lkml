@@ -24,44 +24,44 @@ view: derived_user_engagement_metrics {
   }
 
   dimension: item_base_preference_breakfast {
-    type: string
+    type: number
     sql: ${TABLE}.item_base_preference_breakfast ;;
   }
 
 
 
   dimension: item_base_preference_dinner {
-    type: string
+    type: number
     sql: ${TABLE}.item_base_preference_dinner ;;
   }
 
   dimension: item_base_preference_evening_snacks {
-    type: string
+    type: number
     sql: ${TABLE}.item_base_preference_evening_snacks ;;
   }
 
   dimension: item_base_preference_lunch {
-    type: string
+    type: number
     sql: ${TABLE}.item_base_preference_lunch ;;
   }
 
   dimension: meal_consumed_breakfast {
-    type: string
+    type: number
     sql: ${TABLE}.meal_consumed_breakfast ;;
   }
 
   dimension: meal_consumed_dinner {
-    type: string
+    type: number
     sql: ${TABLE}.meal_consumed_dinner ;;
   }
 
   dimension: meal_consumed_evening_snacks {
-    type: string
+    type: number
     sql: ${TABLE}.meal_consumed_evening_snacks ;;
   }
 
   dimension: meal_consumed_lunch {
-    type: string
+    type: number
     sql: ${TABLE}.meal_consumed_lunch ;;
   }
 
@@ -156,7 +156,7 @@ view: derived_user_engagement_metrics {
   }
 
   dimension: whatsapp_concent {
-    type: string
+    type: number
     sql: ${TABLE}.whatsapp_concent ;;
   }
 
