@@ -1,7 +1,7 @@
 view: all_bookings_data {
   derived_table: {
     sql:
-    select rs.city, rs.micromarket,rs.residence, sum(b2c.beds) as occupied_beds,sum(case when DATE(b2c.booking_status) = 'ONBOARDING COMPLETED' then b2c.beds else 0 end) as onboarded_beds,
+    select rs.city, rs.micromarket,rs.residence, sum(b2c.beds) as occupied_beds,sum(case when b2c.booking_status = 'ONBOARDING COMPLETED' then b2c.beds else 0 end) as onboarded_beds,
     sum(case when DATE(b2c.move_in_date) >= current_date() then b2c.beds else 0 end) as future_move_ins,
     (case when b2c.booking_type <= 2 then "Scholars" when b2c.booking_type >= 4 then "Suits" end) as resident_type,
     "B2C" as booking_type,sum(b2c.net_upsell_downsell) as net_upsell ,
