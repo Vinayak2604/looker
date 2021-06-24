@@ -244,7 +244,7 @@ view: derived_user_engagement_metrics {
 
   measure: meal_rating {
     type: number
-    sql: (nullif(sum(COALESCE(case when ${meal_rating_breakfast} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_lunch} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_evening_snacks} > 0 then 1 end,0)+ COALESCE(case when ${meal_rating_dinner} > 0 then 1 end,0)),0) /
+    sql: (1.0*nullif(sum(COALESCE(case when ${meal_rating_breakfast} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_lunch} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_evening_snacks} > 0 then 1 end,0)+ COALESCE(case when ${meal_rating_dinner} > 0 then 1 end,0)),0) /
     nullif(sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)),0))   ;;
     value_format: "0.00%"
     }
@@ -259,7 +259,7 @@ view: derived_user_engagement_metrics {
 
   measure: meal_ratingq {
     type: number
-    sql: nullif(coalesce(${rated_meals},0),0) / coalesce(${total_consumed_meals},0)  ;;
+    sql: 1.0*nullif(coalesce(${rated_meals},0),0) / coalesce(${total_consumed_meals},0)  ;;
     value_format: "0.00%"
   }
 
