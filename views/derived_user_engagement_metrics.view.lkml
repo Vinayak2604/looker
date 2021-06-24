@@ -165,17 +165,17 @@ view: derived_user_engagement_metrics {
     drill_fields: []
   }
 
-  measure: 3_month_complaints {
+  measure: total_complaints1 {
     type: number
-    sql:sum(${total_complaints})  ;;
+    sql:sum(${total_complaints}) ;;
   }
 
-  measure: vas_order_last_month {
+  measure: total_vas_orders {
     type: number
-    sql:sum(${vas_orders})  ;;
+    sql:sum(${vas_orders}) ;;
   }
 
-  measure: vas_aov_last_month {
+  measure: vas_aov {
     type: number
     sql:avg(case when ${vas_ov} >0 then ${vas_ov} end) ;;
   }
