@@ -271,7 +271,7 @@ view: derived_user_engagement_metrics {
   measure: all_complaints_per_month {
     type: number
     sql: case when ${total_complaints1} >= 2 then 0
-    when ${total_complaints1} = 1 then 50%*3
+    when ${total_complaints1} = 1 then 0.50*3
     else 3 end ;;
     value_format: "0.00"
   }
@@ -300,7 +300,7 @@ view: derived_user_engagement_metrics {
   measure: engagement_feedback_smr {
     type: number
     sql: case when ${meal_rating} >= 30% then 2
-    when ${meal_rating} >= 10% then 50%*2
+    when ${meal_rating} >= 10% then 0.50*2
       else 0 end ;;
     value_format: "0.00"
   }
@@ -308,7 +308,7 @@ view: derived_user_engagement_metrics {
   measure: experience_feedback_smr{
     type: number
     sql:case when ${meal_rating} >= 30% then 3
-    when ${meal_rating} >= 10% then 50%*3
+    when ${meal_rating} >= 10% then 0.50*3
       else 0 end ;;
     value_format: "0.00"
   }
@@ -316,7 +316,7 @@ view: derived_user_engagement_metrics {
   measure: total_feedback_smr {
     type: number
     sql:case when ${meal_rating} >= 30% then 2.5
-    when ${meal_rating} >= 10% then 50%*2.5
+    when ${meal_rating} >= 10% then 0.50*2.5
       else 0 end ;;
     value_format: "0.00"
   }
@@ -325,7 +325,7 @@ view: derived_user_engagement_metrics {
   measure: engagement_feedback_meal_fps {
     type: number
     sql: case when ${meal_fps} >= 4.5 then 2
-          when ${meal_fps} >= 2 then 50%*2
+          when ${meal_fps} >= 2 then 0.50*2
             else 0 end ;;
     value_format: "0.00"
   }
@@ -333,7 +333,7 @@ view: derived_user_engagement_metrics {
   measure: experience_feedback_meal_fps{
     type: number
     sql:case when ${meal_fps} >= 4.5 then 3
-          when ${meal_fps} >= 2 then 50%*3
+          when ${meal_fps} >= 2 then 0.50*3
             else 0 end ;;
     value_format: "0.00"
   }
@@ -341,7 +341,7 @@ view: derived_user_engagement_metrics {
   measure: total_feedback_meal_fps {
     type: number
     sql:case when ${meal_fps} >= 4.5 then 2.5
-          when ${meal_fps} >= 2 then 50%*2.5
+          when ${meal_fps} >= 2 then 0.50*2.5
             else 0 end ;;
     value_format: "0.00"
   }
@@ -349,7 +349,7 @@ view: derived_user_engagement_metrics {
   measure: engagement_feedback_vas_fps {
     type: number
     sql: case when ${vas_fps} >= 4.5 then 2
-          when ${vas_fps} >= 2 then 50%*2
+          when ${vas_fps} >= 2 then 0.50*2
             else 0 end ;;
     value_format: "0.00"
   }
@@ -357,7 +357,7 @@ view: derived_user_engagement_metrics {
   measure: experience_feedback_vas_fps{
     type: number
     sql:case when ${vas_fps} >= 4.5 then 3
-          when ${vas_fps} >= 2 then 50%*3
+          when ${vas_fps} >= 2 then 0.50*3
             else 0 end ;;
     value_format: "0.00"
   }
@@ -365,7 +365,7 @@ view: derived_user_engagement_metrics {
   measure: total_feedback_vas_fps {
     type: number
     sql:case when ${vas_fps} >= 4.5 then 2.5
-          when ${vas_fps} >= 2 then 50%*2.5
+          when ${vas_fps} >= 2 then 0.50*2.5
             else 0 end ;;
     value_format: "0.00"
   }
@@ -396,7 +396,7 @@ view: derived_user_engagement_metrics {
   measure: all_loyalty_referred {
     type: number
     sql: case when ${total_referrals} > 1 then 2
-    when ${total_referrals} = 1 then 50%*2
+    when ${total_referrals} = 1 then 0.50*2
       else 0 end ;;
     value_format: "0.00"
   }
@@ -404,7 +404,7 @@ view: derived_user_engagement_metrics {
   measure: all_loyalty_earned {
     type: number
     sql: case when ${total_converted_referrals} > 1 then 2
-          when ${total_converted_referrals} = 1 then 50%*2
+          when ${total_converted_referrals} = 1 then 0.50*2
             else 0 end ;;
     value_format: "0.00"
   }
@@ -412,8 +412,8 @@ view: derived_user_engagement_metrics {
   measure: engagement_transaction_pays_rent_within_due_date {
     type: number
     sql: case when ${on_time_payments_on_last_3_payments} = 3 then 0
-          when ${on_time_payments_on_last_3_payments} = 2 then 66%*0
-          when ${on_time_payments_on_last_3_payments} = 1 then 33%*0
+          when ${on_time_payments_on_last_3_payments} = 2 then 0.66*0
+          when ${on_time_payments_on_last_3_payments} = 1 then 0.33*0
             else 0 end ;;
     value_format: "0.00"
   }
@@ -421,8 +421,8 @@ view: derived_user_engagement_metrics {
   measure: experience_transaction_pays_rent_within_due_date {
     type: number
     sql: case when ${on_time_payments_on_last_3_payments} = 3 then 3
-          when ${on_time_payments_on_last_3_payments} = 2 then 66%*3
-          when ${on_time_payments_on_last_3_payments} = 1 then 33%*3
+          when ${on_time_payments_on_last_3_payments} = 2 then 0.66*3
+          when ${on_time_payments_on_last_3_payments} = 1 then 0.33*3
             else 0 end ;;
     value_format: "0.00"
   }
@@ -430,8 +430,8 @@ view: derived_user_engagement_metrics {
   measure: total_transaction_pays_rent_within_due_date {
     type: number
     sql: case when ${on_time_payments_on_last_3_payments} = 3 then 1.5
-          when ${on_time_payments_on_last_3_payments} = 2 then 66%*1.5
-          when ${on_time_payments_on_last_3_payments} = 1 then 33%*1.5
+          when ${on_time_payments_on_last_3_payments} = 2 then 0.66*1.5
+          when ${on_time_payments_on_last_3_payments} = 1 then 0.33*1.5
             else 0 end ;;
     value_format: "0.00"
   }
@@ -440,9 +440,9 @@ view: derived_user_engagement_metrics {
   measure: all_transaction_preference_shared {
     type: number
     sql: case when ${shared_preference_per} >= 50% then 3
-          when ${shared_preference_per} >= 40% then 75%*3
-          when ${shared_preference_per} >= 30% then 50%*3
-          when ${shared_preference_per} >= 20% then 25%*3
+          when ${shared_preference_per} >= 40% then 0.75*3
+          when ${shared_preference_per} >= 30% then 0.50*3
+          when ${shared_preference_per} >= 20% then 0.25*3
             else 0 end ;;
     value_format: "0.00"
   }
@@ -475,8 +475,8 @@ view: derived_user_engagement_metrics {
   measure: engagement_vas_aov {
     type: number
     sql: case when ${vas_aov} >= 100 then 3
-          when ${vas_aov} >= 50 then 50%*3
-          when ${vas_aov} >= 1 then 25%*3
+          when ${vas_aov} >= 50 then 0.50*3
+          when ${vas_aov} >= 1 then 0.25*3
             else 0 end ;;
     value_format: "0.00"
   }
@@ -484,8 +484,8 @@ view: derived_user_engagement_metrics {
   measure: experience_vas_aov {
     type: number
     sql: case when ${vas_aov} >= 100 then 2
-          when ${vas_aov} >= 50 then 50%*2
-          when ${vas_aov} >= 1 then 25%*2
+          when ${vas_aov} >= 50 then 0.50*2
+          when ${vas_aov} >= 1 then 0.25*2
             else 0 end ;;
     value_format: "0.00"
   }
@@ -493,8 +493,8 @@ view: derived_user_engagement_metrics {
   measure: total_vas_aov {
     type: number
     sql: case when ${vas_aov} >= 100 then 2.5
-          when ${vas_aov} >= 50 then 50%*2.5
-          when ${vas_aov} >= 1 then 25%*2.5
+          when ${vas_aov} >= 50 then 0.50*2.5
+          when ${vas_aov} >= 1 then 0.25*2.5
             else 0 end ;;
     value_format: "0.00"
   }
@@ -502,8 +502,8 @@ view: derived_user_engagement_metrics {
   measure: all_vas_orders {
     type: number
     sql: case when ${vas_aov} >= 5 then 3
-          when ${vas_aov} >= 3 then 50%*3
-          when ${vas_aov} >= 1 then 25%*3
+          when ${vas_aov} >= 3 then 0.50*3
+          when ${vas_aov} >= 1 then 0.25*3
             else 0 end ;;
     value_format: "0.00"
   }
@@ -529,7 +529,7 @@ view: derived_user_engagement_metrics {
           coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
           coalesce(${experience_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
           coalesce(${experience_transaction_meals_consumed},0)+coalesce(${experience_vas_aov},0)+
-          coalesce(${all_vas_orders},0)) / 27 ;;
+          coalesce(${all_vas_orders},0)) / 36 ;;
     value_format: "0.00%"
   }
 
@@ -541,7 +541,7 @@ view: derived_user_engagement_metrics {
           coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
           coalesce(${total_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
           coalesce(${total_transaction_meals_consumed},0)+coalesce(${total_vas_aov},0)+
-          coalesce(${all_vas_orders},0)) / 27 ;;
+          coalesce(${all_vas_orders},0)) / 31.5 ;;
     value_format: "0.00%"
   }
 
