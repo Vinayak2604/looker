@@ -100,6 +100,29 @@ view: derived_user_engagement_metrics {
     sql: ${TABLE}.on_time_payments_on_last_3_payments ;;
   }
 
+  dimension: preference_available_breakfast {
+    type: number
+    sql: ${TABLE}.preference_available_breakfast ;;
+  }
+
+  dimension: preference_available_lunch {
+    type: number
+    sql: ${TABLE}.preference_available_lunch ;;
+  }
+
+  dimension: preference_available_evening_snacks {
+    type: number
+    sql: ${TABLE}.preference_available_evening_snacks ;;
+  }
+
+  dimension: preference_available_dinner {
+    type: number
+    sql: ${TABLE}.preference_available_dinner ;;
+  }
+
+
+
+
   dimension: retained_user {
     type: number
     sql: ${TABLE}.retained_user ;;
@@ -192,7 +215,7 @@ view: derived_user_engagement_metrics {
 
   measure: shared_preference_per {
     type: number
-    sql: nullif(sum(COALESCE(${item_base_preference_breakfast},0) + COALESCE(${item_base_preference_lunch},0) + COALESCE(${item_base_preference_evening_snacks},0) + COALESCE(${item_base_preference_dinner},0)),0)/nullif(sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)),0) ;;
+    sql: nullif(sum(COALESCE(${item_base_preference_breakfast},0) + COALESCE(${item_base_preference_lunch},0) + COALESCE(${item_base_preference_evening_snacks},0) + COALESCE(${item_base_preference_dinner},0)),0)/ nullif(sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)),0) ;;
     value_format: "0.00%"
   }
 
