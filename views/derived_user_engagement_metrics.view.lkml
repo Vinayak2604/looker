@@ -190,12 +190,12 @@ view: derived_user_engagement_metrics {
 
   measure: total_complaints1 {
     type: number
-    sql:sum(${total_complaints}) ;;
+    sql:nullif(sum(${total_complaints}),0) ;;
   }
 
   measure: total_vas_orders {
     type: number
-    sql:sum(${vas_orders}) ;;
+    sql:nullif(sum(${vas_orders}),0) ;;
   }
 
   measure: vas_aov {
@@ -210,12 +210,12 @@ view: derived_user_engagement_metrics {
 
   measure: total_consumed_meals {
     type: number
-    sql:sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)) ;;
+    sql:nullif(sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)),0) ;;
   }
 
   measure: total_available_meals {
     type: number
-    sql:sum(COALESCE(case when ${meal_consumed_breakfast} >= 0 then 1 end,0) + COALESCE(case when ${meal_consumed_lunch} >= 0 then 1 end,0) + COALESCE(case when ${meal_consumed_evening_snacks} >= 0 then 1 end,0)+ COALESCE(case when ${meal_consumed_dinner} >= 0 then 1 end,0)) ;;
+    sql:nullif(sum(COALESCE(case when ${meal_consumed_breakfast} >= 0 then 1 end,0) + COALESCE(case when ${meal_consumed_lunch} >= 0 then 1 end,0) + COALESCE(case when ${meal_consumed_evening_snacks} >= 0 then 1 end,0)+ COALESCE(case when ${meal_consumed_dinner} >= 0 then 1 end,0)),0) ;;
   }
 
   measure: total_preference_available {
