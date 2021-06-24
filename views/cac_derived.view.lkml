@@ -33,13 +33,13 @@ where am.category_name not like '%Discount%'  group by 1,2,3,4,5,6;;
 
   measure: committed {
     type: number
-    sql: sum(${TABLE}.committed) ;;
+    sql: sum(${TABLE}.committed)/10^5 ;;
     value_format: "#,##0"
   }
 
   measure: actual {
     type: number
-    sql: sum(${TABLE}.actual) ;;
+    sql: sum(${TABLE}.actual)/10^5 ;;
     value_format: "#,##0"
   }
 
