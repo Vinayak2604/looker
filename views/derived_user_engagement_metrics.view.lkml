@@ -278,45 +278,45 @@ view: derived_user_engagement_metrics {
 
   measure: engagement_feedback_vas_order_rating {
     type: number
-    sql: case when ${vas_rating1} >= 70% then ${vas_rating1}*2
+    sql: case when ${vas_rating1} >= 0.70 then ${vas_rating1}*2
           else 0 end ;;
     value_format: "0.00"
   }
 
   measure: experience_feedback_vas_order_rating {
     type: number
-    sql: case when ${vas_rating1} >= 70% then ${vas_rating1}*3
+    sql: case when ${vas_rating1} >= 0.70 then ${vas_rating1}*3
           else 0 end ;;
     value_format: "0.00"
   }
 
   measure: total_feedback_vas_order_rating {
     type: number
-    sql: case when ${vas_rating1} >= 70% then ${vas_rating1}*2.5
+    sql: case when ${vas_rating1} >= 0.70 then ${vas_rating1}*2.5
           else 0 end ;;
     value_format: "0.00"
   }
 
   measure: engagement_feedback_smr {
     type: number
-    sql: case when ${meal_rating} >= 30% then 2
-    when ${meal_rating} >= 10% then 0.50*2
+    sql: case when ${meal_rating} >= 0.30 then 2
+    when ${meal_rating} >= 0.10 then 0.50*2
       else 0 end ;;
     value_format: "0.00"
   }
 
   measure: experience_feedback_smr{
     type: number
-    sql:case when ${meal_rating} >= 30% then 3
-    when ${meal_rating} >= 10% then 0.50*3
+    sql:case when ${meal_rating} >= 0.30 then 3
+    when ${meal_rating} >= 0.10 then 0.50*3
       else 0 end ;;
     value_format: "0.00"
   }
 
   measure: total_feedback_smr {
     type: number
-    sql:case when ${meal_rating} >= 30% then 2.5
-    when ${meal_rating} >= 10% then 0.50*2.5
+    sql:case when ${meal_rating} >= 0.30 then 2.5
+    when ${meal_rating} >= 0.10 then 0.50*2.5
       else 0 end ;;
     value_format: "0.00"
   }
@@ -439,26 +439,26 @@ view: derived_user_engagement_metrics {
 
   measure: all_transaction_preference_shared {
     type: number
-    sql: case when ${shared_preference_per} >= 50% then 3
-          when ${shared_preference_per} >= 40% then 0.75*3
-          when ${shared_preference_per} >= 30% then 0.50*3
-          when ${shared_preference_per} >= 20% then 0.25*3
+    sql: case when ${shared_preference_per} >= 0.50 then 3
+          when ${shared_preference_per} >= 0.40 then 0.75*3
+          when ${shared_preference_per} >= 0.30 then 0.50*3
+          when ${shared_preference_per} >= 0.20 then 0.25*3
             else 0 end ;;
     value_format: "0.00"
   }
 
   measure: engagement_transaction_meals_consumed {
     type: number
-    sql: case when ${consumed_meal_per} >= 70% then 1
-          when ${consumed_meal_per} >= 20% then 1* ${consumed_meal_per}
+    sql: case when ${consumed_meal_per} >= 0.70 then 1
+          when ${consumed_meal_per} >= 0.20 then 1* ${consumed_meal_per}
             else 0 end ;;
     value_format: "0.00"
   }
 
   measure: experience_transaction_meals_consumed {
     type: number
-    sql: case when ${consumed_meal_per} >= 70% then 3
-          when ${consumed_meal_per} >= 20% then 3*${consumed_meal_per}
+    sql: case when ${consumed_meal_per} >= 0.70 then 3
+          when ${consumed_meal_per} >= 0.20 then 3*${consumed_meal_per}
             else 0 end ;;
     value_format: "0.00"
   }
