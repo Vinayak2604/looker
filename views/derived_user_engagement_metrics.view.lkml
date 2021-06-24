@@ -213,6 +213,11 @@ view: derived_user_engagement_metrics {
     sql:sum(COALESCE(${meal_consumed_breakfast},0) + COALESCE(${meal_consumed_lunch},0) + COALESCE(${meal_consumed_evening_snacks},0) + COALESCE(${meal_consumed_dinner},0)) ;;
   }
 
+  measure: total_preference_available {
+    type: number
+    sql:sum(COALESCE(${preference_available_breakfast},0) + COALESCE(${preference_available_lunch},0) + COALESCE(${preference_available_evening_snacks},0) + COALESCE(${preference_available_dinner},0)) ;;
+  }
+
   measure: shared_preference_per {
     type: number
     sql: nullif(sum(COALESCE(${item_base_preference_breakfast},0) + COALESCE(${item_base_preference_lunch},0) + COALESCE(${item_base_preference_evening_snacks},0) + COALESCE(${item_base_preference_dinner},0)),0)/ nullif(sum(COALESCE(${preference_available_breakfast},0) + COALESCE(${preference_available_lunch},0) + COALESCE(${preference_available_evening_snacks},0) + COALESCE(${preference_available_dinner},0)),0) ;;
