@@ -101,7 +101,7 @@ view: derived_user_engagement_metrics {
   }
 
   dimension: retained_user {
-    type: string
+    type: number
     sql: ${TABLE}.retained_user ;;
   }
 
