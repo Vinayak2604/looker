@@ -450,7 +450,7 @@ view: derived_user_engagement_metrics {
   measure: engagement_transaction_meals_consumed {
     type: number
     sql: case when ${consumed_meal_per} >= 70% then 1
-          when ${consumed_meal_per} >= 20% then ${consumed_meal_per}*1
+          when ${consumed_meal_per} >= 20% then 1* ${consumed_meal_per}
             else 0 end ;;
     value_format: "0.00"
   }
@@ -458,7 +458,7 @@ view: derived_user_engagement_metrics {
   measure: experience_transaction_meals_consumed {
     type: number
     sql: case when ${consumed_meal_per} >= 70% then 3
-          when ${consumed_meal_per} >= 20% then ${consumed_meal_per}*3
+          when ${consumed_meal_per} >= 20% then 3*${consumed_meal_per}
             else 0 end ;;
     value_format: "0.00"
   }
@@ -466,7 +466,7 @@ view: derived_user_engagement_metrics {
   measure: total_transaction_meals_consumed {
     type: number
     sql: case when ${consumed_meal_per} >= 70% then 2
-          when ${consumed_meal_per} >= 20% then ${consumed_meal_per}*2
+          when ${consumed_meal_per} >= 20% then 2*${consumed_meal_per}
             else 0 end ;;
     value_format: "0.00"
   }
