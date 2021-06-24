@@ -371,21 +371,21 @@ view: derived_user_engagement_metrics {
   }
 
 
-  measure: engagement_loyalty_repeat_customer {
+  dimension: engagement_loyalty_repeat_customer {
     type: number
     sql: case when ${retained_user} = 1 then 2
             else 0 end ;;
     value_format: "0.00"
   }
 
-  measure: experience_loyalty_repeat_customer {
+  dimension: experience_loyalty_repeat_customer {
     type: number
     sql:case when ${retained_user} = 1 then 3
             else 0 end ;;
     value_format: "0.00"
   }
 
-  measure: total_loyalty_repeat_customer {
+  dimension: total_loyalty_repeat_customer {
     type: number
     sql:case when ${retained_user} = 1 then 2.5
             else 0 end ;;
@@ -393,7 +393,7 @@ view: derived_user_engagement_metrics {
   }
 
 
-  measure: all_loyalty_referred {
+  dimension: all_loyalty_referred {
     type: number
     sql: case when ${total_referrals} > 1 then 2
     when ${total_referrals} = 1 then 0.50*2
@@ -401,7 +401,7 @@ view: derived_user_engagement_metrics {
     value_format: "0.00"
   }
 
-  measure: all_loyalty_earned {
+  dimension: all_loyalty_earned {
     type: number
     sql: case when ${total_converted_referrals} > 1 then 2
           when ${total_converted_referrals} = 1 then 0.50*2
