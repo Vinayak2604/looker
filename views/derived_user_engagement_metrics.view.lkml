@@ -439,18 +439,18 @@ view: derived_user_engagement_metrics {
 
   measure: experience_transaction_pays_rent_within_due_date {
     type: number
-    sql: case when ${on_time_payments_on_last_3_payments} = 3 then 3
-          when ${on_time_payments_on_last_3_payments} = 2 then 0.66*3
-          when ${on_time_payments_on_last_3_payments} = 1 then 0.33*3
+    sql: case when ${on_time_payments_on_last_3_payment} = 3 then 3
+          when ${on_time_payments_on_last_3_payment} = 2 then 0.66*3
+          when ${on_time_payments_on_last_3_payment} = 1 then 0.33*3
             else 0 end ;;
     value_format: "0.00"
   }
 
   measure: total_transaction_pays_rent_within_due_date {
     type: number
-    sql: case when ${on_time_payments_on_last_3_payments} = 3 then 1.5
-          when ${on_time_payments_on_last_3_payments} = 2 then 0.66*1.5
-          when ${on_time_payments_on_last_3_payments} = 1 then 0.33*1.5
+    sql: case when ${on_time_payments_on_last_3_payment} = 3 then 1.5
+          when ${on_time_payments_on_last_3_payment} = 2 then 0.66*1.5
+          when ${on_time_payments_on_last_3_payment} = 1 then 0.33*1.5
             else 0 end ;;
     value_format: "0.00"
   }
