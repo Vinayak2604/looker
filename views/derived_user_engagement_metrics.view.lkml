@@ -292,8 +292,6 @@ view: derived_user_engagement_metrics {
   }
 
 
-
-
   measure: all_complaints_per_month {
     type: number
     sql: case when ${total_complaints1} >= 2 then 0
@@ -527,9 +525,9 @@ view: derived_user_engagement_metrics {
 
   measure: all_vas_orders {
     type: number
-    sql: case when ${vas_aov} >= 5 then 3
-          when ${vas_aov} >= 3 then 0.50*3
-          when ${vas_aov} >= 1 then 0.25*3
+    sql: case when ${total_vas_orders} >= 5 then 3
+          when ${total_vas_orders} >= 3 then 0.50*3
+          when ${total_vas_orders} >= 1 then 0.25*3
             else 0 end ;;
     value_format: "0.00"
   }
