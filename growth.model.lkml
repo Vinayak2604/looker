@@ -8,3 +8,5 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # # and define the joins that connect them together.
 #
 explore: derived_user_engagement_metrics  {}
+
+# explore: user_engagement_preto  {}
