@@ -89,4 +89,20 @@ view: user_engagement_preto {
     ;;
 
   }
+
+  dimension: student_id {
+    type: string
+    sql: ${TABLE}.student_id ;;
+  }
+
+  dimension: score {
+    type: string
+    sql: ${TABLE}.score ;;
+  }
+
+  measure: students {
+    type: count_distinct
+    sql: ${student_id} ;;
+  }
+
 }
