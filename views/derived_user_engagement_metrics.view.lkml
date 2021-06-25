@@ -282,7 +282,7 @@ view: derived_user_engagement_metrics {
 
   measure: on_time_payments_on_last_3_payment {
     type: sum_distinct
-    sql: su${on_time_payments_on_last_3_payments}   ;;
+    sql: ${on_time_payments_on_last_3_payments}   ;;
     sql_distinct_key: ${student_id};;
   }
 
