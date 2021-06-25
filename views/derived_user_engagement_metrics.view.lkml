@@ -1,12 +1,12 @@
 view: derived_user_engagement_metrics {
   sql_table_name: stanza.derived_user_engagement_metrics ;;
 
-  dimension: key {
-    primary_key: yes
-    type: string
-    hidden: yes
-    sql: concat(${TABLE}.date,' ', ${TABLE}.student_id) ;;
-  }
+  # dimension: key {
+  #   primary_key: yes
+  #   type: string
+  #   hidden: yes
+  #   sql: concat(${TABLE}.date,' ', ${TABLE}.student_id) ;;
+  # }
 
   dimension_group: date {
     type: time
@@ -134,6 +134,7 @@ view: derived_user_engagement_metrics {
   dimension: student_id {
     type: string
     sql: ${TABLE}.student_id ;;
+    primary_key: yes
   }
 
   dimension: total_complaints {
@@ -199,6 +200,7 @@ view: derived_user_engagement_metrics {
   dimension: total_complaints1_copy {
     type: number
     sql:sum(${total_complaints}) over(PARTITION BY ${student_id})  ;;
+
   }
 
   dimension: total_vas_orders_copy {
