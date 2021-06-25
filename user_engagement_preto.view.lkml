@@ -64,23 +64,26 @@ view: user_engagement_preto {
     ),
 
     scores as (select base.student_id,
-    (coalesce(engagement.complaint_complaints_per_month,0)+coalesce(engagement.feedback_vas_order_rating,0)+coalesce(engagement.feedback_smr,0)+coalesce(engagement.feedback_meal_fps,0)+coalesce(engagement.feedback_vas_fps,0)+
+    1.00*(coalesce(engagement.complaint_complaints_per_month,0)+coalesce(engagement.feedback_vas_order_rating,0)+coalesce(engagement.feedback_smr,0)+coalesce(engagement.feedback_meal_fps,0)+coalesce(engagement.feedback_vas_fps,0)+
     coalesce(engagement.Loyalty_repeat_customer,0)+coalesce(engagement.loyalty_referred,0)+coalesce(engagement.loyalty_earned,0)+coalesce(engagement.transaction_pays_rent_within_due_date,0)+coalesce(engagement.transaction_preference_shared,0) +
-    coalesce(engagement.transaction_meals_consumed,0)+coalesce(engagement.vas_aov,0)+coalesce(engagement.vas_no_of_orders,0)) engagement_score,
+    coalesce(engagement.transaction_meals_consumed,0)+coalesce(engagement.vas_aov,0)+coalesce(engagement.vas_no_of_orders,0)) / 27 engagement_score,
 
-    (coalesce(experience.complaint_complaints_per_month,0)+coalesce(experience.feedback_vas_order_rating,0)+coalesce(experience.feedback_smr,0)+coalesce(experience.feedback_meal_fps,0)+coalesce(experience.feedback_vas_fps,0)+
+    1.00*(coalesce(experience.complaint_complaints_per_month,0)+coalesce(experience.feedback_vas_order_rating,0)+coalesce(experience.feedback_smr,0)+coalesce(experience.feedback_meal_fps,0)+coalesce(experience.feedback_vas_fps,0)+
     coalesce(experience.Loyalty_repeat_customer,0)+coalesce(experience.loyalty_referred,0)+coalesce(experience.loyalty_earned,0)+coalesce(experience.transaction_pays_rent_within_due_date,0)+coalesce(experience.transaction_preference_shared,0) +
-    coalesce(experience.transaction_meals_consumed,0)+coalesce(experience.vas_aov,0)+coalesce(experience.vas_no_of_orders,0)) experience_score,
+    coalesce(experience.transaction_meals_consumed,0)+coalesce(experience.vas_aov,0)+coalesce(experience.vas_no_of_orders,0)) / 36 experience_score,
 
-    (coalesce(total.complaint_complaints_per_month,0)+coalesce(total.feedback_vas_order_rating,0)+coalesce(total.feedback_smr,0)+coalesce(total.feedback_meal_fps,0)+coalesce(total.feedback_vas_fps,0)+
+    1.00*(coalesce(total.complaint_complaints_per_month,0)+coalesce(total.feedback_vas_order_rating,0)+coalesce(total.feedback_smr,0)+coalesce(total.feedback_meal_fps,0)+coalesce(total.feedback_vas_fps,0)+
     coalesce(total.Loyalty_repeat_customer,0)+coalesce(total.loyalty_referred,0)+coalesce(total.loyalty_earned,0)+coalesce(total.transaction_pays_rent_within_due_date,0)+coalesce(total.transaction_preference_shared,0) +
-    coalesce(total.transaction_meals_consumed,0)+coalesce(total.vas_aov,0)+coalesce(total.vas_no_of_orders,0)) total_score
+    coalesce(total.transaction_meals_consumed,0)+coalesce(total.vas_aov,0)+coalesce(total.vas_no_of_orders,0)) / 31.5 total_score
     from base
     join engagement on engagement.student_id=base.student_id
     join experience on experience.student_id=base.student_id
     join total on total.student_id=base.student_id
+    ),
 
-    )
+    select student_id, case when engagement_score < 0.20 then "0-20" when engagement_score < 0.40 then "20-40"
+    when engagement_score < 0.60 then "40-60" when engagement_score < 0.80 then "60-80" when engagement_score >= 0.80 then ">=80" ens as score
+    from scores
 
 
     ;;
