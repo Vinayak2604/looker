@@ -12,6 +12,7 @@ view: user_engagement_preto {
     avg(case when vas_ov > 0 then vas_ov end) vas_ov
 
     from stanza.derived_user_engagement_metrics
+    where {% condition date %} date {% endcondition %}
     group by 1,2,3,4,5
     ),
 
@@ -90,6 +91,11 @@ view: user_engagement_preto {
 
     ;;
 
+  }
+
+  parameter: date {
+    type: date
+    convert_tz: no
   }
 
   dimension: student_id {
