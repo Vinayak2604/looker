@@ -275,13 +275,15 @@ view: derived_user_engagement_metrics {
   }
 
   measure: total_converted_referral {
-    type: number
-    sql: sum(${total_converted_referrals})   ;;
+    type: sum_distinct
+    sql: ${total_converted_referrals}   ;;
+    sql_distinct_key: ${student_id} ;;
   }
 
   measure: on_time_payments_on_last_3_payment {
-    type: number
-    sql: sum(${on_time_payments_on_last_3_payments})   ;;
+    type: sum_distinct
+    sql: su${on_time_payments_on_last_3_payments}   ;;
+    sql_distinct_key: ${student_id};;
   }
 
   measure: students {
