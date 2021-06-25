@@ -269,8 +269,9 @@ view: derived_user_engagement_metrics {
   }
 
   measure: total_referral {
-    type: number
-    sql: sum(${total_referrals})   ;;
+    type: sum_distinct
+    sql: ${total_referrals}   ;;
+    sql_distinct_key: ${student_id} ;;
   }
 
   measure: total_converted_referral {
