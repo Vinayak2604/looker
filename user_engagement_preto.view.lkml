@@ -16,16 +16,16 @@ view: user_engagement_preto {
     ),
 
     engagement as ( select student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
-    case when (1.00*vas_rating / vas_orders) >=0.70 then (1.00*vas_rating / vas_orders)*2 else 0 end as feedback_vas_order_rating,
-    case when (1.00*meal_rating/meal_consumed) >= 0.30 then 2 when (1.00*meal_rating/meal_consumed) >= 0.10 then 0.50*2 else 0 end as feedback_smr,
+    case when (1.00*nullif(vas_rating,0) / vas_orders) >=0.70 then (1.00*nullif(vas_rating,0) / vas_orders)*2 else 0 end as feedback_vas_order_rating,
+    case when (1.00*nullif(meal_rating,0)/meal_consumed) >= 0.30 then 2 when (1.00*nullif(meal_rating,0)/meal_consumed) >= 0.10 then 0.50*2 else 0 end as feedback_smr,
     case when meal_fps >= 4.5 then 2 when meal_fps >= 2 then 0.50*2 else 0 end as feedback_meal_fps,
     case when vas_fps >= 4.5 then 2 when vas_fps >= 2 then 0.50*2 else 0 end as feedback_vas_fps,
     case when retained_user = 1 then 2 else 0 end as Loyalty_repeat_customer,
-    case when total_referrals > 1 then 2 when total_referrals = 1 then 0.50*2 then 0 end as loyalty_referred,
-    case when total_converted_referrals > 1 then 2 when total_converted_referrals = 1 then 0.50*2 then 0 end as loyalty_earned,
+    case when total_referrals > 1 then 2 when total_referrals = 1 then 0.50*2 else 0 end as loyalty_referred,
+    case when total_converted_referrals > 1 then 2 when total_converted_referrals = 1 then 0.50*2 else 0 end as loyalty_earned,
     case when on_time_payments_on_last_3_payments >=3 then 0 when on_time_payments_on_last_3_payments = 2 then 0.66*0 when on_time_payments_on_last_3_payments = 1 then 0.33*0 else 0 end as transaction_pays_rent_within_due_date,
-    case when (1.00*shared_preference / meal_consumed) >= 0.50 then 3 when (1.00*shared_preference / meal_consumed) >= 0.40 then 0.75*3 when (1.00*shared_preference / meal_consumed) >= 0.30 then 0.50*3 when (1.00*shared_preference / meal_consumed) >= 0.20 then 0.25*3 else 0 end as transaction_preference_shared,
-    case when (1.00*meal_consumed / available_meal) >= 0.70 then 1 when (1.00*meal_consumed / available_meal) >= 0.20 then (1.00*meal_consumed / available_meal)*1 else 0 end as transaction_meals_consumed,
+    case when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.50 then 3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.40 then 0.75*3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.30 then 0.50*3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.20 then 0.25*3 else 0 end as transaction_preference_shared,
+    case when (1.00*nullif(meal_consumed,0) / available_meal) >= 0.70 then 1 when (1.00*nullif(meal_consumed,0) / available_meal) >= 0.20 then (1.00*nullif(meal_consumed,0) / available_meal)*1 else 0 end as transaction_meals_consumed,
     case when vas_ov >= 100 then 3 when vas_ov >= 50 then 0.50*3 when vas_ov >=1 then 0.25*3 else 0 end as vas_aov,
     case when vas_orders >= 5 then 3 when vas_orders>=3 then 0.50*3 when vas_orders>=1 then 0.25*3 else 0 end as vas_no_of_orders
     from base
@@ -37,8 +37,8 @@ view: user_engagement_preto {
     case when meal_fps >= 4.5 then 3 when meal_fps >= 2 then 0.50*3 else 0 end as feedback_meal_fps,
     case when vas_fps >= 4.5 then 3 when vas_fps >= 2 then 0.50*3 else 0 end as feedback_vas_fps,
     case when retained_user = 1 then 3 else 0 end as Loyalty_repeat_customer,
-    case when total_referrals > 1 then 2 when total_referrals = 1 then 0.50*2 then 0 end as loyalty_referred,
-    case when total_converted_referrals > 1 then 2 when total_converted_referrals = 1 then 0.50*2 then 0 end as loyalty_earned,
+    case when total_referrals > 1 then 2 when total_referrals = 1 then 0.50*2 else 0 end as loyalty_referred,
+    case when total_converted_referrals > 1 then 2 when total_converted_referrals = 1 then 0.50*2 else 0 end as loyalty_earned,
     case when on_time_payments_on_last_3_payments >=3 then 3 when on_time_payments_on_last_3_payments = 2 then 0.66*3 when on_time_payments_on_last_3_payments = 1 then 0.33*3 else 0 end as transaction_pays_rent_within_due_date,
     case when (1.00*shared_preference / meal_consumed) >= 0.50 then 3 when (1.00*shared_preference / meal_consumed) >= 0.40 then 0.75*3 when (1.00*shared_preference / meal_consumed) >= 0.30 then 0.50*3 when (1.00*shared_preference / meal_consumed) >= 0.20 then 0.25*3 else 0 end as transaction_preference_shared,
     case when (1.00*meal_consumed / available_meal) >= 0.70 then 3 when (1.00*meal_consumed / available_meal) >= 0.20 then (1.00*meal_consumed / available_meal)*3 else 0 end as transaction_meals_consumed,
@@ -53,8 +53,8 @@ view: user_engagement_preto {
     case when meal_fps >= 4.5 then 2.5 when meal_fps >= 2 then 0.50*2.5 else 0 end as feedback_meal_fps,
     case when vas_fps >= 4.5 then 2.5 when vas_fps >= 2 then 0.50*2.5 else 0 end as feedback_vas_fps,
     case when retained_user = 1 then 3 else 0 end as Loyalty_repeat_customer,
-    case when total_referrals > 1 then 2 when total_referrals = 1 then 0.50*2 then 0 end as loyalty_referred,
-    case when total_converted_referrals > 1 then 2 when total_converted_referrals = 1 then 0.50*2 then 0 end as loyalty_earned,
+    case when total_referrals > 1 then 2 when total_referrals = 1 then 0.50*2 else 0 end as loyalty_referred,
+    case when total_converted_referrals > 1 then 2 when total_converted_referrals = 1 then 0.50*2 else 0 end as loyalty_earned,
     case when on_time_payments_on_last_3_payments >=3 then 1.5 when on_time_payments_on_last_3_payments = 2 then 0.66*1.5 when on_time_payments_on_last_3_payments = 1 then 0.33*1.5 else 0 end as transaction_pays_rent_within_due_date,
     case when (1.00*shared_preference / meal_consumed) >= 0.50 then 3 when (1.00*shared_preference / meal_consumed) >= 0.40 then 0.75*3 when (1.00*shared_preference / meal_consumed) >= 0.30 then 0.50*3 when (1.00*shared_preference / meal_consumed) >= 0.20 then 0.25*3 else 0 end as transaction_preference_shared,
     case when (1.00*meal_consumed / available_meal) >= 0.70 then 2 when (1.00*meal_consumed / available_meal) >= 0.20 then (1.00*meal_consumed / available_meal)*2 else 0 end as transaction_meals_consumed,
@@ -81,9 +81,11 @@ view: user_engagement_preto {
     join total on total.student_id=base.student_id
     )
 
-    select student_id, case when engagement_score < 0.20 then "0-20" when engagement_score < 0.40 then "20-40"
-    when engagement_score < 0.60 then "40-60" when engagement_score < 0.80 then "60-80" when engagement_score >= 0.80 then ">=80" ens as score
+    select student_id, case when engagement_score < 0.20 then '0-20' when engagement_score < 0.40 then '20-40'
+    when engagement_score < 0.60 then '40-60' when engagement_score < 0.80 then '60-80' when engagement_score >= 0.80 then '>=80' end as score
     from scores
+
+
 
 
     ;;
