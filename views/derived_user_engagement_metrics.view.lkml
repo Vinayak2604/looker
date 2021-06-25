@@ -196,6 +196,17 @@ view: derived_user_engagement_metrics {
     sql:nullif(sum(${vas_orders}),0) ;;
   }
 
+  dimension: total_complaints1_copy {
+    type: number
+    sql:sum(${total_complaints}) over(PARTITION BY ${student_id})  ;;
+  }
+
+  dimension: total_vas_orders_copy {
+    type: number
+    sql:sum(${vas_orders}) over(PARTITION BY ${student_id}) ;;
+  }
+
+
   measure: vas_aov {
     type: number
     sql:avg(case when ${vas_ov} >0 then ${vas_ov} end) ;;
@@ -283,6 +294,10 @@ view: derived_user_engagement_metrics {
     sql: sum(${on_time_payments_on_last_3_payments})   ;;
   }
 
+  measure: students {
+    type: count_distinct
+    sql: ${student_id} ;;
+  }
 
 
 
