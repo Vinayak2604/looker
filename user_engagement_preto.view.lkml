@@ -15,7 +15,7 @@ view: user_engagement_preto {
     group by 1,2,3,4,5
     ),
 
-    engagement as ( select_student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
+    engagement as ( select student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
     case when (1.00*vas_rating / vas_orders) >=0.70 then (1.00*vas_rating / vas_orders)*2 else 0 end as feedback_vas_order_rating,
     case when (1.00*meal_rating/meal_consumed) >= 0.30 then 2 when (1.00*meal_rating/meal_consumed) >= 0.10 then 0.50*2 else 0 end as feedback_smr,
     case when meal_fps >= 4.5 then 2 when meal_fps >= 2 then 0.50*2 else 0 end as feedback_meal_fps,
@@ -31,7 +31,7 @@ view: user_engagement_preto {
     from base
     ),
 
-    experience as ( select_student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
+    experience as ( select student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
     case when (1.00*vas_rating / vas_orders) >=0.70 then (1.00*vas_rating / vas_orders)*3 else 0 end as feedback_vas_order_rating,
     case when (1.00*meal_rating/meal_consumed) >= 0.30 then 3 when (1.00*meal_rating/meal_consumed) >= 0.10 then 0.50*3 else 0 end as feedback_smr,
     case when meal_fps >= 4.5 then 3 when meal_fps >= 2 then 0.50*3 else 0 end as feedback_meal_fps,
@@ -47,7 +47,7 @@ view: user_engagement_preto {
     from base
     ),
 
-    total as ( select_student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
+    total as ( select student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
     case when (1.00*vas_rating / vas_orders) >=0.70 then (1.00*vas_rating / vas_orders)*2.5 else 0 end as feedback_vas_order_rating,
     case when (1.00*meal_rating/meal_consumed) >= 0.30 then 2.5 when (1.00*meal_rating/meal_consumed) >= 0.10 then 0.50*2.5 else 0 end as feedback_smr,
     case when meal_fps >= 4.5 then 2.5 when meal_fps >= 2 then 0.50*2.5 else 0 end as feedback_meal_fps,
