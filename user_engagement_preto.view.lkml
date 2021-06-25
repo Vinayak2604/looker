@@ -79,7 +79,7 @@ view: user_engagement_preto {
     join engagement on engagement.student_id=base.student_id
     join experience on experience.student_id=base.student_id
     join total on total.student_id=base.student_id
-    ),
+    )
 
     select student_id, case when engagement_score < 0.20 then "0-20" when engagement_score < 0.40 then "20-40"
     when engagement_score < 0.60 then "40-60" when engagement_score < 0.80 then "60-80" when engagement_score >= 0.80 then ">=80" ens as score
