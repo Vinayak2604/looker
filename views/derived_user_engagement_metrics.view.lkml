@@ -1,12 +1,12 @@
 view: derived_user_engagement_metrics {
   sql_table_name: stanza.derived_user_engagement_metrics ;;
 
-  # dimension: key {
-  #   primary_key: yes
-  #   type: string
-  #   hidden: yes
-  #   sql: concat(${TABLE}.date,' ', ${TABLE}.student_id) ;;
-  # }
+  dimension: key {
+    primary_key: yes
+    type: string
+    hidden: yes
+    sql: concat(${TABLE}.date,' ', ${TABLE}.student_id) ;;
+  }
 
   dimension_group: date {
     type: time
@@ -134,7 +134,6 @@ view: derived_user_engagement_metrics {
   dimension: student_id {
     type: string
     sql: ${TABLE}.student_id ;;
-    primary_key: yes
   }
 
   dimension: total_complaints {
@@ -196,18 +195,6 @@ view: derived_user_engagement_metrics {
     type: number
     sql:nullif(sum(${vas_orders}),0) ;;
   }
-
-  dimension: total_complaints1_copy {
-    type: number
-    sql:sum(${total_complaints}) over(PARTITION BY ${student_id})  ;;
-
-  }
-
-  dimension: total_vas_orders_copy {
-    type: number
-    sql:sum(${vas_orders}) over(PARTITION BY ${student_id}) ;;
-  }
-
 
   measure: vas_aov {
     type: number
@@ -545,7 +532,7 @@ view: derived_user_engagement_metrics {
   }
 
 
-  measure: engagement_score {
+  measure: engagement_score_27 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${engagement_feedback_vas_order_rating},0)+
     coalesce(${engagement_feedback_smr},0)+coalesce(${engagement_feedback_meal_fps},0)+
@@ -557,7 +544,7 @@ view: derived_user_engagement_metrics {
     value_format: "0.00%"
   }
 
-  measure: experience_score {
+  measure: experience_score_36 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${experience_feedback_vas_order_rating},0)+
           coalesce(${experience_feedback_smr},0)+coalesce(${experience_feedback_meal_fps},0)+
@@ -569,7 +556,7 @@ view: derived_user_engagement_metrics {
     value_format: "0.00%"
   }
 
-  measure: total_score {
+  measure: total_score_32 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${total_feedback_vas_order_rating},0)+
           coalesce(${total_feedback_smr},0)+coalesce(${total_feedback_meal_fps},0)+
