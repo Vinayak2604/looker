@@ -82,8 +82,17 @@ view: user_engagement_preto {
     join total on total.student_id=base.student_id
     )
 
-    select student_id, case when engagement_score < 0.20 then '0-20' when engagement_score < 0.40 then '20-40'
-    when engagement_score < 0.60 then '40-60' when engagement_score < 0.80 then '60-80' when engagement_score >= 0.80 then '>=80' end as score
+    select student_id, case when engagement_score < 0.20 then '0-20' when engagement_score < 0.30 then '20-30'
+    when engagement_score < 0.40 then '30-40' when engagement_score < 0.50 then '40-50' when engagement_score < 0.60 then '50-60'
+    when engagement_score < 0.70 then '60-70' when engagement_score < 0.80 then '70-80'when engagement_score >= 0.80 then '>=80' end as engagement_score,
+
+    case when experience_score < 0.20 then '0-20' when experience_score < 0.30 then '20-30'
+    when experience_score < 0.40 then '30-40' when experience_score < 0.50 then '40-50' when experience_score < 0.60 then '50-60'
+    when experience_score < 0.70 then '60-70' when experience_score < 0.80 then '70-80'when experience_score >= 0.80 then '>=80' end as experience_score,
+
+    case when total_score < 0.20 then '0-20' when total_score < 0.30 then '20-30'
+    when total_score < 0.40 then '30-40' when total_score < 0.50 then '40-50' when total_score < 0.60 then '50-60'
+    when total_score < 0.70 then '60-70' when total_score < 0.80 then '70-80'when total_score >= 0.80 then '>=80' end as total_score,
     from scores
 
 
@@ -103,9 +112,19 @@ view: user_engagement_preto {
     sql: ${TABLE}.student_id ;;
   }
 
-  dimension: score {
+  dimension: engagement_score {
     type: string
-    sql: ${TABLE}.score ;;
+    sql: ${TABLE}.engagement_score ;;
+  }
+
+  dimension: experience_score {
+    type: string
+    sql: ${TABLE}.experience_score ;;
+  }
+
+  dimension: total_score {
+    type: string
+    sql: ${TABLE}.total_score ;;
   }
 
   measure: students {
