@@ -92,7 +92,7 @@ view: user_engagement_preto {
 
     case when total_score < 0.20 then '0-20' when total_score < 0.30 then '20-30'
     when total_score < 0.40 then '30-40' when total_score < 0.50 then '40-50' when total_score < 0.60 then '50-60'
-    when total_score < 0.70 then '60-70' when total_score < 0.80 then '70-80'when total_score >= 0.80 then '>=80' end as total_score,
+    when total_score < 0.70 then '60-70' when total_score < 0.80 then '70-80'when total_score >= 0.80 then '>=80' end as total_score
     from scores
 
 
