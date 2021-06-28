@@ -368,7 +368,7 @@ view: derived_user_engagement_metrics {
 
   measure: engagement_feedback_rating_on_tickets_closed {
     type: number
-    sql: case when (${closed_satisfied_complaints} >= 0.75 OR coalesce(${closed_complaints},0) =  0) then 2
+    sql: case when ${closed_satisfied_complaints} >= 0.75 OR coalesce(${closed_complaints},0) = 0 then 2
           when ${closed_satisfied_complaints} >= 0.50 then 0.75*2
           when ${closed_satisfied_complaints} >= 0.25 then 0.50*2
             else 0 end ;;
