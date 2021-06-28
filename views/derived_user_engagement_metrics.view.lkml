@@ -639,7 +639,7 @@ view: derived_user_engagement_metrics {
   measure: engagement_score_31 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${engagement_feedback_vas_order_rating},0)+
-    coalesce(${engagement_feedback_rating_on_tickets_closed},0))+coalesce(${engagement_feedback_rating_on_tickets_resolved},0))+
+    coalesce(${engagement_feedback_rating_on_tickets_closed},0)+coalesce(${engagement_feedback_rating_on_tickets_resolved},0)+
     coalesce(${engagement_feedback_smr},0)+coalesce(${engagement_feedback_meal_fps},0)+
     coalesce(${engagement_feedback_vas_fps},0)+coalesce(${engagement_loyalty_repeat_customer},0)+
     coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
@@ -652,7 +652,7 @@ view: derived_user_engagement_metrics {
   measure: experience_score_42 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${experience_feedback_vas_order_rating},0)+
-          coalesce(${experience_feedback_rating_on_tickets_closed},0))+coalesce(${experience_feedback_rating_on_tickets_resolved},0))+
+          coalesce(${experience_feedback_rating_on_tickets_closed},0)+coalesce(${experience_feedback_rating_on_tickets_resolved},0)+
           coalesce(${experience_feedback_smr},0)+coalesce(${experience_feedback_meal_fps},0)+
           coalesce(${experience_feedback_vas_fps},0)+coalesce(${experience_loyalty_repeat_customer},0)+
           coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
@@ -665,7 +665,7 @@ view: derived_user_engagement_metrics {
   measure: total_score_37 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${total_feedback_vas_order_rating},0)+
-          coalesce(${total_feedback_rating_on_tickets_closed},0))+coalesce(${total_feedback_rating_on_tickets_resolved},0))+
+          coalesce(${total_feedback_rating_on_tickets_closed},0)+coalesce(${total_feedback_rating_on_tickets_resolved},0)+
           coalesce(${total_feedback_smr},0)+coalesce(${total_feedback_meal_fps},0)+
           coalesce(${total_feedback_vas_fps},0)+coalesce(${total_loyalty_repeat_customer},0)+
           coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
