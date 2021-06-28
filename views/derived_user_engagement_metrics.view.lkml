@@ -286,13 +286,15 @@ view: derived_user_engagement_metrics {
 
   measure: closed_satisfied_complaints {
     type: number
-    sql: 1.00*nullif(sum(case when ${complaint_status} = 'CLOSED' AND  ${satisfied_feedback} = 1 then ${satisfied_feedback} end),0) / sum(case when ${complaint_status} = 'CLOSED' AND ${total_feedback} = 1 then ${total_feedback} end)) ;;
+    sql: 1.00*nullif(sum(case when ${complaint_status} = 'CLOSED' AND  ${satisfied_feedback} = 1 then ${satisfied_feedback} end),0) /
+    sum(case when ${complaint_status} = 'CLOSED' AND ${total_feedback} = 1 then ${total_feedback} end) ;;
     value_format: "0.00%"
   }
 
   measure: resolved_satisfied_complaints {
     type: number
-    sql: 1.00*nullif(sum(case when ${complaint_status} = 'RESOLVED' AND  ${satisfied_feedback} = 1 then ${satisfied_feedback} end),0) / sum(case when ${complaint_status} = 'RESOLVED' AND  ${total_feedback} = 1 then ${total_feedback} end)) ;;
+    sql: 1.00*nullif(sum(case when ${complaint_status} = 'RESOLVED' AND  ${satisfied_feedback} = 1 then ${satisfied_feedback} end),0) /
+    sum(case when ${complaint_status} = 'RESOLVED' AND  ${total_feedback} = 1 then ${total_feedback} end) ;;
     value_format: "0.00%"
   }
 
@@ -368,7 +370,7 @@ view: derived_user_engagement_metrics {
 
   measure: engagement_feedback_rating_on_tickets_closed {
     type: number
-    sql: case when ${closed_satisfied_complaints} >= 0.75 OR nullif(${closed_complaints},0) = 0 then 2
+    sql: case when (${closed_satisfied_complaints} >= 0.75 OR coalesce(${closed_complaints},0) = 0) then 2
           when ${closed_satisfied_complaints} >= 0.50 then 0.75*2
           when ${closed_satisfied_complaints} >= 0.25 then 0.50*2
             else 0 end ;;
