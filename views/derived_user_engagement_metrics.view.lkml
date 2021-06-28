@@ -286,15 +286,15 @@ view: derived_user_engagement_metrics {
 
   measure: closed_satisfied_complaints {
     type: number
-    sql: 1.00*nullif(sum(case when ${complaint_status} = 'CLOSED' AND  ${satisfied_feedback} = 1 then ${satisfied_feedback} end),0) /
-    sum(case when ${complaint_status} = 'CLOSED' AND ${total_feedback} = 1 then ${total_feedback} end) ;;
+    sql: 1.00*nullif(sum(case when ${complaint_status} = 'CLOSED' then ${satisfied_feedback} end),0) /
+    sum(case when ${complaint_status} = 'CLOSED' then ${total_feedback} end) ;;
     value_format: "0.00%"
   }
 
   measure: resolved_satisfied_complaints {
     type: number
-    sql: 1.00*nullif(sum(case when ${complaint_status} = 'RESOLVED' AND  ${satisfied_feedback} = 1 then ${satisfied_feedback} end),0) /
-    sum(case when ${complaint_status} = 'RESOLVED' AND  ${total_feedback} = 1 then ${total_feedback} end) ;;
+    sql: 1.00*nullif(sum(case when ${complaint_status} = 'RESOLVED'  then ${satisfied_feedback} end),0) /
+    sum(case when ${complaint_status} = 'RESOLVED'  ${total_feedback} end) ;;
     value_format: "0.00%"
   }
 
