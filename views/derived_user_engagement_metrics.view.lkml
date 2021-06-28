@@ -300,13 +300,11 @@ view: derived_user_engagement_metrics {
   measure: closed_complaints {
     type: number
     sql: sum(case when ${complaint_status} = 'CLOSED' then ${total_complaints} end) ;;
-    value_format: "0.00%"
   }
 
   measure: resolved_complaints {
     type: number
     sql: sum(case when ${complaint_status} = 'RESOLVED' then ${total_complaints} end) ;;
-    value_format: "0.00%"
   }
 
 
