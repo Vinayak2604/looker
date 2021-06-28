@@ -128,6 +128,21 @@ view: user_engagement_preto {
     sql: ${TABLE}.student_id ;;
   }
 
+  dimension: residence {
+    type: string
+    sql: ${TABLE}.residence ;;
+  }
+
+  dimension: city {
+    type: string
+    sql: ${TABLE}.city ;;
+  }
+
+  dimension: micromarket {
+    type: string
+    sql: ${TABLE}.micromarket ;;
+  }
+
   dimension: engagement_score {
     type: string
     sql: ${TABLE}.engagement_score ;;
