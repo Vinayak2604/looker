@@ -210,10 +210,10 @@ view: derived_food_inventory {
     }
 
 
-    # dimension: top_10_brand_name{
-    #   type: string
-    #   sql:  CASE WHEN ${yes_no_field} = 'Yes' then ${property_name} else 'Others' end;;
-    #   order_by_field: min_rank
-    # }
+     dimension: top_10_brand_name{
+       type: string
+       sql:  CASE WHEN ${yes_no_field} = 'Yes' then ${property_name} else 'Others' end;;
+      # order_by_field: min_rank
+    }
 
   }
