@@ -123,63 +123,63 @@ view: user_engagement_categories {
 
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
           'complaint' as category, engagement_complaints as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
           'feedback' as category, engagement_feedback as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
           'loyalty' as category, engagement_loyalty as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
           'transaction' as category, engagement_transaction as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
           'vas' as category, engagement_vas as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
           'complaint' as category, experience_complaints as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
           'feedback' as category, experience_feedback as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
           'loyalty' as category, experience_loyalty as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
           'transaction' as category, experience_transaction as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
           'vas' as category, experience_vas as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
           'complaint' as category, total_complaints as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
           'feedback' as category, total_feedback as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
           'loyalty' as category, total_loyalty as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
           'transaction' as category, total_transaction as score
-          from from scores)
+          from scores)
           union
           (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
           'vas' as category, total_vas as score
-          from from scores)
+          from scores)
 
 
 
@@ -251,10 +251,6 @@ view: user_engagement_categories {
       sql: ${score} ;;
     }
 
-    measure: student_idd {
-      type: min
-      sql: ${student_id} ;;
-    }
 
     measure: total_students {
     type: count_distinct
