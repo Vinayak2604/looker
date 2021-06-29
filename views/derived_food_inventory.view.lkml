@@ -184,10 +184,11 @@ view: derived_food_inventory {
   #   sql: case when ${Rank}<10 then ${location_name} else 'Other' end;;
   }
 
-  view: top_10_brands {
+  view: top_brands {
     derived_table: {
-      sql: select location_name, rank() over (partition by location_name,location_type order by sum(avail_stock_value) DESC) as rnk
-           from stanza.derived_food_inventory;;
+      sql: select location_name, RANK () over ( order by sum(avail_stock_value) DESC) as rnk
+           from stanza.derived_food_inventory
+          group by 1;;
     }
 
     dimension: property_name {
@@ -203,16 +204,16 @@ view: derived_food_inventory {
     }
 
 
-    dimension: top_10_brand{
+    dimension: yes_no_field{
       type: yesno
-      sql: ${TABLE}.rnk<10 ;;
+      sql: ${TABLE}.rnk<11 ;;
     }
 
 
-    dimension: top_10_brand_name{
-      type: string
-      sql:  CASE WHEN ${top_10_brand} = 'Yes' then ${property_name} else 'Other' end;;
-      # order_by_field: min_rank
-    }
+    # dimension: top_10_brand_name{
+    #   type: string
+    #   sql:  CASE WHEN ${yes_no_field} = 'Yes' then ${property_name} else 'Others' end;;
+    #   order_by_field: min_rank
+    # }
 
   }

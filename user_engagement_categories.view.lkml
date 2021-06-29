@@ -106,11 +106,12 @@ view: user_engagement_categories {
           join engagement on engagement.student_id=base.student_id
           join experience on experience.student_id=base.student_id
           join total on total.student_id=base.student_id
-          ),
+          )
 
 
 
           select student_id,type,category,score, avg(score) over(partition by type, category ) avg_score
+          from
           (
           (select scores.student_id,  'engagement' as type,
           'complaint' as category, engagement_complaints as score
