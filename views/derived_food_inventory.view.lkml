@@ -161,4 +161,25 @@ view: derived_food_inventory {
 
   }
 
-}
+  # measure: rank {
+  #   type: number
+  #   sql:  select rnk
+  #         from (select ${location_name}, rank() over (partition by ${location_name},${location_type} order by sum(${avail_stock_value} DESC) as rnk
+  #         from stanza.derived_food_inventory)) ;;
+  # }
+
+  # dimension: top_10_brand{
+  #   type: yesno
+  #   sql: ${rank}<10 ;;
+
+  # }
+
+  dimension: top_10_name {
+    type: string
+    sql: case when rnk<10 then ${location_name} else 'Other' end
+          from (select ${location_name}, rank() over (partition by ${location_name},${location_type} order by sum(${avail_stock_value}) DESC) as rnk
+          from stanza.derived_food_inventory));;
+
+    }
+
+  }

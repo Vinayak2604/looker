@@ -120,16 +120,79 @@ view: user_engagement_categories {
 
 
 
-          select scores.student_id, scores.residence,scores.city, scores.micromarket, engagement_complaints, engagement_feedback,
-          engagement_loyalty, engagement_transaction,  engagement_vas,
 
-          experience_complaints, experience_feedback,
-          experience_loyalty, experience_transaction,  experience_vas,
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          'complaint' as category, engagement_complaints as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          'feedback' as category, engagement_feedback as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          'loyalty' as category, engagement_loyalty as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          'transaction' as category, engagement_transaction as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          'vas' as category, engagement_vas as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          'complaint' as category, experience_complaints as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          'feedback' as category, experience_feedback as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          'loyalty' as category, experience_loyalty as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          'transaction' as category, experience_transaction as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          'vas' as category, experience_vas as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          'complaint' as category, total_complaints as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          'feedback' as category, total_feedback as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          'loyalty' as category, total_loyalty as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          'transaction' as category, total_transaction as score
+          from from scores)
+          union
+          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          'vas' as category, total_vas as score
+          from from scores)
 
-          total_complaints,  total_feedback,
-          total_loyalty, total_transaction,  total_vas
 
-          from scores
+
+--          # select scores.student_id, scores.residence,scores.city, scores.micromarket, engagement_complaints, engagement_feedback,
+--          # engagement_loyalty, engagement_transaction,  engagement_vas,
+
+--          # experience_complaints, experience_feedback,
+--          # experience_loyalty, experience_transaction,  experience_vas,
+--
+--          # total_complaints,  total_feedback,
+--          # total_loyalty, total_transaction,  total_vas
+
+--          # from scores
 
 
 
@@ -164,87 +227,43 @@ view: user_engagement_categories {
       sql: ${TABLE}.micromarket ;;
     }
 
-    dimension: engagement_complaints {
+    dimension: type {
       type: number
-      sql: ${TABLE}.engagement_complaints ;;
+      sql: ${TABLE}.type ;;
     }
 
-    dimension: engagement_feedback {
+    dimension: category {
       type: number
-      sql: ${TABLE}.engagement_feedback ;;
-    }
-
-    dimension: engagement_loyalty {
-      type: number
-      sql: ${TABLE}.engagement_loyalty ;;
-    }
-
-    dimension: engagement_transaction {
-      type: number
-      sql: ${TABLE}.engagement_transaction ;;
-    }
-
-    dimension: engagement_vas {
-      type: number
-      sql: ${TABLE}.engagement_vas ;;
-    }
-
-    dimension: experience_complaints {
-      type: number
-      sql: ${TABLE}.experience_complaints ;;
-    }
-
-    dimension: experience_feedback {
-      type: number
-      sql: ${TABLE}.experience_feedback ;;
-    }
-
-    dimension: experience_loyalty {
-      type: number
-      sql: ${TABLE}.experience_loyalty ;;
-    }
-
-    dimension: experience_transaction {
-      type: number
-      sql: ${TABLE}.experience_transaction ;;
-    }
-
-    dimension: experience_vas {
-      type: number
-      sql: ${TABLE}.experience_vas ;;
+      sql: ${TABLE}.category ;;
     }
 
 
-    dimension: total_complaints {
+    dimension: score {
       type: number
-      sql: ${TABLE}.total_complaints ;;
-    }
-
-    dimension: total_feedback {
-      type: number
-      sql: ${TABLE}.total_feedback ;;
-    }
-
-    dimension: total_loyalty {
-      type: number
-      sql: ${TABLE}.total_loyalty ;;
-    }
-
-    dimension: total_transaction {
-      type: number
-      sql: ${TABLE}.total_transaction ;;
-    }
-
-    dimension: total_vas {
-      type: number
-      sql: ${TABLE}.total_vas ;;
+      sql: ${TABLE}.score ;;
     }
 
 
 
-      measure: students {
-      type: count_distinct
+
+    measure: scores {
+      type: min
+      sql: ${score} ;;
+    }
+
+    measure: student_idd {
+      type: min
       sql: ${student_id} ;;
+    }
+
+    measure: total_students {
+    type: count_distinct
+    sql: ${student_id} ;;
+    }
+
+    measure: avg_score {
+      type: average
+      sql: ${score} ;;
     }
 
   }
