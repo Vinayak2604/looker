@@ -236,6 +236,7 @@ view: user_engagement_categories {
     dimension: avg_score {
       type: number
       sql: ${TABLE}.avg_score ;;
+      value_format: "0.0%"
     }
 
 
@@ -245,10 +246,16 @@ view: user_engagement_categories {
     }
 
 
-  measure: below_avg_score {
-    type: number
-    sql: count(case when ${score} < ${avg_score} then ${student_id} end) ;;
-  }
+    measure: below_avg_student {
+      type: number
+      sql: count(case when ${score} < ${avg_score} then ${student_id} end) ;;
+    }
+
+    measure: below_avg_student_per {
+      type: number
+      sql: 1.00*nullif(${below_avg_student} / ${total_students}  ;;
+      value_format: "0.0%"
+    }
 
 
   }
