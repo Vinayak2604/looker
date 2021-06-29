@@ -228,7 +228,7 @@ view: user_engagement_categories {
     }
 
     dimension: type {
-      type: number
+      type: string
       sql: ${TABLE}.type ;;
     }
 
