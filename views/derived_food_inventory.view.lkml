@@ -174,12 +174,45 @@ view: derived_food_inventory {
 
   # }
 
-  dimension: top_10_name {
-    type: string
-    sql:  case when rnk<10 then ${location_name} else 'Other' end
-          from (select ${location_name}, rank() over (partition by ${location_name},${location_type} order by sum(${avail_stock_value}) desc) as rnk
-          );;
+  # measure: Rank {
+  #   type: number
+  #   sql: rank() over (partition by ${location_name},${location_type} order by sum(${avail_stock_value}) desc);;
 
+  #   }
+  # dimension: top_10_name {
+  #   type: string
+  #   sql: case when ${Rank}<10 then ${location_name} else 'Other' end;;
+  }
+
+  view: top_10_brands {
+    derived_table: {
+      sql: select location_name, rank() over (partition by location_name,location_type order by sum(avail_stock_value) DESC) as rnk
+           from stanza.derived_food_inventory;;
+    }
+
+    dimension: property_name {
+      type: string
+      primary_key: yes
+      sql: ${TABLE}.location_name ;;
+    }
+
+    measure: min_rank{
+      type: min
+      sql: ${TABLE}.rnk;;
+      hidden: yes
+    }
+
+
+    dimension: top_10_brand{
+      type: yesno
+      sql: ${TABLE}.rnk<10 ;;
+    }
+
+
+    dimension: top_10_brand_name{
+      type: string
+      sql:  CASE WHEN ${top_10_brand} = 'Yes' then ${property_name} else 'Other' end;;
+      # order_by_field: min_rank
     }
 
   }

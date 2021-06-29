@@ -19,9 +19,11 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 #   }
 # }
 explore:  derived_food_inventory {
-
+join: top_10_brands {
+  sql_on: ${derived_food_inventory.location_name} = ${top_10_brands.property_name} ;;
+  relationship: many_to_one
 }
-
+}
 explore: derived_food_invoice {
 
 

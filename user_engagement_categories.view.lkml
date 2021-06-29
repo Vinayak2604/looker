@@ -249,10 +249,18 @@ view: user_engagement_categories {
     sql: ${student_id} ;;
     }
 
+
     measure: avg_score {
-      type: average
-      sql: ${score} ;;
+      type: number
+      sql: sum(${score}) / count(case when ${score} > 0 then ${score} end) ;;
+      value_format: "0.00%"
+
     }
+
+  measure: below_avg_score {
+    type: number
+    sql: count(case when ${score} < ${avg_score} then ${student_id} end) ;;
+  }
 
 
   }
