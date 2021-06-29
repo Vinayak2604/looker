@@ -1,6 +1,6 @@
 view: user_engagement_categories {
   derived_table: {
-    sql: with base as (select student_id,residence,city, micromarket,retained_user,total_referrals,total_converted_referrals,on_time_payments_on_last_3_payments,
+    sql: with base as (select student_id,retained_user,total_referrals,total_converted_referrals,on_time_payments_on_last_3_payments,
           sum(total_complaints) total_complaints,
           sum(case when complaint_status = 'CLOSED' then total_complaints end) closed_complaints,
           sum(case when complaint_status = 'RESOLVED' then total_complaints end) resolved_complaints,
@@ -17,7 +17,10 @@ view: user_engagement_categories {
 
           from stanza.derived_user_engagement_metrics
           where {% condition date %} date {% endcondition %}
-          group by 1,2,3,4,5,6,7,8
+          and {% condition residence %} residence {% endcondition %}
+          and {% condition city %} city {% endcondition %}
+          and {% condition micromarket %} micromarket {% endcondition %}
+          group by 1,2,3,4,5
           ),
 
           engagement as ( select student_id, case when total_complaints >= 2 then 0 when total_complaints = 1 then 0.50*3 else 3 end as complaint_complaints_per_month,
@@ -74,7 +77,7 @@ view: user_engagement_categories {
           from base
           ),
 
-          scores as (select base.student_id,residence,city, micromarket,
+          scores as (select base.student_id,
           1.00*(coalesce(engagement.complaint_complaints_per_month,0)) / 3  as engagement_complaints,
           1.00*(coalesce(engagement.feedback_vas_order_rating,0)+coalesce(engagement.feedback_rating_on_tickets_closed,0)+coalesce(engagement.feedback_rating_on_tickets_resolved,0)+
            coalesce(engagement.feedback_smr,0)+coalesce(engagement.feedback_meal_fps,0)+coalesce(engagement.feedback_vas_fps,0)) / 12 as engagement_feedback,
@@ -106,80 +109,69 @@ view: user_engagement_categories {
           ),
 
 
-          avg_scores as (select residence,city, micromarket,avg(engagement_complaints) avg_engagement_complaints, avg(engagement_feedback) avg_engagement_feedback,
-          avg(engagement_loyalty) avg_engagement_loyalty,avg(engagement_transaction) avg_engagement_transaction, avg(engagement_vas) avg_engagement_vas,
 
-          avg(experience_complaints) avg_experience_complaints, avg(experience_feedback) avg_experience_feedback,
-          avg(experience_loyalty) avg_experience_loyalty,avg(experience_transaction) avg_experience_transaction, avg(experience_vas) avg_experience_vas,
-
-          avg(total_complaints) avg_total_complaints, avg(total_feedback) avg_total_feedback,
-          avg(total_loyalty) avg_total_loyalty,avg(total_transaction) avg_total_transaction, avg(total_vas) avg_total_vas
-
-          from scores
-          group by 1,2,3)
-
-
-
-
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          select student_id,type,category,score, avg(score) over(partition by type, category ) avg_score
+          (
+          (select scores.student_id,  'engagement' as type,
           'complaint' as category, engagement_complaints as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          (select scores.student_id,  'engagement' as type,
           'feedback' as category, engagement_feedback as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          (select scores.student_id, 'engagement' as type,
           'loyalty' as category, engagement_loyalty as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          (select scores.student_id, 'engagement' as type,
           'transaction' as category, engagement_transaction as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'engagement' as type,
+          (select scores.student_id,  'engagement' as type,
           'vas' as category, engagement_vas as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          (select scores.student_id,  'experience' as type,
           'complaint' as category, experience_complaints as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          (select scores.student_id,  'experience' as type,
           'feedback' as category, experience_feedback as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          (select scores.student_id, 'experience' as type,
           'loyalty' as category, experience_loyalty as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          (select scores.student_id, 'experience' as type,
           'transaction' as category, experience_transaction as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'experience' as type,
+          (select scores.student_id, 'experience' as type,
           'vas' as category, experience_vas as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          (select scores.student_id, 'total' as type,
           'complaint' as category, total_complaints as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          (select scores.student_id, 'total' as type,
           'feedback' as category, total_feedback as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          (select scores.student_id, 'total' as type,
           'loyalty' as category, total_loyalty as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          (select scores.student_id, 'total' as type,
           'transaction' as category, total_transaction as score
           from scores)
           union
-          (select scores.student_id, scores.residence,scores.city, scores.micromarket, 'total' as type,
+          (select scores.student_id,  'total' as type,
           'vas' as category, total_vas as score
           from scores)
+          )
 
 
 
@@ -202,9 +194,20 @@ view: user_engagement_categories {
 
    }
 
-  parameter: date {
-      type: date
-      convert_tz: no
+    parameter: date {
+        type: date
+      }
+
+    parameter: residence {
+      type: string
+    }
+
+    parameter: city {
+      type: string
+    }
+
+    parameter: micromarket {
+      type: string
     }
 
     dimension: student_id {
@@ -212,20 +215,6 @@ view: user_engagement_categories {
       sql: ${TABLE}.student_id ;;
     }
 
-    dimension: residence {
-      type: string
-      sql: ${TABLE}.residence ;;
-    }
-
-    dimension: city {
-      type: string
-      sql: ${TABLE}.city ;;
-    }
-
-    dimension: micromarket {
-      type: string
-      sql: ${TABLE}.micromarket ;;
-    }
 
     dimension: type {
       type: string
@@ -243,19 +232,17 @@ view: user_engagement_categories {
       sql: ${TABLE}.score ;;
     }
 
+    dimension: avg_score {
+      type: number
+      sql: ${TABLE}.avg_score ;;
+    }
+
 
     measure: total_students {
     type: count_distinct
     sql: ${student_id} ;;
     }
 
-
-    measure: avg_score {
-      type: number
-      sql: sum(${score}) / count(case when ${score} > 0 then ${score} end) ;;
-      value_format: "0.00%"
-
-    }
 
   measure: below_avg_score {
     type: number
