@@ -254,8 +254,12 @@ view: user_engagement_categories {
     measure: below_avg_student_per {
       type: number
       sql: 1.00*nullif(${below_avg_student},0) / ${total_students}  ;;
-      value_format: "0.0%"
+      value_format: "0%"
     }
-
+    measure: above_avg_student_per {
+      type: number
+      sql: 1-nullif(${below_avg_student_per},0)  ;;
+      value_format: "0%"
+    }
 
   }
