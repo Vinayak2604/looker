@@ -233,7 +233,7 @@ view: user_engagement_categories {
     }
 
     dimension: category {
-      type: number
+      type: string
       sql: ${TABLE}.category ;;
     }
 
@@ -241,14 +241,6 @@ view: user_engagement_categories {
     dimension: score {
       type: number
       sql: ${TABLE}.score ;;
-    }
-
-
-
-
-    measure: scores {
-      type: min
-      sql: ${score} ;;
     }
 
 
@@ -261,5 +253,6 @@ view: user_engagement_categories {
       type: average
       sql: ${score} ;;
     }
+
 
   }
