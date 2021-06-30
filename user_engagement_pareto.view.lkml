@@ -1,4 +1,4 @@
-view: user_engagement_preto {
+view: user_engagement_pareto {
   derived_table: {
     sql: with base as (select student_id,residence,city, micromarket,retained_user,total_referrals,total_converted_referrals,on_time_payments_on_last_3_payments,
     sum(total_complaints) total_complaints,
