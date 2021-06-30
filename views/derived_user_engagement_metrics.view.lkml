@@ -294,7 +294,7 @@ view: derived_user_engagement_metrics {
   measure: resolved_satisfied_complaints {
     type: number
     sql: 1.00*nullif(sum(case when ${complaint_status} = 'RESOLVED'  then ${satisfied_feedback} end),0) /
-    sum(case when ${complaint_status} = 'RESOLVED'  ${total_feedback} end) ;;
+    sum(case when ${complaint_status} = 'RESOLVED' then  ${total_feedback} end) ;;
     value_format: "0.00%"
   }
 
