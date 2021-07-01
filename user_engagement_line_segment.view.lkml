@@ -156,6 +156,11 @@ view: user_engagement_line_segment {
       sql: ${TABLE}.experience_score ;;
     }
 
+  measure: engagement_scores {
+    type: number
+    sql: ${TABLE}.engagement_score ;;
+  }
+
 
     measure: students {
       type: count_distinct
