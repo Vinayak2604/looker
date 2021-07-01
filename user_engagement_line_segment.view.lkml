@@ -184,4 +184,14 @@ view: user_engagement_line_segment {
       sql: ${residence} ;;
     }
 
+  measure: eng_scores {
+    type: number
+    sql: ${TABLE}.eng_score ;;
+  }
+
+  measure: exp_scores {
+    type: number
+    sql: ${TABLE}.exp_score ;;
+  }
+
   }
