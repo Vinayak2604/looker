@@ -109,6 +109,8 @@ view: user_engagement_line_segment {
           when experience_score < 0.60 then '1' when experience_score < 0.70 then '2'when experience_score < 0.80 then '3' when experience_score < 0.90 then '4'
           when experience_score < 1 then '5'  end as experience_score
 
+           from scores
+
 
           ;;
 
