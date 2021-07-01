@@ -249,7 +249,7 @@ view: user_engagement_categories_residence {
 
     measure: below_avg_residence {
       type: number
-      sql: count(case when ${score} < ${avg_score} then ${residence_name} end) ;;
+      sql: count(distinct case when ${score} < ${avg_score} then ${residence_name} end) ;;
     }
 
     measure: below_avg_residence_per {
