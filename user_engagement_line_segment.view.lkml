@@ -116,6 +116,9 @@ view: user_engagement_line_segment {
           when engagement_score < 0.60 then '1' when engagement_score < 0.70 then '2'when engagement_score < 0.80 then '3' when engagement_score < 0.90 then '4'
           when engagement_score < 1 then '5'  end as engagement_score,
           (0.5 - (1-engagement_score)) as eng_score,
+          engagement,
+          experience,
+
 
 
           case when experience_score < 0.10 then '-5' when experience_score < 0.20 then '-4'
