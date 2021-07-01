@@ -243,7 +243,7 @@ view: user_engagement_categories_residence {
 
     measure: total_residences {
       type: count_distinct
-      sql: ${residence} ;;
+      sql: ${residence_name} ;;
     }
 
 
