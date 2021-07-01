@@ -263,4 +263,39 @@ view: user_engagement_categories_residence {
       value_format: "0%"
     }
 
+
+  measure: lowest_score {
+    type: min
+    sql: ${score}  ;;
+    value_format: "0%"
+  }
+
+  measure: score_25_percentile {
+    type: percentile
+    percentile: 25
+    sql: ${score}  ;;
+    value_format: "0%"
+  }
+
+  measure: median_score {
+    type: median
+    sql: ${score}  ;;
+    value_format: "0%"
+  }
+
+
+  measure: score_75_percentile {
+    type: percentile
+    percentile: 75
+    sql: ${score}  ;;
+    value_format: "0%"
+  }
+
+  measure: highest_score {
+    type: max
+    sql: ${score}  ;;
+    value_format: "0%"
+  }
+
+
   }
