@@ -91,7 +91,20 @@ view: user_engagement_line_segment {
           coalesce(total.feedback_rating_on_tickets_closed,0)+coalesce(total.feedback_rating_on_tickets_resolved,0)+
           coalesce(total.feedback_smr,0)+coalesce(total.feedback_meal_fps,0)+coalesce(total.feedback_vas_fps,0)+
           coalesce(total.Loyalty_repeat_customer,0)+coalesce(total.loyalty_referred,0)+coalesce(total.loyalty_earned,0)+coalesce(total.transaction_pays_rent_within_due_date,0)+coalesce(total.transaction_preference_shared,0) +
-          coalesce(total.transaction_meals_consumed,0)+coalesce(total.vas_aov,0)+coalesce(total.vas_no_of_orders,0)) / 36.5 total_score
+          coalesce(total.transaction_meals_consumed,0)+coalesce(total.vas_aov,0)+coalesce(total.vas_no_of_orders,0)) / 36.5 total_score,
+
+           (coalesce(engagement.complaint_complaints_per_month,0)+coalesce(engagement.feedback_vas_order_rating,0)+
+          coalesce(engagement.feedback_rating_on_tickets_closed,0)+coalesce(engagement.feedback_rating_on_tickets_resolved,0)+
+          coalesce(engagement.feedback_smr,0)+coalesce(engagement.feedback_meal_fps,0)+coalesce(engagement.feedback_vas_fps,0)+
+          coalesce(engagement.Loyalty_repeat_customer,0)+coalesce(engagement.loyalty_referred,0)+coalesce(engagement.loyalty_earned,0)+coalesce(engagement.transaction_pays_rent_within_due_date,0)+coalesce(engagement.transaction_preference_shared,0) +
+          coalesce(engagement.transaction_meals_consumed,0)+coalesce(engagement.vas_aov,0)+coalesce(engagement.vas_no_of_orders,0)) engagement,
+
+          (coalesce(experience.complaint_complaints_per_month,0)+coalesce(experience.feedback_vas_order_rating,0)+
+          coalesce(experience.feedback_rating_on_tickets_closed,0)+coalesce(experience.feedback_rating_on_tickets_resolved,0)+
+          coalesce(experience.feedback_smr,0)+coalesce(experience.feedback_meal_fps,0)+coalesce(experience.feedback_vas_fps,0)+
+          coalesce(experience.Loyalty_repeat_customer,0)+coalesce(experience.loyalty_referred,0)+coalesce(experience.loyalty_earned,0)+coalesce(experience.transaction_pays_rent_within_due_date,0)+coalesce(experience.transaction_preference_shared,0) +
+          coalesce(experience.transaction_meals_consumed,0)+coalesce(experience.vas_aov,0)+coalesce(experience.vas_no_of_orders,0)) experience
+
           from base
           join engagement on engagement.student_id=base.student_id
           join experience on experience.student_id=base.student_id
@@ -153,6 +166,18 @@ view: user_engagement_line_segment {
     sql: ${TABLE}.experience_score ;;
   }
 
+  dimension: engagement {
+    type: number
+    sql: ${TABLE}.engagement ;;
+  }
+
+  dimension: experience {
+    type: number
+    sql: ${TABLE}.experience ;;
+  }
+
+
+
   dimension: eng_score {
     type: number
     sql: ${TABLE}.eng_score ;;
@@ -161,16 +186,6 @@ view: user_engagement_line_segment {
   dimension: exp_score {
     type: number
     sql: ${TABLE}.exp_score ;;
-  }
-
-    measure: experience_scores {
-      type: number
-      sql: ${TABLE}.experience_score ;;
-    }
-
-  measure: engagement_scores {
-    type: number
-    sql: ${TABLE}.engagement_score ;;
   }
 
 
@@ -184,14 +199,5 @@ view: user_engagement_line_segment {
       sql: ${residence} ;;
     }
 
-  measure: eng_scores {
-    type: number
-    sql: ${TABLE}.eng_score ;;
-  }
-
-  measure: exp_scores {
-    type: number
-    sql: ${TABLE}.exp_score ;;
-  }
 
   }
