@@ -163,4 +163,9 @@ view: user_engagement_pareto {
     sql: ${student_id} ;;
   }
 
+  measure: residences {
+    type: count_distinct
+    sql: ${residence} ;;
+  }
+
 }
