@@ -222,6 +222,11 @@ view: user_engagement_categories_residence {
       sql: ${TABLE}.category ;;
     }
 
+  dimension: residence_name {
+    type: string
+    sql: ${TABLE}.residence ;;
+  }
+
 
     dimension: score {
       type: number
@@ -244,12 +249,12 @@ view: user_engagement_categories_residence {
 
     measure: below_avg_residence {
       type: number
-      sql: count(case when ${score} < ${avg_score} then ${residence} end) ;;
+      sql: count(case when ${score} < ${avg_score} then ${residence_name} end) ;;
     }
 
     measure: below_avg_residence_per {
       type: number
-      sql: 1.00*nullif(${below_avg_residence},0) / ${total_residences}  ;;
+      sql: 1.00*nullif(${below_avg_residence},0) / ${residence_name}  ;;
       value_format: "0%"
     }
     measure: above_avg_residence_per {
