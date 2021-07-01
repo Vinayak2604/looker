@@ -231,6 +231,7 @@ view: user_engagement_categories {
     dimension: score {
       type: number
       sql: ${TABLE}.score ;;
+      value_format: "0.0%"
     }
 
     dimension: avg_score {
