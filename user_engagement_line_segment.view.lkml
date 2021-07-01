@@ -146,7 +146,12 @@ view: user_engagement_line_segment {
       sql: ${TABLE}.engagement_score ;;
     }
 
-    dimension: experience_score {
+  dimension: experience_score {
+    type: string
+    sql: ${TABLE}.experience_score ;;
+  }
+
+    measure: experience_scores {
       type: string
       sql: ${TABLE}.experience_score ;;
     }
