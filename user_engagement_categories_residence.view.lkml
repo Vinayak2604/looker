@@ -254,7 +254,7 @@ view: user_engagement_categories_residence {
 
     measure: below_avg_residence_per {
       type: number
-      sql: 1.00*nullif(${below_avg_residence},0) / ${residence_name}  ;;
+      sql: 1.00*nullif(${below_avg_residence},0) / ${total_residences}  ;;
       value_format: "0%"
     }
     measure: above_avg_residence_per {
