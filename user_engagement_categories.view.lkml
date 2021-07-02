@@ -266,34 +266,38 @@ view: user_engagement_categories {
     }
 
 
-  measure: avg_0_20 {
-    type: average
-    sql:case when ${score} < 0.20 then${score} end ;;
+  measure: lowest_score {
+    type: min
+    sql: ${score}  ;;
     value_format: "0%"
   }
 
-  measure: avg_20_40 {
-    type: average
-    sql:case when ${score} >= 0.20 AND ${score} <0.40 then ${score} end ;;
+  measure: score_25_percentile {
+    type: percentile
+    percentile: 25
+    sql: ${score}  ;;
     value_format: "0%"
   }
 
-  measure: avg_40_60 {
-    type: average
-    sql:case when ${score} >= 0.40 AND${score} <0.60 then ${score} end ;;
+  measure: median_score {
+    type: median
+    sql: ${score}  ;;
     value_format: "0%"
   }
 
-  measure: avg_60_80 {
-    type: average
-    sql:case when ${score} >= 0.60 AND${score} <0.80 then ${score} end ;;
+
+  measure: score_75_percentile {
+    type: percentile
+    percentile: 75
+    sql: ${score}  ;;
     value_format: "0%"
   }
 
-  measure: avg_80_100 {
-    type: average
-    sql:case when ${score} >= 0.80 then ${score} end ;;
+  measure: highest_score {
+    type: max
+    sql: ${score}  ;;
     value_format: "0%"
   }
+
 
   }
