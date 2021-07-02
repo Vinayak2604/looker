@@ -292,7 +292,7 @@ view: user_engagement_categories {
 
   measure: avg_80_100 {
     type: average
-    sql:case when ${score} >= 0.80 AND${score} <1 then ${score} end ;;
+    sql:case when ${score} >= 0.80 then ${score} end ;;
     value_format: "0%"
   }
 
