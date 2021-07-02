@@ -28,3 +28,5 @@ explore: derived_food_invoice {
 
 
 }
+
+explore: derived_food_cost {}
