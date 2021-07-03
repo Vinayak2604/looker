@@ -14,6 +14,10 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
   explore: pre_bookings {
 
 }
+
+explore: full_bookings {
+
+}
 #
 #   join: users {
 #     relationship: many_to_one
