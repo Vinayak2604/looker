@@ -420,14 +420,14 @@ view: derived_food_cost {
     sql: (${TABLE}.actual_blended_order+${TABLE}.actual_sl_blended_order) ;;
     value_format: "0"
   }
-  measure: total_budget {
-    type: number
-    sql: ${total_blended_order}*sum(${TABLE}.menu_rate) ;;
-    value_format: "0"
-  }
   measure: sl_budget {
     type: sum
     sql: (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) ;;
+    value_format: "0"
+  }
+  measure: total_budget {
+    type: number
+    sql: sum(${TABLE}.menu_rate)*(${sl_budget}) ;;
     value_format: "0"
   }
 }
