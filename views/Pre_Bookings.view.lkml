@@ -38,6 +38,12 @@ group by 1,2,3,4;;
       value_format: "#,##0"
     }
 
+    measure: avg_pre_bookings {
+      type: number
+      sql: avg(${TABLE}.pre_bookings) ;;
+      value_format: "#,##0"
+    }
+
     measure: refunded {
       type: number
       sql: sum(${TABLE}.refunded) ;;

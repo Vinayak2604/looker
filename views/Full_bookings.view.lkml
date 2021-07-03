@@ -34,6 +34,13 @@ group by 1,2,3,4;;
     value_format: "#,##0"
   }
 
+  measure: avg_bookings {
+    type: number
+    sql: avg(${TABLE}.bookings) ;;
+    value_format: "#,##0"
+  }
+
+
 
 
   dimension_group: created_at {

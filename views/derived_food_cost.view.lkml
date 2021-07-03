@@ -425,9 +425,14 @@ view: derived_food_cost {
     sql: (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) ;;
     value_format: "0"
   }
+  measure: resident_budget {
+    type: sum
+    sql: (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) ;;
+    value_format: "0"
+  }
   measure: total_budget {
     type: number
-    sql: sum(${TABLE}.menu_rate)*(${sl_budget}) ;;
+    sql: (${resident_budget})+(${sl_budget}) ;;
     value_format: "0"
   }
 }
