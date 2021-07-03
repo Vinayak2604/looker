@@ -291,8 +291,9 @@ view: derived_food_cost {
   }
 
   measure: menu_cost {
-    type: number
+    type: sum
     sql: ${TABLE}.menu_cost ;;
+    value_format: "0.0"
   }
 
   dimension_group: menu {
@@ -347,8 +348,9 @@ view: derived_food_cost {
   }
 
   measure: packaging_cost {
-    type: number
+    type: sum
     sql: ${TABLE}.packaging_cost ;;
+    value_format: "0.0"
   }
 
   dimension: ratio {
@@ -383,8 +385,9 @@ view: derived_food_cost {
   }
 
   measure: utility_cost {
-    type: number
+    type: sum
     sql: ${TABLE}.utility_cost ;;
+    value_format: "0.0"
   }
 
   dimension: vendor_id {
@@ -415,5 +418,9 @@ view: derived_food_cost {
     type: sum
     sql: (${TABLE}.actual_blended_order+${TABLE}.actual_sl_blended_order) ;;
     value_format: "0"
+  }
+  measure: total_budget {
+    type: number
+    sql: ${total_blended_order}*(${TABLE}.menu_rate) ;;
   }
 }

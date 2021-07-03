@@ -26,7 +26,7 @@ join: top_brands {
 
 join: blended_orders {
   sql_on: ${derived_food_inventory.location_name} = ${blended_orders.kitchen} ;;
-  relationship: many_to_one
+  relationship: many_to_many
 }
 }
 explore: derived_food_invoice {
