@@ -10,6 +10,10 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
   explore: cac_derived {
 
    }
+
+  explore: pre_bookings {
+
+}
 #
 #   join: users {
 #     relationship: many_to_one
