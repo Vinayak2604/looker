@@ -95,8 +95,9 @@ view: derived_food_cost {
   }
 
   measure: daily_cost {
-    type: number
+    type: sum
     sql: ${TABLE}.daily_cost ;;
+    value_format: "0"
   }
 
   measure: dinner_cost {
@@ -327,7 +328,7 @@ view: derived_food_cost {
   }
 
   measure: menu_rate {
-    type: sum
+    type: number
     sql: ${TABLE}.menu_rate ;;
     value_format: "0"
   }
@@ -421,6 +422,7 @@ view: derived_food_cost {
   }
   measure: total_budget {
     type: number
-    sql: ${total_blended_order}*(${TABLE}.menu_rate) ;;
+    sql: ${total_blended_order}*sum(${TABLE}.menu_rate) ;;
+    value_format: "0"
   }
 }

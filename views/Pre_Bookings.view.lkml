@@ -34,19 +34,19 @@ group by 1,2,3,4;;
 
     measure: pre_bookings {
       type: number
-      sql: sum(${TABLE}.pre_bookings) ;;
+      sql: ${TABLE}.pre_bookings ;;
       value_format: "#,##0"
     }
 
     measure: refunded {
       type: number
-      sql: sum(${TABLE}.refunded) ;;
+      sql: ${TABLE}.refunded ;;
       value_format: "#,##0"
     }
 
     measure: converted {
       type: number
-      sql: sum(${TABLE}.converted) ;;
+      sql: ${TABLE}.converted ;;
       value_format: "#,##0"
     }
 

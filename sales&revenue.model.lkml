@@ -12,12 +12,13 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
    }
 
   explore: pre_bookings {
+    join: full_bookings{
+    relationship: one_to_many
+    type: left_outer
+    sql_on: ${full_bookings.created_at_date}=${pre_bookings.created_at_date} and ${full_bookings.residence}=${pre_bookings.residence};;
+      }
+  }
 
-}
-
-explore: full_bookings {
-
-}
 #
 #   join: users {
 #     relationship: many_to_one
