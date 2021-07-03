@@ -30,7 +30,7 @@ group by 1,2,3,4;;
 
   measure: bookings {
     type: number
-    sql: ${TABLE}.bookings ;;
+    sql: sum(${TABLE}.bookings) ;;
     value_format: "#,##0"
   }
 
