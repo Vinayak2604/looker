@@ -1,69 +1,52 @@
 view: full_bookings {
-  # # You can specify the table name if it's different from the view name:
-  # sql_table_name: my_schema_name.tester ;;
-  #
-  # # Define your dimensions and measures here, like this:
-  # dimension: user_id {
-  #   description: "Unique ID for each user that has ordered"
-  #   type: number
-  #   sql: ${TABLE}.user_id ;;
-  # }
-  #
-  # dimension: lifetime_orders {
-  #   description: "The total number of orders for each user"
-  #   type: number
-  #   sql: ${TABLE}.lifetime_orders ;;
-  # }
-  #
-  # dimension_group: most_recent_purchase {
-  #   description: "The date when each user last ordered"
-  #   type: time
-  #   timeframes: [date, week, month, year]
-  #   sql: ${TABLE}.most_recent_purchase_at ;;
-  # }
-  #
-  # measure: total_lifetime_orders {
-  #   description: "Use this for counting lifetime orders across many users"
-  #   type: sum
-  #   sql: ${lifetime_orders} ;;
-  # }
-}
+  derived_table: {
+    sql:
+          SELECT  DATE(bk.created) as created_at, ct.NAME as city, mm.NAME as micromarket,
+          rs.NAME as residence, count(bk.BOOKING_ID) as bookings from stanza.ims_inventory_BOOKING bk
+left join stanza.ims_inventory_inventory inv on bk.inventory_id= inv.inventory_id
+left join stanza.ims_inventory_RESIDENCE rs on inv.residence_id= rs.residence_id
+left join stanza.ims_inventory_MICROMARKET mm on rs.MICROMARKET_ID = mm.micromarket_id
+left join stanza.ims_inventory_CITY ct on mm.CITY_ID = ct.CITY_ID
+where bk.BOOKING_STATUS not IN ('EXPIRED','IN PROGRESS','PAYMENT_PENDING','SHARED WITH RESIDENT')
+and rs.NAME not ilike '%test%'
+group by 1,2,3,4;;
+  }
 
-# view: full_bookings {
-#   # Or, you could make this view a derived table, like this:
-#   derived_table: {
-#     sql: SELECT
-#         user_id as user_id
-#         , COUNT(*) as lifetime_orders
-#         , MAX(orders.created_at) as most_recent_purchase_at
-#       FROM orders
-#       GROUP BY user_id
-#       ;;
-#   }
-#
-#   # Define your dimensions and measures here, like this:
-#   dimension: user_id {
-#     description: "Unique ID for each user that has ordered"
-#     type: number
-#     sql: ${TABLE}.user_id ;;
-#   }
-#
-#   dimension: lifetime_orders {
-#     description: "The total number of orders for each user"
-#     type: number
-#     sql: ${TABLE}.lifetime_orders ;;
-#   }
-#
-#   dimension_group: most_recent_purchase {
-#     description: "The date when each user last ordered"
-#     type: time
-#     timeframes: [date, week, month, year]
-#     sql: ${TABLE}.most_recent_purchase_at ;;
-#   }
-#
-#   measure: total_lifetime_orders {
-#     description: "Use this for counting lifetime orders across many users"
-#     type: sum
-#     sql: ${lifetime_orders} ;;
-#   }
-# }
+  dimension: city {
+    type: string
+    sql: ${TABLE}.City ;;
+  }
+
+  dimension: micromarket {
+    type: string
+    sql: ${TABLE}.micromarket ;;
+  }
+
+  dimension: residence {
+    type: string
+    sql: ${TABLE}.residence ;;
+  }
+
+
+  measure: bookings {
+    type: number
+    sql: ${TABLE}.pre_bookings ;;
+    value_format: "#,##0"
+  }
+
+
+
+  dimension_group: created_at {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.created_at ;;
+  }
+}
