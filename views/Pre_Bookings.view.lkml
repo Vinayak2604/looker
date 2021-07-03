@@ -65,7 +65,8 @@ group by 1,2,3,4;;
         week,
         month,
         quarter,
-        year
+        year,
+        day_of_week
       ]
       sql: ${TABLE}.created_at ;;
     }
