@@ -12,7 +12,7 @@ join stanza.ims_inventory_LEAD ld on l.phone = ld.PHONE
 left join stanza.ims_inventory_BOOKING bk on l.PHONE = bk.PHONE
 
 left join stanza.ims_inventory_CITY ct on mm.CITY_ID = ct.CITY_ID
-where (l.lead_tag like '%hotLead%' or ld.lead_tag like '%hotLead%')
+where (l.lead_tag like '%hotLead%' or ld.lead_tag like '%hotLead%') and rs.NAME not ilike '%test%'
 group by 1,2,3,4;;
     }
 
