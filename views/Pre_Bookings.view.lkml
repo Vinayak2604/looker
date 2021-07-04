@@ -4,7 +4,8 @@
           SELECT  l.pre_booking_date as created_at, ct.NAME as city, mm.NAME as micromarket,
           l.pre_booking_residence as residence, count(l.id) as pre_bookings,
           sum(case when l.lead_tag like '%refund%'  then 1 else 0 end) as refunded,
-          sum(case when bk.BOOKING_ID is not null then 1 else 0 end) as converted
+          sum(case when bk.BOOKING_ID is not null then 1 else 0 end) as converted,
+          sum(case when DATE(l.pre_booking_date)<=current_date()-1  then 1 else 0 end) as pre_bookings_yday
           from stanza.ims_lead_service_lead_detail l
 left join stanza.ims_inventory_RESIDENCE rs on l.pre_booking_residence= rs.NAME
 left join stanza.ims_inventory_MICROMARKET mm on rs.MICROMARKET_ID = mm.micromarket_id
@@ -71,11 +72,5 @@ group by 1,2,3,4;;
       sql: ${TABLE}.created_at ;;
     }
 
-    measure: pre_bookings_yesterday {
-      type: sum
-      sql: ${pre_bookings} ;;
-      filters: [created_at_date: "yesterday"]
-      value_format: "#,##0"
-    }
 
 }
