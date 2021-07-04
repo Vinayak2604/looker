@@ -142,6 +142,17 @@ view: derived_b2c_bookings {
     filters: [lock_in_months: "<5"]
   }
 
+  measure: lock_in_months_between_5_and_10 {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [lock_in_months: ">=5 and <10"]
+  }
+
+  measure: lock_in_months_greater_than_10 {
+    type: count_distinct
+    sql: ${booking_id} ;;
+    filters: [lock_in_months: ">=10"]
+  }
 
   dimension: locked_in_tenure_rental_revenue {
     type: number
