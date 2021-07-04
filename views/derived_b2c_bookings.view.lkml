@@ -400,6 +400,16 @@ view: derived_b2c_bookings {
     sql: ${downsold_flag} ;;
   }
 
+  dimension: upsold_flag {
+    type: number
+    sql: case when ${bc_monthly_rental_net_of_discount} > ${underwritten_price} then 1 else 0 end ;;
+  }
+
+  measure: total_upsold_bookings {
+    type: sum
+    sql: ${upsold_flag} ;;
+  }
+
   measure: onboarded_beds {
     type: sum
     sql: ${beds} ;;
