@@ -39,6 +39,12 @@ group by 1,2,3,4;;
       value_format: "#,##0"
     }
 
+    measure: pre_bookings_yday {
+      type: number
+      sql: sum(${TABLE}.pre_bookings_yday) ;;
+      value_format: "#,##0"
+    }
+
     measure: avg_pre_bookings {
       type: number
       sql: avg(${TABLE}.pre_bookings) ;;
