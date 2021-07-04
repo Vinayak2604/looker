@@ -70,4 +70,12 @@ group by 1,2,3,4;;
       ]
       sql: ${TABLE}.created_at ;;
     }
+
+    measure: pre_bookings_yesterday {
+      type: sum
+      sql: ${pre_bookings} ;;
+      filters: [created_at_date: "yesterday"]
+      value_format: "#,##0"
+    }
+
 }
