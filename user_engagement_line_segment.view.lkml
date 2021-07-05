@@ -217,9 +217,9 @@ view: user_engagement_line_segment {
     sql: ${residence} ;;
   }
 
-  measure: exp_scores {
+  measure:experience_scores {
     type: number
-    sql: ${exp_score} ;;
+    sql: ${experience_score} ;;
   }
 
 
