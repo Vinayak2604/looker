@@ -202,5 +202,15 @@ view: user_engagement_line_segment {
       sql: ${residence} ;;
     }
 
+  measure: engagement_avg {
+    type: average
+    sql: ${engagement} ;;
+  }
+
+  measure: experience_avg {
+    type: average
+    sql: ${experience} ;;
+  }
+
 
   }

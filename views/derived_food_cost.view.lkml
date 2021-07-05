@@ -9,7 +9,7 @@ view: derived_food_cost {
 
   measure: actual_cost {
     type: sum
-    sql: ${TABLE}.actual_cost ;;
+    sql: (${TABLE}.actual_cost) ;;
     value_format: "0"
   }
 
@@ -410,29 +410,29 @@ view: derived_food_cost {
     type: count
     drill_fields: [micromarket_name, hostel_name, mc_name, vendor_name]
   }
-  measure: delta {
-    type: number
-    sql: (SUM(${TABLE}.budget_cost)-sum(${TABLE}.actual_cost))/nullif(sum(${TABLE}.budget_cost),0) ;;
-    value_format: "0.00"
-  }
   measure: total_blended_order  {
-    type: sum
-    sql: (${TABLE}.actual_blended_order+${TABLE}.actual_sl_blended_order) ;;
+    type: number
+    sql: sum(${TABLE}.actual_blended_order)+sum(${TABLE}.actual_sl_blended_order) ;;
     value_format: "0"
   }
   measure: sl_budget {
-    type: number
-    sql: sum(${TABLE}.actual_sl_blended_order)*sum(${TABLE}.menu_rate) ;;
+    type: sum
+    sql: (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) ;;
     value_format: "0"
   }
   measure: resident_budget {
-    type: number
-    sql: sum(${TABLE}.actual_blended_order)*sum(${TABLE}.menu_rate) ;;
+    type: sum
+    sql: (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) ;;
     value_format: "0"
   }
   measure: total_budget {
     type: number
     sql: (${resident_budget})+(${sl_budget}) ;;
     value_format: "0"
+  }
+  measure: delta {
+    type: number
+    sql: sum(${TABLE}.house_wise_actual_cost)/nullif((${total_budget}),0) ;;
+    value_format: "0.00"
   }
 }
