@@ -186,7 +186,7 @@ view: user_engagement_line_segment {
     sql: ${TABLE}.eng_score ;;
   }
 
-  measure: exp_score {
+  dimension: exp_score {
     type: number
     sql: ${TABLE}.exp_score ;;
   }
@@ -215,6 +215,11 @@ view: user_engagement_line_segment {
   measure: residence_name {
     type: string
     sql: ${residence} ;;
+  }
+
+  measure: exp_scores {
+    type: number
+    sql: ${exp_score} ;;
   }
 
 
