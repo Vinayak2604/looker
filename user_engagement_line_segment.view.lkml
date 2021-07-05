@@ -186,7 +186,7 @@ view: user_engagement_line_segment {
     sql: ${TABLE}.eng_score ;;
   }
 
-  dimension: exp_score {
+  measure: exp_score {
     type: number
     sql: ${TABLE}.exp_score ;;
   }
