@@ -251,6 +251,27 @@ view: user_engagement_categories {
     sql: ${student_id} ;;
     }
 
+  measure: total_students_0_25 {
+    type: count_distinct
+    sql: case when ${score} < 0.25 then ${student_id} end;;
+  }
+
+  measure: total_students_25_50 {
+    type: count_distinct
+    sql: case when ${score} >= 0.25 and ${score} < 0.50 then ${student_id} end ;;
+  }
+
+  measure: total_students_50_75 {
+    type: count_distinct
+    sql: case when ${score} >= 0.50 and ${score} < 0.75 then ${student_id} end ;;
+  }
+
+  measure: total_students_75_100 {
+    type: count_distinct
+    sql: case when ${score} >= 0.75  then ${student_id} end ;;
+  }
+
+
 
     measure: below_avg_student {
       type: number

@@ -2,7 +2,7 @@ view: derived_food_cost {
   sql_table_name: stanza.derived_food_cost ;;
 
   measure: actual_blended_order {
-    type: sum
+    type: number
     sql: ${TABLE}.actual_blended_order ;;
     value_format: "0"
   }
@@ -421,13 +421,13 @@ view: derived_food_cost {
     value_format: "0"
   }
   measure: sl_budget {
-    type: sum
-    sql: (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) ;;
+    type: number
+    sql: sum(${TABLE}.actual_sl_blended_order)*sum(${TABLE}.menu_rate) ;;
     value_format: "0"
   }
   measure: resident_budget {
-    type: sum
-    sql: (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) ;;
+    type: number
+    sql: sum(${TABLE}.actual_blended_order)*sum(${TABLE}.menu_rate) ;;
     value_format: "0"
   }
   measure: total_budget {
