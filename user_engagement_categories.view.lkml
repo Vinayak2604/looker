@@ -242,7 +242,7 @@ view: user_engagement_categories {
 
   dimension: score_bucket {
     type: string
-    sql: case when ${score} < 0.25 then "0-25" when ${score} < 0.50 then "25-50" when ${score} < 0.75 then "50-75" when ${score} < 1 then "75-100" end ;;
+    sql: case when ${score} < 0.25 then '0-25' when ${score} < 0.50 then '25-50' when ${score} < 0.75 then '50-75' when ${score} < 1 then '75-100' end ;;
   }
 
 
