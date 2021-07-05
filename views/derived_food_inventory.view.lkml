@@ -228,6 +228,17 @@ from stanza.derived_food_inventory
       # order_by_field: min_rank
     }
 
+    dimension: consumption_value {
+      type: number
+      sql: ${TABLE}.value ;;
+    }
+
+    dimension: consumption_qty {
+      type: number
+      sql: ${TABLE}.qty ;;
+    }
+
+
   }
 
 
