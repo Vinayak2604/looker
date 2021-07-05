@@ -212,5 +212,10 @@ view: user_engagement_line_segment {
     sql: ${experience} ;;
   }
 
+  dimension: residence_name {
+    type: string
+    sql: ${residence} ;;
+  }
+
 
   }
