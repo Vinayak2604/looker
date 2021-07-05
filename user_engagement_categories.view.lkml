@@ -240,6 +240,11 @@ view: user_engagement_categories {
       value_format: "0.0%"
     }
 
+  dimension: score_bucket {
+    type: string
+    sql: case when ${score} < 0.25 then "0-25" when ${score} < 0.50 then "25-50" when ${score} < 0.75 then "50-75" when ${score} < 1 then "75-100" end ;;
+  }
+
 
     measure: total_students {
     type: count_distinct
