@@ -127,7 +127,7 @@ view: user_engagement_line_segment {
           when experience_score < 1 then '5'  end as experience_score,
           (0.5 - (1-experience_score)) as exp_score,
           avg(engagement) over(partition by student_id) as avg_engagement,
-          avg(experience) over(partition by student_id) as avg_experience,ROW_NUMBER() OVER() as row_number
+          avg(experience) over(partition by student_id) as avg_experience
 
            from scores
 
@@ -176,23 +176,6 @@ view: user_engagement_line_segment {
     sql: ${TABLE}.engagement ;;
   }
 
-  dimension: row_number {
-    type: number
-    sql: ${TABLE}.row_number ;;
-  }
-
-
-
-  dimension: engagement_for_scatter {
-
-    type: number
-
-    sql: ${engagement} + (0.000001 * ${row_number}) ;;
-
-    value_format: "0.00"
-
-  }
-
   dimension: experience {
     type: number
     sql: ${TABLE}.experience ;;
@@ -239,6 +222,26 @@ view: user_engagement_line_segment {
   measure: experience_avg {
     type: average
     sql: ${experience} ;;
+
+    html: {% if user_engagement_line_segment.student_id._is_selected %}
+
+    <font color=white>Student_id:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    {% endif %}
+
+
+    {% if user_engagement_line_segment.residence._is_selected %}
+    <font color=white>residence:{{ user_engagement_line_segment.residence._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    {% endif %}
+
+    {% if user_engagement_line_segment.city._is_selected %}
+    <font color=white>city:{{ user_engagement_line_segment.city._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    {% endif %}
+
+    {% if user_engagement_line_segment.micromarket._is_selected %}
+    <font color=white>micromarket:{{ user_engagement_line_segment.micromarket._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    {% endif %}
+
+    ;;
     value_format: "0.00"
 
   }
@@ -256,32 +259,3 @@ view: user_engagement_line_segment {
 
 
   }
-
-
-
-# measure: experience_avg {
-#   type: average
-#   sql: ${experience} ;;
-
-#   html: {% if user_engagement_line_segment.student_id._is_selected %}
-
-#     <font color=white>Student_id:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-#     {% endif %}
-
-
-#     {% if user_engagement_line_segment.residence._is_selected %}
-#     <font color=white>residence:{{ user_engagement_line_segment.residence._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-#     {% endif %}
-
-#     {% if user_engagement_line_segment.city._is_selected %}
-#     <font color=white>city:{{ user_engagement_line_segment.city._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-#     {% endif %}
-
-#     {% if user_engagement_line_segment.micromarket._is_selected %}
-#     <font color=white>micromarket:{{ user_engagement_line_segment.micromarket._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-#     {% endif %}
-
-#     ;;
-#   value_format: "0.00"
-
-# }
