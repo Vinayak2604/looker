@@ -222,6 +222,16 @@ view: user_engagement_line_segment {
     type: average
     sql: ${experience} ;;
 
+    html: {% if user_engagement_line_segment.student_id._is_selected %}
+
+    <font color=red>Age:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=yellow>Order Count:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+
+    {% else %}
+
+    {{ user_engagement_line_segment.experience_avg._rendered_value }}
+
+    {% endif %};;
+
   }
 
   measure: residence_name {
@@ -234,10 +244,6 @@ view: user_engagement_line_segment {
     sql: ${experience_score} ;;
   }
 
-  measure:experience_actual_number {
-    type: number
-    sql: ${experience} ;;
-  }
 
 
   }
