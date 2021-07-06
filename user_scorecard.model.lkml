@@ -11,7 +11,7 @@ explore: user_scorecard1 {
   join: derived_user_engagement_metrics {
     relationship: one_to_one
     type: left_outer
-    sql_on: ${user_scorecard1.user_id} = ${derived_user_engagement_metrics.student_id} AND ${user_scorecard1.date} = ${user_scorecard1.date} ;;
+    sql_on: ${user_scorecard1.user_id} = ${derived_user_engagement_metrics.student_id} AND ${user_scorecard1.date} = ${derived_user_engagement_metrics.date_date} ;;
     # sql_where:  ;;
   }
 #   join: orders {
