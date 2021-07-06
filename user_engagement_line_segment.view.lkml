@@ -224,7 +224,7 @@ view: user_engagement_line_segment {
 
     html: {% if user_engagement_line_segment.student_id._is_selected %}
 
-    <font color=red>Age:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=yellow>Order Count:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    <font color=white>Age:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
 
     {% else %}
 
