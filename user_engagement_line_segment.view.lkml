@@ -127,7 +127,7 @@ view: user_engagement_line_segment {
           when experience_score < 1 then '5'  end as experience_score,
           (0.5 - (1-experience_score)) as exp_score,
           avg(engagement) over(partition by student_id) as avg_engagement,
-          avg(experience) over(partition by student_id) as avg_experience
+          avg(experience) over(partition by student_id) as avg_experience,ROW_NUMBER() OVER() as row_number
 
            from scores
 
@@ -176,6 +176,23 @@ view: user_engagement_line_segment {
     sql: ${TABLE}.engagement ;;
   }
 
+  dimension: row_number {
+    type: number
+    sql: ${TABLE}.row_number ;;
+  }
+
+
+
+  dimension: engagement_for_scatter {
+
+    type: number
+
+    sql: ${engagement} + (0.000001 * ${row_number}) ;;
+
+    value_format: "0.00"
+
+  }
+
   dimension: experience {
     type: number
     sql: ${TABLE}.experience ;;
@@ -216,6 +233,7 @@ view: user_engagement_line_segment {
   measure: engagement_avg {
     type: average
     sql: ${engagement} ;;
+    value_format: "0.00"
   }
 
   measure: experience_avg {
@@ -241,6 +259,7 @@ view: user_engagement_line_segment {
     {% endif %}
 
     ;;
+    value_format: "0.00"
 
   }
 
