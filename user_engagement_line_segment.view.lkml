@@ -234,5 +234,10 @@ view: user_engagement_line_segment {
     sql: ${experience_score} ;;
   }
 
+  measure:experience_actual_number {
+    type: number
+    sql: ${experience} ;;
+  }
+
 
   }
