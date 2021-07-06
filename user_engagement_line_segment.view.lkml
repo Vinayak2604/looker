@@ -224,7 +224,7 @@ view: user_engagement_line_segment {
 
     html: {% if user_engagement_line_segment.student_id._is_selected %}
 
-    <font color=blue>Student_id:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=blue>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    <font color=white>Student_id:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
 
     {% else %}
 
