@@ -239,9 +239,7 @@ view: user_engagement_line_segment {
 
     {% if user_engagement_line_segment.micromarket._is_selected %}
     <font color=white>micromarket:{{ user_engagement_line_segment.micromarket._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-    {% endif %}
-
-    ;;
+    {% endif %} ;;
     value_format: "0.00"
 
   }
