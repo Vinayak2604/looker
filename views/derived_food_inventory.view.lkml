@@ -161,6 +161,15 @@ view: derived_food_inventory {
 
   }
 
+  dimension: consumption_value {
+    type: number
+    sql: ${TABLE}.cons_value ;;
+  }
+
+  dimension: consumption_qty {
+    type: number
+    sql: ${TABLE}.cons_qty ;;
+  }
   # measure: rank {
   #   type: number
   #   sql:  select rnk
@@ -226,16 +235,6 @@ from stanza.derived_food_inventory
       type: string
       sql:  CASE WHEN ${yes_no_field_kitchen} = 'Yes' then ${property_name} else null end;;
       # order_by_field: min_rank
-    }
-
-    dimension: consumption_value {
-      type: number
-      sql: ${TABLE}.value ;;
-    }
-
-    dimension: consumption_qty {
-      type: number
-      sql: ${TABLE}.qty ;;
     }
 
 

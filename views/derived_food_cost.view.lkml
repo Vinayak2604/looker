@@ -95,7 +95,7 @@ view: derived_food_cost {
   }
 
   measure: daily_cost {
-    type: sum
+    type: average
     sql: ${TABLE}.daily_cost ;;
     value_format: "0"
   }
