@@ -222,29 +222,22 @@ view: user_engagement_line_segment {
     type: average
     sql: ${experience} ;;
 
-    html: {% if user_engagement_line_segment.student_id._is_selected %}
+    html:{ {% if user_engagement_line_segment.student_id._is_selected %}
     <font color=white>Student_id:{{ user_engagement_line_segment.student_id._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-    {% else %}
-    {{ user_engagement_line_segment.experience_avg._rendered_value }}
     {% endif %}
 
     {% if else user_engagement_line_segment.residences._is_selected %}
-    <font color=white>residences:{{ user_engagement_line_segment.residences._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-    {% else %}
-    {{ user_engagement_line_segment.experience_avg._rendered_value }}
+    <font color=white>Residences:{{ user_engagement_line_segment.residences._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
     {% endif %}
 
     {% if else user_engagement_line_segment.city._is_selected %}
-    <font color=white>city:{{ user_engagement_line_segment.city._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-    {% else %}
-    {{ user_engagement_line_segment.experience_avg._rendered_value }}
+    <font color=white>City:{{ user_engagement_line_segment.city._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
     {% endif %}
 
     {% if else user_engagement_line_segment.micromarket._is_selected %}
-    <font color=white>micromarket:{{ user_engagement_line_segment.micromarket._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-    {% else %}
-    {{ user_engagement_line_segment.experience_avg._rendered_value }}
-    {% endif %};;
+    <font color=white>Micromarket:{{ user_engagement_line_segment.micromarket._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    {% endif %}
+    };;
 
   }
 
