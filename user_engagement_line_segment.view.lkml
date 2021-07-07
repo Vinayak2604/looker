@@ -131,6 +131,7 @@ view: user_engagement_line_segment {
           avg(engagement) over(partition by micromarket) as avg_engagement_micromarket
 
            from scores
+          where lower(micromarket) not like '%test%'
 
 
           ;;
