@@ -128,7 +128,8 @@ view: user_engagement_line_segment {
           (0.5 - (1-experience_score)) as exp_score,
           avg(engagement) over(partition by student_id) as avg_engagement,
           avg(experience) over(partition by student_id) as avg_experience,
-          avg(engagement) over(partition by micromarket) as avg_engagement_micromarket
+          avg(engagement) over(partition by micromarket) as avg_engagement_micromarket,
+          avg(engagement) over(partition by residence) as avg_engagement_residence
 
            from scores
           where lower(micromarket) not like '%test%'
@@ -197,6 +198,12 @@ view: user_engagement_line_segment {
   dimension: avg_experience {
     type: number
     sql: ${TABLE}.avg_experience ;;
+  }
+
+  dimension: avg_engagement_residence {
+    type: number
+    sql: ${TABLE}.avg_engagement_residence ;;
+    value_format: "0.00"
   }
 
   dimension: avg_engagement_micromarket {
