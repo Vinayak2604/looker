@@ -75,19 +75,19 @@ view: user_engagement_line_segment {
           ),
 
           scores as (select base.student_id,residence,city, micromarket,
-          1.000000000*(coalesce(engagement.complaint_complaints_per_month,0)+coalesce(engagement.feedback_vas_order_rating,0)+
+          1.00*(coalesce(engagement.complaint_complaints_per_month,0)+coalesce(engagement.feedback_vas_order_rating,0)+
           coalesce(engagement.feedback_rating_on_tickets_closed,0)+coalesce(engagement.feedback_rating_on_tickets_resolved,0)+
           coalesce(engagement.feedback_smr,0)+coalesce(engagement.feedback_meal_fps,0)+coalesce(engagement.feedback_vas_fps,0)+
           coalesce(engagement.Loyalty_repeat_customer,0)+coalesce(engagement.loyalty_referred,0)+coalesce(engagement.loyalty_earned,0)+coalesce(engagement.transaction_pays_rent_within_due_date,0)+coalesce(engagement.transaction_preference_shared,0) +
           coalesce(engagement.transaction_meals_consumed,0)+coalesce(engagement.vas_aov,0)+coalesce(engagement.vas_no_of_orders,0)) / 31 engagement_score,
 
-          1.000000000*(coalesce(experience.complaint_complaints_per_month,0)+coalesce(experience.feedback_vas_order_rating,0)+
+          1.00*(coalesce(experience.complaint_complaints_per_month,0)+coalesce(experience.feedback_vas_order_rating,0)+
           coalesce(experience.feedback_rating_on_tickets_closed,0)+coalesce(experience.feedback_rating_on_tickets_resolved,0)+
           coalesce(experience.feedback_smr,0)+coalesce(experience.feedback_meal_fps,0)+coalesce(experience.feedback_vas_fps,0)+
           coalesce(experience.Loyalty_repeat_customer,0)+coalesce(experience.loyalty_referred,0)+coalesce(experience.loyalty_earned,0)+coalesce(experience.transaction_pays_rent_within_due_date,0)+coalesce(experience.transaction_preference_shared,0) +
           coalesce(experience.transaction_meals_consumed,0)+coalesce(experience.vas_aov,0)+coalesce(experience.vas_no_of_orders,0)) / 42 experience_score,
 
-          1.000000000*(coalesce(total.complaint_complaints_per_month,0)+coalesce(total.feedback_vas_order_rating,0)+
+          1.00*(coalesce(total.complaint_complaints_per_month,0)+coalesce(total.feedback_vas_order_rating,0)+
           coalesce(total.feedback_rating_on_tickets_closed,0)+coalesce(total.feedback_rating_on_tickets_resolved,0)+
           coalesce(total.feedback_smr,0)+coalesce(total.feedback_meal_fps,0)+coalesce(total.feedback_vas_fps,0)+
           coalesce(total.Loyalty_repeat_customer,0)+coalesce(total.loyalty_referred,0)+coalesce(total.loyalty_earned,0)+coalesce(total.transaction_pays_rent_within_due_date,0)+coalesce(total.transaction_preference_shared,0) +
@@ -128,9 +128,9 @@ view: user_engagement_line_segment {
           (0.5 - (1-experience_score)) as exp_score,
           avg(engagement) over(partition by student_id) as avg_engagement,
           avg(experience) over(partition by student_id) as avg_experience,
-          1.000000000*(avg(engagement) over(partition by micromarket)) as avg_engagement_micromarket,
-          1.000000000*(avg(engagement) over(partition by residence)) as avg_engagement_res,
-          rank() over(partition by residence) residence_rank
+          (avg(engagement) over(partition by micromarket)) as avg_engagement_micromarket,
+          (avg(engagement) over(partition by residence)) as avg_engagement_res,
+          rank() over(order by residence)  residence_rank
 
            from scores
           where lower(micromarket) not like '%test%'
