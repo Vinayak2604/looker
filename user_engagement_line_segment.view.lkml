@@ -213,7 +213,7 @@ view: user_engagement_line_segment {
 
   dimension: avg_engagement_micromarket {
     type: number
-    sql: $avg_engagement_mm} + (0.000001*$mm_row_number})  ;;
+    sql: ${avg_engagement_mm} + (0.000001*${mm_row_number})  ;;
     value_format: "0.00"
   }
 
