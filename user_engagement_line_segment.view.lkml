@@ -128,7 +128,8 @@ view: user_engagement_line_segment {
           (0.5 - (1-experience_score)) as exp_score,
           avg(engagement) over(partition by student_id) as avg_engagement,
           avg(experience) over(partition by student_id) as avg_experience,
-          avg(engagement) over(partition by micromarket) as avg_engagement_micromarket
+          avg(engagement) over(partition by micromarket) as avg_engagement_mm,
+          row_number() over(partition by micromarket) mm_row_number
 
            from scores
           where lower(micromarket) not like '%test%'
@@ -199,9 +200,20 @@ view: user_engagement_line_segment {
     sql: ${TABLE}.avg_experience ;;
   }
 
+  dimension: mm_row_number {
+    type: number
+    sql: ${TABLE}.mm_row_number ;;
+  }
+
+  dimension: avg_engagement_mm {
+    type: number
+    sql: ${TABLE}.avg_engagement_mm ;;
+    value_format: "0.00"
+  }
+
   dimension: avg_engagement_micromarket {
     type: number
-    sql: ${TABLE}.avg_engagement_micromarket ;;
+    sql: $avg_engagement_mm} + (0.000001*$mm_row_number})  ;;
     value_format: "0.00"
   }
 
