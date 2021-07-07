@@ -129,7 +129,8 @@ view: user_engagement_line_segment {
           avg(engagement) over(partition by student_id) as avg_engagement,
           avg(experience) over(partition by student_id) as avg_experience,
           1.000000000*(avg(engagement) over(partition by micromarket)) as avg_engagement_micromarket,
-          1.000000000*(avg(engagement) over(partition by residence)) as avg_engagement_residence
+          1.000000000*(avg(engagement) over(partition by residence)) as avg_engagement_res,
+          rank() over(partition by residence) residence_rank
 
            from scores
           where lower(micromarket) not like '%test%'
@@ -200,9 +201,22 @@ view: user_engagement_line_segment {
     sql: ${TABLE}.avg_experience ;;
   }
 
+  dimension: residence_rank {
+    type: number
+    sql: ${TABLE}.residence_rank ;;
+  }
+
+
+  dimension: avg_engagement_res {
+    type: number
+    sql: ${TABLE}.avg_engagement_res ;;
+    value_format: "0.00"
+  }
+
+
   dimension: avg_engagement_residence {
     type: number
-    sql: ${TABLE}.avg_engagement_residence*1.000000000 ;;
+    sql: ${avg_engagement_res}+(0.0000000001*${residence_rank}) ;;
     value_format: "0.00"
   }
 
