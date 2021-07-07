@@ -228,7 +228,7 @@ view: user_engagement_line_segment {
 
   measure: experience_avg {
     type: average
-    sql: ${experience} ;;
+    sql: case when ${experience} is null then null else ${experience} end  ;;
 
     html: {% if user_engagement_line_segment.student_id._is_selected %}
 
@@ -239,13 +239,16 @@ view: user_engagement_line_segment {
     <font color=white>residence:{{ user_engagement_line_segment.residence._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
     {% else %}
 
+    {% if user_engagement_line_segment.micromarket._is_selected %}
+    <font color=white>micromarket:{{ user_engagement_line_segment.micromarket._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
+    {% else %}
+
+
     {% if user_engagement_line_segment.city._is_selected %}
     <font color=white>city:{{ user_engagement_line_segment.city._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
     {% else %}
 
-    {% if user_engagement_line_segment.micromarket._is_selected %}
-    <font color=white>micromarket:{{ user_engagement_line_segment.micromarket._rendered_value }}</font>, <font color=white>experience:{{ user_engagement_line_segment.experience_avg._rendered_value }}</font>
-    {% else %}
+
     {% endif %} {% endif %} {% endif %} {% endif %}  ;;
     value_format: "0.00"
 
