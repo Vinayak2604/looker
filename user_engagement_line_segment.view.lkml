@@ -127,7 +127,8 @@ view: user_engagement_line_segment {
           when experience_score < 1 then '5'  end as experience_score,
           (0.5 - (1-experience_score)) as exp_score,
           avg(engagement) over(partition by student_id) as avg_engagement,
-          avg(experience) over(partition by student_id) as avg_experience
+          avg(experience) over(partition by student_id) as avg_experience,
+          avg(engagement) over(partition by micromarket) as avg_engagement_micromarket
 
            from scores
 
@@ -195,6 +196,12 @@ view: user_engagement_line_segment {
   dimension: avg_experience {
     type: number
     sql: ${TABLE}.avg_experience ;;
+  }
+
+  dimension: avg_engagement_micromarket {
+    type: number
+    sql: ${TABLE}.avg_engagement_micromarket ;;
+    value_format: "0.00"
   }
 
   dimension: exp_score {
