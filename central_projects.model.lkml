@@ -28,6 +28,11 @@ join: blended_orders {
   sql_on: ${derived_food_inventory.location_name} = ${blended_orders.kitchen} ;;
   relationship: many_to_many
 }
+
+join: weighted_avg {
+  sql_on: ${derived_food_inventory.location_name} = ${weighted_avg.location} and ${derived_food_inventory.item_name} = ${weighted_avg.item} ;;
+  relationship: many_to_many
+}
 }
 explore: derived_food_invoice {
 

@@ -268,3 +268,31 @@ view: blended_orders {
   }
 
 }
+
+
+view: weighted_avg {
+  derived_table: {
+    sql:select location_name,item_name,
+        sum(avail_stock_value)/sum(cons_value) as inv_days
+        from stanza.derived_food_inventory
+        group by 1,2 ;;
+    }
+    dimension: location {
+      type: string
+      sql: ${TABLE}.location_name ;;
+
+    }
+
+    dimension: item{
+      type: string
+      sql: ${TABLE}.item_name ;;
+    }
+
+    measure: inv_days {
+      type: number
+      sql: ${TABLE}.inv_days ;;
+    }
+  }
+
+
+
