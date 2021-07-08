@@ -170,6 +170,12 @@ view: derived_food_inventory {
     type: number
     sql: ${TABLE}.cons_qty ;;
   }
+
+  measure: inventory_days {
+    type: sum
+    sql: ${avail_stock_value}/nullif(${consumption_value},0) ;;
+
+  }
   # measure: rank {
   #   type: number
   #   sql:  select rnk
