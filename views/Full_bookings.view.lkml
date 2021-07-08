@@ -46,13 +46,13 @@ group by 1,2,3,4;;
 
   measure: bookings_l3d {
     type: number
-    sql: sum(${TABLE}.bookings_l3d) ;;
+    sql: sum(${TABLE}.bookings_l3d)/3 ;;
     value_format: "#,##0"
   }
 
   measure: bookings_l30d {
     type: number
-    sql: sum(${TABLE}.bookings_l30d) ;;
+    sql: sum(${TABLE}.bookings_l30d)/30 ;;
     value_format: "#,##0"
   }
 
