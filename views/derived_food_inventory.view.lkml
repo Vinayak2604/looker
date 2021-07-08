@@ -186,18 +186,18 @@ view: derived_food_inventory {
   #   type: number
   #   sql: case when ${inventory_days}>0 then 1 else 0 end;;
 
+  # # }
+
+  # measure: weighted_price {
+  #   type: number
+  #   sql: ${inventory_days}*${avail_value} ;;
   # }
 
-  measure: weighted_price {
-    type: number
-    sql: ${inventory_days}*${avail_value} ;;
-  }
+  # measure: weighted_inv_days{
+  #   type: number
+  #   sql: sum(${weighted_price})/sum(${avail_value}) ;;
 
-  measure: weighted_inv_days{
-    type: number
-    sql: sum(${weighted_price})/sum(${avail_value}) ;;
-
-  }
+  # }
 }
 
 
@@ -273,7 +273,8 @@ view: blended_orders {
 view: weighted_avg {
   derived_table: {
     sql:select location_name,item_name,
-        sum(avail_stock_value)/sum(cons_value) as inv_days
+        sum(avail_stock_value)/sum(cons_value) as inv_days,
+        sum(avail_stock_value) as avail_stock_value
         from stanza.derived_food_inventory
         group by 1,2 ;;
     }
@@ -288,11 +289,23 @@ view: weighted_avg {
       sql: ${TABLE}.item_name ;;
     }
 
-    measure: inv_days {
+    dimension: inv_days {
       type: number
       sql: ${TABLE}.inv_days ;;
     }
+    dimension: avail_stock_value {
+      type: number
+      sql: ${TABLE}.avail_stock_value ;;
+    }
+
+    dimension: weighted_price {
+      type: number
+      sql: ${inv_days}*${avail_stock_value} ;;
+    }
+
+    measure: weighted_avg {
+      type: number
+      sql:sum(${weighted_price})/sum(${avail_stock_value}) ;;
+    }
+
   }
-
-
-

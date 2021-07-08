@@ -56,7 +56,7 @@ group by 1,2,3,4;;
 
     measure: pre_bookings_l3d {
       type: number
-      sql: sum(${TABLE}.pre_bookings_l3d)/3 ;;
+      sql: sum(${TABLE}.pre_bookings_l3d) ;;
       value_format: "#,##0"
     }
 
