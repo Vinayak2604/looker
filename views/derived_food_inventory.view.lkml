@@ -188,16 +188,16 @@ view: derived_food_inventory {
 
   # }
 
-  # dimension: weighted_price {
-  #   type: number
-  #   sql: ${weight}*${avail_value} ;;
-  # }
+  measure: weighted_price {
+    type: number
+    sql: ${inventory_days}*${avail_value} ;;
+  }
 
-  # measure: weighted_inv_days{
-  #   type: number
-  #   sql: sum(${weighted_price})/sum(${avail_value}) ;;
+  measure: weighted_inv_days{
+    type: number
+    sql: sum(${weighted_price})/sum(${avail_value}) ;;
 
-  # }
+  }
 }
 
 

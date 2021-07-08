@@ -10,7 +10,7 @@
 left join stanza.ims_inventory_RESIDENCE rs on l.pre_booking_residence= rs.NAME
 left join stanza.ims_inventory_MICROMARKET mm on rs.MICROMARKET_ID = mm.micromarket_id
 join stanza.ims_inventory_LEAD ld on l.phone = ld.PHONE
-left join stanza.ims_inventory_BOOKING bk on l.PHONE = bk.PHONE
+left join stanza.ims_inventory_BOOKING bk on l.PHONE = bk.PHONE and bk.booking_status not in ('SHARED WITH RESIDENT','PAYMENT PENDING', 'IN PROGRESS', 'EXPIRED', 'AUTO CANCELLED')
 
 left join stanza.ims_inventory_CITY ct on mm.CITY_ID = ct.CITY_ID
 where (l.lead_tag like '%hotLead%' or ld.lead_tag like '%hotLead%') and rs.NAME not ilike '%test%'
@@ -48,6 +48,20 @@ group by 1,2,3,4;;
     measure: pre_bookings_yday {
       type: number
       sql: sum(${TABLE}.pre_bookings_yday) ;;
+      value_format: "#,##0"
+    }
+
+    measure: pre_bookings_l3d {
+      type: sum
+      sql: ${pre_bookings} ;;
+      filters: [created_at_date: "3 days ago for 3 days"]
+      value_format: "#,##0"
+    }
+
+    measure: pre_bookings_l30d {
+      type: sum
+      sql: ${pre_bookings} ;;
+      filters: [created_at_date: "30 days ago for 30 days"]
       value_format: "#,##0"
     }
 
