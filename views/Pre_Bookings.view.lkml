@@ -39,6 +39,12 @@ group by 1,2,3,4;;
       value_format: "#,##0"
     }
 
+    measure: pre_bookings_l7d_MA {
+      type: number
+      sql: sum(case when ${created_at_date} >= current_date -7 then ${TABLE}.pre_bookings else 0 end)/7 ;;
+      value_format: "#,##0"
+    }
+
     measure: pre_bookings_yday {
       type: number
       sql: sum(${TABLE}.pre_bookings_yday) ;;
