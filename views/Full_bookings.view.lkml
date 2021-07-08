@@ -3,9 +3,9 @@ view: full_bookings {
     sql:
           SELECT  DATE(bk.created) as created_at, ct.NAME as city, mm.NAME as micromarket,
           rs.NAME as residence, count(bk.BOOKING_ID) as bookings,
-          sum(case when DATE(bk.created)=current_date-1  then 1 else 0 end) as bookings_yday,
-          sum(case when DATE(bk.created)>=current_date-3  then 1 else 0 end) as bookings_l3d,
-          sum(case when DATE(bk.created)>=current_date-30  then 1 else 0 end) as bookings_l30d from stanza.ims_inventory_BOOKING bk
+          count(case when DATE(bk.created)=current_date-1  then bk.BOOKING_ID else 0 end) as bookings_yday,
+          count(case when DATE(bk.created)>=current_date-3  then bk.BOOKING_ID else 0 end) as bookings_l3d,
+          count(case when DATE(bk.created)>=current_date-30  then bk.BOOKING_ID else 0 end) as bookings_l30d from stanza.ims_inventory_BOOKING bk
 left join stanza.ims_inventory_inventory inv on bk.inventory_id= inv.inventory_id
 left join stanza.ims_inventory_RESIDENCE rs on inv.residence_id= rs.residence_id
 left join stanza.ims_inventory_MICROMARKET mm on rs.MICROMARKET_ID = mm.micromarket_id
