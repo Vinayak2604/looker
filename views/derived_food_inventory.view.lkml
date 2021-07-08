@@ -305,7 +305,7 @@ view: weighted_avg {
 
     measure: weighted_avg {
       type: number
-      sql:sum(${weighted_price})/sum(${avail_stock_value}) ;;
+      sql:sum(${weighted_price})/sum(case when ${inv_days}>0 then ${avail_stock_value} else null end) ;;
     }
 
   }
