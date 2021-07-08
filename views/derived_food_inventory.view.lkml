@@ -147,7 +147,12 @@ view: derived_food_inventory {
   measure: total_available_value {
     type: sum
     sql: ${avail_stock_value}  ;;
-    # drill_fields: [item_name, city_name, location_name]
+    drill_fields: [item_sub_category_label,item_name]
+  }
+
+  dimension: avail_value {
+    type: number
+    sql: ${avail_stock_value}  ;;
   }
 
   measure: moving_average_price {
@@ -174,32 +179,29 @@ view: derived_food_inventory {
   measure: inventory_days {
     type: sum
     sql: ${avail_stock_value}/nullif(${consumption_value},0) ;;
-
   }
-  # measure: rank {
-  #   type: number
-  #   sql:  select rnk
-  #         from (select ${location_name}, rank() over (partition by ${location_name},${location_type} order by sum(${avail_stock_value} DESC) as rnk
-  #         from stanza.derived_food_inventory)) ;;
-  # }
 
-  # dimension: top_10_brand{
-  #   type: yesno
-  #   sql: ${rank}<10 ;;
+
+  # dimension: weight {
+  #   type: number
+  #   sql: case when ${inventory_days}>0 then 1 else 0 end;;
 
   # }
 
-  # measure: Rank {
+  # dimension: weighted_price {
   #   type: number
-  #   sql: rank() over (partition by ${location_name},${location_type} order by sum(${avail_stock_value}) desc);;
+  #   sql: ${weight}*${avail_value} ;;
+  # }
 
-  #   }
-  # dimension: top_10_name {
-  #   type: string
-  #   sql: case when ${Rank}<10 then ${location_name} else 'Other' end;;
-  }
+  # measure: weighted_inv_days{
+  #   type: number
+  #   sql: sum(${weighted_price})/sum(${avail_value}) ;;
 
-  view: top_brands {
+  # }
+}
+
+
+view: top_brands {
     derived_table: {
       sql:select location_name,
 case when location_type ='STORE' then RANK () over (partition by location_type order by sum(avail_stock_value) DESC,location_type DESC) end as rnk_store,
@@ -255,14 +257,14 @@ view: blended_orders {
         group by vendor_name;;
 }
 
-dimension: kitchen {
-  type: string
-  sql: ${TABLE}.vendor_name ;;
-}
+  dimension: kitchen {
+    type: string
+    sql: ${TABLE}.vendor_name ;;
+  }
 
-dimension: blended {
-  type: number
-  sql: ${TABLE}.blended_orders ;;
-}
+  dimension: blended {
+    type: number
+    sql: ${TABLE}.blended_orders ;;
+  }
 
 }
