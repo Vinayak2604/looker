@@ -8,8 +8,12 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # # and define the joins that connect them together.
 #
   explore: cac_derived {
-
-   }
+    join: cac_budget{
+    relationship: many_to_one
+    type: left_outer
+    sql_on: ${cac_derived.Subcategory}=${cac_budget.Subcategory} and ${cac_derived.micromarket}=${cac_budget.micromarket};;
+      }
+}
 
   explore: pre_bookings {
     join: full_bookings{
