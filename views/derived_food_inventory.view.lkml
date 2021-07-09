@@ -193,9 +193,18 @@ view: derived_food_inventory {
 
   measure: adjusted_perc {
     type: number
-    sql: sum(${adjusted_value})/nullif(${total_available_value},0) ;;
+    sql: (sum(${adjusted_value})/sum(nullif(${purchase_value},0)))*100 ;;
   }
 
+  dimension: purchase_value {
+    type: number
+    sql: ${TABLE}.purchase_value ;;
+  }
+
+  dimension: purchase_qty {
+    type: number
+    sql: ${TABLE}.purchase_qty ;;
+  }
 
   # dimension: weight {
   #   type: number
