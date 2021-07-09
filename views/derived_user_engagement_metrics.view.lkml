@@ -256,7 +256,7 @@ view: derived_user_engagement_metrics {
 
   measure: meal_fps {
     type: number
-    sql: nullif(sum(COALESCE(${meal_rating_breakfast},0)+COALESCE(${meal_rating_lunch},0)+COALESCE(${meal_rating_evening_snacks},0)+COALESCE(${meal_rating_dinner},0)),0) / nullif(sum(COALESCE(case when ${meal_rating_breakfast} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_lunch} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_evening_snacks} > 0 then 1 end,0)+ COALESCE(case when ${meal_rating_dinner} > 0 then 1 end,0)),0) ;;
+    sql: 1.00*nullif(sum(COALESCE(${meal_rating_breakfast},0)+COALESCE(${meal_rating_lunch},0)+COALESCE(${meal_rating_evening_snacks},0)+COALESCE(${meal_rating_dinner},0)),0) / nullif(sum(COALESCE(case when ${meal_rating_breakfast} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_lunch} > 0 then 1 end,0) + COALESCE(case when ${meal_rating_evening_snacks} > 0 then 1 end,0)+ COALESCE(case when ${meal_rating_dinner} > 0 then 1 end,0)),0) ;;
     value_format: "0.0"
   }
 
@@ -268,13 +268,13 @@ view: derived_user_engagement_metrics {
 
   measure: meal_rating {
     type: number
-    sql: 1.0*nullif(coalesce(${rated_meals},0),0) / coalesce(${total_consumed_meals},0)  ;;
+    sql: 1.00*nullif(coalesce(${rated_meals},0),0) / coalesce(${total_consumed_meals},0)  ;;
     value_format: "0.00%"
   }
 
   measure: consumed_meal_per {
     type: number
-    sql: 1.0*nullif(coalesce(${total_consumed_meals},0),0) / coalesce(${total_available_meals},0)  ;;
+    sql: 1.00*nullif(coalesce(${total_consumed_meals},0),0) / coalesce(${total_available_meals},0)  ;;
     value_format: "0.00%"
   }
 
@@ -287,14 +287,14 @@ view: derived_user_engagement_metrics {
   measure: closed_satisfied_complaints {
     type: number
     sql: 1.00*nullif(sum(case when ${complaint_status} = 'CLOSED' then ${satisfied_feedback} end),0) /
-    sum(case when ${complaint_status} = 'CLOSED' then ${total_feedback} end) ;;
+      sum(case when ${complaint_status} = 'CLOSED' then ${total_feedback} end) ;;
     value_format: "0.00%"
   }
 
   measure: resolved_satisfied_complaints {
     type: number
     sql: 1.00*nullif(sum(case when ${complaint_status} = 'RESOLVED'  then ${satisfied_feedback} end),0) /
-    sum(case when ${complaint_status} = 'RESOLVED' then  ${total_feedback} end) ;;
+      sum(case when ${complaint_status} = 'RESOLVED' then  ${total_feedback} end) ;;
     value_format: "0.00%"
   }
 
@@ -342,29 +342,29 @@ view: derived_user_engagement_metrics {
   measure: all_complaints_per_month {
     type: number
     sql: case when ${total_complaints1} >= 2 then 0
-    when ${total_complaints1} = 1 then 0.50*3
-    else 3 end ;;
+          when ${total_complaints1} = 1 then 0.50*3
+          else 3 end ;;
     value_format: "0.00"
   }
 
   measure: engagement_feedback_vas_order_rating {
     type: number
     sql: case when ${vas_rating1} >= 0.70 then ${vas_rating1}*2
-          else 0 end ;;
+      else 0 end ;;
     value_format: "0.00"
   }
 
   measure: experience_feedback_vas_order_rating {
     type: number
     sql: case when ${vas_rating1} >= 0.70 then ${vas_rating1}*3
-          else 0 end ;;
+      else 0 end ;;
     value_format: "0.00"
   }
 
   measure: total_feedback_vas_order_rating {
     type: number
     sql: case when ${vas_rating1} >= 0.70 then ${vas_rating1}*2.5
-          else 0 end ;;
+      else 0 end ;;
     value_format: "0.00"
   }
 
@@ -427,24 +427,24 @@ view: derived_user_engagement_metrics {
   measure: engagement_feedback_smr {
     type: number
     sql: case when ${meal_rating} >= 0.30 then 2
-    when ${meal_rating} >= 0.10 then 0.50*2
-      else 0 end ;;
+          when ${meal_rating} >= 0.10 then 0.50*2
+            else 0 end ;;
     value_format: "0.00"
   }
 
   measure: experience_feedback_smr{
     type: number
     sql:case when ${meal_rating} >= 0.30 then 3
-    when ${meal_rating} >= 0.10 then 0.50*3
-      else 0 end ;;
+          when ${meal_rating} >= 0.10 then 0.50*3
+            else 0 end ;;
     value_format: "0.00"
   }
 
   measure: total_feedback_smr {
     type: number
     sql:case when ${meal_rating} >= 0.30 then 2.5
-    when ${meal_rating} >= 0.10 then 0.50*2.5
-      else 0 end ;;
+          when ${meal_rating} >= 0.10 then 0.50*2.5
+            else 0 end ;;
     value_format: "0.00"
   }
 
@@ -501,21 +501,21 @@ view: derived_user_engagement_metrics {
   measure: engagement_loyalty_repeat_customer {
     type: number
     sql: case when ${retain_user} = 1 then 2
-            else 0 end ;;
+      else 0 end ;;
     value_format: "0.00"
   }
 
   measure: experience_loyalty_repeat_customer {
     type: number
     sql:case when ${retain_user} = 1 then 3
-            else 0 end ;;
+      else 0 end ;;
     value_format: "0.00"
   }
 
   measure: total_loyalty_repeat_customer {
     type: number
     sql:case when ${retain_user} = 1 then 2.5
-            else 0 end ;;
+      else 0 end ;;
     value_format: "0.00"
   }
 
@@ -523,8 +523,8 @@ view: derived_user_engagement_metrics {
   measure: all_loyalty_referred {
     type: number
     sql: case when ${total_referral} > 1 then 2
-    when ${total_referral} = 1 then 0.50*2
-      else 0 end ;;
+          when ${total_referral} = 1 then 0.50*2
+            else 0 end ;;
     value_format: "0.00"
   }
 
@@ -566,7 +566,7 @@ view: derived_user_engagement_metrics {
 
   measure: all_transaction_preference_shared {
     type: number
-    sql: case when ${shared_preference_per} >= 0.50 then 3
+    sql: case when (${shared_preference_per} >= 0.50 or ${total_preference_available} = 0}) then 3
           when ${shared_preference_per} >= 0.40 then 0.75*3
           when ${shared_preference_per} >= 0.30 then 0.50*3
           when ${shared_preference_per} >= 0.20 then 0.25*3
@@ -639,13 +639,13 @@ view: derived_user_engagement_metrics {
   measure: engagement_score_31 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${engagement_feedback_vas_order_rating},0)+
-    coalesce(${engagement_feedback_rating_on_tickets_closed},0)+coalesce(${engagement_feedback_rating_on_tickets_resolved},0)+
-    coalesce(${engagement_feedback_smr},0)+coalesce(${engagement_feedback_meal_fps},0)+
-    coalesce(${engagement_feedback_vas_fps},0)+coalesce(${engagement_loyalty_repeat_customer},0)+
-    coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
-    coalesce(${engagement_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
-    coalesce(${engagement_transaction_meals_consumed},0)+coalesce(${engagement_vas_aov},0)+
-    coalesce(${all_vas_orders},0)) / 31 ;;
+          coalesce(${engagement_feedback_rating_on_tickets_closed},0)+coalesce(${engagement_feedback_rating_on_tickets_resolved},0)+
+          coalesce(${engagement_feedback_smr},0)+coalesce(${engagement_feedback_meal_fps},0)+
+          coalesce(${engagement_feedback_vas_fps},0)+coalesce(${engagement_loyalty_repeat_customer},0)+
+          coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
+          coalesce(${engagement_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
+          coalesce(${engagement_transaction_meals_consumed},0)+coalesce(${engagement_vas_aov},0)+
+          coalesce(${all_vas_orders},0)) / 31 ;;
     value_format: "0.00%"
   }
 
