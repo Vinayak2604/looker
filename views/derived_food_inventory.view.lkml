@@ -181,6 +181,21 @@ view: derived_food_inventory {
     sql: ${avail_stock_value}/nullif(${consumption_value},0) ;;
   }
 
+  dimension: adjusted_qty {
+    type: number
+    sql: ${TABLE}.adjusted_qty ;;
+  }
+
+  dimension: adjusted_value {
+    type: number
+    sql: ${TABLE}.adjusted_price ;;
+  }
+
+  measure: adjusted_perc {
+    type: number
+    sql: ${adjusted_value}/nullif(${avail_stock_value},0) ;;
+  }
+
 
   # dimension: weight {
   #   type: number
