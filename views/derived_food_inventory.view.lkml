@@ -192,7 +192,7 @@ view: derived_food_inventory {
   }
 
   measure: adjusted_perc {
-    type: number
+    type: sum
     sql: ${adjusted_value}/nullif(${avail_stock_value},0) ;;
   }
 
