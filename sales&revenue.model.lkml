@@ -9,7 +9,7 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 #
   explore: cac_budget {
     join: cac_derived{
-    relationship: one_to_many
+    relationship: one_to_one
     type: left_outer
     sql_on: ${cac_derived.Subcategory}=${cac_budget.Subcategory} and ${cac_derived.micromarket}=${cac_budget.micromarket};;
       }
