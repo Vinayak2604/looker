@@ -7,9 +7,9 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 # # Select the views that should be a part of this model,
 # # and define the joins that connect them together.
 #
-  explore: cac_derived {
-    join: cac_budget{
-    relationship: one_to_one
+  explore: cac_budget {
+    join: cac_derived{
+    relationship: one_to_many
     type: left_outer
     sql_on: ${cac_derived.Subcategory}=${cac_budget.Subcategory} and ${cac_derived.micromarket}=${cac_budget.micromarket};;
       }
