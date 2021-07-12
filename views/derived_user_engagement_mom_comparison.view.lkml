@@ -46,8 +46,27 @@ view: derived_user_engagement_mom_comparison {
     sql: ${TABLE}.type ;;
   }
 
-  measure: Students {
+  measure: students {
     type: count_distinct
     sql: ${student_id} ;;
+  }
+
+
+  measure: above_students {
+    type: count_distinct
+    sql: case when ${score_valuation} = 'Above' then ${student_id} end ;;
+  }
+
+
+  measure: same_students {
+    type: count_distinct
+    sql: case when ${score_valuation} = 'Same' then ${student_id} end ;;
+  }
+
+
+
+  measure: below_students {
+    type: count_distinct
+    sql: case when ${score_valuation} = 'Below' then ${student_id} end ;;
   }
 }
