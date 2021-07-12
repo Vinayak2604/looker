@@ -11,7 +11,7 @@ include: "user_engagement_line_segment.view.lkml"
 # # and define the joins that connect them together.
 #
 explore: derived_user_engagement_metrics  {}
-
+explore: derived_user_engagement_mom_comparison {}
 explore: user_engagement_pareto {}
 
 explore: user_engagement_categories {}
