@@ -566,7 +566,7 @@ view: derived_user_engagement_metrics {
 
   measure: all_transaction_preference_shared {
     type: number
-    sql: case when (${shared_preference_per} >= 0.50 or ${total_preference_available} = 0}) then 3
+    sql: case when (${shared_preference_per} >= 0.50 or ${total_preference_available} = 0) then 3
           when ${shared_preference_per} >= 0.40 then 0.75*3
           when ${shared_preference_per} >= 0.30 then 0.50*3
           when ${shared_preference_per} >= 0.20 then 0.25*3
@@ -674,7 +674,6 @@ view: derived_user_engagement_metrics {
           coalesce(${all_vas_orders},0)) / 36.5 ;;
     value_format: "0.00%"
   }
-
 
 
 }
