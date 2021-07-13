@@ -126,10 +126,10 @@ view: user_engagement_line_segment {
           when experience_score < 0.60 then '1' when experience_score < 0.70 then '2'when experience_score < 0.80 then '3' when experience_score < 0.90 then '4'
           when experience_score < 1 then '5'  end as experience_score,
           (0.5 - (1-experience_score)) as exp_score,
-          avg(engagement) over(partition by student_id) as avg_engagement,
-          avg(experience) over(partition by student_id) as avg_experience,
-          (avg(engagement) over(partition by micromarket)) as avg_engagement_mm,
-          (avg(engagement) over(partition by residence)) as avg_engagement_res,
+          avg(engagement_score) over(partition by student_id) as avg_engagement,
+          avg(experience_score) over(partition by student_id) as avg_experience,
+          (avg(engagement_score) over(partition by micromarket)) as avg_engagement_mm,
+          (avg(experience_score) over(partition by residence)) as avg_engagement_res,
           rank() over(order by residence)  residence_rank,
           rank() over(order by micromarket)  micromarket_rank
 
@@ -216,26 +216,26 @@ view: user_engagement_line_segment {
   dimension: avg_engagement_res {
     type: number
     sql: ${TABLE}.avg_engagement_res ;;
-    value_format: "0.00"
+    value_format: "0%"
   }
 
 
   dimension: avg_engagement_residence {
     type: number
     sql: ${avg_engagement_res}+(0.0000000001*${residence_rank}) ;;
-    value_format: "0.00"
+    value_format: "0%"
   }
 
   dimension: avg_engagement_mm {
     type: number
     sql: ${TABLE}.avg_engagement_mm ;;
-    value_format: "0.00"
+    value_format: "0%"
   }
 
   dimension: avg_engagement_micromarket {
     type: number
     sql: ${avg_engagement_mm}+(0.0000000001*${micromarket_rank}) ;;
-    value_format: "0.00"
+    value_format: "0%"
   }
 
   dimension: exp_score {
@@ -284,7 +284,7 @@ view: user_engagement_line_segment {
 
 
     {% endif %} {% endif %} {% endif %} {% endif %}  ;;
-    value_format: "0.00"
+    value_format: "0%"
 
   }
 
