@@ -180,7 +180,7 @@ view: user_engagement_line_segment {
 
   dimension: engagement {
     type: number
-    sql: ${TABLE}.engagement_score ;;
+    sql: ${TABLE}.engagement_score1 ;;
   }
 
   dimension: experience {
