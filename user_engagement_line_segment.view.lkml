@@ -118,6 +118,7 @@ view: user_engagement_line_segment {
           (0.5 - (1-engagement_score)) as eng_score,
           engagement,
           experience,
+          experience_score as experience_score1,
 
 
 
@@ -183,7 +184,7 @@ view: user_engagement_line_segment {
 
   dimension: experience {
     type: number
-    sql: ${TABLE}.experience ;;
+    sql: ${TABLE}.experience_score1 ;;
   }
 
 
@@ -216,26 +217,26 @@ view: user_engagement_line_segment {
   dimension: avg_engagement_res {
     type: number
     sql: ${TABLE}.avg_engagement_res ;;
-    value_format: "0%"
+    value_format: "0.0%"
   }
 
 
   dimension: avg_engagement_residence {
     type: number
     sql: ${avg_engagement_res}+(0.0000000001*${residence_rank}) ;;
-    value_format: "0%"
+    value_format: "0.0%"
   }
 
   dimension: avg_engagement_mm {
     type: number
     sql: ${TABLE}.avg_engagement_mm ;;
-    value_format: "0%"
+    value_format: "0.0%"
   }
 
   dimension: avg_engagement_micromarket {
     type: number
     sql: ${avg_engagement_mm}+(0.0000000001*${micromarket_rank}) ;;
-    value_format: "0%"
+    value_format: "0.0%"
   }
 
   dimension: exp_score {
@@ -257,7 +258,7 @@ view: user_engagement_line_segment {
   measure: engagement_avg {
     type: average
     sql: ${engagement} ;;
-    value_format: "0.00"
+    value_format: "0.0%"
   }
 
   measure: experience_avg {
@@ -284,7 +285,7 @@ view: user_engagement_line_segment {
 
 
     {% endif %} {% endif %} {% endif %} {% endif %}  ;;
-    value_format: "0%"
+    value_format: "0.0%"
 
   }
 
