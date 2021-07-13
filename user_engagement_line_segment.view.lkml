@@ -181,11 +181,13 @@ view: user_engagement_line_segment {
   dimension: engagement {
     type: number
     sql: ${TABLE}.engagement_score1 ;;
+    value_format: "0.0%"
   }
 
   dimension: experience {
     type: number
     sql: ${TABLE}.experience_score1 ;;
+    value_format: "0.0%"
   }
 
 
