@@ -111,9 +111,9 @@ view: user_engagement_categories_residence {
 
 
           select residence,type,category,score, avg(score) over(partition by type, category ) avg_score,
-          PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY Score)  as score_25_percentile,
-          PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY Score)  as score_50_percentile,
-          PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY Score) as score_75_percentile
+          PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY Score) OVER (ORDER BY Score) as score_25_percentile,
+          PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY Score) OVER (ORDER BY Score) as score_50_percentile,
+          PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY Score) OVER (ORDER BY Score) as score_75_percentile
           from
           (
           (select scores.residence,  'engagement' as type,
@@ -243,23 +243,23 @@ view: user_engagement_categories_residence {
       value_format: "0.0%"
     }
 
-  dimension: score_25_percentile {
-    type: number
-    sql: ${TABLE}.score_25_percentile ;;
-    value_format: "0.00%"
-  }
+    dimension: score_25_percentile {
+      type: number
+      sql: ${TABLE}.score_25_percentile ;;
+      value_format: "0.00%"
+    }
 
-  dimension: score_50_percentile {
-    type: number
-    sql: ${TABLE}.score_50_percentile ;;
-    value_format: "0.00%"
-  }
+    dimension: score_50_percentile {
+      type: number
+      sql: ${TABLE}.score_50_percentile ;;
+      value_format: "0.00%"
+    }
 
-  dimension: score_75_percentile {
-    type: number
-    sql: ${TABLE}.score_75_percentile ;;
-    value_format: "0.00%"
-  }
+    dimension: score_75_percentile {
+      type: number
+      sql: ${TABLE}.score_75_percentile ;;
+      value_format: "0.00%"
+    }
 
 
     measure: total_residences {
@@ -319,25 +319,25 @@ view: user_engagement_categories_residence {
     }
 
 
-  measure: total_residence_0_25 {
-    type: count_distinct
-    sql: case when ${score} < ${score_25_percentile} then ${residence_name} end;;
-  }
+    measure: total_residence_0_25 {
+      type: count_distinct
+      sql: case when ${score} < ${score_25_percentile} then ${residence_name} end;;
+    }
 
-  measure: total_residence_25_50 {
-    type: count_distinct
-    sql: case when ${score} >= ${score_25_percentile} and ${score} < ${score_50_percentile} then ${residence_name} end ;;
-  }
+    measure: total_residence_25_50 {
+      type: count_distinct
+      sql: case when ${score} >= ${score_25_percentile} and ${score} < ${score_50_percentile} then ${residence_name} end ;;
+    }
 
-  measure: total_residence_50_75 {
-    type: count_distinct
-    sql: case when ${score} >= ${score_50_percentile} and ${score} < ${score_75_percentile} then ${residence_name} end ;;
-  }
+    measure: total_residence_50_75 {
+      type: count_distinct
+      sql: case when ${score} >= ${score_50_percentile} and ${score} < ${score_75_percentile} then ${residence_name} end ;;
+    }
 
-  measure: total_residence_75_100 {
-    type: count_distinct
-    sql: case when ${score} >= ${score_75_percentile} then ${residence_name} end ;;
-  }
+    measure: total_residence_75_100 {
+      type: count_distinct
+      sql: case when ${score} >= ${score_75_percentile} then ${residence_name} end ;;
+    }
 
 
 
