@@ -119,6 +119,7 @@ view: user_engagement_line_segment {
           engagement,
           experience,
           experience_score as experience_score1,
+          engagement_score as engagement_score1,
 
 
 
@@ -179,7 +180,7 @@ view: user_engagement_line_segment {
 
   dimension: engagement {
     type: number
-    sql: ${TABLE}.engagement ;;
+    sql: ${TABLE}.engagement_score ;;
   }
 
   dimension: experience {
