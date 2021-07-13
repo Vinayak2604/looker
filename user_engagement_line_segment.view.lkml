@@ -199,11 +199,13 @@ view: user_engagement_line_segment {
   dimension: avg_engagement {
     type: number
     sql: ${TABLE}.avg_engagement ;;
+    value_format: "0.0%"
   }
 
   dimension: avg_experience {
     type: number
     sql: ${TABLE}.avg_experience ;;
+    value_format: "0.0%"
   }
 
   dimension: residence_rank {
