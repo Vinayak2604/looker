@@ -111,9 +111,9 @@ view: user_engagement_categories_residence {
 
 
           select residence,type,category,score, avg(score) over(partition by type, category ) avg_score,
-          PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY Score) OVER (ORDER BY Score) as score_25_percentile,
-          PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY Score) OVER (ORDER BY Score) as score_50_percentile,
-          PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY Score) OVER (ORDER BY Score) as score_75_percentile
+          PERCENTILE_CONT(0.25) OVER(ORDER BY Score) as score_25_percentile,
+          PERCENTILE_CONT(0.50) OVER(ORDER BY Score) as score_50_percentile,
+          PERCENTILE_CONT(0.75) OVER(ORDER BY Score) as score_75_percentile
           from
           (
           (select scores.residence,  'engagement' as type,
