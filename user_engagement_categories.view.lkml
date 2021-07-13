@@ -251,26 +251,6 @@ view: user_engagement_categories {
     sql: ${student_id} ;;
     }
 
-  measure: total_students_0_25 {
-    type: count_distinct
-    sql: case when ${score} < 0.25 then ${student_id} end;;
-  }
-
-  measure: total_students_25_50 {
-    type: count_distinct
-    sql: case when ${score} >= 0.25 and ${score} < 0.50 then ${student_id} end ;;
-  }
-
-  measure: total_students_50_75 {
-    type: count_distinct
-    sql: case when ${score} >= 0.50 and ${score} < 0.75 then ${student_id} end ;;
-  }
-
-  measure: total_students_75_100 {
-    type: count_distinct
-    sql: case when ${score} >= 0.75  then ${student_id} end ;;
-  }
-
 
 
     measure: below_avg_student {
@@ -295,20 +275,27 @@ view: user_engagement_categories {
   measure: lowest_score {
     type: min
     sql: ${score}  ;;
-    value_format: "0%"
+    value_format: "0.00%"
   }
 
   measure: score_25_percentile {
     type: percentile
     percentile: 25
     sql: ${score}  ;;
-    value_format: "0%"
+    value_format: "0.00%"
+  }
+
+  measure: score_50_percentile {
+    type: percentile
+    percentile: 50
+    sql: ${score}  ;;
+    value_format: "0.00%"
   }
 
   measure: median_score {
     type: median
     sql: ${score}  ;;
-    value_format: "0%"
+    value_format: "0.00%"
   }
 
 
@@ -316,14 +303,39 @@ view: user_engagement_categories {
     type: percentile
     percentile: 75
     sql: ${score}  ;;
-    value_format: "0%"
+    value_format: "0.00%"
   }
+
+
 
   measure: highest_score {
     type: max
     sql: ${score}  ;;
-    value_format: "0%"
+    value_format: "0.00%"
   }
+
+
+
+  measure: total_students_0_25 {
+    type: count_distinct
+    sql: case when ${score} < score_25_percentile then ${student_id} end;;
+  }
+
+  measure: total_students_25_50 {
+    type: count_distinct
+    sql: case when ${score} >= score_25_percentile and ${score} < score_50_percentile then ${student_id} end ;;
+  }
+
+  measure: total_students_50_75 {
+    type: count_distinct
+    sql: case when ${score} >= score_50_percentile and ${score} < score_75_percentile then ${student_id} end ;;
+  }
+
+  measure: total_students_75_100 {
+    type: count_distinct
+    sql: case when ${score} >= score_75_percentile  then ${student_id} end ;;
+  }
+
 
 
   }
