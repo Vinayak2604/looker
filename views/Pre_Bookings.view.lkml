@@ -7,7 +7,8 @@
           sum(case when bk.BOOKING_ID is not null then 1 else 0 end) as converted,
           sum(case when DATE(l.pre_booking_date)=current_date-1  then 1 else 0 end) as pre_bookings_yday,
           sum(case when DATE(l.pre_booking_date)>=current_date-3  then 1 else 0 end) as pre_bookings_l3d,
-          sum(case when DATE(l.pre_booking_date)>=current_date-30  then 1 else 0 end) as pre_bookings_l30d
+          sum(case when DATE(l.pre_booking_date)>=current_date-30  then 1 else 0 end) as pre_bookings_l30d,
+          sum(case when DATE(l.pre_booking_date)>=current_date then 1 else 0 end) as pre_bookings_today
 
           from stanza.ims_lead_service_lead_detail l
 left join stanza.ims_inventory_RESIDENCE rs on l.pre_booking_residence= rs.NAME
@@ -45,6 +46,12 @@ group by 1,2,3,4;;
     measure: pre_bookings_l7d_MA {
       type: number
       sql: sum(case when ${created_at_date} >= current_date -7 then ${TABLE}.pre_bookings else 0 end)/7 ;;
+      value_format: "#,##0"
+    }
+
+    measure: pre_bookings_today {
+      type: number
+      sql: sum(${TABLE}.pre_bookings_today);;
       value_format: "#,##0"
     }
 
