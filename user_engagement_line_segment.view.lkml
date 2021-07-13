@@ -131,7 +131,7 @@ view: user_engagement_line_segment {
           avg(engagement_score) over(partition by student_id) as avg_engagement,
           avg(experience_score) over(partition by student_id) as avg_experience,
           (avg(engagement_score) over(partition by micromarket)) as avg_engagement_mm,
-          (avg(experience_score) over(partition by residence)) as avg_engagement_res,
+          (avg(engagement_score) over(partition by residence)) as avg_engagement_res,
           rank() over(order by residence)  residence_rank,
           rank() over(order by micromarket)  micromarket_rank
 
