@@ -110,7 +110,10 @@ view: user_engagement_categories_residence {
 
 
 
-          select residence,type,category,score, avg(score) over(partition by type, category ) avg_score
+          select residence,type,category,score, avg(score) over(partition by type, category ) avg_score,
+          PERCENTILE_CONT(0.25) WITHIN GROUP (ORDER BY Score) OVER (PARTITION BY type,category) as score_25_percentile,
+          PERCENTILE_CONT(0.50) WITHIN GROUP (ORDER BY Score) OVER (PARTITION BY type,category) as score_50_percentile,
+          PERCENTILE_CONT(0.75) WITHIN GROUP (ORDER BY Score) OVER (PARTITION BY type,category) as score_75_percentile
           from
           (
           (select scores.residence,  'engagement' as type,
@@ -222,10 +225,10 @@ view: user_engagement_categories_residence {
       sql: ${TABLE}.category ;;
     }
 
-  dimension: residence_name {
-    type: string
-    sql: ${TABLE}.residence ;;
-  }
+    dimension: residence_name {
+      type: string
+      sql: ${TABLE}.residence ;;
+    }
 
 
     dimension: score {
@@ -264,38 +267,38 @@ view: user_engagement_categories_residence {
     }
 
 
-  measure: lowest_score {
-    type: min
-    sql: ${score}  ;;
-    value_format: "0%"
-  }
+    measure: lowest_score {
+      type: min
+      sql: ${score}  ;;
+      value_format: "0%"
+    }
 
-  measure: score_25_percentile {
-    type: percentile
-    percentile: 25
-    sql: ${score}  ;;
-    value_format: "0%"
-  }
+    measure: score_25_percentile {
+      type: percentile
+      percentile: 25
+      sql: ${score}  ;;
+      value_format: "0%"
+    }
 
-  measure: median_score {
-    type: median
-    sql: ${score}  ;;
-    value_format: "0%"
-  }
+    measure: median_score {
+      type: median
+      sql: ${score}  ;;
+      value_format: "0%"
+    }
 
 
-  measure: score_75_percentile {
-    type: percentile
-    percentile: 75
-    sql: ${score}  ;;
-    value_format: "0%"
-  }
+    measure: score_75_percentile {
+      type: percentile
+      percentile: 75
+      sql: ${score}  ;;
+      value_format: "0%"
+    }
 
-  measure: highest_score {
-    type: max
-    sql: ${score}  ;;
-    value_format: "0%"
-  }
+    measure: highest_score {
+      type: max
+      sql: ${score}  ;;
+      value_format: "0%"
+    }
 
 
   }
