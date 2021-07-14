@@ -75,7 +75,7 @@ view: derived_user_engagement_category_student {
 
   measure: a {
     type: min
-    sql: ${avg_score_student} ;;
+    sql: 0 ;;
   }
 
 
@@ -95,8 +95,8 @@ view: derived_user_engagement_category_student {
   }
 
   measure: e {
-    type: max
-    sql:  ${avg_score_student} ;;
+    type: number
+    sql: ${total_students} ;;
   }
 
 
