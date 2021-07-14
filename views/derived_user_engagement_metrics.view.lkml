@@ -636,11 +636,10 @@ view: derived_user_engagement_metrics {
   }
 
 
-  measure: engagement_score_7 {
+  measure: engagement_score_5 {
     type: number
-    sql: 1.0*(coalesce(${engagement_feedback_smr},0)+
-          coalesce(${all_loyalty_referred},0)+coalesce(${all_transaction_preference_shared},0)
-          ) / 7 ;;
+    sql: 1.0*(coalesce(${engagement_feedback_smr},0)+coalesce(${all_transaction_preference_shared},0)
+          ) / 5 ;;
     value_format: "0.00%"
   }
 

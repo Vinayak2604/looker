@@ -79,7 +79,6 @@ view: user_engagement_categories {
 
           scores as (select base.student_id,
           1.00*(coalesce(engagement.feedback_smr,0)) / 2 as engagement_feedback,
-          1.00*(coalesce(engagement.loyalty_referred,0))/2 engagement_loyalty,
           1.00*(coalesce(engagement.transaction_preference_shared,0))/ 3 as engagement_transaction,
 
           1.00*(coalesce(experience.complaint_complaints_per_month,0)) / 3  as experience_complaints,
@@ -113,10 +112,6 @@ view: user_engagement_categories {
           (
           (select scores.student_id,  'engagement' as type,
           'feedback' as category, engagement_feedback as score
-          from scores)
-          union
-          (select scores.student_id, 'engagement' as type,
-          'loyalty' as category, engagement_loyalty as score
           from scores)
           union
           (select scores.student_id, 'engagement' as type,

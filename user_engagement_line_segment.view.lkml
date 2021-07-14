@@ -75,7 +75,7 @@ view: user_engagement_line_segment {
           ),
 
           scores as (select base.student_id,residence,city, micromarket,
-          1.00*(coalesce(engagement.feedback_smr,0)+coalesce(engagement.loyalty_referred,0)+coalesce(engagement.transaction_preference_shared,0)) / 7 engagement_score,
+          1.00*(coalesce(engagement.feedback_smr,0)+coalesce(engagement.transaction_preference_shared,0)) / 5 engagement_score,
 
           1.00*(coalesce(experience.complaint_complaints_per_month,0)+coalesce(experience.feedback_vas_order_rating,0)+
           coalesce(experience.feedback_rating_on_tickets_closed,0)+coalesce(experience.feedback_rating_on_tickets_resolved,0)+
@@ -89,7 +89,7 @@ view: user_engagement_line_segment {
           coalesce(total.Loyalty_repeat_customer,0)+coalesce(total.loyalty_referred,0)+coalesce(total.loyalty_earned,0)+coalesce(total.transaction_pays_rent_within_due_date,0)+coalesce(total.transaction_preference_shared,0) +
           coalesce(total.transaction_meals_consumed,0)+coalesce(total.vas_aov,0)+coalesce(total.vas_no_of_orders,0)) / 36.5 total_score,
 
-          (coalesce(engagement.feedback_smr,0)+coalesce(engagement.loyalty_referred,0)+coalesce(engagement.transaction_preference_shared,0)) engagement,
+          (coalesce(engagement.feedback_smr,0)+coalesce(engagement.transaction_preference_shared,0)) engagement,
 
           (coalesce(experience.complaint_complaints_per_month,0)+coalesce(experience.feedback_vas_order_rating,0)+
           coalesce(experience.feedback_rating_on_tickets_closed,0)+coalesce(experience.feedback_rating_on_tickets_resolved,0)+
