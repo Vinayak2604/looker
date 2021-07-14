@@ -636,29 +636,24 @@ view: derived_user_engagement_metrics {
   }
 
 
-  measure: engagement_score_31 {
+  measure: engagement_score_7 {
     type: number
-    sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${engagement_feedback_vas_order_rating},0)+
-          coalesce(${engagement_feedback_rating_on_tickets_closed},0)+coalesce(${engagement_feedback_rating_on_tickets_resolved},0)+
-          coalesce(${engagement_feedback_smr},0)+coalesce(${engagement_feedback_meal_fps},0)+
-          coalesce(${engagement_feedback_vas_fps},0)+coalesce(${engagement_loyalty_repeat_customer},0)+
-          coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
-          coalesce(${engagement_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
-          coalesce(${engagement_transaction_meals_consumed},0)+coalesce(${engagement_vas_aov},0)+
-          coalesce(${all_vas_orders},0)) / 31 ;;
+    sql: 1.0*(coalesce(${engagement_feedback_smr},0)+
+          coalesce(${all_loyalty_referred},0)+coalesce(${all_transaction_preference_shared},0)
+          ) / 7 ;;
     value_format: "0.00%"
   }
 
-  measure: experience_score_42 {
+  measure: experience_score_31 {
     type: number
     sql: 1.0*(coalesce(${all_complaints_per_month},0)+coalesce(${experience_feedback_vas_order_rating},0)+
           coalesce(${experience_feedback_rating_on_tickets_closed},0)+coalesce(${experience_feedback_rating_on_tickets_resolved},0)+
-          coalesce(${experience_feedback_smr},0)+coalesce(${experience_feedback_meal_fps},0)+
-          coalesce(${experience_feedback_vas_fps},0)+coalesce(${experience_loyalty_repeat_customer},0)+
-          coalesce(${all_loyalty_referred},0)+coalesce(${all_loyalty_earned},0)+
-          coalesce(${experience_transaction_pays_rent_within_due_date},0)+coalesce(${all_transaction_preference_shared},0)+
+          coalesce(${experience_feedback_meal_fps},0)+
+          coalesce(${experience_feedback_vas_fps},0)+
+          coalesce(${all_loyalty_referred},0)+
+          coalesce(${experience_transaction_pays_rent_within_due_date},0)+
           coalesce(${experience_transaction_meals_consumed},0)+coalesce(${experience_vas_aov},0)+
-          coalesce(${all_vas_orders},0)) / 42 ;;
+          coalesce(${all_vas_orders},0)) / 31 ;;
     value_format: "0.00%"
   }
 

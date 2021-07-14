@@ -78,20 +78,15 @@ view: user_engagement_categories {
           ),
 
           scores as (select base.student_id,
-          1.00*(coalesce(engagement.complaint_complaints_per_month,0)) / 3  as engagement_complaints,
-          1.00*(coalesce(engagement.feedback_vas_order_rating,0)+coalesce(engagement.feedback_rating_on_tickets_closed,0)+coalesce(engagement.feedback_rating_on_tickets_resolved,0)+
-           coalesce(engagement.feedback_smr,0)+coalesce(engagement.feedback_meal_fps,0)+coalesce(engagement.feedback_vas_fps,0)) / 12 as engagement_feedback,
-          1.00*(coalesce(engagement.Loyalty_repeat_customer,0)+coalesce(engagement.loyalty_referred,0)+coalesce(engagement.loyalty_earned,0))/6 engagement_loyalty,
-          1.00*(coalesce(engagement.transaction_pays_rent_within_due_date,0)+coalesce(engagement.transaction_preference_shared,0) +
-          coalesce(engagement.transaction_meals_consumed,0))/ 4 as engagement_transaction,
-          1.00*(coalesce(engagement.vas_aov,0)+coalesce(engagement.vas_no_of_orders,0)) / 6 as  engagement_vas,
+          1.00*(coalesce(engagement.feedback_smr,0)) / 2 as engagement_feedback,
+          1.00*(coalesce(engagement.loyalty_referred,0))/2 engagement_loyalty,
+          1.00*(coalesce(engagement.transaction_preference_shared,0))/ 3 as engagement_transaction,
 
           1.00*(coalesce(experience.complaint_complaints_per_month,0)) / 3  as experience_complaints,
           1.00*(coalesce(experience.feedback_vas_order_rating,0)+coalesce(experience.feedback_rating_on_tickets_closed,0)+coalesce(experience.feedback_rating_on_tickets_resolved,0)+
-          coalesce(experience.feedback_smr,0)+coalesce(experience.feedback_meal_fps,0)+coalesce(experience.feedback_vas_fps,0)) / 18 as experience_feedback,
-          1.00*(coalesce(experience.Loyalty_repeat_customer,0)+coalesce(experience.loyalty_referred,0)+coalesce(experience.loyalty_earned,0))/ 7 as experience_loyalty,
-          1.00*(coalesce(experience.transaction_pays_rent_within_due_date,0)+coalesce(experience.transaction_preference_shared,0) +
-          coalesce(experience.transaction_meals_consumed,0)) / 9 as experience_transaction,
+          coalesce(experience.feedback_meal_fps,0)+coalesce(experience.feedback_vas_fps,0)) / 15 as experience_feedback,
+          1.00*(coalesce(experience.loyalty_referred,0))/ 2 as experience_loyalty,
+          1.00*(coalesce(experience.transaction_pays_rent_within_due_date,0)+coalesce(experience.transaction_meals_consumed,0)) / 6 as experience_transaction,
           1.00*(coalesce(experience.vas_aov,0)+coalesce(experience.vas_no_of_orders,0)) / 5 experience_vas,
 
 
@@ -117,10 +112,6 @@ view: user_engagement_categories {
           from
           (
           (select scores.student_id,  'engagement' as type,
-          'complaint' as category, engagement_complaints as score
-          from scores)
-          union
-          (select scores.student_id,  'engagement' as type,
           'feedback' as category, engagement_feedback as score
           from scores)
           union
@@ -131,11 +122,6 @@ view: user_engagement_categories {
           (select scores.student_id, 'engagement' as type,
           'transaction' as category, engagement_transaction as score
           from scores)
-          union
-          (select scores.student_id,  'engagement' as type,
-          'vas' as category, engagement_vas as score
-          from scores)
-          union
           (select scores.student_id,  'experience' as type,
           'complaint' as category, experience_complaints as score
           from scores)

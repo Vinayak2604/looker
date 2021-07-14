@@ -435,8 +435,8 @@ view: derived_food_cost {
     sql: sum(${TABLE}.house_wise_actual_cost)/nullif((${total_budget}),0) ;;
     value_format: "0.00"
   }
-  dimension: c_month {
+  measure: month_status {
     type: number
-    sql: Month(${TABLE}.menu_date) ;;
+    sql: case when month(${TABLE}.menu_date)=month(current_date()) then ${total_budget} end ;;
   }
 }
