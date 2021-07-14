@@ -44,5 +44,6 @@ view: derived_user_engagement_category_student {
   measure: scores {
     type: average
     sql: ${score};;
+    value_format: "0.0%"
   }
 }
