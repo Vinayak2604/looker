@@ -13,7 +13,7 @@ include: "user_engagement_line_segment.view.lkml"
 explore: derived_user_engagement_metrics  {}
 explore: derived_user_engagement_mom_comparison {}
 explore: user_engagement_pareto {}
-
+explore: derived_user_engagement_category_student {}
 explore: user_engagement_categories {}
 explore: user_engagement_categories_residence {}
 explore: user_engagement_line_segment {}
