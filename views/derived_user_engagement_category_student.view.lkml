@@ -86,7 +86,7 @@ view: derived_user_engagement_category_student {
 
   measure: c {
     type: count_distinct
-    sql: case when ${avg_score_student} = ${score_50_percentile} then ${student_id} end ;;
+    sql: case when ${avg_score_student} <= ${score_50_percentile} then ${student_id} end ;;
   }
 
   measure: d {
