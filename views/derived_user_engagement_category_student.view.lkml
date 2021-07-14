@@ -26,6 +26,11 @@ view: derived_user_engagement_category_student {
     sql: ${TABLE}.month_number ;;
   }
 
+  dimension: lowest_score {
+    type: number
+    sql: ${TABLE}.lowest_score ;;
+  }
+
   dimension: score_25_percentile {
     type: number
     sql: ${TABLE}.score_25_percentile ;;
@@ -39,6 +44,11 @@ view: derived_user_engagement_category_student {
   dimension: score_75_percentile {
     type: number
     sql: ${TABLE}.score_75_percentile ;;
+  }
+
+  dimension: highest_score {
+    type: number
+    sql: ${TABLE}.highest_score ;;
   }
 
   dimension: avg_score_student {
@@ -76,12 +86,12 @@ view: derived_user_engagement_category_student {
 
   measure: a {
     type: count_distinct
-    sql: case when ${avg_score_student} <= ${score_25_percentile} then ${student_id} end ;;
+    sql: case when ${avg_score_student} <= ${lowest_score} then ${student_id} end ;;
   }
 
   measure: b {
     type: count_distinct
-    sql: case when ${avg_score_student} < ${score_50_percentile} then ${student_id} end ;;
+    sql: case when ${avg_score_student} < ${score_25_percentile} then ${student_id} end ;;
   }
 
   measure: c {
@@ -96,7 +106,7 @@ view: derived_user_engagement_category_student {
 
   measure: e {
     type: count_distinct
-    sql:  ${student_id} ;;
+    sql: case when  ${avg_score_student} <= ${highest_score} then ${student_id} end ;;
   }
 
 
@@ -132,5 +142,6 @@ view: derived_user_engagement_category_student {
     sql: 1.00*${e} / ${total_students} ;;
     value_format: "0.0%"
   }
+
 
 }
