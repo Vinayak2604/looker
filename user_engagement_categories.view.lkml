@@ -122,6 +122,7 @@ view: user_engagement_categories {
           (select scores.student_id, 'engagement' as type,
           'transaction' as category, engagement_transaction as score
           from scores)
+          union
           (select scores.student_id,  'experience' as type,
           'complaint' as category, experience_complaints as score
           from scores)
