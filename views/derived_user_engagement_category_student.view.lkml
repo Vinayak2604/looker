@@ -73,30 +73,30 @@ view: derived_user_engagement_category_student {
   }
 
 
-  measure: a {
-    type: min
-    sql: 0 ;;
-  }
 
+  measure: a {
+    type: count_distinct
+    sql: case when ${avg_score_student} <= ${score_25_percentile} then ${student_id} end ;;
+  }
 
   measure: b {
-    type: count_distinct
-    sql: case when ${avg_score_student} < ${score_25_percentile} then ${student_id} end ;;
-  }
-
-  measure: c {
     type: count_distinct
     sql: case when ${avg_score_student} < ${score_50_percentile} then ${student_id} end ;;
   }
 
+  measure: c {
+    type: count_distinct
+    sql: case when ${avg_score_student} = ${score_50_percentile} then ${student_id} end ;;
+  }
+
   measure: d {
     type: count_distinct
-    sql: case when  ${avg_score_student} < ${score_75_percentile} then ${student_id} end ;;
+    sql: case when  ${avg_score_student} <= ${score_75_percentile} then ${student_id} end ;;
   }
 
   measure: e {
-    type: number
-    sql: ${total_students} ;;
+    type: count_distinct
+    sql:  ${student_id} ;;
   }
 
 
