@@ -103,33 +103,33 @@ view: derived_user_engagement_category_student {
 
   measure: below_25_percentile {
     type: number
-    sql: nullif(${a},0) / ${total_students} ;;
+    sql: 1.00*nullif(${a},0) / ${total_students} ;;
     value_format: "0.0%"
   }
 
   measure: 25_50_percentile {
     type: number
-    sql: nullif(${b},0) / ${total_students} ;;
+    sql: 1.00*nullif(${b},0) / ${total_students} ;;
     value_format: "0.0%"
   }
 
 
   measure: 50_percentile {
     type: number
-    sql: nullif(${c},0) / ${total_students} ;;
+    sql: 1.00*nullif(${c},0) / ${total_students} ;;
     value_format: "0.0%"
   }
 
 
   measure: 50_75_percentile {
     type: number
-    sql: nullif(${d},0) / ${total_students} ;;
+    sql: 1.00*nullif(${d},0) / ${total_students} ;;
     value_format: "0.0%"
   }
 
   measure: above_75_percentile {
     type: number
-    sql: nullif(${e},0) / ${total_students} ;;
+    sql: 1.00*nullif(${e},0) / ${total_students} ;;
     value_format: "0.0%"
   }
 
