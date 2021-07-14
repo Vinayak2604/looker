@@ -74,8 +74,8 @@ view: derived_user_engagement_category_student {
 
 
   measure: a {
-    type: number
-    sql: '0.00%' ;;
+    type: min
+    sql: ${avg_score_student} ;;
   }
 
 
@@ -86,7 +86,7 @@ view: derived_user_engagement_category_student {
 
   measure: c {
     type: count_distinct
-    sql: case when ${avg_score_student} < ${score_50_percentile} then ${student_id} end ;;
+    sql: case when ${avg_score_student} <= ${score_50_percentile} then ${student_id} end ;;
   }
 
   measure: d {
@@ -95,8 +95,8 @@ view: derived_user_engagement_category_student {
   }
 
   measure: e {
-    type: number
-    sql:  '100%' ;;
+    type: max
+    sql:  ${avg_score_student} ;;
   }
 
 
