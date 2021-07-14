@@ -1,14 +1,9 @@
 view: derived_user_engagement_category_student {
   sql_table_name: stanza.derived_user_engagement_category_student ;;
 
-  dimension: avg_score_category {
+  dimension: score {
     type: number
-    sql: ${TABLE}.avg_score_category ;;
-  }
-
-  dimension: avg_score_student {
-    type: number
-    sql: ${TABLE}.avg_score_student ;;
+    sql: ${TABLE}.score ;;
   }
 
   dimension: category {
@@ -48,6 +43,6 @@ view: derived_user_engagement_category_student {
 
   measure: scores {
     type: average
-    sql: ${avg_score_category};;
+    sql: ${score};;
   }
 }
