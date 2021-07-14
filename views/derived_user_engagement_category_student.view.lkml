@@ -26,6 +26,26 @@ view: derived_user_engagement_category_student {
     sql: ${TABLE}.month_number ;;
   }
 
+  dimension: score_25_percentile {
+    type: number
+    sql: ${TABLE}.score_25_percentile ;;
+  }
+
+  dimension: score_50_percentile {
+    type: number
+    sql: ${TABLE}.score_50_percentile ;;
+  }
+
+  dimension: score_75_percentile {
+    type: number
+    sql: ${TABLE}.score_75_percentile ;;
+  }
+
+  dimension: avg_score_student {
+    type: number
+    sql: ${TABLE}.avg_score_student ;;
+  }
+
   dimension: month_old {
     type: string
     sql: ${TABLE}.month_old ;;
@@ -46,4 +66,40 @@ view: derived_user_engagement_category_student {
     sql: ${score};;
     value_format: "0.0%"
   }
+
+  measure: total_students {
+    type: count_distinct
+    sql: ${student_id};;
+  }
+
+  measure: below_25_percentile {
+    type: number
+    sql: count(distinct case when ${avg_score_student} < ${score_25_percentile} then ${student_id} end) / ${total_students} ;;
+    value_format: "0.0%"
+  }
+
+  measure: 25_50_percentile {
+    type: number
+    sql: count(distnct case when ${avg_score_student} >= ${score_25_percentile} and ${avg_score_student} < ${score_50_percentile} then ${student_id} end) / ${total_students} ;;
+    value_format: "0.0%"
+  }
+
+  measure: 50_percentile {
+    type: number
+    sql: count(distnct case when ${avg_score_student} = ${score_50_percentile} then ${student_id} end) / ${total_students} ;;
+    value_format: "0.0%"
+  }
+
+  measure: 50_75_percentile {
+    type: number
+    sql: count(distnct case when ${avg_score_student} > ${score_50_percentile} and ${avg_score_student} < ${score_75_percentile} then ${student_id} end) / ${total_students} ;;
+    value_format: "0.0%"
+  }
+
+  measure: above_75_percentile {
+    type: number
+    sql: count(distnct case when ${avg_score_student} >= ${score_75_percentile} then ${student_id} end) / ${total_students} ;;
+    value_format: "0.0%"
+  }
+
 }

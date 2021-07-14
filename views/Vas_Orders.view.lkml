@@ -38,6 +38,7 @@ group by
   }
   dimension: residence_name {
     type: string
+    primary_key: yes
     sql: ${TABLE}.residence_name ;;
   }
   dimension: vendor_name {
@@ -52,7 +53,7 @@ group by
     type: number
     sql: ${TABLE}.user_id ;;
   }
-  dimension_group: order_date {
+  dimension_group: order {
     type: time
     timeframes: [
       raw,
@@ -78,4 +79,8 @@ group by
     type: sum
     sql: ${TABLE}.final_total_amount ;;
   }
+  # measure: aov {
+  #   type: count
+  #   sql: ${TABLE}.item_id ;;
+  # }
   }
