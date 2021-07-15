@@ -3,13 +3,9 @@ view: weighted_avg {
     sql:select location_name,item_name,
         sum(avail_stock_value) as avail_stock,
         sum(cons_value) as consumption,
-        sum(avail_stock_value) over (partition by item_name) as global_stock,
-        sum(cons_value) over (partition by item_name) as global_cons,
-        global_stock/global_cons as inv_days,
-        avail_stock/consumption as inv
+        avail_stock/consumption as inv_days
         from stanza.derived_food_inventory
-        where location_type = 'STORE'
-        group by 1,2,avail_stock_value,cons_value ;;
+        group by 1,2 ;;
   }
 
   dimension: location {
@@ -27,29 +23,24 @@ view: weighted_avg {
     type: number
     sql: ${TABLE}.inv_days ;;
   }
-  dimension: inv {
-    type: number
-    sql: ${TABLE}.inv ;;
-  }
   dimension: avail_stock_value {
     type: number
     sql: ${TABLE}.avail_stock;;
   }
 
-  dimension: global_stock {
-    type: number
-    sql: ${TABLE}.global_stock ;;
-
-  }
-
   dimension: weighted_price {
     type: number
-    sql: ${inv}*${avail_stock_value} ;;
+    sql: ${inv_days}*${avail_stock_value} ;;
+  }
+
+  dimension: consumption {
+    type: number
+    sql: ${TABLE}.consumption ;;
   }
 
   measure: weighted_avg {
     type: number
-    sql:sum(${weighted_price})/sum(case when ${inv}>0 then ${avail_stock_value} else null end) ;;
+    sql:sum(${weighted_price})/nullif(sum(${avail_stock_value}),0) ;;
   }
 
 }

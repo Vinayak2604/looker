@@ -243,14 +243,100 @@ view: derived_rent_collection {
     sql: ${TABLE}.zone ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: [payment_term_name, last_name, first_name]
-  }
-
-  measure: count_of_students {
+  measure: Jul_Invoices {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
-    sql: ${total_payment} ;;
+    sql: ${jul} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Jul_Paid{
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${paid_jul} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Jun_Invoices {
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${jun} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Jun_Paid{
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${paid_jun} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: May_Invoices {
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${may} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: May_Paid{
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${paid_may} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Apr_Invoices {
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${apr} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Apr_Paid{
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${paid_apr} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Mar_Invoices {
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${mar} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Mar_Paid{
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${paid_mar} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Feb_Invoices {
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${feb} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Feb_Paid{
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${paid_feb} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Till_jan_Invoices {
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${till_jan} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Till_Jan_Paid{
+    type: sum
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${paid_till_jan} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Total_Invoices {
+    type: number
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${Jul_Invoices} + ${Jun_Invoices} + ${May_Invoices} + ${Apr_Invoices} + ${Mar_Invoices} + ${Till_jan_Invoices} + ${Feb_Invoices} ;;
+    value_format: "0.0,,\" M\""
+  }
+  measure: Total_Paid{
+    type: number
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: ${Jul_Paid} + ${Jun_Paid} + ${May_Paid} + ${Apr_Paid} + ${Mar_Paid} + ${Feb_Paid} + ${Till_Jan_Paid} ;;
+    value_format: "0.0,,\" M\""
   }
 }

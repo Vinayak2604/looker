@@ -16,6 +16,11 @@ view: derived_user_engagement_category_student {
     sql: ${TABLE}.city ;;
   }
 
+  dimension: type {
+    type: string
+    sql: ${TABLE}.type ;;
+  }
+
   dimension: micromarket {
     type: string
     sql: ${TABLE}.micromarket ;;

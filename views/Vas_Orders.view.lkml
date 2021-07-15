@@ -96,8 +96,8 @@ group by
     sql: sum(${TABLE}.final_total_amount)/(${orders}) ;;
     value_format: "0"
   }
-  measure: top_selling_items {
-    type: number
-    sql: select ${TABLE}.vendor,${TABLE}.dish_name,${item_count},row_number() over (partition by ${TABLE}.vendor order by ${item_count} desc) ;;
-  }
+  # dimension: top_selling_items {
+  #   type: number
+  #   sql: row_number() over (partition by ${TABLE}.vendor order by ${item_count} desc) ;;
+  # }
   }
