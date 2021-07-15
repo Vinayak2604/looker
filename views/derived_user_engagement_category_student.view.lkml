@@ -135,7 +135,7 @@ measure: b_c {
   measure: median {
     type: number
     sql: 1.00*${c} / ${total_students} ;;
-    html:  {{ derived_user_engagement_category_student.b_c._rendered_value }}
+    html:{{ derived_user_engagement_category_student.median._rendered_value }}  ,  {{ derived_user_engagement_category_student.b_c._rendered_value }}
 
     ;;
 

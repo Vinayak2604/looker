@@ -79,7 +79,7 @@ group by
     type: string
     sql: ${TABLE}.dish_name ;;
   }
-  measure: final_total_amount {
+  measure: total_amount {
     type: sum
     sql: ${TABLE}.final_total_amount ;;
   }
@@ -93,6 +93,7 @@ group by
   }
   measure: aov {
     type: number
-    sql: (${TABLE}.final_total_amount)/(${orders}) ;;
+    sql: sum(${TABLE}.final_total_amount)/(${orders}) ;;
+    value_format: "0"
   }
   }
