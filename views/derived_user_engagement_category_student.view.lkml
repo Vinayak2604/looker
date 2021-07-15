@@ -135,7 +135,7 @@ measure: b_c {
     type: number
     sql: 1.00*${c} / ${total_students} ;;
     html:
-    <font color=white>median:{{ user_engagement_line_segment.b_c._rendered_value }}</font>
+    <font color=white>median:{{ derived_user_engagement_category_student.b_c._rendered_value }}</font>
     ;;
 
     value_format: "0.0%"
