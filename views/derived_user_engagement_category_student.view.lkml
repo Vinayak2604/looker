@@ -130,31 +130,35 @@ view: derived_user_engagement_category_student {
 
   measure: lowest {
     type: number
-    sql: ${a}  ;;
-
+    sql: 1.00*${a} / ${total_students} ;;
+    value_format: "0.0%"
   }
 
   measure: 25th_percentile {
     type: number
-    sql: ${b} ;;
+    sql: 1.00*${b} / ${total_students} ;;
+    value_format: "0.0%"
 
   }
 
 
   measure: median {
     type: number
-    sql: ${c} ;;
+    sql: 1.00*${c} / ${total_students} ;;
+    value_format: "0.0%"
   }
 
 
   measure: 75th_percemtile {
     type: number
-    sql: ${d} ;;
+    sql: 1.00*${d} / ${total_students} ;;
+    value_format: "0.0%"
   }
 
   measure: highest {
     type: number
-    sql: ${e} ;;
+    sql: 1.00*${e} / ${total_students} ;;
+    value_format: "0.0%"
   }
 
   measure: 0_25 {
@@ -178,37 +182,6 @@ view: derived_user_engagement_category_student {
   }
 
 
-  # measure: lowest {
-  #   type: number
-  #   sql: 1.00*${a} / ${total_students} ;;
-  #   value_format: "0.0%"
-  # }
 
-  # measure: 25th_percentile {
-  #   type: number
-  #   sql: 1.00*${b} / ${total_students} ;;
-  #   value_format: "0.0%"
-
-  # }
-
-
-  # measure: median {
-  #   type: number
-  #   sql: 1.00*${c} / ${total_students} ;;
-  #   value_format: "0.0%"
-  # }
-
-
-  # measure: 75th_percemtile {
-  #   type: number
-  #   sql: 1.00*${d} / ${total_students} ;;
-  #   value_format: "0.0%"
-  # }
-
-  # measure: highest {
-  #   type: number
-  #   sql: 1.00*${e} / ${total_students} ;;
-  #   value_format: "0.0%"
-  # }
 
 }
