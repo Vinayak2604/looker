@@ -83,7 +83,7 @@ group by
     type: sum
     sql: ${TABLE}.final_total_amount ;;
   }
-  measure: top_selling_items {
+  measure: item_count {
     type: count
     drill_fields: [item_id]
   }
@@ -95,5 +95,9 @@ group by
     type: number
     sql: sum(${TABLE}.final_total_amount)/(${orders}) ;;
     value_format: "0"
+  }
+  measure: top_selling_items {
+    type: number
+    sql: select ${TABLE}.vendor,${TABLE}.dish_name,${item_count},row_number() over (partition by ${TABLE}.vendor order by ${item_count} desc) ;;
   }
   }
