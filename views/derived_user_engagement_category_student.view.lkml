@@ -130,35 +130,31 @@ view: derived_user_engagement_category_student {
 
   measure: lowest {
     type: number
-    sql: 1.00*${a} / ${total_students} ;;
-    value_format: "0.0%"
+    sql: ${a}  ;;
+
   }
 
   measure: 25th_percentile {
     type: number
-    sql: 1.00*${b} / ${total_students} ;;
-    value_format: "0.0%"
+    sql: ${b} ;;
 
   }
 
 
   measure: median {
     type: number
-    sql: 1.00*${c} / ${total_students} ;;
-    value_format: "0.0%"
+    sql: ${c} ;;
   }
 
 
   measure: 75th_percemtile {
     type: number
-    sql: 1.00*${d} / ${total_students} ;;
-    value_format: "0.0%"
+    sql: ${d} ;;
   }
 
   measure: highest {
     type: number
-    sql: 1.00*${e} / ${total_students} ;;
-    value_format: "0.0%"
+    sql: ${e} ;;
   }
 
   measure: 0_25 {
@@ -180,5 +176,39 @@ view: derived_user_engagement_category_student {
     type: count_distinct
     sql: case when ${avg_score_student} > ${score_75_percentile} then ${student_id} end ;;
   }
+
+
+  # measure: lowest {
+  #   type: number
+  #   sql: 1.00*${a} / ${total_students} ;;
+  #   value_format: "0.0%"
+  # }
+
+  # measure: 25th_percentile {
+  #   type: number
+  #   sql: 1.00*${b} / ${total_students} ;;
+  #   value_format: "0.0%"
+
+  # }
+
+
+  # measure: median {
+  #   type: number
+  #   sql: 1.00*${c} / ${total_students} ;;
+  #   value_format: "0.0%"
+  # }
+
+
+  # measure: 75th_percemtile {
+  #   type: number
+  #   sql: 1.00*${d} / ${total_students} ;;
+  #   value_format: "0.0%"
+  # }
+
+  # measure: highest {
+  #   type: number
+  #   sql: 1.00*${e} / ${total_students} ;;
+  #   value_format: "0.0%"
+  # }
 
 }
