@@ -7,7 +7,7 @@ view: vas_orders {
   co.uuid order_id,
   co.order_date order_date,
   co.user_id user_id,
-  vm.uuid item_id,
+  vm.uuid as item_id,
   vm.name as dish_name,
   cod.final_total_amount final_total_amount
 from
@@ -83,10 +83,10 @@ group by
     type: sum
     sql: ${TABLE}.final_total_amount ;;
   }
-  # measure: top_selling_items {
-  # type: count
-  # sql: ${TABLE}.item_id ;;
-  # }
+  measure: top_selling_items {
+  type: count_distinct
+  sql: ${TABLE}.item_id ;;
+  }
   measure: orders {
     type: count_distinct
     sql: ${TABLE}.order_id ;;
