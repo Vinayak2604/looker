@@ -110,6 +110,12 @@ view: derived_user_engagement_category_student {
   }
 
 
+measure: b_c {
+  type: number
+  sql: (${c}-${b})/total_students ;;
+}
+
+
 
   measure: lowest {
     type: number
@@ -121,12 +127,17 @@ view: derived_user_engagement_category_student {
     type: number
     sql: 1.00*${b} / ${total_students} ;;
     value_format: "0.0%"
+
   }
 
 
   measure: median {
     type: number
     sql: 1.00*${c} / ${total_students} ;;
+    html:
+    <font color=white>median:{{ user_engagement_line_segment.b_c._rendered_value }}</font>
+    ;;
+
     value_format: "0.0%"
   }
 

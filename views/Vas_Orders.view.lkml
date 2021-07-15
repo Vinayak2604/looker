@@ -36,9 +36,13 @@ group by
   8,
   9 ;;
   }
+  dimension: residence_id {
+    type: number
+    primary_key: yes
+    sql: ${TABLE}.residence_id ;;
+  }
   dimension: residence_name {
     type: string
-    primary_key: yes
     sql: ${TABLE}.residence_name ;;
   }
   dimension: vendor_name {
@@ -79,8 +83,16 @@ group by
     type: sum
     sql: ${TABLE}.final_total_amount ;;
   }
-  # measure: aov {
-  #   type: count
-  #   sql: ${TABLE}.item_id ;;
+  # measure: top_selling_items {
+  # type: count
+  # sql: ${TABLE}.item_id ;;
   # }
+  measure: orders {
+    type: count_distinct
+    sql: ${TABLE}.order_id ;;
+  }
+  measure: aov {
+    type: number
+    sql: (${TABLE}.final_total_amount)/(${orders}) ;;
+  }
   }
