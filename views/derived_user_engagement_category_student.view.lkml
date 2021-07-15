@@ -110,13 +110,6 @@ view: derived_user_engagement_category_student {
   }
 
 
-measure: b_c {
-  type: number
-  sql: 1.00*(${c}-${b})/${total_students} ;;
-  value_format: "0.0%"
-}
-
-
 
   measure: lowest {
     type: number
@@ -135,9 +128,6 @@ measure: b_c {
   measure: median {
     type: number
     sql: 1.00*${c} / ${total_students} ;;
-    html:{{ derived_user_engagement_category_student.median._rendered_value }}  ,  {{ derived_user_engagement_category_student.b_c._rendered_value }}
-
-    ;;
 
     value_format: "0.0%"
   }
@@ -155,8 +145,24 @@ measure: b_c {
     value_format: "0.0%"
   }
 
+  measure: 0_25 {
+    type: count_distinct
+    sql: case when ${avg_score_student} < ${score_25_percentile} then ${student_id} end ;;
+  }
 
+  measure: 25_50 {
+    type: count_distinct
+    sql: case when ${avg_score_student} >= ${score_25_percentile} and ${avg_score_student} < ${score_50_percentile} then ${student_id} end ;;
+  }
 
+  measure: 50_75 {
+    type: count_distinct
+    sql: case when ${avg_score_student} >= ${score_50_percentile} and ${avg_score_student} < ${score_75_percentile} then ${student_id} end ;;
+  }
 
+  measure: 75_100 {
+    type: count_distinct
+    sql: case when ${avg_score_student} >= ${score_75_percentile} then ${student_id} end ;;
+  }
 
 }

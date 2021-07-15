@@ -247,4 +247,9 @@ view: derived_rent_collection {
     type: count
     drill_fields: [payment_term_name, last_name, first_name]
   }
+
+  measure: count_of_students {
+    type: count_distinct
+    sql: ${student_id} ;;
+  }
 }
