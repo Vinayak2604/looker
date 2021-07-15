@@ -181,4 +181,9 @@ view: derived_user_engagement_category_student {
     sql: case when ${avg_score_student} > ${score_75_percentile} then ${student_id} end ;;
   }
 
+  measure: 75_100_copy {
+    type: count_distinct
+    sql: case when ${avg_score_student} > ${score_75_percentile} then ${student_id} end ;;
+  }
+
 }
