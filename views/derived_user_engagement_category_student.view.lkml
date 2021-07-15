@@ -92,32 +92,38 @@ view: derived_user_engagement_category_student {
   measure: a {
     type: count_distinct
     sql: case when ${avg_score_student} <= ${lowest_score} then ${student_id} end ;;
+    hidden: yes
   }
 
   measure: b {
     type: count_distinct
     sql: case when ${avg_score_student} < ${score_25_percentile} then ${student_id} end ;;
+    hidden: yes
   }
 
   measure: c {
     type: count_distinct
     sql: case when ${avg_score_student} <= ${score_50_percentile} then ${student_id} end ;;
+    hidden: yes
   }
 
   measure: d {
     type: count_distinct
     sql: case when  ${avg_score_student} <= ${score_75_percentile} then ${student_id} end ;;
+    hidden: yes
   }
 
   measure: e {
     type: count_distinct
     sql: case when  ${avg_score_student} <= ${highest_score} then ${student_id} end ;;
+    hidden: yes
   }
 
   measure: b_c {
     type: number
     sql: 1.00*(${c} - ${b}) / ${total_students}  ;;
     value_format: "0.0%"
+    hidden: yes
   }
 
 
@@ -139,8 +145,6 @@ view: derived_user_engagement_category_student {
   measure: median {
     type: number
     sql: 1.00*${c} / ${total_students} ;;
-    html: {{ derived_user_engagement_category_student.b_c._rendered_value }} ;;
-
     value_format: "0.0%"
   }
 
