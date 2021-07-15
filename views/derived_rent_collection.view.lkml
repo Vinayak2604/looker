@@ -250,6 +250,7 @@ view: derived_rent_collection {
 
   measure: count_of_students {
     type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${student_id} ;;
   }
 }
