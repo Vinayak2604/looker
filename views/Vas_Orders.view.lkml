@@ -84,8 +84,8 @@ group by
     sql: ${TABLE}.final_total_amount ;;
   }
   measure: top_selling_items {
-  type: count_distinct
-  sql: ${TABLE}.item_id ;;
+    type: count
+    drill_fields: [item_id]
   }
   measure: orders {
     type: count_distinct
