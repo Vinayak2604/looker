@@ -18,3 +18,15 @@ explore: derived_rent_collection {
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 }
+explore: derived_utilities_water_dg
+{
+#   join: orders {
+#     relationship: many_to_one
+#     sql_on: ${orders.id} = ${order_items.order_id} ;;
+#   }
+#
+#   join: users {
+#     relationship: many_to_one
+#     sql_on: ${users.id} = ${orders.user_id} ;;
+#   }
+}

@@ -182,26 +182,38 @@ view: derived_user_engagement_category_student {
   }
 
 
-  # measure: 0_25 {
-  #   type: count_distinct
-  #   sql: case when ${avg_score_student} <= ${score_25_percentile} then ${student_id} end ;;
-  # }
+  measure: lowest_scores {
+    type: min
+    sql: case when ${avg_score_student} is not null then ${avg_score_student} end ;;
+    value_format: "0.0%"
+  }
 
-  # measure: 25_50 {
-  #   type: count_distinct
-  #   sql: case when ${avg_score_student} > ${score_25_percentile} and ${avg_score_student} <= ${score_50_percentile} then ${student_id} end ;;
-  # }
+  measure: 25th_percentile_scores {
+    type: percentile
+    percentile: 25
+    sql: case when ${avg_score_student} is not null then ${avg_score_student} end ;;
+    value_format: "0.0%"
+  }
 
-  # measure: 50_75 {
-  #   type: count_distinct
-  #   sql: case when ${avg_score_student} > ${score_50_percentile} and ${avg_score_student} <= ${score_75_percentile} then ${student_id} end ;;
-  # }
+  measure: median_scores {
+    type: median
+    sql: case when ${avg_score_student} is not null then ${avg_score_student} end ;;
+    value_format: "0.0%"
+  }
 
-  # measure: 75_100 {
-  #   type: count_distinct
-  #   sql: case when ${avg_score_student} > ${score_75_percentile} then ${student_id} end ;;
-  # }
 
+  measure: 75th_percentile_scores {
+    type: percentile
+    percentile: 75
+    sql: case when ${avg_score_student} is not null then ${avg_score_student} end ;;
+    value_format: "0.0%"
+  }
+
+  measure: max_scores {
+    type: max
+    sql: case when ${avg_score_student} is not null then ${avg_score_student} end ;;
+    value_format: "0.0%"
+  }
 
 
 }
