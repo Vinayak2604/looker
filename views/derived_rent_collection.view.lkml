@@ -387,4 +387,84 @@ view: derived_rent_collection {
      sql: ${Till_jan_Rent} - ${Till_Jan_Rent_Collected} ;;
     value_format: "0.00,,\" M\""
    }
+  parameter:  geographical_cuts {
+    type: "string"
+    allowed_value: {
+      label: "residence"
+      value: "residence"
+    }
+    allowed_value: {
+      label: "micromarket"
+      value: "micromarket"
+    }
+    allowed_value: {
+      label: "city"
+      value: "city"
+    }
+    allowed_value: {
+      label: "zone"
+      value: "Zone"
+    }
+  }
+
+  dimension: goegraphy_selector {
+    label_from_parameter: geographical_cuts
+    sql:
+            CASE
+             WHEN {% parameter geographical_cuts %} = 'residence' THEN ${residence}
+             WHEN {% parameter geographical_cuts %} = 'micromarket' THEN ${micromarket}
+             WHEN {% parameter geographical_cuts %} = 'city' THEN ${city}
+             WHEN {% parameter geographical_cuts %} = 'city' THEN ${zone}
+             ELSE NULL
+            END ;;
+    drill_fields: [residence]
+  }
+#   measure: YTD_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql:case when (${YTD_Rent} - ${YTD_Rent_Collected})>0  then 1 else null end ;;
+#     value_format: "0"
+#   }
+#   measure: Jul_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql: case when (${Jul_Rent} - ${Jul_Rent_Collected})>0 then 1 else null end ;;
+#     value_format: "0"
+#   }
+#   measure: Jun_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql: (${Jun_Rent} - ${Jun_Rent_Collected})>0 ;;
+#     value_format: "0"
+#   }
+#   measure: May_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql: (${May_Rent} - ${May_Rent_Collected})>0 ;;
+#     value_format: "0"
+#   }
+#   measure: Apr_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql: (${Apr_Rent} - ${Apr_Rent_Collected})>0 ;;
+#     value_format: "0"
+#   }
+#   measure: Mar_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql: (${Mar_Rent} - ${Mar_Rent_Collected})>0 ;;
+#     value_format: "0"
+#   }
+#   measure: Feb_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql: (${Feb_Rent} - ${Feb_Rent_Collected})>0;;
+#     value_format: "0"
+#   }
+#   measure: Till_Jan_pending_res {
+#     type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+#     sql: (${Till_jan_Rent} - ${Till_Jan_Rent_Collected})>0 ;;
+#     value_format: "0"
+#   }
 }
