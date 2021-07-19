@@ -222,8 +222,8 @@ view: derived_user_engagement_category_student {
 
 
   measure: median_score {
-    type: number
-    sql: ${avg_score_student_mo} ;;
+    type: average
+    sql: ${score_50_percentile} ;;
     value_format: "0.0%"
   }
 

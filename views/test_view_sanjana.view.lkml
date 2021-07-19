@@ -1,4 +1,4 @@
-view: test_view {
+view: test_view_sanjana {
   sql_table_name: derived_site_completion_status ;;
 
   dimension: city_name {
