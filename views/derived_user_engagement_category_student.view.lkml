@@ -124,14 +124,6 @@ view: derived_user_engagement_category_student {
     hidden: yes
   }
 
-  measure: b_c {
-    type: number
-    sql: 1.00*(${c} - ${b}) / ${total_students}  ;;
-    value_format: "0.0%"
-    hidden: yes
-  }
-
-
 
   measure: lowest {
     type: number
