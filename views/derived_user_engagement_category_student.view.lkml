@@ -102,7 +102,7 @@ view: derived_user_engagement_category_student {
 
   measure: b {
     type: count_distinct
-    sql: case when ${avg_score_student_mo} < ${score_25_percentile} then ${student_id} end ;;
+    sql: case when ${avg_score_student_mo} <= ${score_25_percentile} then ${student_id} end ;;
     hidden: yes
   }
 
@@ -168,7 +168,7 @@ view: derived_user_engagement_category_student {
 
   measure: 0_25 {
     type: count_distinct
-    sql: case when ${avg_score_student_mo} <= 0.25 then ${student_id} end ;;
+    sql: case when ${avg_score_student_mo} < 0.25 then ${student_id} end ;;
   }
 
   measure: 25_50 {
