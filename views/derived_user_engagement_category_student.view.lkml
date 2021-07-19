@@ -228,4 +228,31 @@ view: derived_user_engagement_category_student {
   }
 
 
+  measure: 0_25_a {
+    type: number
+    sql: 1.00*${0_25} / ${total_students} ;;
+    value_format: "0.0%"
+    }
+
+
+    measure: 25_50_a {
+      type: number
+      sql: 1.00*${25_50} / ${total_students} ;;
+      value_format: "0.0%"
+    }
+
+    measure: 50_75_a {
+      type: number
+      sql: 1.00*${50_75} / ${total_students} ;;
+      value_format: "0.0%"
+    }
+
+
+    measure: 75_100_ {
+      type: number
+      sql: 1.00*${75_100} / ${total_students} ;;
+      value_format: "0.0%"
+    }
+
+
 }
