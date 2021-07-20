@@ -419,52 +419,53 @@ view: derived_rent_collection {
             END ;;
     drill_fields: [residence]
   }
-#     measure: YTD_pending_res {
-#     type: count_distinct
-#     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql:case when (${YTD_Rent} - ${YTD_Rent_Collected})>0  then 1 else null end ;;
-#     value_format: "0"
-#   }
+     measure: YTD_pending_res {
+     type: count_distinct
+     # drill_fields: [payment_term_name, last_name, first_name]
+     sql:case when ((${till_jan}+${feb}+${mar}+${apr}+${may}+${jun}+${jul})
+    - (${paid_till_jan}+${paid_feb}+${paid_mar}+${paid_apr}+${paid_jun}+${paid_jul}+${paid_may}))>0  then ${booking_id} else null end ;;
+     value_format: "0"
+ }
 measure: Jul_pending_res {
 type: count_distinct
 #     # drill_fields: [payment_term_name, last_name, first_name]
-sql: case when (${jul} - ${paid_jul})>0 then 1 else null end ;;
+sql: case when (${jul} - ${paid_jul})>0 then ${booking_id} else null end ;;
 value_format: "0"
 }
    measure: Jun_pending_res {
      type: count_distinct
      # drill_fields: [payment_term_name, last_name, first_name]
-     sql: case when (${jun} - ${paid_jun})>0 then 1 else null end ;;
+     sql: case when (${jun} - ${paid_jun})>0 then ${booking_id} else null end ;;
      value_format: "0"
  }
    measure: May_pending_res {
      type: count_distinct
      # drill_fields: [payment_term_name, last_name, first_name]
-     sql: case when (${may} - ${paid_may})>0 then 1 else null end ;;
+     sql: case when (${may} - ${paid_may})>0 then ${booking_id} else null end ;;
      value_format: "0"
    }
    measure: Apr_pending_res {
      type: count_distinct
      # drill_fields: [payment_term_name, last_name, first_name]
-     sql: case when (${apr} - ${paid_apr})>0 then 1 else null end;;
+     sql: case when (${apr} - ${paid_apr})>0 then ${booking_id} else null end;;
      value_format: "0"
    }
    measure: Mar_pending_res {
      type: count_distinct
      # drill_fields: [payment_term_name, last_name, first_name]
-     sql: case when (${mar} - ${paid_mar})>0 then 1 else null end ;;
+     sql: case when (${mar} - ${paid_mar})>0 then ${booking_id} else null end ;;
      value_format: "0"
    }
    measure: Feb_pending_res {
      type: count_distinct
      # drill_fields: [payment_term_name, last_name, first_name]
-     sql: case when (${feb} - ${paid_feb})>0 then 1 else null end;;
+     sql: case when (${feb} - ${paid_feb})>0 then ${booking_id} else null end;;
      value_format: "0"
    }
    measure: Till_Jan_pending_res {
      type: count_distinct
      # drill_fields: [payment_term_name, last_name, first_name]
-     sql: case when (${till_jan} - ${paid_till_jan})>0 then 1 else null end ;;
+     sql: case when (${till_jan} - ${paid_till_jan})>0 then ${booking_id} else null end ;;
      value_format: "0"
    }
 }
