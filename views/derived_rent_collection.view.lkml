@@ -419,52 +419,52 @@ view: derived_rent_collection {
             END ;;
     drill_fields: [residence]
   }
-#   measure: YTD_pending_res {
+#     measure: YTD_pending_res {
 #     type: count_distinct
 #     # drill_fields: [payment_term_name, last_name, first_name]
 #     sql:case when (${YTD_Rent} - ${YTD_Rent_Collected})>0  then 1 else null end ;;
 #     value_format: "0"
 #   }
-#   measure: Jul_pending_res {
-#     type: count_distinct
+measure: Jul_pending_res {
+type: count_distinct
 #     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql: case when (${Jul_Rent} - ${Jul_Rent_Collected})>0 then 1 else null end ;;
-#     value_format: "0"
-#   }
-#   measure: Jun_pending_res {
-#     type: count_distinct
-#     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql: (${Jun_Rent} - ${Jun_Rent_Collected})>0 ;;
-#     value_format: "0"
-#   }
-#   measure: May_pending_res {
-#     type: count_distinct
-#     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql: (${May_Rent} - ${May_Rent_Collected})>0 ;;
-#     value_format: "0"
-#   }
-#   measure: Apr_pending_res {
-#     type: count_distinct
-#     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql: (${Apr_Rent} - ${Apr_Rent_Collected})>0 ;;
-#     value_format: "0"
-#   }
-#   measure: Mar_pending_res {
-#     type: count_distinct
-#     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql: (${Mar_Rent} - ${Mar_Rent_Collected})>0 ;;
-#     value_format: "0"
-#   }
-#   measure: Feb_pending_res {
-#     type: count_distinct
-#     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql: (${Feb_Rent} - ${Feb_Rent_Collected})>0;;
-#     value_format: "0"
-#   }
-#   measure: Till_Jan_pending_res {
-#     type: count_distinct
-#     # drill_fields: [payment_term_name, last_name, first_name]
-#     sql: (${Till_jan_Rent} - ${Till_Jan_Rent_Collected})>0 ;;
-#     value_format: "0"
-#   }
+sql: case when (${jul} - ${paid_jul})>0 then 1 else null end ;;
+value_format: "0"
+}
+   measure: Jun_pending_res {
+     type: count_distinct
+     # drill_fields: [payment_term_name, last_name, first_name]
+     sql: case when (${jun} - ${paid_jun})>0 then 1 else null end ;;
+     value_format: "0"
+ }
+   measure: May_pending_res {
+     type: count_distinct
+     # drill_fields: [payment_term_name, last_name, first_name]
+     sql: case when (${may} - ${paid_may})>0 then 1 else null end ;;
+     value_format: "0"
+   }
+   measure: Apr_pending_res {
+     type: count_distinct
+     # drill_fields: [payment_term_name, last_name, first_name]
+     sql: case when (${apr} - ${paid_apr})>0 then 1 else null end;;
+     value_format: "0"
+   }
+   measure: Mar_pending_res {
+     type: count_distinct
+     # drill_fields: [payment_term_name, last_name, first_name]
+     sql: case when (${mar} - ${paid_mar})>0 then 1 else null end ;;
+     value_format: "0"
+   }
+   measure: Feb_pending_res {
+     type: count_distinct
+     # drill_fields: [payment_term_name, last_name, first_name]
+     sql: case when (${feb} - ${paid_feb})>0 then 1 else null end;;
+     value_format: "0"
+   }
+   measure: Till_Jan_pending_res {
+     type: count_distinct
+     # drill_fields: [payment_term_name, last_name, first_name]
+     sql: case when (${till_jan} - ${paid_till_jan})>0 then 1 else null end ;;
+     value_format: "0"
+   }
 }
