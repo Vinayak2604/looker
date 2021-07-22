@@ -349,25 +349,25 @@ view: user_engagement_categories {
 
     measure: total_students_0_25 {
       type: number
-      sql: 1.00*$(total_students_0_25_a) / ${total_students};;
+      sql: 1.00*${total_students_0_25_a} / ${total_students};;
       value_format: "0.0%"
     }
 
     measure: total_students_25_50 {
       type: number
-      sql: 1.00*$(total_students_25_50_a) / ${total_students};;
+      sql: 1.00*${}total_students_25_50_a} / ${total_students};;
       value_format: "0.0%"
     }
 
     measure: total_students_50_75 {
       type: number
-      sql: 1.00*$(total_students_50_75_a) / ${total_students};;
+      sql: 1.00*${}total_students_50_75_a} / ${total_students};;
       value_format: "0.0%"
     }
 
     measure: total_students_75_100 {
       type: number
-      sql: 1.00*$(total_students_75_100_a) / ${total_students};;
+      sql: 1.00*${total_students_75_100_a} / ${total_students};;
       value_format: "0.0%"
     }
 
