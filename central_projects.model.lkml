@@ -35,6 +35,12 @@ join: weighted_avg {
   sql_on: ${derived_food_inventory.location_name} = ${weighted_avg.location} and ${derived_food_inventory.item_name} = ${weighted_avg.item} ;;
   relationship: one_to_one
 }
+
+join: open_pos {
+  sql_on: ${derived_food_inventory.pm}=${open_pos.pk};;
+  relationship: one_to_one
+  type: left_outer
+}
 }
 explore: derived_food_invoice {
 
