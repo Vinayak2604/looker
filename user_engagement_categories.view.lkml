@@ -322,54 +322,22 @@ view: user_engagement_categories {
 
     measure: total_students_0_25 {
       type: count_distinct
-      sql: case when ${score} < ${score_25_percentile} then ${student_id} end;;
+      sql: case when ${avg_score} < 0.25 then ${student_id} end;;
     }
 
     measure: total_students_25_50 {
       type: count_distinct
-      sql: case when ${score} >= ${score_25_percentile} and ${score} < ${score_50_percentile} then ${student_id} end ;;
+      sql: case when ${avg_score} >= 0.25 and ${avg_score} < 0.50 then ${student_id} end ;;
     }
 
     measure: total_students_50_75 {
       type: count_distinct
-      sql: case when ${score} >= ${score_50_percentile} and ${score} < ${score_75_percentile} then ${student_id} end ;;
+      sql: case when ${avg_score} >= 0.50 and ${avg_score} < 0.75 then ${student_id} end ;;
     }
 
     measure: total_students_75_100 {
       type: count_distinct
-      sql: case when ${score} >= ${score_75_percentile} then ${student_id} end ;;
+      sql: case when ${avg_score} >= 0.75 then ${student_id} end ;;
     }
-
-
-  measure: total_students_0_25_a {
-    type: number
-    sql: 1.00*${total_students_25_50} / ${total_students};;
-    value_format: "0.0%"
-  }
-
-  measure: total_students_25_50_a {
-    type: number
-    sql: 1.00*${total_students_25_50} / ${total_students};;
-    value_format: "0.0%"
-    }
-
-  measure: total_students_50_75_a {
-    type: number
-    sql: 1.00*${total_students_50_75} / ${total_students};;
-    value_format: "0.0%"
-    }
-
-  measure: total_students_75_100_a {
-    type: number
-    sql: 1.00*${total_students_75_100} / ${total_students};;
-    value_format: "0.0%"
-    }
-
-  measure: median_score_a {
-    type: average
-    sql: ${score_50_percentile};;
-    value_format: "0.0%"
-  }
-
 
   }
