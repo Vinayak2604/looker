@@ -280,6 +280,7 @@ view: user_engagement_categories {
       type: min
       sql: ${score}  ;;
       value_format: "0.00%"
+      hidden: yes
     }
 
     # measure: score_25_percentile {
@@ -300,6 +301,7 @@ view: user_engagement_categories {
       type: median
       sql: ${score}  ;;
       value_format: "0.00%"
+      hidden: yes
     }
 
 
@@ -318,26 +320,64 @@ view: user_engagement_categories {
       value_format: "0.00%"
     }
 
+  measure: total_students_0_25_a {
+    type: count_distinct
+    sql: case when ${score} < 0.25 then ${student_id} end;;
+    hidden: yes
+
+  }
+
+  measure: total_students_25_50_a {
+    type: count_distinct
+    sql: case when ${score} >= 0.25 and ${score} < 0.50 then ${student_id} end ;;
+    hidden: yes
+  }
+
+  measure: total_students_50_75_a {
+    type: count_distinct
+    sql: case when ${score} >= 0.50 and ${score} < 0.75 then ${student_id} end ;;
+    hidden: yes
+  }
+
+  measure: total_students_75_100_a {
+    type: count_distinct
+    sql: case when ${score} >= 0.75 then ${student_id} end ;;
+    hidden: yes
+  }
+
+
+
 
 
     measure: total_students_0_25 {
-      type: count_distinct
-      sql: case when ${score} < 0.25 then ${student_id} end;;
+      type: number
+      sql: 1.00*$(total_students_0_25_a) / ${total_students};;
+      value_format: "0.0%"
     }
 
     measure: total_students_25_50 {
-      type: count_distinct
-      sql: case when ${score} >= 0.25 and ${score} < 0.50 then ${student_id} end ;;
+      type: number
+      sql: 1.00*$(total_students_25_50_a) / ${total_students};;
+      value_format: "0.0%"
     }
 
     measure: total_students_50_75 {
-      type: count_distinct
-      sql: case when ${score} >= 0.50 and ${score} < 0.75 then ${student_id} end ;;
+      type: number
+      sql: 1.00*$(total_students_50_75_a) / ${total_students};;
+      value_format: "0.0%"
     }
 
     measure: total_students_75_100 {
-      type: count_distinct
-      sql: case when ${score} >= 0.75 then ${student_id} end ;;
+      type: number
+      sql: 1.00*$(total_students_75_100_a) / ${total_students};;
+      value_format: "0.0%"
     }
+
+
+  measure: median_scores {
+    type: average
+    sql: ${score_50_percentile}  ;;
+    value_format: "0.00%"
+  }
 
   }
