@@ -23,6 +23,15 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
       }
   }
 
+  # explore: derived_sku_pricing {
+  #   join: derived_inventory_pricing {
+  #     relationship: one_to_many
+  #     type: left_outer
+  #     sql_on: ${derived_inventory_pricing.house}=${derived_sku_pricing.residence} ;;
+  #   }
+  # }
+
+
 #
 #   join: users {
 #     relationship: many_to_one
