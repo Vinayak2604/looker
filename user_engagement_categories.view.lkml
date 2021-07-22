@@ -347,8 +347,6 @@ view: user_engagement_categories {
 
 
 
-
-
     measure: total_students_0_25 {
       type: number
       sql: 1.00*$(total_students_0_25_a) / ${total_students};;
