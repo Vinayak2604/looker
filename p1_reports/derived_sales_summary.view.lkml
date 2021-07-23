@@ -198,12 +198,14 @@ where a.rn = 1;;
     label: "Pre & Full Bookings"
   }
 
-  # dimension: test {
-  #   type: string
-  #   # view_label: " "
-  #   sql: " " ;;
-  #   label: " "
-  #   html: <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ value }}</p> ;;
+  dimension: test {
+    type: string
+    # view_label: " "
+    sql: " " ;;
+    label: " "
+    html: {% if value == ' ' %}
+      <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ rendered_value }}</p>
+      {% endif %};;
 
-  # }
+  }
 }
