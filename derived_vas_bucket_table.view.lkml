@@ -24,6 +24,7 @@ view: derived_vas_bucket_table {
     group by 1),
 
     bucket as ( select distinct order_bucket
+    from
     (select order_bucket from m1)
     union
     (select order_bucket from m2))
