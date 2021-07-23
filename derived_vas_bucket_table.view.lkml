@@ -7,16 +7,16 @@ view: derived_vas_bucket_table {
     where date >= '2021-01-01'
     ),
 
-    m1 as ( select case when orders =1 then 'a. 1' when orders <=7 then 'b. 2-7' when orders <=14 then 'c. 7-14' when orders <=21 then 'd. 14-21'
-    when orders >21 then 'e. >21' end as order_bucket, count(distinct user_id) users
+    m1 as ( select case when orders =1 then 'a. 1' when orders <=7 then 'b. 2-7' when orders <=14 then 'c. 7-14' when orders <=25 then 'd. 14-25'
+    when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) users
     from (select user_id, count(distinct order_code) orders
     from a
     where month(date) = (month(current_date) -1)
     group by 1) m
     group by 1),
 
-    m2 as ( select case when orders =1 then 'a. 1' when orders <=7 then 'b. 2-7' when orders <=14 then 'c. 7-14' when orders <=21 then 'd. 14-21'
-    when orders >21 then 'e. >21' end as order_bucket, count(distinct user_id) users
+    m2 as ( select case when orders =1 then 'a. 1' when orders <=7 then 'b. 2-7' when orders <=14 then 'c. 7-14' when orders <=25 then 'd. 14-25'
+    when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) users
     from (select user_id, count(distinct order_code) orders
     from a
     where month(date) = (month(current_date) -2)
