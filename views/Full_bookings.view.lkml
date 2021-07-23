@@ -12,7 +12,7 @@ left join stanza.ims_inventory_RESIDENCE rs on inv.residence_id= rs.residence_id
 left join stanza.ims_inventory_MICROMARKET mm on rs.MICROMARKET_ID = mm.micromarket_id
 left join stanza.ims_inventory_CITY ct on mm.CITY_ID = ct.CITY_ID
 where bk.BOOKING_STATUS not IN ('EXPIRED','IN PROGRESS','PAYMENT_PENDING','SHARED WITH RESIDENT')
-and rs.NAME not ilike '%test%'
+and rs.NAME not like '%test%'
 group by 1,2,3,4;;
   }
 
