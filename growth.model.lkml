@@ -5,7 +5,7 @@ include: "user_engagement_pareto.view.lkml"                 # include all views 
 include: "user_engagement_categories.view.lkml"
 include: "user_engagement_categories_residence.view.lkml"
 include: "user_engagement_line_segment.view.lkml"
-include: "derived_vas_bucket_table.view.lkml"
+# include: "derived_vas_bucket_table.view.lkml"
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
 # # Select the views that should be a part of this model,
@@ -18,4 +18,4 @@ explore: derived_user_engagement_category_student {}
 explore: user_engagement_categories {}
 explore: user_engagement_categories_residence {}
 explore: user_engagement_line_segment {}
-explore: derived_vas_bucket_table {}
+# explore: derived_vas_bucket_table {}

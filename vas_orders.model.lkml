@@ -1,6 +1,7 @@
 connection: "beta"
 
-include: "/views/*.view.lkml"                # include all views in the views/ folder in this project
+include: "/views/*.view.lkml"
+include: "derived_vas_bucket_table.view.lkml" # include all views in the views/ folder in this project
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
@@ -16,6 +17,8 @@ explore: derived_vas_orders {
     sql_where: ${derived_vas_orders.dt} = ${moved_in_residents.dt} ;;
   }
 }
+
+explore: derived_vas_bucket_table {}
 #
 #   join: users {
 #     relationship: many_to_one
