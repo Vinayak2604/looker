@@ -1,5 +1,6 @@
 connection: "beta"
 
+
 include: "/views/*.view.lkml"
 include: "derived_vas_bucket_table.view.lkml" # include all views in the views/ folder in this project
 include: "derived_vas_aov_bucket.view.lkml"
