@@ -2,13 +2,13 @@ view: inventory_ledger {
   derived_table: {
     sql: select * from
         (select property as Store, 'IN' as movement_type ,po_number,po_created_at,vendor_name as transfer_entity,item_category_label ,scope_of_work ,item_code ,item_name ,
-        unit_rate_rent_per_month , quantity , subtotal_amount ,po_completion_date
+        unit_rate_rent_per_month , quantity , subtotal_amount ,po_completion_date,ingredient_tag
         from stanza.derived_food_invoice
         where gsri_done_flag =1
         and property like '%Store%' or property = 'Manipal')
         UNION
         (select vendor_name as Store, 'OUT' as movement_type ,po_number,po_created_at,property as transfer_entity,item_category_label ,scope_of_work ,item_code ,item_name ,
-        unit_rate_rent_per_month , quantity , subtotal_amount ,po_completion_date
+        unit_rate_rent_per_month , quantity , subtotal_amount ,po_completion_date,ingredient_tag
         from stanza.derived_food_invoice
         where gsri_done_flag =1
         and vendor_name like '%Store%' or vendor_name = 'Manipal')
@@ -57,7 +57,7 @@ view: inventory_ledger {
 
   dimension:item_name  {
     type: string
-    sql: ${TABLE}.item_name ;;
+    sql: nvl(${TABLE}.ingredient_tag,${TABLE}.item_name) ;;
   }
 
   dimension: rate {
