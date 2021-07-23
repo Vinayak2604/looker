@@ -24,16 +24,16 @@ view: derived_vas_aov_bucket {
           where {% condition date2 %} date {% endcondition %}
           group by 1),
 
-          bucket as ( select distinct order_bucket
+          bucket as ( select distinct aov_bucket
           from
-          ((select order_bucket from m1)
+          ((select aov_bucket from m1)
           union
-          (select order_bucket from m2)) base )
+          (select aov_bucket from m2)) base )
 
-          select ob.order_bucket, m1.orders as m1_month_orders, m2.orders as m2_month_orders
+          select ob.aov_bucket, m1.orders as m1_month_orders, m2.orders as m2_month_orders
           from bucket as ob
-          left join m1 on ob.order_bucket=m1.order_bucket
-          left join m2 on ob.order_bucket=m2.order_bucket
+          left join m1 on ob.aov_bucket=m1.aov_bucket
+          left join m2 on ob.aov_bucket=m2.aov_bucket
           ;;
   }
 
@@ -60,9 +60,9 @@ view: derived_vas_aov_bucket {
     type: string
   }
 
-  dimension: order_bucket {
+  dimension: aov_bucket {
     type: string
-    sql: ${TABLE}.order_bucket ;;
+    sql: ${TABLE}.aov_bucket ;;
   }
 
   measure: m2_month_orders {
