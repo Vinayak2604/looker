@@ -12,14 +12,14 @@ view: derived_vas_aov_bucket {
 
           m1 as ( select case when final_total_amount <=50 then 'a. 0-50' when final_total_amount <=100 then 'b. 50-100'
           when final_total_amount <=150 then 'c. 100-150' when final_total_amount <=200 then 'd. 150-200'
-          when final_total_amount >200 then 'e. 200' end as aov_bucket,  count(distinct order_code) orders
+          when final_total_amount >200 then 'e. >200' end as aov_bucket,  count(distinct order_code) orders
           from a
           where {% condition date1 %} date {% endcondition %}
           group by 1),
 
           m2 as ( select case when final_total_amount <=50 then 'a. 0-50' when final_total_amount <=100 then 'b. 50-100'
           when final_total_amount <=150 then 'c. 100-150' when final_total_amount <=200 then 'd. 150-200'
-          when final_total_amount >200 then 'e. 200' end as aov_bucket, count(distinct order_code) orders
+          when final_total_amount >200 then 'e. >200' end as aov_bucket, count(distinct order_code) orders
           from a
           where {% condition date2 %} date {% endcondition %}
           group by 1),
