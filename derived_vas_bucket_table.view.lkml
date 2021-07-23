@@ -67,13 +67,13 @@ view: derived_vas_bucket_table {
     sql: ${TABLE}.order_bucket ;;
   }
 
-  dimension: m2_month_users {
+  measure: m2_month_users {
     type: string
     sql: ${TABLE}.m2_month_users ;;
   }
 
 
-  dimension: m1_month_users {
+  measure: m1_month_users {
     type: string
     sql: ${TABLE}.m1_month_users ;;
   }
