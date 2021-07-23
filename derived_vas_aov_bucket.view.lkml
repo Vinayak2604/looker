@@ -10,30 +10,30 @@ view: derived_vas_aov_bucket {
 
           ),
 
-          m1 as ( select case when final_total_amount <=50 then 'a. 0-50' when final_total_amount <=100 then 'b. 50-100'
-          when final_total_amount <=150 then 'c. 100-150' when final_total_amount <=200 then 'd. 150-200'
-          when final_total_amount >200 then 'e. >200' end as aov_bucket,  count(distinct order_code) orders
+          m1 as ( select case when final_total_amount <=25 then 'a. 0-25' when final_total_amount <=50 then 'b. 25-50'
+          when final_total_amount <=75 then 'c. 50-75' when final_total_amount <=100 then 'd. 75-100'
+          when final_total_amount >100 then 'e. >100' end as amount_bucket,  count(distinct order_code) orders
           from a
           where {% condition date1 %} date {% endcondition %}
           group by 1),
 
-          m2 as ( select case when final_total_amount <=50 then 'a. 0-50' when final_total_amount <=100 then 'b. 50-100'
-          when final_total_amount <=150 then 'c. 100-150' when final_total_amount <=200 then 'd. 150-200'
-          when final_total_amount >200 then 'e. >200' end as aov_bucket, count(distinct order_code) orders
+          m2 as ( select case when final_total_amount <=25 then 'a. 0-25' when final_total_amount <=50 then 'b. 25-50'
+          when final_total_amount <=75 then 'c. 50-75' when final_total_amount <=100 then 'd. 75-100'
+          when final_total_amount >100 then 'e. >100' end as amount_bucket, count(distinct order_code) orders
           from a
           where {% condition date2 %} date {% endcondition %}
           group by 1),
 
-          bucket as ( select distinct aov_bucket
+          bucket as ( select distinct amount_bucket
           from
-          ((select aov_bucket from m1)
+          ((select amount_bucket from m1)
           union
-          (select aov_bucket from m2)) base )
+          (select amount_bucket from m2)) base )
 
-          select ob.aov_bucket, m1.orders as m1_month_orders, m2.orders as m2_month_orders
+          select ob.amount_bucket, m1.orders as m1_month_orders, m2.orders as m2_month_orders
           from bucket as ob
-          left join m1 on ob.aov_bucket=m1.aov_bucket
-          left join m2 on ob.aov_bucket=m2.aov_bucket
+          left join m1 on ob.amount_bucket=m1.amount_bucket
+          left join m2 on ob.amount_bucket=m2.amount_bucket
           ;;
   }
 
@@ -60,9 +60,9 @@ view: derived_vas_aov_bucket {
     type: string
   }
 
-  dimension: aov_bucket {
+  dimension: amount_bucket {
     type: string
-    sql: ${TABLE}.aov_bucket ;;
+    sql: ${TABLE}.amount_bucket ;;
   }
 
   measure: m2_month_orders {
