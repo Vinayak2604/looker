@@ -12,7 +12,7 @@ view: derived_vas_bucket_table {
     from (select user_id, count(distinct order_code) orders
     from a
     where month(date) = (month(current_date) -1)
-    group by 1)
+    group by 1) m
     group by 1),
 
     m2 as ( select case when orders <=3 then '1-3' when orders <=5 then '3-5' when orders <=7 then '5-7' when orders <=10 then '7-10'
@@ -20,14 +20,14 @@ view: derived_vas_bucket_table {
     from (select user_id, count(distinct order_code) orders
     from a
     where month(date) = (month(current_date) -2)
-    group by 1)
+    group by 1) mm
     group by 1),
 
     bucket as ( select distinct order_bucket
     from
-    (select order_bucket from m1)
+    (select order_bucket from m1) am
     union
-    (select order_bucket from m2))
+    (select order_bucket from m2) amm )
 
     select ob.order_bucket, m2.users as m2_month_users, m1.users as m1_month_users
     from bucket as ob
