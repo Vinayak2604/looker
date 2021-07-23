@@ -26,7 +26,7 @@ view: derived_vas_bucket_table {
     bucket as ( select distinct order_bucket
     (select order_bucket from m1)
     union
-    (select order_bucket from m2)),
+    (select order_bucket from m2))
 
     select ob.order_bucket, m2.users as m2_month_users, m1.users as m1_month_users
     from bucket as ob
