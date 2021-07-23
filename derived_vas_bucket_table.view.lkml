@@ -14,7 +14,7 @@ view: derived_vas_bucket_table {
     when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) users
     from (select user_id, count(distinct order_code) orders
     from a
-    where {% condition date1 %} date1 {% endcondition %}
+    where {% condition date1 %} date {% endcondition %}
     group by 1) m
     group by 1),
 
@@ -22,7 +22,7 @@ view: derived_vas_bucket_table {
     when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) users
     from (select user_id, count(distinct order_code) orders
     from a
-    where {% condition date2 %} date2 {% endcondition %}
+    where {% condition date2 %} date {% endcondition %}
     group by 1) mm
     group by 1),
 
