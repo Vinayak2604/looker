@@ -145,4 +145,50 @@ view: seo_data {
     type: number
     sql: ${sep_20} ;;
   }
+
+  measure: dec_20_avg {
+    type: number
+    sql: ${dec_20} ;;
+  }
+
+  measure: feb_21_avg {
+    type: number
+    sql: ${feb_21} ;;
+  }
+
+  measure: jan_21_avg {
+    type: number
+    sql: ${jan_21} ;;
+  }
+
+  measure: jul_20_avg {
+    type: number
+    sql: ${jul_20} ;;
+  }
+
+  measure: jun_20_avg {
+    type: number
+    sql: ${jun_20} ;;
+  }
+
+  measure: june_21_avg {
+    type: number
+    sql: ${june_21} ;;
+  }
+
+  measure: apr_20_avg {
+    type: number
+    sql: ${apr_20} ;;
+  }
+
+  measure: apr_21_avg {
+    type: number
+    sql: ${apr_21} ;;
+  }
+
+  measure: aug_20_avg {
+    type: number
+    sql: ${aug_20} ;;
+  }
+
 }
