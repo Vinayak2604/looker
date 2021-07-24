@@ -110,4 +110,39 @@ view: seo_data {
     type: count
     drill_fields: [city_name]
   }
+
+  measure: mar_20_avg {
+    type: number
+    sql: ${mar_20} ;;
+  }
+
+  measure: mar_21_avg {
+    type: number
+    sql: ${mar_21} ;;
+  }
+
+  measure: may_20_avg {
+    type: number
+    sql: ${may_20} ;;
+  }
+
+  measure: may_21_avg {
+    type: number
+    sql: ${may_21} ;;
+  }
+
+  measure: nov_20_avg {
+    type: number
+    sql: ${nov_20} ;;
+  }
+
+  measure: oct_20_avg {
+    type: number
+    sql: ${oct_20} ;;
+  }
+
+  measure: sep_20_avg {
+    type: number
+    sql: ${sep_20} ;;
+  }
 }
