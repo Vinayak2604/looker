@@ -1,6 +1,15 @@
 view: seo_data_graph {
   sql_table_name: looker_demo.seo_data_graph ;;
 
+
+  dimension: key {
+    primary_key: yes
+    type: string
+    hidden: yes
+    sql: concat(${TABLE}.keyword,' ', ${TABLE}.month) ;;
+
+    }
+
   dimension: business_category {
     type: string
     sql: ${TABLE}.business_category ;;
