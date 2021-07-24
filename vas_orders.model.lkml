@@ -23,6 +23,7 @@ explore: derived_vas_orders {
 explore: derived_vas_bucket_table {}
 explore: derived_vas_aov_bucket {}
 explore: seo_data {}
+explore: seo_data_graph {}
 #
 #   join: users {
 #     relationship: many_to_one
