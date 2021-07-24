@@ -42,7 +42,7 @@ view: seo_data_graph {
   }
 
   measure: avg_score {
-    type: number
+    type: average
     sql: ${score} ;;
   }
 }

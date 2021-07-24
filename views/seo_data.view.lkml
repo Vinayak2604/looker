@@ -112,82 +112,82 @@ view: seo_data {
   }
 
   measure: mar_20_avg {
-    type: number
+    type: average
     sql: ${mar_20} ;;
   }
 
   measure: mar_21_avg {
-    type: number
+    type: average
     sql: ${mar_21} ;;
   }
 
   measure: may_20_avg {
-    type: number
+    type: average
     sql: ${may_20} ;;
   }
 
   measure: may_21_avg {
-    type: number
+    type: average
     sql: ${may_21} ;;
   }
 
   measure: nov_20_avg {
-    type: number
+    type: average
     sql: ${nov_20} ;;
   }
 
   measure: oct_20_avg {
-    type: number
+    type: average
     sql: ${oct_20} ;;
   }
 
   measure: sep_20_avg {
-    type: number
+    type: average
     sql: ${sep_20} ;;
   }
 
   measure: dec_20_avg {
-    type: number
+    type: average
     sql: ${dec_20} ;;
   }
 
   measure: feb_21_avg {
-    type: number
+    type: average
     sql: ${feb_21} ;;
   }
 
   measure: jan_21_avg {
-    type: number
+    type: average
     sql: ${jan_21} ;;
   }
 
   measure: jul_20_avg {
-    type: number
+    type: average
     sql: ${jul_20} ;;
   }
 
   measure: jun_20_avg {
-    type: number
+    type: average
     sql: ${jun_20} ;;
   }
 
   measure: june_21_avg {
-    type: number
+    type: average
     sql: ${june_21} ;;
   }
 
   measure: apr_20_avg {
-    type: number
+    type: average
     sql: ${apr_20} ;;
   }
 
   measure: apr_21_avg {
-    type: number
+    type: average
     sql: ${apr_21} ;;
   }
 
   measure: aug_20_avg {
-    type: number
+    type: average
     sql: ${aug_20} ;;
   }
 
