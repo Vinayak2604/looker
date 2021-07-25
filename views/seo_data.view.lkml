@@ -114,81 +114,97 @@ view: seo_data {
   measure: mar_20_avg {
     type: average
     sql: ${mar_20} ;;
+    value_format: "0"
   }
 
   measure: mar_21_avg {
     type: average
     sql: ${mar_21} ;;
+    value_format: "0"
   }
 
   measure: may_20_avg {
     type: average
     sql: ${may_20} ;;
+    value_format: "0"
   }
 
   measure: may_21_avg {
     type: average
     sql: ${may_21} ;;
+    value_format: "0"
   }
 
   measure: nov_20_avg {
     type: average
     sql: ${nov_20} ;;
+    value_format: "0"
   }
 
   measure: oct_20_avg {
     type: average
     sql: ${oct_20} ;;
+    value_format: "0"
   }
 
   measure: sep_20_avg {
     type: average
     sql: ${sep_20} ;;
+    value_format: "0"
   }
 
   measure: dec_20_avg {
     type: average
     sql: ${dec_20} ;;
+    value_format: "0"
   }
 
   measure: feb_21_avg {
     type: average
     sql: ${feb_21} ;;
+    value_format: "0"
   }
 
   measure: jan_21_avg {
     type: average
     sql: ${jan_21} ;;
+    value_format: "0"
   }
 
   measure: jul_20_avg {
     type: average
     sql: ${jul_20} ;;
+    value_format: "0"
   }
 
   measure: jun_20_avg {
     type: average
     sql: ${jun_20} ;;
+    value_format: "0"
   }
 
   measure: june_21_avg {
     type: average
     sql: ${june_21} ;;
+    value_format: "0"
   }
 
   measure: apr_20_avg {
     type: average
     sql: ${apr_20} ;;
+    value_format: "0"
   }
 
   measure: apr_21_avg {
     type: average
     sql: ${apr_21} ;;
+    value_format: "0"
   }
 
   measure: aug_20_avg {
     type: average
     sql: ${aug_20} ;;
+    value_format: "0"
   }
 
 }
