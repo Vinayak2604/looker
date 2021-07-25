@@ -53,5 +53,6 @@ view: seo_data_graph {
   measure: avg_score {
     type: average
     sql: ${score} ;;
+    value_format: "0"
   }
 }
