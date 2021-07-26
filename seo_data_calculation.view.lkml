@@ -85,7 +85,7 @@ view: seo_data_calculation {
   }
 
   measure: first_month_data {
-    type: number
+    type: sum
     sql: ${search_month1} ;;
   }
 
