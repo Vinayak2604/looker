@@ -81,7 +81,7 @@ view: seo_data_calculation {
 
   measure: total_increased_100_keywords {
     type: count_distinct
-    sql: case when ${difference} >= 100 then ${keyword} end;;
+    sql: case when ${difference} >= 100 and ${kw_category} != 'Generic' then ${keyword} end;;
   }
 
   measure: total_search_month1 {
@@ -91,7 +91,7 @@ view: seo_data_calculation {
 
   measure: total_search_month2 {
     type: sum
-    sql:  case when ${difference} >=0 then ${difference} end ;;
+    sql:  case when ${difference} >=0 and ${kw_category} != 'Generic' then ${difference} end ;;
   }
 
 

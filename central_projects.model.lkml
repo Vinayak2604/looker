@@ -54,3 +54,5 @@ explore: vas_orders {}
 explore: inventory_ledger {}
 
 explore: next_week_items {}
+
+explore: vendor_prices {}
