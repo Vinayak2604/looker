@@ -73,7 +73,7 @@ view: derived_vas_aov_bucket {
 
   measure: m1_month_orders {
     type: string
-    sql: ${TABLE}.m2_month_orders ;;
+    sql: ${TABLE}.m1_month_orders ;;
   }
 
 

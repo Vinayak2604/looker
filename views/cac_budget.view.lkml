@@ -23,7 +23,20 @@
 
     dimension: Category {
       type: string
-      sql: ${TABLE}.Category ;;
+      sql: ${TABLE}.Category;;
+      html: {% if value == 'Manpower' %}
+
+      <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ rendered_value }}</p>
+
+    {% elsif value == 'Commission' %}
+
+      <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ rendered_value }}</p>
+
+    {% else %}
+
+      <p style="color: black; background-color: lightblue; font-size:100%; text-align:center">{{ rendered_value }}</p>
+
+    {% endif %} ;;
     }
 
     dimension: Subcategory {

@@ -1,5 +1,6 @@
 connection: "beta"
 
+
 include: "/views/*.view.lkml"
 include: "derived_vas_bucket_table.view.lkml" # include all views in the views/ folder in this project
 include: "derived_vas_aov_bucket.view.lkml"
@@ -21,6 +22,8 @@ explore: derived_vas_orders {
 
 explore: derived_vas_bucket_table {}
 explore: derived_vas_aov_bucket {}
+explore: seo_data {}
+explore: seo_data_graph {}
 #
 #   join: users {
 #     relationship: many_to_one

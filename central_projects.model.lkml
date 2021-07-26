@@ -52,3 +52,5 @@ explore: derived_food_cost {}
 explore: vas_orders {}
 
 explore: inventory_ledger {}
+
+explore: next_week_items {}

@@ -1,6 +1,6 @@
 view: weighted_avg {
   derived_table: {
-    sql:select location_name,item_name,
+    sql:select location_name,nvl(ingredient_tag,item_name) as item_name,
         sum(avail_stock_value) as avail_stock,
         sum(cons_value) as consumption,
         avail_stock/consumption as inv_days
