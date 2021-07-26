@@ -94,6 +94,11 @@ view: seo_data_calculation {
     sql:  case when ${difference} >= 0  then ${search_month2} end ;;
   }
 
+  measure: total_volume_m2 {
+    type: sum
+    sql:${search_month2} ;;
+  }
+
   measure: total_search_month2 {
     type: number
     sql:  (${total_search_month22} - ${total_search_month11}) / ${total_search_month11} ;;
