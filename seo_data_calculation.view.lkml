@@ -94,6 +94,14 @@ view: seo_data_calculation {
     sql:  case when ${difference} >=0 and ${kw_category} != 'Generic' then ${difference} end ;;
   }
 
+  measure: total_increased_100_keywords_cities {
+    type: count_distinct
+    sql: case when ${difference} >= 100 and ${kw_category} != 'Generic' then ${city_name} end;;
+  }
 
+  measure: total_increased_100_keywords_cluster {
+    type: count_distinct
+    sql: case when ${difference} >= 100 and ${kw_category} != 'Generic' then ${location} end;;
+  }
 
 }
