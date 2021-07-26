@@ -81,7 +81,7 @@ view: seo_data_calculation {
 
   measure: total_increased_100_keywords {
     type: count_distinct
-    sql: case when ${difference} >= 100 and ${kw_category} != 'Generic' then ${keyword} end;;
+    sql: case when ${search_month2} >= 100 and ${kw_category} != 'Generic' then ${keyword} end;;
   }
 
   measure: total_search_month1 {
@@ -96,12 +96,12 @@ view: seo_data_calculation {
 
   measure: total_increased_100_keywords_cities {
     type: count_distinct
-    sql: case when ${difference} >= 100 and ${kw_category} != 'Generic' then ${city_name} end;;
+    sql: case when ${search_month2} >= 100 and ${kw_category} != 'Generic' then ${city_name} end;;
   }
 
   measure: total_increased_100_keywords_cluster {
     type: count_distinct
-    sql: case when ${difference} >= 100 and ${kw_category} != 'Generic' then ${location} end;;
+    sql: case when ${search_month2} >= 100 and ${kw_category} != 'Generic' then ${location} end;;
   }
 
 }
