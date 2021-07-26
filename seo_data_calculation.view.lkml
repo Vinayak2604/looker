@@ -86,12 +86,12 @@ view: seo_data_calculation {
 
   measure: total_search_month11 {
     type: sum
-    sql: case when ${kw_category} != 'Generic' then ${search_month1} end  ;;
+    sql: case when ${difference} >= 0  then ${search_month1} end  ;;
   }
 
   measure: total_search_month22 {
     type: sum
-    sql:  case when ${kw_category} != 'Generic' then ${search_month2} end ;;
+    sql:  case when and ${difference} >= 0  then ${search_month2} end ;;
   }
 
   measure: total_search_month2 {
