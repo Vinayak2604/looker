@@ -4,7 +4,8 @@ view: next_week_items {
   rfm.menu_date,
 --  fv."name" as vendor_name,
   map.store,
-  nvl(t.name,i1.name) as ingredient_name
+  nvl(t.name,i1.name) as ingredient_name,
+  1 as dummy_val
 from stanza.core_food_service_residence_food_menu rfm
 left join stanza.core_food_service_residence_food_menu_item rfmi on
   rfm.uuid = rfmi.residence_food_menu_id
@@ -66,5 +67,10 @@ and map.store is not null ;;
   dimension: item_name {
     type: string
     sql: ${TABLE}.ingredient_name ;;
+  }
+
+  dimension: value {
+    type: number
+    sql: ${TABLE}.dummy_val ;;
   }
  }
