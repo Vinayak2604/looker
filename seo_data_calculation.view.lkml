@@ -5,7 +5,7 @@ view: seo_data_calculation {
          from looker_demo.seo_data_graph
          where  ({% condition month1 %} month {% endcondition %}
           or {% condition month2 %} month {% endcondition %})
-          group by 1,2,3
+          group by 1,2,3,4,5
           ;;
   }
 
