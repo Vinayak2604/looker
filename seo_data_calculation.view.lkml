@@ -1,7 +1,7 @@
 view: seo_data_calculation {
   derived_table: {
-    sql: select keyword,  business_category,  kw_category,  city_name,  location, case when month = month1 then score end as search_month1,
-    case when month = month2 then score end as search_month2
+    sql: select keyword,  business_category,  kw_category,  city_name,  location, case when month = {% condition month1 %} month {% endcondition %} then score end as search_month1,
+    case when month = {% condition month2 %} month {% endcondition %} then score end as search_month2
          from looker_demo.seo_data_graph
          where  ({% condition month1 %} month {% endcondition %}
           or {% condition month2 %} month {% endcondition %})
