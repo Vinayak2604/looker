@@ -237,17 +237,17 @@ view: derived_food_inventory {
     sql: ${TABLE}.purchase_qty ;;
   }
 
-  dimension: n7d {
-    type: string
-    sql: (select current_date as a union all
-select current_date +1 as a union all
-select current_date +2 as a union all
-select current_date +3 as a union all
-select current_date +4 as a union all
-select current_date +5 as a union all
-select current_date +6 as a union all
-select current_date +7 as a) ;;
-  }
+#   measure: n7d {
+#     type: string
+#     sql: (select current_date as a union all
+# select current_date +1 as a union all
+# select current_date +2 as a union all
+# select current_date +3 as a union all
+# select current_date +4 as a union all
+# select current_date +5 as a union all
+# select current_date +6 as a union all
+# select current_date +7 as a) ;;
+#   }
   # dimension: weight {
   #   type: number
   #   sql: case when ${inventory_days}>0 then 1 else 0 end;;

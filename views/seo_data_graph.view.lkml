@@ -55,4 +55,10 @@ view: seo_data_graph {
     sql: ${score} ;;
     value_format: "0"
   }
+
+  measure: total_keyword {
+    type: count_distinct
+    sql: ${keyword}  ;;
+  }
+
 }

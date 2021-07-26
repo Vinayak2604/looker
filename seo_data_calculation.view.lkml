@@ -1,0 +1,96 @@
+view: seo_data_calculation {
+  derived_table: {
+    sql: select keyword,  business_category,  kw_category,  city_name,  location, case when month = month1 then score end as search_month1,
+    case when month = month2 then score end as search_month2
+         from looker_demo.seo_data_graph
+         where  ({% condition month1 %} month {% endcondition %}
+          or {% condition month2 %} month {% endcondition %})
+          ;;
+  }
+
+
+
+  parameter: month1 {
+    type: string
+  }
+
+
+  parameter: month2 {
+    type: string
+  }
+
+
+
+  dimension: keyword {
+    type: string
+    sql: ${TABLE}.keyword ;;
+  }
+
+  dimension: business_category {
+    type: string
+    sql: ${TABLE}.business_category ;;
+  }
+
+  dimension: kw_category {
+    type: string
+    sql: ${TABLE}.kw_category ;;
+  }
+
+  dimension: city_name {
+    type: string
+    sql: ${TABLE}.city_name ;;
+  }
+
+  dimension: location {
+    type: string
+    sql: ${TABLE}.location ;;
+  }
+
+  dimension: search_month1 {
+    type: number
+    sql: ${TABLE}.search_month1 ;;
+  }
+
+  dimension: search_month2 {
+    type: number
+    sql: ${TABLE}.search_month2 ;;
+  }
+
+  dimension: difference {
+    type: number
+    sql: ${search_month2} - ${search_month1} ;;
+  }
+
+  measure: total_keywords {
+    type: count_distinct
+    sql: ${keyword};;
+  }
+
+  measure: total_increased_keywords {
+    type: count_distinct
+    sql: case when difference >= 0 then ${keyword} end;;
+  }
+
+  measure: total_increased_nongenric_keywords {
+    type: count_distinct
+    sql: case when difference >= 0 and ${kw_category} != 'Generic' then ${keyword} end;;
+  }
+
+  measure: total_increased_100_keywords {
+    type: count_distinct
+    sql: case when difference >= 100 then ${keyword} end;;
+  }
+
+  measure: total_search_month1 {
+    type: sum
+    sql: ${search_month1} ;;
+  }
+
+  measure: total_search_month2 {
+    type: sum
+    sql: ${search_month2} ;;
+  }
+
+
+
+}
