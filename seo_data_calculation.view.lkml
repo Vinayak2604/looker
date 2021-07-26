@@ -84,19 +84,19 @@ view: seo_data_calculation {
     sql: case when ${search_month2} >= 100 and ${difference} >= 0  and ${kw_category} != 'Generic' then ${keyword} end;;
   }
 
-  measure: first_month_data {
+  measure: total_search_month11 {
     type: sum
-    sql: ${search_month1} ;;
+    sql: case when ${kw_category} != 'Generic' then ${search_month1} end  ;;
   }
 
-  measure: second_month_data {
+  measure: total_search_month22 {
     type: sum
-    sql:  ${search_month2} ;;
+    sql:  case when ${kw_category} != 'Generic' then ${search_month2} end ;;
   }
 
   measure: total_search_month2 {
     type: number
-    sql:  nullif((${second_month_data} - ${first_month_data}),0) / ${first_month_data} end ;;
+    sql:  (${total_search_month22} - ${total_search_month11}) / ${total_search_month11} ;;
     value_format: "0%"
   }
 
