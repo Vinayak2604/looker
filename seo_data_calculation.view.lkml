@@ -1,10 +1,11 @@
 view: seo_data_calculation {
   derived_table: {
-    sql: select keyword,  business_category,  kw_category,  city_name,  location, case when month = {% condition month1 %} month {% endcondition %} then score end as search_month1,
-    case when month = {% condition month2 %} month {% endcondition %} then score end as search_month2
+    sql: select keyword,  business_category,  kw_category,  city_name,  location, max(case when month = {% condition month1 %} month {% endcondition %} then score end) as search_month1,
+    max(case when month = {% condition month2 %} month {% endcondition %} then score end) as search_month2
          from looker_demo.seo_data_graph
          where  ({% condition month1 %} month {% endcondition %}
           or {% condition month2 %} month {% endcondition %})
+          group by 1,2,3
           ;;
   }
 
@@ -49,11 +50,13 @@ view: seo_data_calculation {
   dimension: search_month1 {
     type: number
     sql: ${TABLE}.search_month1 ;;
+    # hidden: yes
   }
 
   dimension: search_month2 {
     type: number
     sql: ${TABLE}.search_month2 ;;
+    # hidden: yes
   }
 
   dimension: difference {
@@ -63,7 +66,7 @@ view: seo_data_calculation {
 
   measure: total_keywords {
     type: count_distinct
-    sql: ${keyword};;
+    sql: case when search_month2 >0 then ${keyword} end;;
   }
 
   measure: total_increased_keywords {
