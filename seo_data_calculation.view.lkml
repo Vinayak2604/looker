@@ -91,7 +91,7 @@ view: seo_data_calculation {
 
   measure: total_search_month2 {
     type: sum
-    sql: ${search_month2} ;;
+    sql:  case when ${difference} >=0 then ${difference} end ;;
   }
 
 
