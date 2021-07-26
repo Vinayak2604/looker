@@ -84,15 +84,23 @@ view: seo_data_calculation {
     sql: case when ${search_month2} >= 100 and ${difference} >= 0  and ${kw_category} != 'Generic' then ${keyword} end;;
   }
 
-  measure: total_search_month1 {
-    type: sum
+  measure: first_month_data {
+    type: number
     sql: ${search_month1} ;;
   }
 
-  measure: total_search_month2 {
+  measure: second_month_data {
     type: sum
-    sql:  case when ${difference} >=0 and ${kw_category} != 'Generic' then ${difference} end ;;
+    sql:  ${search_month2} ;;
   }
+
+  measure: total_search_month2 {
+    type: number
+    sql:  nullif((${second_month_data} - ${first_month_data}),0) / ${first_month_data} end ;;
+    value_format: "0%"
+  }
+
+
 
   measure: total_increased_100_keywords_cities {
     type: count_distinct
