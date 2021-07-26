@@ -71,17 +71,17 @@ view: seo_data_calculation {
 
   measure: total_increased_keywords {
     type: count_distinct
-    sql: case when difference >= 0 then ${keyword} end;;
+    sql: case when ${difference} >= 0 then ${keyword} end;;
   }
 
   measure: total_increased_nongenric_keywords {
     type: count_distinct
-    sql: case when difference >= 0 and ${kw_category} != 'Generic' then ${keyword} end;;
+    sql: case when ${difference} >= 0 and ${kw_category} != 'Generic' then ${keyword} end;;
   }
 
   measure: total_increased_100_keywords {
     type: count_distinct
-    sql: case when difference >= 100 then ${keyword} end;;
+    sql: case when ${difference} >= 100 then ${keyword} end;;
   }
 
   measure: total_search_month1 {
