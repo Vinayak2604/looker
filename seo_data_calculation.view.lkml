@@ -1,7 +1,7 @@
 view: seo_data_calculation {
   derived_table: {
-    sql: select keyword,  business_category,  kw_category,  city_name,  location, max(case when month = {% condition month1 %} {% endcondition %}then score end) as search_month1,
-    max(case when month = {% condition month2 %}{% endcondition %} then score end) as search_month2
+    sql: select keyword,  business_category,  kw_category,  city_name,  location, max(case when {% condition month1 %}month {% endcondition %}then score end) as search_month1,
+    max(case when {% condition month2 %}month{% endcondition %} then score end) as search_month2
          from looker_demo.seo_data_graph
          where  ({% condition month1 %} month {% endcondition %}
           or {% condition month2 %} month {% endcondition %})
