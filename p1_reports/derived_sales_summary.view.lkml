@@ -1,7 +1,10 @@
 view: derived_sales_summary {
   derived_table: {
     sql:
-    with a as (select distinct *, row_number() over (partition by residence_id order by date desc) as rn
+    with a as (select distinct *, row_number() over (partition by residence_id order by date desc) as rn,
+    sum(prebookings) over (partition by residence_id order by date) as prebookings_till_date,
+    sum(refunded_prebookings) over (partition by residence_id order by date) as refunded_prebookings_till_date,
+    sum(converted_prebookings) over (partition by residence_id order by date) as converted_prebookings_till_date
 from derived_sales_summary
 where {% condition date %} date {% endcondition %}),
 b as (select residence_id,
@@ -196,6 +199,21 @@ where a.rn = 1;;
     type: number
     sql: ${filtered_period_bookings} + ${filtered_period_prebookings} ;;
     label: "Pre & Full Bookings"
+  }
+
+  measure: prebookings_till_date {
+    type: sum
+    sql: ${TABLE}.prebookings_till_date ;;
+  }
+
+  measure: converted_prebookings_till_date {
+    type: sum
+    sql: ${TABLE}.converted_prebookings_till_date ;;
+  }
+
+  measure: refunded_prebookings_till_date {
+    type: sum
+    sql: ${TABLE}.refunded_prebookings_till_date ;;
   }
 
   dimension: test {
