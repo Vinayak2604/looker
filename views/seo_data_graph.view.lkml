@@ -50,8 +50,8 @@ view: seo_data_graph {
     drill_fields: [city_name]
   }
 
-  measure: avg_score {
-    type: average
+  measure: total_Keyword_searched {
+    type: sum
     sql: ${score} ;;
     value_format: "0"
   }
