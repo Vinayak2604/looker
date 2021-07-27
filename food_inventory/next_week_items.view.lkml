@@ -1,8 +1,8 @@
 view: next_week_items {
   derived_table: {
-    sql: select DISTINCT
-  rfm.menu_date,
---  fv."name" as vendor_name,
+    sql: select store,ingredient_name,sum(dummy_val) as times from
+(select distinct
+ rfm.menu_date,
   map.store,
   nvl(t.name,i1.name) as ingredient_name,
   1 as dummy_val
@@ -45,19 +45,26 @@ left join ( select 'Zagreb Kitchen' as kitchen,'Zagreb Store' as store union all
       select 'Amsterdam Kitchen' as kitchen,'Amsterdam Store' as store union all
       select 'Kitchen - Chennai Zamin Pallavaram ' as kitchen,'Chennai Pallavaram Store' as store)
       map on map.kitchen =fv.name
-where rfm.menu_date >=current_date
+where (rfm.menu_date >=current_date and rfm.menu_date <= current_date+ 7)
 and (fi."__hevo__marked_deleted" is FALSE or fi."__hevo__marked_deleted" is null)
 and (fir."__hevo__marked_deleted" is FALSE or fir."__hevo__marked_deleted" is null )
 and (firi."__hevo__marked_deleted" is FALSE or firi."__hevo__marked_deleted" is null )
 and (i1."__hevo__marked_deleted" is false or i1."__hevo__marked_deleted" is null)
 and (i2."__hevo__marked_deleted" is false or i2."__hevo__marked_deleted" is null)
-and map.store is not null ;;
+and map.store is not null)
+group by 1,2
+ ;;
   }
 
-  dimension: menu_date {
-    type: date
-    sql: ${TABLE}.menu_date ;;
+
+  parameter: date {
+    type: string
   }
+
+  # dimension: menu_date {
+  #   type: date
+  #   sql: ${TABLE}.menu_date ;;
+  # }
 
   dimension: location {
     type: string
@@ -71,6 +78,6 @@ and map.store is not null ;;
 
   dimension: value {
     type: number
-    sql: ${TABLE}.dummy_val ;;
+    sql: ${TABLE}.times ;;
   }
  }
