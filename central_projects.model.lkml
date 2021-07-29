@@ -41,6 +41,13 @@ join: open_pos {
   relationship: one_to_one
   type: left_outer
 }
+
+join: next_week_items {
+  sql_on: ${derived_food_inventory.location_name}=${next_week_items.location} and ${derived_food_inventory.item_name}=${next_week_items.item_name} ;;
+  relationship: one_to_one
+  type: left_outer
+
+}
 }
 explore: derived_food_invoice {
 
