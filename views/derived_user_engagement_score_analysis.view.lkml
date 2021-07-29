@@ -123,72 +123,72 @@ view: derived_user_engagement_score_analysis {
 
   measure: above_m1 {
     type: count_distinct
-    sql: case when ${m1_above} > 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m1_above} > 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: above_m2 {
     type: count_distinct
-    sql: case when ${m2_above} > 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m2_above} > 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: above_m3 {
     type: count_distinct
-    sql: case when ${m3_above} > 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m3_above} > 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: above_m4 {
     type: count_distinct
-    sql: case when ${m4_above} > 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m4_above} > 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: above_m5 {
     type: count_distinct
-    sql: case when ${m5_above} > 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m5_above} > 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: above_m6 {
     type: count_distinct
-    sql: case when ${m6_above} > 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m6_above} > 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: above_m7 {
     type: count_distinct
-    sql: case when ${m7_above} > 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m7_above} > 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: less_m1 {
     type: count_distinct
-    sql: case when ${m1_less} < 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m1_less} < 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: less_m2 {
     type: count_distinct
-    sql: case when ${m2_less} < 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m2_less} < 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: less_m3 {
     type: count_distinct
-    sql: case when ${m3_less} < 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m3_less} < 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: less_m4 {
     type: count_distinct
-    sql: case when ${m4_less} < 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m4_less} < 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: less_m5 {
     type: count_distinct
-    sql: case when ${m5_less} < 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m5_less} < 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: less_m6 {
     type: count_distinct
-    sql: case when ${m6_less} < 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m6_less} < 0 then (${student_id}||${type}||${category}) end ;;
   }
 
   measure: less_m7 {
     type: count_distinct
-    sql: case when ${m7_less} < 0 then (${student_id}|${type}|${category}) end ;;
+    sql: case when ${m7_less} < 0 then (${student_id}||${type}||${category}) end ;;
   }
 
 
