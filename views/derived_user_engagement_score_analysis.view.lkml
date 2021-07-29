@@ -14,71 +14,85 @@ view: derived_user_engagement_score_analysis {
   dimension: m1_above {
     type: number
     sql: ${TABLE}.m1_above ;;
+    hidden: yes
   }
 
   dimension: m1_less {
     type: number
     sql: ${TABLE}.m1_less ;;
+    hidden: yes
   }
 
   dimension: m2_above {
     type: number
     sql: ${TABLE}.m2_above ;;
+    hidden: yes
   }
 
   dimension: m2_less {
     type: number
     sql: ${TABLE}.m2_less ;;
+    hidden: yes
   }
 
   dimension: m3_above {
     type: number
     sql: ${TABLE}.m3_above ;;
+    hidden: yes
   }
 
   dimension: m3_less {
     type: number
     sql: ${TABLE}.m3_less ;;
+    hidden: yes
   }
 
   dimension: m4_above {
     type: number
     sql: ${TABLE}.m4_above ;;
+    hidden: yes
   }
 
   dimension: m4_less {
     type: number
     sql: ${TABLE}.m4_less ;;
+    hidden: yes
   }
 
   dimension: m5_above {
     type: number
     sql: ${TABLE}.m5_above ;;
+    hidden: yes
   }
 
   dimension: m5_less {
     type: number
     sql: ${TABLE}.m5_less ;;
+    hidden: yes
   }
 
   dimension: m6_above {
     type: number
     sql: ${TABLE}.m6_above ;;
+    hidden: yes
   }
 
   dimension: m6_less {
     type: number
     sql: ${TABLE}.m6_less ;;
+    hidden: yes
   }
 
   dimension: m7_above {
     type: number
     sql: ${TABLE}.m7_above ;;
+    hidden: yes
   }
 
   dimension: m7_less {
     type: number
     sql: ${TABLE}.m7_less ;;
+    hidden: yes
   }
 
   dimension: micromarket {
