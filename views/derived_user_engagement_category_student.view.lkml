@@ -240,7 +240,7 @@ view: derived_user_engagement_category_student {
     }
 
 
-    measure: 75_100_ {
+    measure: 75_100_a {
       type: number
       sql: 1.00*${75_100} / ${total_students} ;;
       value_format: "0.0%"
