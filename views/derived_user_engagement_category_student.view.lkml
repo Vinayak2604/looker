@@ -92,6 +92,11 @@ view: derived_user_engagement_category_student {
     sql: ${student_id};;
   }
 
+  measure: avg_score_student_month_old {
+    type: number
+    sql: ${avg_score_student_mo};;
+  }
+
 
 
   measure: a {
@@ -245,6 +250,11 @@ view: derived_user_engagement_category_student {
       sql: 1.00*${75_100} / ${total_students} ;;
       value_format: "0.0%"
     }
+
+
+
+
+
 
 
 }
