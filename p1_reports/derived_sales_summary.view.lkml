@@ -1,10 +1,7 @@
 view: derived_sales_summary {
   derived_table: {
     sql:
-    with a as (select distinct *, row_number() over (partition by residence_id order by date desc) as rn,
-    sum(prebookings) over (partition by residence_id order by date) as prebookings_till_date,
-    sum(refunded_prebookings) over (partition by residence_id order by date) as refunded_prebookings_till_date,
-    sum(converted_prebookings) over (partition by residence_id order by date) as converted_prebookings_till_date
+    with a as (select distinct *, row_number() over (partition by residence_id order by date desc) as rn
 from derived_sales_summary
 where {% condition date %} date {% endcondition %}),
 b as (select residence_id,
@@ -103,6 +100,7 @@ where a.rn = 1;;
   measure: beds_cs_nmi {
     type: sum
     sql: ${TABLE}.beds_cs_nmi ;;
+    value_format: "#,##0"
   }
 
   dimension: city {
@@ -138,6 +136,7 @@ where a.rn = 1;;
   measure: live_beds {
     type: sum
     sql: ${TABLE}.live_beds ;;
+    value_format: "#,##0"
   }
 
   dimension: live_bookings {
@@ -183,6 +182,7 @@ where a.rn = 1;;
   measure: upcoming_move_ins {
     type: sum
     sql: ${TABLE}.upcoming_move_ins ;;
+    value_format: "#,##0"
   }
 
   dimension: zone {
@@ -193,6 +193,7 @@ where a.rn = 1;;
   measure: unbooked_inventory {
     type: number
     sql: ${live_beds} - ${onboarded_beds} - ${upcoming_move_ins} - ${beds_cs_nmi} ;;
+    value_format: "#,##0"
   }
 
   measure: pre_and_full_bookings {
