@@ -1,5 +1,5 @@
 view: bookings_prebookings {
-  sql_table_name: looker_demo.derived_sales_summary ;;
+  sql_table_name: derived_sales_summary ;;
 
   dimension: id {
     primary_key: yes
