@@ -18,4 +18,5 @@ explore: derived_user_engagement_category_student {}
 explore: user_engagement_categories {}
 explore: user_engagement_categories_residence {}
 explore: user_engagement_line_segment {}
+explore: derived_user_engagement_score_analysis {}
 # explore: derived_vas_bucket_table {}
