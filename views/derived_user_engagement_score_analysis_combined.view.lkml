@@ -48,12 +48,12 @@ view: derived_user_engagement_score_analysis_combined {
 
   measure: less {
     type: count_distinct
-    sql: case when ${score} < 0 then then (${student_id}||${type}||${category}) end  ;;
+    sql: case when ${score} < 0 then (${student_id}||${type}||${category}) end  ;;
   }
 
   measure: above {
     type: count_distinct
-    sql: case when ${score} > 0 then then (${student_id}||${type}||${category}) end  ;;
+    sql: case when ${score} > 0 then (${student_id}||${type}||${category}) end  ;;
   }
 
 
