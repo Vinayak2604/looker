@@ -3,7 +3,8 @@
       sql:
           select am.zone as zone,am.city as city, am.micromarket as micromarket,am.category_name as Category,am.sub_category_name as Subcategory,  sum(b.budget_amount) as budget  from stanza.erp_cac_service_budget b
       left join stanza.erp_cac_service_attribute_meta am on b.attribue_meta_uuid = am.uuid
-      where am.category_name not like '%Discount%'  group by 1,2,3,4,5;;
+      where am.category_name not like '%Discount%'
+      group by 1,2,3,4,5;;
     }
 
     dimension: city {
@@ -49,6 +50,7 @@
       sql: sum(${TABLE}.budget)/10^5 ;;
       value_format: "#,##0.0"
     }
+
     # # You can specify the table name if it's different from the view name:
   # sql_table_name: my_schema_name.tester ;;
   #
