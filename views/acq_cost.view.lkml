@@ -169,7 +169,7 @@ view: acq_cost {
 
   measure: actual2 {
     type: number
-    sql: nullif(${actual},'-') ;;
+    sql: nullif(${actual},0) ;;
   }
 }
 
