@@ -59,16 +59,15 @@ view: acq_cost {
 
   measure: actual {
     type: sum
-    sql: CASE WHEN ${TABLE}.actual/10^5 IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
+    sql: CASE WHEN ${TABLE}.actual IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
     value_format: "#,##0.0"
-    # html:
+    html: {% if value > 0.09 %}
+      <p style="color: black; font-size:100%; text-align:right">{{ rendered_value }}</p>
 
+    {% else %}
+      <p style="color: black"> - </p>
 
-    # {% if {{ value }} == '0 %}
-
-    # <div style="text-align:right;font-weight: bold">{{ '-' }}</div>
-
-    # {% endif %};;
+    {% endif %};;
 
   }
   measure: committed {

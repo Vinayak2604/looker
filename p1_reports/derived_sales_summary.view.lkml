@@ -128,6 +128,11 @@ where a.rn = 1;;
     sql: ${TABLE}.forward_beds_sold ;;
   }
 
+  measure: forward_net_beds_sold {
+    type: sum
+    sql: ${TABLE}.forward_net_beds_sold ;;
+  }
+
   dimension: forward_net_occupancy {
     type: number
     sql: ${TABLE}.forward_net_occupancy ;;
@@ -215,6 +220,15 @@ where a.rn = 1;;
   measure: refunded_prebookings_till_date {
     type: sum
     sql: ${TABLE}.refunded_prebookings_till_date ;;
+  }
+
+  measure: current_revenue {
+    type: sum
+    sql: ${TABLE}.current_revenue ;;
+  }
+
+  measure: forward_revenue {
+    type: sum
   }
 
   dimension: test {
