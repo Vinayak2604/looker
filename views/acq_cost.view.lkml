@@ -60,7 +60,7 @@ view: acq_cost {
   measure: actual {
     type: sum
     sql: CASE WHEN ${TABLE}.actual/10^5 IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
-    value_format: "#,##0.0"
+    value_format: "0.0"
     # html:
 
 
