@@ -166,6 +166,11 @@ view: acq_cost {
   #   type: sum
   #   sql: ${lifetime_orders} ;;
   # }
+
+  measure: actual2 {
+    type: number
+    sql: nullif(${actual},'-') ;;
+  }
 }
 
 # view: ac {
@@ -205,4 +210,6 @@ view: acq_cost {
 #     type: sum
 #     sql: ${lifetime_orders} ;;
 #   }
+
+
 # }
