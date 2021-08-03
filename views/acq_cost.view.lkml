@@ -167,17 +167,7 @@ view: acq_cost {
   #   sql: ${lifetime_orders} ;;
   # }
 
-  measure: actual2 {
-    type: number
-    sql: ${actual};;
-    html:{% if rendered_value  > 0  %}
-    {{ rendered_value }}
-     {% else %}
 
-    {{ "-" }}
-
-    {% endif %} ;;
-  }
 }
 
 # view: ac {
