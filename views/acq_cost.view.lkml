@@ -170,7 +170,7 @@ view: acq_cost {
   measure: actual2 {
     type: number
     sql: ${actual};;
-    html:  {% if acq_cost.actual2 >= 0 %}
+    html:  {% if acq_cost.actual >= 0 %}
     <font>{{ acq_cost.actual._rendered_value }}</font>
      {% else %}
 
