@@ -37,6 +37,19 @@ view: acq_cost {
   dimension: category {
     type: string
     sql: ${TABLE}.category ;;
+    html:{% if value == 'Manpower' %}
+
+    <p style="color: black;font-size:100%; text-align:center">{{ rendered_value }}</p>
+
+    {% elsif value == 'Commission' %}
+
+    <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
+
+    {% else %}
+
+    <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
+
+    {% endif %} ;;
   }
 
   dimension: subcategory {
@@ -46,8 +59,16 @@ view: acq_cost {
 
   measure: actual {
     type: sum
-    sql: ${TABLE}.actual/10^5 ;;
+    sql: CASE WHEN ${TABLE}.actual/10^5 IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
     value_format: "#,##0.0"
+    # html:
+
+
+    # {% if {{ value }} == '0 %}
+
+    # <div style="text-align:right;font-weight: bold">{{ '-' }}</div>
+
+    # {% endif %};;
 
   }
   measure: committed {
@@ -100,6 +121,20 @@ view: acq_cost {
     type: sum
     sql: (${TABLE}.actual-${TABLE}.actual_old)/10^5 ;;
     value_format: "#,##0.0"
+  }
+
+  dimension_group: podate {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.podate ;;
   }
 
 
