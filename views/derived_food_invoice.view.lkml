@@ -149,7 +149,7 @@ view: derived_food_invoice {
 
   dimension: time_taken {
     type: number
-    sql: ${TABLE}.time_taken ;;
+    sql: case when po_completion_date is not null then datediff(day,po_created_at,po_completion_date) end ;;
   }
 
   dimension: unit_rate_rent_per_month {
@@ -169,6 +169,5 @@ view: derived_food_invoice {
   measure: distinct_po {
     type: count_distinct
     sql: ${po_number} ;;
-
   }
 }

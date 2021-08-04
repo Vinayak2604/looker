@@ -63,3 +63,5 @@ explore: inventory_ledger {}
 explore: next_week_items {}
 
 explore: vendor_prices {}
+
+explore: po_invoice{}
