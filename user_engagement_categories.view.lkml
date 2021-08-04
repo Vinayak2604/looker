@@ -13,7 +13,10 @@ view: user_engagement_categories {
           (coalesce(count(case when meal_rating_breakfast > 0 then meal_rating_breakfast end),0) + coalesce(count(case when meal_rating_lunch >0 then meal_rating_lunch end),0) +coalesce(count(case when meal_rating_evening_snacks > 0 then meal_rating_evening_snacks end),0) +coalesce(count(case when meal_rating_dinner >0 then meal_rating_dinner end),0) ) meal_rating,
           1.00*nullif((coalesce(sum(meal_rating_breakfast),0) + coalesce(sum(meal_rating_lunch),0) +coalesce(sum(meal_rating_evening_snacks),0) +coalesce(sum(meal_rating_dinner),0)),0) / (coalesce(count(case when meal_rating_breakfast > 0 then meal_rating_breakfast end),0) + coalesce(count(case when meal_rating_lunch >0 then meal_rating_lunch end),0) +coalesce(count(case when meal_rating_evening_snacks > 0 then meal_rating_evening_snacks end),0) +coalesce(count(case when meal_rating_dinner >0 then meal_rating_dinner end),0) ) as meal_fps,
           avg(case when vas_rating >0 then vas_rating end) vas_fps,
-          avg(case when vas_ov > 0 then vas_ov end) vas_ov
+          avg(case when vas_ov > 0 then vas_ov end) vas_ov,
+          sum(total_used_gb) vas_used_internet,
+          count(distinct case when menu_opened >= 1 then date end) vas_menu_open,
+          sum(story) app_engagement_story
 
           from stanza.derived_user_engagement_metrics
           where {% condition date %} date {% endcondition %}
@@ -37,7 +40,10 @@ view: user_engagement_categories {
           case when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.50 then 3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.40 then 0.75*3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.30 then 0.50*3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.20 then 0.25*3 else 0 end as transaction_preference_shared,
           case when (1.00*nullif(meal_consumed,0) / available_meal) >= 0.70 then 1 when (1.00*nullif(meal_consumed,0) / available_meal) >= 0.20 then (1.00*nullif(meal_consumed,0) / available_meal)*1 else 0 end as transaction_meals_consumed,
           case when vas_ov >= 100 then 3 when vas_ov >= 50 then 0.50*3 when vas_ov >=1 then 0.25*3 else 0 end as vas_aov,
-          case when vas_orders >= 5 then 3 when vas_orders>=3 then 0.50*3 when vas_orders>=1 then 0.25*3 else 0 end as vas_no_of_orders
+          case when vas_orders >= 5 then 3 when vas_orders>=3 then 0.50*3 when vas_orders>=1 then 0.25*3 else 0 end as vas_no_of_orders,
+          case when vas_used_internet > 75 then 3 when vas_used_internet >= 40 then 0.50*3 when vas_used_internet >=1 then 0*3 end as vas_inernet_usage,
+          case when vas_menu_open >=12 then 2 when vas_menu_open >= 8 then 0.75*2 when vas_menu_open >= 4 then 0.50*2 when vas_menu_open >= 1 then 0.25*2 else 0 end as vas_menu_opened,
+          case when app_engagement_story >= 1 then 2 else 0 end as app_engagement_story
           from base
           ),
 
@@ -80,6 +86,9 @@ view: user_engagement_categories {
           scores as (select base.student_id,
           1.00*(coalesce(engagement.feedback_smr,0)) / 2 as engagement_feedback,
           1.00*(coalesce(engagement.transaction_preference_shared,0))/ 3 as engagement_transaction,
+          1.00*(coalesce(engagement.vas_inernet_usage,0)+coalesce(engagement.vas_menu_opened,0)) / 5 as engagement_vas,
+          1.00*(coalesce(engagement.app_engagement_story,0)) / 2 as engagement_app_engagement,
+
 
           1.00*(coalesce(experience.complaint_complaints_per_month,0)) / 3  as experience_complaints,
           1.00*(coalesce(experience.feedback_vas_order_rating,0)+coalesce(experience.feedback_rating_on_tickets_closed,0)+coalesce(experience.feedback_rating_on_tickets_resolved,0)+
@@ -116,6 +125,14 @@ view: user_engagement_categories {
           union
           (select scores.student_id, 'engagement' as type,
           'transaction' as category, engagement_transaction as score
+          from scores)
+          union
+          (select scores.student_id, 'engagement' as type,
+          'vas' as category, engagement_vas as score
+          from scores)
+          union
+          (select scores.student_id, 'engagement' as type,
+          'app engagement' as category, engagement_app_engagement as score
           from scores)
           union
           (select scores.student_id,  'experience' as type,
