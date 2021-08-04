@@ -120,12 +120,26 @@ view: acq_cost {
     type: sum
     sql: (${TABLE}.committed-${TABLE}.comm_old)/10^5 ;;
     value_format: "#,##0.0"
+    html: {% if value > 0 %}
+      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+      <p style="color: black"> - </p>
+
+    {% endif %}  ;;
   }
 
   measure: Actual_delta {
     type: sum
     sql: (${TABLE}.actual-${TABLE}.actual_old)/10^5 ;;
     value_format: "#,##0.0"
+    html: {% if value > 0 %}
+      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+      <p style="color: black"> - </p>
+
+    {% endif %}  ;;
   }
 
   dimension_group: podate {

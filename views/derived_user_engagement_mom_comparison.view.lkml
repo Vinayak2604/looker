@@ -22,12 +22,12 @@ view: derived_user_engagement_mom_comparison {
 
     html: {% if derived_user_engagement_mom_comparison.city._is_selected and derived_user_engagement_mom_comparison.below_students._is_selected %}
 
-          <font>{{ derived_user_engagement_mom_comparison.city._rendered_value }}</font>, <font>:{{ derived_user_engagement_mom_comparison.below_students._rendered_value }}</font>
+          <font>{{ derived_user_engagement_mom_comparison.city._rendered_value }}</font>, <font>{{ derived_user_engagement_mom_comparison.below_students._rendered_value }}</font>
 
           {% else %}
           {% if derived_user_engagement_mom_comparison.city._is_selected and derived_user_engagement_mom_comparison.above_students._is_selected %}
 
-          <font>{{ derived_user_engagement_mom_comparison.city._rendered_value }}</font>, <font>:{{ derived_user_engagement_mom_comparison.above_students._rendered_value }}</font> {% endif %} {% endif %}  ;;
+          <font>{{ derived_user_engagement_mom_comparison.city._rendered_value }}</font>, <font>{{ derived_user_engagement_mom_comparison.above_students._rendered_value }}</font> {% endif %} {% endif %}  ;;
     value_format: "0.0%"
 
 
