@@ -116,31 +116,31 @@ view: acq_cost {
   #   value_format: "#,##0.0"
   # }
 
-  measure: Committed_delta {
-    type: sum
-    sql: (${TABLE}.committed-${TABLE}.comm_old)/10^5 ;;
-    value_format: "#,##0.0"
-    html: {% if value > 0 %}
-      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+  # measure: Committed_delta {
+  #   type: sum
+  #   sql: (${TABLE}.committed-${TABLE}.comm_old)/10^5 ;;
+  #   value_format: "0.0"
+  #   html: {% if value < -0.01 && value > 0.1 %}
+  #     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-    {% else %}
-      <p style="color: black"> - </p>
+  #   {% else %}
+  #     <p style="color: black"> - </p>
 
-    {% endif %}  ;;
-  }
+  #   {% endif %}  ;;
+  # }
 
-  measure: Actual_delta {
-    type: sum
-    sql: (${TABLE}.actual-${TABLE}.actual_old)/10^5 ;;
-    value_format: "#,##0.0"
-    html: {% if value > 0 %}
-      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+  # measure: Actual_delta {
+  #   type: sum
+  #   sql: (${TABLE}.actual-${TABLE}.actual_old)/10^5 ;;
+  #   value_format: "0.0"
+  #   html: {% if value < -0.01 && value > 0.1 %}
+  #     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-    {% else %}
-      <p style="color: black"> - </p>
+  #   {% else %}
+  #     <p style="color: black"> - </p>
 
-    {% endif %}  ;;
-  }
+  #   {% endif %}  ;;
+  # }
 
   dimension_group: podate {
     type: time

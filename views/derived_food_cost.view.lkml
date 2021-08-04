@@ -440,6 +440,15 @@ view: derived_food_cost {
     sql: case when month(${TABLE}.menu_date)=month(current_date()) then ${total_budget} end ;;
   }
 
+
+
+  measure: total_budget_l7d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
+    value_format: "0"
+  }
+
+
   # dimension: l7d {
   #   type: string
   #   sql: case when  ;;
