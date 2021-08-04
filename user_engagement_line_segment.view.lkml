@@ -40,7 +40,7 @@ view: user_engagement_line_segment {
           case when vas_ov >= 100 then 3 when vas_ov >= 50 then 0.50*3 when vas_ov >=1 then 0.25*3 else 0 end as vas_aov,
           case when vas_orders >= 5 then 3 when vas_orders>=3 then 0.50*3 when vas_orders>=1 then 0.25*3 else 0 end as vas_no_of_orders,
           case when total_used_internet > 75 then 3 when total_used_internet >= 40 then 0.50*3 when total_used_internet >=1 then 0*3 end as vas_inernet_usage,
-          case when vas_menu_open >=12 then 2 when vas_menu_open >= 8 then 0.75*2 when vas_menu_open >= 4 0.50*2 when vas_menu_open >= 1 then 0.25*2 else 0 end as vas_menu_opened,
+          case when vas_menu_open >=12 then 2 when vas_menu_open >= 8 then 0.75*2 when vas_menu_open >= 4 then 0.50*2 when vas_menu_open >= 1 then 0.25*2 else 0 end as vas_menu_opened,
           case when app_engagement_story >= 1 then 2 else 0 end as app_engagement_story
           from base
           ),
