@@ -439,4 +439,10 @@ view: derived_food_cost {
     type: number
     sql: case when month(${TABLE}.menu_date)=month(current_date()) then ${total_budget} end ;;
   }
+
+  # dimension: l7d {
+  #   type: string
+  #   sql: case when  ;;
+  # }
+
 }
