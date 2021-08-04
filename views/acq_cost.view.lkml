@@ -59,16 +59,21 @@ view: acq_cost {
 
   measure: actual {
     type: sum
-    sql: CASE WHEN ${TABLE}.actual/10^5 IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
-    value_format: "0.0"
-    # html:
+# <<<<<<< HEAD
+    sql: CASE WHEN ${TABLE}.actual IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
+    value_format: "#,##0.0"
+#     html: {% if value > 0.09 %}
+#       <p style="color: black; font-size:100%; text-align:right">{{ rendered_value }}</p>
+# # =======
+#     sql: CASE WHEN ${TABLE}.actual/10^5 IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
+#     value_format: "0.0"
+#     # html:
+# # >>>>>>> branch 'master' of git@github.com:llooker/stanzaliving.git
 
+#     {% else %}
+#       <p style="color: black"> - </p>
 
-    # {% if {{ value }} == '0 %}
-
-    # <div style="text-align:right;font-weight: bold">{{ '-' }}</div>
-
-    # {% endif %};;
+#     {% endif %};;
 
   }
   measure: committed {
@@ -168,7 +173,7 @@ view: acq_cost {
   # }
 
 
-}
+# }
 
 # view: ac {
 #   # Or, you could make this view a derived table, like this:
@@ -209,4 +214,4 @@ view: acq_cost {
 #   }
 
 
-# }
+}
