@@ -13,7 +13,8 @@ view: user_engagement_categories_residence {
           (coalesce(count(case when meal_rating_breakfast > 0 then meal_rating_breakfast end),0) + coalesce(count(case when meal_rating_lunch >0 then meal_rating_lunch end),0) +coalesce(count(case when meal_rating_evening_snacks > 0 then meal_rating_evening_snacks end),0) +coalesce(count(case when meal_rating_dinner >0 then meal_rating_dinner end),0) ) meal_rating,
           1.00*nullif((coalesce(sum(meal_rating_breakfast),0) + coalesce(sum(meal_rating_lunch),0) +coalesce(sum(meal_rating_evening_snacks),0) +coalesce(sum(meal_rating_dinner),0)),0) / (coalesce(count(case when meal_rating_breakfast > 0 then meal_rating_breakfast end),0) + coalesce(count(case when meal_rating_lunch >0 then meal_rating_lunch end),0) +coalesce(count(case when meal_rating_evening_snacks > 0 then meal_rating_evening_snacks end),0) +coalesce(count(case when meal_rating_dinner >0 then meal_rating_dinner end),0) ) as meal_fps,
           avg(case when vas_rating >0 then vas_rating end) vas_fps,
-          avg(case when vas_ov > 0 then vas_ov end) vas_ov
+          avg(case when vas_ov > 0 then vas_ov end) vas_ov,
+          sum(total_used_gb) total_used_internet
 
           from stanza.derived_user_engagement_metrics
           where {% condition date %} date {% endcondition %}
@@ -37,7 +38,9 @@ view: user_engagement_categories_residence {
           case when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.50 then 3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.40 then 0.75*3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.30 then 0.50*3 when (1.00*nullif(shared_preference,0) / meal_consumed) >= 0.20 then 0.25*3 else 0 end as transaction_preference_shared,
           case when (1.00*nullif(meal_consumed,0) / available_meal) >= 0.70 then 1 when (1.00*nullif(meal_consumed,0) / available_meal) >= 0.20 then (1.00*nullif(meal_consumed,0) / available_meal)*1 else 0 end as transaction_meals_consumed,
           case when vas_ov >= 100 then 3 when vas_ov >= 50 then 0.50*3 when vas_ov >=1 then 0.25*3 else 0 end as vas_aov,
-          case when vas_orders >= 5 then 3 when vas_orders>=3 then 0.50*3 when vas_orders>=1 then 0.25*3 else 0 end as vas_no_of_orders
+          case when vas_orders >= 5 then 3 when vas_orders>=3 then 0.50*3 when vas_orders>=1 then 0.25*3 else 0 end as vas_no_of_orders,
+          case when total_used_internet > 75 then 3 when total_used_internet >= 40 then 0.50*3 when total_used_internet >=1 then 0*3 end as vas_inernet_usage
+
           from base
           ),
 
@@ -84,7 +87,7 @@ view: user_engagement_categories_residence {
           1.00*(coalesce(engagement.Loyalty_repeat_customer,0)+coalesce(engagement.loyalty_referred,0)+coalesce(engagement.loyalty_earned,0))/6 engagement_loyalty,
           1.00*(coalesce(engagement.transaction_pays_rent_within_due_date,0)+coalesce(engagement.transaction_preference_shared,0) +
           coalesce(engagement.transaction_meals_consumed,0))/ 4 as engagement_transaction,
-          1.00*(coalesce(engagement.vas_aov,0)+coalesce(engagement.vas_no_of_orders,0)) / 6 as  engagement_vas,
+          1.00*(coalesce(engagement.vas_aov,0)+coalesce(engagement.vas_no_of_orders,0)+coalesce(engagement.vas_inernet_usage,0) / 9 as  engagement_vas,
 
           1.00*(coalesce(experience.complaint_complaints_per_month,0)) / 3  as experience_complaints,
           1.00*(coalesce(experience.feedback_vas_order_rating,0)+coalesce(experience.feedback_rating_on_tickets_closed,0)+coalesce(experience.feedback_rating_on_tickets_resolved,0)+

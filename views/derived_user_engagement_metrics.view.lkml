@@ -202,6 +202,23 @@ view: derived_user_engagement_metrics {
     sql: ${TABLE}.whatsapp_concent ;;
   }
 
+
+  dimension: total_used_gb {
+    type: number
+    sql: ${TABLE}.total_used_gb ;;
+  }
+
+  dimension: menu_opened {
+    type: number
+    sql: ${TABLE}.menu_opened ;;
+  }
+
+  dimension: story {
+    type: number
+    sql: ${TABLE}.story ;;
+  }
+
+
   measure: count {
     type: count
     drill_fields: []
@@ -337,6 +354,25 @@ view: derived_user_engagement_metrics {
     type: count_distinct
     sql: ${student_id} ;;
   }
+
+  measure: total_used_internet {
+    type: sum
+    sql: ${total_used_gb} ;;
+  }
+
+
+  measure: total_menu_opened {
+    type: count_distinct
+    sql: case when ${menu_opened} >= 1 then ${TABLE}.date end ;;
+  }
+
+  measure: total_story {
+    type: sum
+    sql: ${story} ;;
+  }
+
+
+
 
 
   measure: all_complaints_per_month {
@@ -636,12 +672,42 @@ view: derived_user_engagement_metrics {
   }
 
 
+
+  measure: engagement_vas_inernet_usage {
+    type: number
+    sql: case when ${total_used_internet} > 75  then 3
+          when ${total_used_internet} >= 40 then 0.50*3
+          when ${total_used_internet} >= 1 then 0*3
+            else 0 end ;;
+    value_format: "0.00"
+  }
+
+  measure: engagement_vas_menu_opened {
+    type: number
+    sql: case when ${total_menu_opened} >= 12  then 2
+          when ${total_menu_opened} >= 8 then 0.75*2
+          when ${total_menu_opened} >= 4 then 0.50*2
+          when ${total_menu_opened} >= 1 then 0.25*2
+            else 0 end ;;
+    value_format: "0.00"
+  }
+
+  measure: engagement_app_engagement_story {
+    type: number
+    sql: case when ${total_story} >= 1  then 2 else 0 end ;;
+    value_format: "0.00"
+  }
+
+
+
   measure: engagement_score_5 {
     type: number
-    sql: 1.0*(coalesce(${engagement_feedback_smr},0)+coalesce(${all_transaction_preference_shared},0)
-          ) / 5 ;;
+    sql: 1.0*(coalesce(${engagement_feedback_smr},0)+coalesce(${all_transaction_preference_shared},0)+
+    coalesce(${engagement_vas_inernet_usage},0)+coalesce(${engagement_vas_menu_opened},0)+coalesce(${engagement_app_engagement_story},0)
+          ) / 12 ;;
     value_format: "0.00%"
   }
+
 
   measure: experience_score_31 {
     type: number
