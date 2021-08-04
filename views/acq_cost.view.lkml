@@ -60,7 +60,7 @@ view: acq_cost {
   measure: actual {
     type: sum
 # <<<<<<< HEAD
-    sql: CASE WHEN ${TABLE}.actual IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
+    sql: ${TABLE}.actual/10^5;;
     value_format: "#,##0.0"
 #     html: {% if value > 0.09 %}
 #       <p style="color: black; font-size:100%; text-align:right">{{ rendered_value }}</p>
@@ -143,13 +143,13 @@ view: acq_cost {
   }
   measure: Actual_by_budgett {
     type: number
-    sql: ${actual}/${budget} ;;
+    sql: COALESCE(${actual}/${budget},0) ;;
     value_format: "0.0%"
-    html: {% if value > 0.0 %}
-    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+    html: {% if value > 0 %}
+      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
     {% else %}
-    <p style="color: black"> - </p>
+      <p style="color: black"> - </p>
 
     {% endif %}  ;;
   }
