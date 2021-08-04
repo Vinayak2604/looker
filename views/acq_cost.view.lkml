@@ -141,6 +141,18 @@ view: acq_cost {
     ]
     sql: ${TABLE}.podate ;;
   }
+  measure: Actual_by_budgett {
+    type: number
+    sql: ${actual}/${budget} ;;
+    value_format: "0.0%"
+    html: {% if value > 0.0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
+  }
 
 
   # # You can specify the table name if it's different from the view name:
