@@ -26,6 +26,7 @@ view: derived_user_engagement_category_student {
     sql: ${TABLE}.micromarket ;;
   }
 
+
   dimension: month_number {
     type: number
     sql: ${TABLE}.month_number ;;
