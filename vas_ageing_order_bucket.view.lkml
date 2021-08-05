@@ -47,31 +47,31 @@ view: vas_ageing_order_bucket {
 
   measure: a_1 {
     type: number
-    sql: 1.00*(case when ${order_bucket} = 'a. 1' then ${TABLE}.users  end) / ${users};;
+    sql: 1.00*(case when ${TABLE}.order_bucket = 'a. 1' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
   }
 
   measure: b_2_7 {
     type: number
-    sql: 1.00*(case when ${order_bucket} = 'b. 2-7' then ${TABLE}.users  end) / ${users};;
+    sql: 1.00*(case when ${TABLE}.order_bucket = 'b. 2-7' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
   }
 
   measure: c_7_14 {
     type: number
-    sql: 1.00*(case when ${order_bucket} = 'c. 7-14' then ${TABLE}.users  end) / ${users};;
+    sql: 1.00*(case when ${TABLE}.order_bucket = 'c. 7-14' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
   }
 
   measure: d_14_25 {
     type: number
-    sql: 1.00*(case when ${order_bucket} = 'd. 14-25' then ${TABLE}.users  end) / ${users};;
+    sql: 1.00*(case when ${TABLE}.order_bucket = 'd. 14-25' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
   }
 
   measure: e_25 {
     type: number
-    sql: 1.00*(case when ${order_bucket} = 'e. >25' then ${TABLE}.users  end) / ${users};;
+    sql: 1.00*(case when ${TABLE}.order_bucket = 'e. >25' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
   }
 
