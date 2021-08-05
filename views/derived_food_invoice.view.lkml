@@ -177,4 +177,8 @@ view: derived_food_invoice {
     type: number
     sql: SUM(${TABLE}.subtotal_amount*${TABLE}.time_taken)/SUM(${TABLE}.subtotal_amount) ;;
   }
+  measure: weighted_avg_price {
+    type: number
+    sql: SUM(${TABLE}.quantity*${TABLE}.unit_rate_rent_per_month)/SUM(${TABLE}.quantity) ;;
+  }
 }
