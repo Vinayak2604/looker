@@ -47,13 +47,13 @@ where {% condition date1 %} date {% endcondition %}
 and {% condition meal_type %} meal_type {% endcondition %}
 and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
 and {% condition preference_availability_flag %} preference_available {% endcondition %}
-group by 1,2,3),
+group by 1,2,3,4),
 
 vo1 as (select extract(month from ({% condition date1 %} date {% endcondition %})) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
 avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
 from looker_demo.derived_vas_orders vo
 where {% condition date1 %} date {% endcondition %}
-group by 1,2,3),
+group by 1,2,3,4),
 
 b as (select distinct *
 from
