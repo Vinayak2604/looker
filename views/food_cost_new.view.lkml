@@ -15,7 +15,7 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 'COGS' as scope,'Budget' as parameter,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate  as value
+select 'COGS' as scope,'Budget' as parameter,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost  as value
 from stanza.derived_food_cost dfc
 
 union
@@ -25,7 +25,7 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 'COGS' as scope,'Delta' as parameter,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate - (house_wise_actual_cost_cogs) as value
+select 'COGS' as scope,'Delta' as parameter,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost - (house_wise_actual_cost_cogs) as value
 from stanza.derived_food_cost dfc
 
 union

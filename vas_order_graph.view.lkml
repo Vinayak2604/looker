@@ -1,6 +1,6 @@
 view: vas_order_graph {
   derived_table: {
-    sql:    with upr as (select extract(month from ({% condition date %} date {% endcondition %})) mt , upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+    sql:    with upr as (select extract(month from min({% condition date %} date {% endcondition %})) mt , upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
 count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
 count(distinct user_id) as meal_users,
 count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
@@ -14,7 +14,7 @@ and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
 and {% condition preference_availability_flag %} preference_available {% endcondition %}
 group by 1,2,3,4),
 
-vo as (select extract(month from ({% condition date %} date {% endcondition %})) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
+vo as (select extract(month from min({% condition date %} date {% endcondition %})) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
 avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
 from looker_demo.derived_vas_orders vo
 where {% condition date %} date {% endcondition %}
@@ -35,7 +35,7 @@ from
 vo
 left join upr on vo.residence = upr.residence) x),
 
-upr1 as (select extract(month from ({% condition date1 %} date {% endcondition %})) mt, upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+upr1 as (select extract(month from max({% condition date1 %} date {% endcondition %})) mt, upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
 count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
 count(distinct user_id) as meal_users,
 count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
@@ -49,7 +49,7 @@ and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
 and {% condition preference_availability_flag %} preference_available {% endcondition %}
 group by 1,2,3,4),
 
-vo1 as (select extract(month from ({% condition date1 %} date {% endcondition %})) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
+vo1 as (select extract(month from max({% condition date1 %} date {% endcondition %})) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
 avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
 from looker_demo.derived_vas_orders vo
 where {% condition date1 %} date {% endcondition %}
