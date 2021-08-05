@@ -193,4 +193,18 @@ view: acq_cost {
 
     {% endif %};;
     }
+
+  dimension_group: updated_at {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.updated_at ;;
+  }
 }
