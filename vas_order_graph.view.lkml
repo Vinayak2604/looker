@@ -1,6 +1,6 @@
 view: vas_order_graph {
   derived_table: {
-    sql:    with upr as (select extract(month from upr.date) mt , upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+    sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.date, upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
       count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
       count(distinct user_id) as meal_users,
       count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
@@ -12,13 +12,13 @@ view: vas_order_graph {
       and {% condition meal_type %} meal_type {% endcondition %}
       and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
       and {% condition preference_availability_flag %} preference_available {% endcondition %}
-      group by 2,3,4),
+      group by 1,2,3,4,5,6),
 
-      vo as (select extract(month from vo.date) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
+      vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt,vo.date, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
       avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2021-01-01'
-      group by 2,3,4)
+      group by 1,2,3,4,5,6)
 
 
       select distinct *
@@ -30,7 +30,7 @@ view: vas_order_graph {
       union
 
 
-      select vo.mt, vo.city, vo.micromarket, vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
+      select vo.mt,vo.date, vo.city, vo.micromarket, vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
       from
       vo
       left join upr on vo.residence = upr.residence) x;;
@@ -57,11 +57,21 @@ view: vas_order_graph {
       type: string
     }
 
+  dimension: yr {
+    type: string
+    sql: ${TABLE}.yr ;;
+  }
 
     dimension: mt {
       type: string
       sql: ${TABLE}.mt ;;
     }
+
+  dimension: date {
+    type: date
+    sql: ${TABLE}.date ;;
+  }
+
 
     dimension: city {
       type: string
