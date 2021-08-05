@@ -1,23 +1,15 @@
 view: acq_cost {
   derived_table: {
-    sql: Select DATE(po.updated_at) as updated_at,
-      po.attribute_meta_uuid,
-      DATE(po.po_date) as podate,
-      am.zone as Zone,
-      am.city as City,
-      am.micromarket as MM,
-      am.category_name as Category,
-      am.sub_category_name as Subcategory,
-      po.po_number,
-      po.committed as committed,
-      b.budget_amount*10 as budget,
-      lag(po."committed")over(partition by city,micromarket,category order by po_date) as comm_old,
-      lag(po.actual)over(partition by city,micromarket,category order by po_date) as actual_old,
-      po.actual
-      from stanza.erp_cac_service_purchase_order po
-      left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
-      left join stanza.erp_cac_service_budget b on po.attribute_meta_uuid = b.attribue_meta_uuid
-      where am.category_name not like '%Discount%' and po.committed >0;;
+    sql: Select DATE(po.updated_at) as updated_at,DATE(po.po_date) as podate,
+am.zone as Zone,am.city as City, am.micromarket as MM,am.category_name as Category,
+am.sub_category_name as Subcategory, po.committed,po.actual,
+lag(po."committed")over(partition by zone,city, micromarket order by podate)as comm_lag,
+lag(po.actual)over(partition by zone,city, micromarket order by podate)as actual_lag,
+b.budget_amount*10 as budget
+from stanza.erp_cac_service_purchase_order po
+left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
+left join stanza.erp_cac_service_budget b on am.uuid = b.attribue_meta_uuid
+where am.city not like '%nagpur%' and po.committed >0 and am.category_name not like '%Discount';;
   }
 
   dimension: zone {
@@ -118,7 +110,7 @@ view: acq_cost {
 
   measure: Committed_delta {
     type: sum
-    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_old)/10^5,0) ;;
+    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^5,0) ;;
     value_format: "0.0"
     html: {% if value <= -0.01 or value >= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
@@ -131,7 +123,7 @@ view: acq_cost {
 
   measure: Actual_delta {
     type: sum
-    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_old)/10^5,0) ;;
+    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_lag)/10^5,0) ;;
     value_format: "0.0"
     html: {% if value <= -0.001 or value >= 0.001 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
