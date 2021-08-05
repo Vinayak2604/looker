@@ -18,7 +18,7 @@ view: vas_order_graph {
       avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2021-01-01'
-      group by 2,3,4),
+      group by 2,3,4)
 
 
       select distinct *
