@@ -216,5 +216,9 @@ view: derived_vas_orders {
     }
   }
 
+  measure: total_amount {
+    type: sum
+    sql: ${final_total_amount} ;;
+  }
 
 }
