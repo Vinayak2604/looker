@@ -57,7 +57,7 @@ view: vas_ageing_order_bucket {
     value_format: "0.0%"
   }
 
-  measure: c._7_14 {
+  measure: c_7_14 {
     type: number
     sql: 1.00*(case when ${order_bucket} = 'c. 7-14' then ${TABLE}.users  end) / $(users);;
     value_format: "0.0%"
