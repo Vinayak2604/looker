@@ -63,7 +63,7 @@ view: vas_order_graph {
   }
 
     dimension: mt {
-      type: string
+      type: number
       sql: ${TABLE}.mt ;;
     }
 
