@@ -153,16 +153,19 @@ from b ) x;;
   measure: total_amount {
     type: sum
     sql: ${TABLE}.total_amount ;;
+    value_format: "#,##0"
   }
 
   measure: aov {
     type: number
     sql: ${total_amount} / ${total_orders} ;;
+    value_format: "#,##0.0"
   }
 
   measure: aov_user {
     type: number
     sql: ${total_amount} / ${order_users} ;;
+    value_format: "#,##0.0"
   }
 
   measure: aov_user_min {
@@ -173,7 +176,7 @@ from b ) x;;
   measure: order_users_per {
     type: number
     sql: ${order_users}/ ${moved_in_residents} ;;
-    value_format: "0%"
+    value_format: "0.0%"
     }
 
 
