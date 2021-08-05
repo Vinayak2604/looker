@@ -26,14 +26,14 @@ view: vas_order_graph {
       (select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
       from
       upr
-      left join vo on upr.residence = vo.residence
+      left join vo on upr.residence = vo.residence and upr.date = vo.date
       union
 
 
       select vo.yr, vo.mt,vo.date, vo.city, vo.micromarket, vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
       from
       vo
-      left join upr on vo.residence = upr.residence) x;;
+      left join upr on vo.residence = upr.residence and vo.date = upr.date) x;;
 
     }
 
