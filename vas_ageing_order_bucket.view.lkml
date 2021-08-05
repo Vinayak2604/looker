@@ -11,7 +11,7 @@ view: vas_ageing_order_bucket {
           )
 
           select ageing, case when orders =1 then 'a. 1' when orders <=7 then 'b. 2-7' when orders <=14 then 'c. 7-14' when orders <=25 then 'd. 14-25'
-          when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) users
+          when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) users, avg(orders) average_orders
           from (select user_id,ageing, count(distinct order_code) orders
           from a
           group by 1,2) m
@@ -43,6 +43,42 @@ view: vas_ageing_order_bucket {
   measure: users {
     type: number
     sql: ${TABLE}.users ;;
+  }
+
+  measure: a_1 {
+    type: number
+    sql: 1.00*(case when ${order_bucket} = 'a. 1' then ${TABLE}.users  end) / $(users);;
+    value_format: "0.0%"
+  }
+
+  measure: b_2_7 {
+    type: number
+    sql: 1.00*(case when ${order_bucket} = 'b. 2-7' then ${TABLE}.users  end) / $(users);;
+    value_format: "0.0%"
+  }
+
+  measure: c._7_14 {
+    type: number
+    sql: 1.00*(case when ${order_bucket} = 'c. 7-14' then ${TABLE}.users  end) / $(users);;
+    value_format: "0.0%"
+  }
+
+  measure: d_14_25 {
+    type: number
+    sql: 1.00*(case when ${order_bucket} = 'd. 14-25' then ${TABLE}.users  end) / $(users);;
+    value_format: "0.0%"
+  }
+
+  measure: e_25 {
+    type: number
+    sql: 1.00*(case when ${order_bucket} = 'e. >25' then ${TABLE}.users  end) / $(users);;
+    value_format: "0.0%"
+  }
+
+  measure: average_orders {
+    type: number
+    sql: ${TABLE}.average_orders ;;
+    value_format: "0.0"
   }
 
 
