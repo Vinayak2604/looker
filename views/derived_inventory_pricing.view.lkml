@@ -101,8 +101,8 @@ view: derived_inventory_pricing {
     sql: ${base_price} ;;
   }
 
-  # measure: Dead_bed_count {
-  #   type: count
-  #   sql: ${dead};;
-  # }
+  #measure: Dead_bed_count {
+   # type: count
+    #sql: ${dead};;
+  #}
 }

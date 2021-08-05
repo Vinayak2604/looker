@@ -11,8 +11,8 @@ view: acq_cost {
       po.po_number,
       po.committed as committed,
       b.budget_amount*10 as budget,
-      lag(po."committed")over(partition by city,category order by po_date) as comm_old,
-      lag(po.actual)over(partition by city,category order by po_date) as actual_old,
+      lag(po."committed")over(partition by city,micromarket,category order by po_date) as comm_old,
+      lag(po.actual)over(partition by city,micromarket,category order by po_date) as actual_old,
       po.actual
       from stanza.erp_cac_service_purchase_order po
       left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid

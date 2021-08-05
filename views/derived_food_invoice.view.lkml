@@ -115,6 +115,7 @@ view: derived_food_invoice {
   dimension: po_id {
     type: number
     sql: ${TABLE}.po_id ;;
+    primary_key: yes
   }
 
   dimension: po_number {
@@ -166,8 +167,14 @@ view: derived_food_invoice {
     # type: count
     # drill_fields: [item_name, vendor_name, city_name]
   # }
+
   measure: distinct_po {
     type: count_distinct
-    sql: ${po_number} ;;
+    sql: ${TABLE}.po_number ;;
+  }
+
+  measure: weighted_avg_lead_time {
+    type: number
+    sql: SUM(${TABLE}.subtotal_amount*${TABLE}.time_taken)/SUM(${TABLE}.subtotal_amount) ;;
   }
 }
