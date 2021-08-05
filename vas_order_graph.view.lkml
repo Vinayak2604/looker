@@ -173,6 +173,7 @@ from b ) x;;
   measure: order_users_per {
     type: number
     sql: ${order_users}/ ${moved_in_residents} ;;
+    value_format: "0%"
     }
 
 
