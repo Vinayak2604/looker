@@ -1,18 +1,68 @@
 view: food_cost_new {
   derived_table: {
-    sql: select 'Budget' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(menu_rate,0) as value
-      from stanza.derived_food_cost dfc
+    sql:select 'Total' as scope,'Budget' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(menu_rate,0) as value
+from stanza.derived_food_cost dfc
 
-      union
+union
 
-      select 'Actual' as parameter,menu_date,vendor_name, (house_wise_actual_cost) as value
-      from stanza.derived_food_cost dfc
+select 'Total' as scope,'Actual' as parameter,menu_date,vendor_name, (house_wise_actual_cost) as value
+from stanza.derived_food_cost dfc
 
-      union
+union
 
-      select 'Delta' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(menu_rate,0) - (house_wise_actual_cost) as value
-      from stanza.derived_food_cost dfc
-       ;;
+select 'Total' as scope,'Delta' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(menu_rate,0) - (house_wise_actual_cost) as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'COGS' as scope,'Budget' as parameter,menu_date,vendor_name, coalesce(menu_cost,0)  as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'COGS' as scope,'Actual' as parameter,menu_date,vendor_name, (house_wise_actual_cost_cogs) as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'COGS' as scope,'Delta' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(menu_rate,0) - (house_wise_actual_cost_cogs) as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'Utility' as scope,'Budget' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(utility_cost,0)  as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'Utility' as scope,'Actual' as parameter,menu_date,vendor_name, house_wise_actual_cost_util as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'Utility' as scope,'Delta' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(utility_cost,0) - (house_wise_actual_cost_util) as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'Packaging' as scope,'Budget' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(packaging_cost,0)  as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'Packaging' as scope,'Actual' as parameter,menu_date,vendor_name, house_wise_actual_cost_packaging as value
+from stanza.derived_food_cost dfc
+
+union
+
+select 'Packaging' as scope,'Delta' as parameter,menu_date,vendor_name, (coalesce(actual_blended_order,0)+coalesce(actual_sl_blended_order,0))*coalesce(packaging_cost,0) - (house_wise_actual_cost_packaging) as value
+from stanza.derived_food_cost dfc
+ ;;
+  }
+
+  dimension: scope {
+    type: string
+    sql: ${TABLE}.scope ;;
   }
 
   dimension: parameter {
