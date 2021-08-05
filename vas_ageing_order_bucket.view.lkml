@@ -41,7 +41,7 @@ view: vas_ageing_order_bucket {
   }
 
   measure: users {
-    type: number
+    type: sum
     sql: ${TABLE}.users ;;
   }
 
