@@ -221,4 +221,11 @@ view: derived_vas_orders {
     sql: ${final_total_amount} ;;
   }
 
+  measure: APRU {
+    type: number
+    sql: ${total_amount} / ${users}  ;;
+    value_format: "0.0"
+  }
+
+
 }
