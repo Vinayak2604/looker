@@ -6,6 +6,7 @@ include: "derived_vas_bucket_table.view.lkml" # include all views in the views/ 
 include: "derived_vas_aov_bucket.view.lkml"
 include: "seo_data_calculation.view.lkml"
 include: "vas_order_graph.view.lkml"
+include: "vas_ageing_order_bucket.view.lkml"
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
@@ -28,3 +29,4 @@ explore: seo_data {}
 explore: seo_data_graph {}
 explore: seo_data_calculation {}
 explore: vas_order_graph {}
+explore: vas_ageing_order_bucket {}
