@@ -168,9 +168,10 @@ from b ) x;;
     value_format: "#,##0.0"
   }
 
-  measure: aov_user_min {
+  measure: aov_user_mir {
     type: number
     sql: ${total_amount} / ${moved_in_residents} ;;
+    value_format: "#,##0.0"
   }
 
   measure: order_users_per {
