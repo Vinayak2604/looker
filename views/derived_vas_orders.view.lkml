@@ -66,6 +66,16 @@ view: derived_vas_orders {
     sql: ${TABLE}.expected_delivery_time ;;
   }
 
+  dimension: yr {
+    type: string
+    sql: ${TABLE}.yr ;;
+  }
+
+  dimension: mt {
+    type: string
+    sql: ${TABLE}.mt ;;
+  }
+
   dimension: feedback {
     type: string
     sql: ${TABLE}.feedback ;;
