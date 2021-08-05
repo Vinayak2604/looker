@@ -67,12 +67,12 @@ view: derived_vas_orders {
   }
 
   dimension: yr {
-    type: string
+    type: number
     sql: ${TABLE}.yr ;;
   }
 
   dimension: mt {
-    type: string
+    type: number
     sql: ${TABLE}.mt ;;
   }
 
