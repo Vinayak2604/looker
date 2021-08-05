@@ -7,7 +7,7 @@ view: vas_order_graph {
       count(distinct case when preference_available = 1 then user_id end) as preference_available_users,
       count(distinct case when system_generated = 0 and preference_available = 1 then id end) as preference_meals,
       count(distinct case when preference_available = 1 then id end) as preference_available_meals
-      from looker_demo.derived_user_preference_rating upr.
+      from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01'
       and {% condition meal_type %} meal_type {% endcondition %}
       and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
