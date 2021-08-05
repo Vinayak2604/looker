@@ -17,7 +17,7 @@ view: acq_cost {
       from stanza.erp_cac_service_purchase_order po
       left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
       left join stanza.erp_cac_service_budget b on po.attribute_meta_uuid = b.attribue_meta_uuid
-      where am.category_name not like '%Discount%' and po_date >= '2021-04-01' and po.committed >0;;
+      where am.category_name not like '%Discount%' and po.committed >0;;
   }
 
   dimension: zone {
@@ -194,7 +194,7 @@ view: acq_cost {
     {% endif %};;
     }
 
-  dimension_group: updated_at {
+  dimension_group: updated {
     type: time
     timeframes: [
       raw,
