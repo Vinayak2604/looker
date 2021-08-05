@@ -30,7 +30,7 @@ left join vo on upr.residence = vo.residence
 union
 
 
-select vo.city, vo.micromarket, vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
+select mt, vo.city, vo.micromarket, vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
 from
 vo
 left join upr on vo.residence = upr.residence) x),
@@ -62,7 +62,7 @@ from
 upr1
 left join vo1 on upr1.residence = vo1.residence
 union
-select vo1.city, vo1.micromarket, vo1.residence, upr1.moved_in_residents, upr1.consumed_meals, upr1.rated_meals, upr1.meal_users,
+select mt, vo1.city, vo1.micromarket, vo1.residence, upr1.moved_in_residents, upr1.consumed_meals, upr1.rated_meals, upr1.meal_users,
 upr1.preference_users, upr1.preference_available_users, upr1.preference_meals, upr1.preference_available_meals, vo1.total_orders,
 vo1.rated_orders, aov, total_amount, order_users
 from
