@@ -30,7 +30,7 @@ view: vas_ageing_aov_bucket {
   }
 
   dimension: ageing {
-    type: string
+    type: number
     sql: ${TABLE}.ageing ;;
   }
 
