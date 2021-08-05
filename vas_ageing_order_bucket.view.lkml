@@ -11,12 +11,11 @@ view: vas_ageing_order_bucket {
           )
 
           select ageing, case when orders =1 then 'a. 1' when orders <=7 then 'b. 2-7' when orders <=14 then 'c. 7-14' when orders <=25 then 'd. 14-25'
-          when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) over(partition by ageing, order_bucket) users,
-          avg(orders) over(partition by ageing) average_orders
+          when orders >25 then 'e. >25' end as order_bucket, count(distinct user_id) users, sum(orders) total_orders
           from (select user_id,ageing, count(distinct order_code) orders
           from a
           group by 1,2) m
-           ;;
+          group by 1,2 ;;
   }
 
   parameter: residence {
@@ -45,6 +44,12 @@ view: vas_ageing_order_bucket {
     type: sum
     sql: ${TABLE}.users ;;
   }
+
+  measure: total_orders {
+    type: sum
+    sql: ${TABLE}.total_orders ;;
+  }
+
 
   measure: a_1 {
     type: number
@@ -78,7 +83,7 @@ view: vas_ageing_order_bucket {
 
   measure: average_orders {
     type: number
-    sql: ${TABLE}.average_orders ;;
+    sql: ${total_orders} / ${users}  ;;
     value_format: "0.0"
   }
 
