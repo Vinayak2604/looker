@@ -11,8 +11,8 @@ view: acq_cost {
       po.po_number,
       po.committed as committed,
       b.budget_amount*10 as budget,
-      lag(po."committed")over(partition by micromarket,category order by po_date) as comm_old,
-      lag(po.actual)over(partition by micromarket,category order by po_date) as actual_old,
+      lag(po."committed")over(partition by city,category order by po_date) as comm_old,
+      lag(po.actual)over(partition by city,category order by po_date) as actual_old,
       po.actual
       from stanza.erp_cac_service_purchase_order po
       left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
@@ -116,31 +116,31 @@ view: acq_cost {
   #   value_format: "#,##0.0"
   # }
 
-  # measure: Committed_delta {
-  #   type: sum
-  #   sql: (${TABLE}.committed-${TABLE}.comm_old)/10^5 ;;
-  #   value_format: "0.0"
-  #   html: {% if value < -0.01 && value > 0.1 %}
-  #     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+  measure: Committed_delta {
+    type: sum
+    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_old)/10^5,0) ;;
+    value_format: "0.0"
+    html: {% if value < -0.01 && value > 0.01 %}
+      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-  #   {% else %}
-  #     <p style="color: black"> - </p>
+    {% else %}
+      <p style="color: black"> - </p>
 
-  #   {% endif %}  ;;
-  # }
+    {% endif %}  ;;
+  }
 
-  # measure: Actual_delta {
-  #   type: sum
-  #   sql: (${TABLE}.actual-${TABLE}.actual_old)/10^5 ;;
-  #   value_format: "0.0"
-  #   html: {% if value < -0.01 && value > 0.1 %}
-  #     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+  measure: Actual_delta {
+    type: sum
+    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_old)/10^5,0) ;;
+    value_format: "0.0"
+    html: {% if value < -0.001 && value > 0.001 %}
+      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-  #   {% else %}
-  #     <p style="color: black"> - </p>
+    {% else %}
+      <p style="color: black"> - </p>
 
-  #   {% endif %}  ;;
-  # }
+    {% endif %}  ;;
+  }
 
   dimension_group: podate {
     type: time
@@ -157,7 +157,7 @@ view: acq_cost {
   }
   measure: Actual_by_budgett {
     type: number
-    sql: COALESCE(${actual}/${budget},0) ;;
+    sql:  COALESCE(${actual}/nullif(${budget},0),0) ;;
     value_format: "0.0%"
     html: {% if value > 0 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
@@ -170,7 +170,7 @@ view: acq_cost {
 
   measure: Committed_by_budget {
     type: number
-    sql: COALESCE(${committed}/${budget},0) ;;
+    sql: COALESCE(${committed}/nullif(${budget},0),0) ;;
     value_format: "0.0%"
     html: {% if value > 0 %}
     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
@@ -183,7 +183,7 @@ view: acq_cost {
 
   measure: Actual_by_committed {
     type: number
-    sql: COALESCE(${actual}/${committed},0) ;;
+    sql: COALESCE(${actual}/nullif(${committed},0),0) ;;
     value_format: "0.0%"
     html: {% if value > 0 %}
     <p style="color: black; font-size:100%">{{ rendered_value }}</p>

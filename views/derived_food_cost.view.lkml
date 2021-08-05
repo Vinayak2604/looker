@@ -448,6 +448,54 @@ view: derived_food_cost {
     value_format: "0"
   }
 
+  measure: total_budget_l7d_14d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
+    value_format: "0"
+  }
+
+  measure: total_budget_l14d_21d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
+    value_format: "0"
+  }
+
+
+  measure: total_budget_l21d_28d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
+    value_format: "0"
+  }
+
+
+
+
+  measure: total_actual_l7d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then ${TABLE}.house_wise_actual_cost else 0 end);;
+    value_format: "0"
+  }
+
+  measure: total_actual_l7d_14d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 then ${TABLE}.house_wise_actual_cost else 0 end);;
+    value_format: "0"
+  }
+
+  measure: total_actual_l14d_21d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 then ${TABLE}.house_wise_actual_cost else 0 end);;
+    value_format: "0"
+  }
+
+  measure: total_actual_l21d_28d {
+    type: number
+    sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 then ${TABLE}.house_wise_actual_cost else 0 end);;
+    value_format: "0"
+  }
+
+
+
 
   # dimension: l7d {
   #   type: string
