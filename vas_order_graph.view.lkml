@@ -76,9 +76,9 @@ a.preference_users, a.preference_available_users, a.preference_meals, a.preferen
 a.rated_orders, a.aov, a.total_amount, a.order_users
 from a
 union
-select mt, b.city, b.micromarket, b.residence, a.moved_in_residents, a.consumed_meals, a.rated_meals, a.meal_users,
-a.preference_users, a.preference_available_users, a.preference_meals, a.preference_available_meals, a.total_orders,
-a.rated_orders, a.aov, a.total_amount, a.order_users
+select mt, b.city, b.micromarket, b.residence, b.moved_in_residents, b.consumed_meals, b.rated_meals, b.meal_users,
+b.preference_users, b.preference_available_users, b.preference_meals, b.preference_available_meals, b.total_orders,
+b.rated_orders, b.aov, b.total_amount, b.order_users
 from b ) x;;
 
   }
