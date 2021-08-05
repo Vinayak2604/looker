@@ -62,8 +62,6 @@ from
 upr1
 left join vo1 on upr1.residence = vo1.residence
 union
-
-
 select vo1.city, vo1.micromarket, vo1.residence, upr1.moved_in_residents, upr1.consumed_meals, upr1.rated_meals, upr1.meal_users,
 upr1.preference_users, upr1.preference_available_users, upr1.preference_meals, upr1.preference_available_meals, vo1.total_orders,
 vo1.rated_orders, aov, total_amount, order_users
@@ -73,7 +71,7 @@ left join upr1 on vo1.residence = upr1.residence) x)
 
 select distinct *
 from
-((select a.city, a.micromarket, a.residence, a.moved_in_residents, a.consumed_meals, a.rated_meals, a.meal_users,
+(select a.city, a.micromarket, a.residence, a.moved_in_residents, a.consumed_meals, a.rated_meals, a.meal_users,
 a.preference_users, a.preference_available_users, a.preference_meals, a.preference_available_meals, a.total_orders,
 a.rated_orders, a.aov, a.total_amount, a.order_users,
 b.moved_in_residents as moved_in_residents1, b.consumed_meals as consumed_meals1, b.rated_meals as rated_meals1, b.meal_users as meal_users1,
@@ -81,9 +79,9 @@ b.preference_users as preference_users1, b.preference_available_users as prefere
 b.preference_available_meals as preference_available_meals1, b.total_orders as total_orders1,
 b.rated_orders as rated_orders1, b.aov as aov1, b.total_amount as total_amount1, b.order_users as order_users1
 from a
-left join b on a.residence=b.residence) t
+left join b on a.residence=b.residence
 union
-(select b.city, b.micromarket, b.residence, a.moved_in_residents, a.consumed_meals, a.rated_meals, a.meal_users,
+select b.city, b.micromarket, b.residence, a.moved_in_residents, a.consumed_meals, a.rated_meals, a.meal_users,
 a.preference_users, a.preference_available_users, a.preference_meals, a.preference_available_meals, a.total_orders,
 a.rated_orders, a.aov, a.total_amount, a.order_users,
 b.moved_in_residents as moved_in_residents1, b.consumed_meals as consumed_meals1, b.rated_meals as rated_meals1, b.meal_users as meal_users1,
@@ -91,7 +89,7 @@ b.preference_users as preference_users1, b.preference_available_users as prefere
 b.preference_available_meals as preference_available_meals1, b.total_orders as total_orders1,
 b.rated_orders as rated_orders1, b.aov as aov1, b.total_amount as total_amount1, b.order_users as order_users1
 from b
-left join a on b.residence=a.residence) e) b;;
+left join a on b.residence=a.residence) b;;
 
   }
 
