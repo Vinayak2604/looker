@@ -120,7 +120,7 @@ view: acq_cost {
     type: sum
     sql: COALESCE((${TABLE}.committed-${TABLE}.comm_old)/10^5,0) ;;
     value_format: "0.0"
-    html: {% if value < -0.01 && value > 0.01 %}
+    html: {% if value <= -0.01 or value >= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
     {% else %}
@@ -133,7 +133,7 @@ view: acq_cost {
     type: sum
     sql: COALESCE((${TABLE}.actual-${TABLE}.actual_old)/10^5,0) ;;
     value_format: "0.0"
-    html: {% if value < -0.001 && value > 0.001 %}
+    html: {% if value <= -0.001 or value >= 0.001 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
     {% else %}

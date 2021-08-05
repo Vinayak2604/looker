@@ -25,6 +25,14 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 
   explore: acq_cost {
   }
+
+  explore: derived_inventory_pricing {
+    join: derived_sku_pricing {
+      relationship: many_to_one
+      type: left_outer
+      sql_on: ${derived_sku_pricing.micromarket}=${derived_inventory_pricing.micro_market} ;;
+    }
+  }
   # explore: derived_sku_pricing {
   #   join: derived_inventory_pricing {
   #     relationship: one_to_many

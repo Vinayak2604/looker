@@ -161,6 +161,16 @@ view: derived_vas_orders {
     sql: ${TABLE}.user_type ;;
   }
 
+  dimension: ageing {
+    type: number
+    sql: ${TABLE}.ageing ;;
+  }
+
+  dimension: move_in_date {
+    type: date
+    sql: ${TABLE}.move_in_date ;;
+  }
+
   dimension: ov_bucket {
     type: tier
     tiers: [0,20,40,60,80,100,130]
