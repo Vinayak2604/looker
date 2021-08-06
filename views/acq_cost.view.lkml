@@ -1,15 +1,16 @@
 view: acq_cost {
   derived_table: {
-    sql: Select DATE(po.updated_at) as updated_at,DATE(po.po_date) as podate,
+    sql:  Select DATE(po.updated_at) as updated_at,DATE(po.po_date) as podate,
 am.zone as Zone,am.city as City, am.micromarket as MM,am.category_name as Category,
 am.sub_category_name as Subcategory, po.committed,po.actual,
-lag(po."committed")over(partition by zone,city, micromarket order by podate)as comm_lag,
-lag(po.actual)over(partition by zone,city, micromarket order by podate)as actual_lag,
+lag(po."committed")over(partition by zone,city,micromarket order by podate)as comm_lag,
+lag(po.actual)over(partition by zone,city,micromarket order by podate)as actual_lag,
 b.budget_amount*10 as budget
 from stanza.erp_cac_service_purchase_order po
 left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
 left join stanza.erp_cac_service_budget b on am.uuid = b.attribue_meta_uuid
-where am.city not like '%nagpur%' and po.committed >0 and am.category_name not like '%Discount';;
+where po.committed >0
+;;
   }
 
   dimension: zone {
@@ -75,8 +76,8 @@ where am.city not like '%nagpur%' and po.committed >0 and am.category_name not l
   }
 
   measure: budget {
-    type: number
-    sql: sum(distinct(${TABLE}.budget))/10^5 ;;
+    type: sum
+    sql: distinct(${TABLE}.budget)/10^5 ;;
     value_format: "#,##0.0"
   }
   dimension: primary_key {
@@ -185,18 +186,4 @@ where am.city not like '%nagpur%' and po.committed >0 and am.category_name not l
 
     {% endif %};;
     }
-
-  dimension_group: updated {
-    type: time
-    timeframes: [
-      raw,
-      time,
-      date,
-      week,
-      month,
-      quarter,
-      year
-    ]
-    sql: ${TABLE}.updated_at ;;
-  }
 }

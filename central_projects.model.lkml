@@ -67,3 +67,5 @@ explore: vendor_prices {}
 explore: po_invoice{}
 
 explore: food_cost_new {}
+
+explore: consumption_in_kitchen {}
