@@ -52,38 +52,72 @@ view: vas_ageing_aov_bucket {
   measure: aov {
     type: number
     sql: ${total_amount} / ${orders} ;;
-    value_format: "0"
+    value_format: "#,##0"
     html: <p> &#x20B9; {{rendered_value}} </p> ;;
+  }
+
+  measure: 0_25_html {
+    type: number
+    sql: max(case when ${TABLE}.amount_bucket = 'a. 0-25' then ${TABLE}.orders end) ;;
+  }
+
+  measure: 25_50_html {
+    type: number
+    sql: max(case when ${TABLE}.amount_bucket = 'b. 25-50' then ${TABLE}.orders end) ;;
+  }
+
+  measure: 50_75_html {
+    type: number
+    sql: max(case when ${TABLE}.amount_bucket = 'c. 50-75' then ${TABLE}.orders end) ;;
+  }
+
+  measure: 75_100_html {
+    type: number
+    sql: max(case when ${TABLE}.amount_bucket = 'd. 75-100' then ${TABLE}.orders end) ;;
+  }
+
+  measure: _100_html {
+    type: number
+    sql: max(case when ${TABLE}.amount_bucket = 'e. >100' then ${TABLE}.orders end) ;;
   }
 
   measure: 0_25 {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'a. 0-25' then ${TABLE}.orders end) / ${orders} ;;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_aov_bucket.0_25_html._rendered_value}} </p>;;
   }
 
   measure: 25_50 {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'b. 25-50' then ${TABLE}.orders end) / ${orders} ;;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_aov_bucket.25_50_html._rendered_value}} </p> ;;
+
   }
 
   measure: 50_75 {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'c. 50-75' then ${TABLE}.orders end) / ${orders} ;;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_aov_bucket.50_75_html._rendered_value}}</p> ;;
+
   }
 
   measure: 75_100 {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'd. 75-100' then ${TABLE}.orders end) / ${orders} ;;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_aov_bucket.75_100_html._rendered_value}} </p>;;
+
   }
 
   measure: _100 {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'e. >100' then ${TABLE}.orders end) / ${orders} ;;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_aov_bucket._100_html._rendered_value}} </p>;;
+
   }
 
 
