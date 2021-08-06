@@ -115,22 +115,22 @@ left join stanza.core_food_service_vas_master vm on vm.uuid =cod.item_id ;;
 
   measure: L7D {
     type: count_distinct
-    sql: case when ${order_date}<current_date and ${order_date}>=current_date-7 then ${order_code} ;;
+    sql: case when ${order_date}<current_date and ${order_date}>=current_date-7 then ${order_code} else null end;;
   }
 
   measure: L7D_L14D {
     type: count_distinct
-    sql: case when ${order_date}<current_date-7 and ${order_date}>=current_date-14 then ${order_code} ;;
+    sql: case when ${order_date}<current_date-7 and ${order_date}>=current_date-14 then ${order_code} else null end  ;;
   }
 
   measure: L14D_L21D {
     type: count_distinct
-    sql: case when ${order_date}<current_date-14 and ${order_date}>=current_date-21 then ${order_code} ;;
+    sql: case when ${order_date}<current_date-14 and ${order_date}>=current_date-21 then ${order_code} else null end ;;
   }
 
   measure: L21D_L28D {
     type: count_distinct
-    sql: case when ${order_date}<current_date-21 and ${order_date}>=current_date-28 then ${order_code} ;;
+    sql: case when ${order_date}<current_date-21 and ${order_date}>=current_date-28 then ${order_code} else null end ;;
   }
 
 
