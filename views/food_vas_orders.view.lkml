@@ -133,5 +133,16 @@ left join stanza.core_food_service_vas_master vm on vm.uuid =cod.item_id ;;
     sql: case when ${order_date}<current_date-21 and ${order_date}>=current_date-28 then ${order_code} else null end ;;
   }
 
+  measure: MTD {
+    type: count_distinct
+    sql: case when date_part(mon,${order_date})=date_part(mon,current_date) then ${order_code} else null end ;;
+  }
+
+  measure: Last_month{
+    type: count_distinct
+    sql: case when date_part(mon,${order_date})=date_part(mon,current_date)-1 then ${order_code} else null end ;;
+  }
+
+
 
 }

@@ -7,6 +7,7 @@ view: vas_ageing_aov_bucket_cm {
           where {% condition residence %} residence {% endcondition %}
           and {% condition city %} city {% endcondition %}
           and {% condition micromarket %} micromarket {% endcondition %}
+          and date >= '2021-01-01'
 
 
           )
