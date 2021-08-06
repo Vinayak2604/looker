@@ -11,11 +11,11 @@ view: vas_ageing_aov_bucket {
 
           )
 
-          select ageing, case when final_total_amount <=25 then 'a. 0-25' when final_total_amount <=50 then 'b. 25-50'
+          select mt, ageing, case when final_total_amount <=25 then 'a. 0-25' when final_total_amount <=50 then 'b. 25-50'
           when final_total_amount <=75 then 'c. 50-75' when final_total_amount <=100 then 'd. 75-100'
           when final_total_amount >100 then 'e. >100' end as amount_bucket,  count(distinct order_code) orders , sum(final_total_amount) total_amount
           from a
-          group by 1,2 ;;
+          group by 1,2,3 ;;
   }
 
   parameter: residence {
@@ -33,6 +33,11 @@ view: vas_ageing_aov_bucket {
   dimension: ageing {
     type: number
     sql: ${TABLE}.ageing ;;
+  }
+
+  dimension: mt {
+    type: number
+    sql: ${TABLE}.mt ;;
   }
 
   dimension: amount_bucket {
