@@ -86,7 +86,7 @@ view: vas_order_graph {
 
 
     measure: moved_in_residents {
-      type: max
+      type: sum
       sql: ${TABLE}.moved_in_residents ;;
     }
 
