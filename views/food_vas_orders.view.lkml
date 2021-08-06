@@ -89,3 +89,28 @@ dimension: order_type {
   }
 
 }
+
+view: dish_level_vas {
+  derived_table: {
+    sql:select co.order_date,co.order_code,vm.name as item_name
+from stanza.core_food_service_cafe_order co
+left join stanza.core_food_service_cafe_order_details cod on co.uuid =cod.order_id
+left join stanza.core_food_service_vas_master vm on vm.uuid =cod.item_id ;;
+  }
+
+  dimension: order_date {
+    type: date
+    sql: ${TABLE}.order_date ;;
+  }
+
+  dimension: order_code {
+    type: string
+    sql: ${TABLE}.order_code ;;
+  }
+
+  dimension: item_name {
+    type: string
+    sql: ${TABLE}.item_name ;;
+  }
+
+}
