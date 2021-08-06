@@ -31,7 +31,7 @@ view: vas_ageing_order_bucket {
   }
 
   dimension: ageing {
-    type: string
+    type: number
     sql: ${TABLE}.ageing ;;
   }
 
