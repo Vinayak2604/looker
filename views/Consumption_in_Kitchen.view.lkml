@@ -60,7 +60,7 @@ group by
     sql: ${TABLE}.item_name;;
   }
 
-  dimension: total_amount {
+  dimension: total_consumption {
     type: number
     sql: ${TABLE}.value;;
   }

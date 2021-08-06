@@ -105,24 +105,28 @@ view: vas_order_graph {
       type: sum
       sql: ${TABLE}.total_amount ;;
       value_format: "#,##0"
+      html: <p> &#x20B9; {{rendered_value}} </p> ;;
     }
 
     measure: aov {
       type: number
       sql: ${total_amount} / ${total_orders} ;;
-      value_format: "#,##0.0"
+      value_format: "#,##0"
+      html: <p> &#x20B9; {{rendered_value}} </p> ;;
     }
 
     measure: aov_user {
       type: number
       sql: ${total_amount} / ${order_users} ;;
-      value_format: "#,##0.0"
+      value_format: "#,##0"
+      html: <p> &#x20B9; {{rendered_value}} </p> ;;
     }
 
     measure: aov_user_mir {
       type: number
       sql: ${total_amount} / ${moved_in_residents} ;;
-      value_format: "#,##0.0"
+      value_format: "#,##0"
+      html: <p> &#x20B9; {{rendered_value}} </p> ;;
     }
 
     measure: order_users_per {
