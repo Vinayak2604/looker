@@ -50,35 +50,72 @@ view: vas_ageing_order_bucket {
     sql: ${TABLE}.total_orders ;;
   }
 
+  measure: a_1_html {
+    type: number
+    sql: max(case when ${TABLE}.order_bucket = 'a. 1' then ${TABLE}.users  end);;
+   hidden: yes
+  }
+
+  measure: b_2_7_html {
+    type: number
+    sql: max(case when ${TABLE}.order_bucket = 'b. 2-7' then ${TABLE}.users  end) ;;
+    hidden: yes
+  }
+
+  measure: c_7_14_html {
+    type: number
+    sql: max(case when ${TABLE}.order_bucket = 'c. 7-14' then ${TABLE}.users  end) ;;
+    hidden: yes
+
+  }
+
+  measure: d_14_25_html {
+    type: number
+    sql: max(case when ${TABLE}.order_bucket = 'd. 14-25' then ${TABLE}.users  end) ;;
+    hidden: yes
+  }
+
+  measure: e_25_html {
+    type: number
+    sql: max(case when ${TABLE}.order_bucket = 'e. >25' then ${TABLE}.users  end) ;;
+    hidden: yes
+  }
+
+
 
   measure: a_1 {
     type: number
     sql: max(case when ${TABLE}.order_bucket = 'a. 1' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_order_bucket.a_1_html._rendered_value}} </p>;;
   }
 
   measure: b_2_7 {
     type: number
     sql: max(case when ${TABLE}.order_bucket = 'b. 2-7' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_order_bucket.b_2_7_html._rendered_value}} </p>;;
   }
 
   measure: c_7_14 {
     type: number
     sql: max(case when ${TABLE}.order_bucket = 'c. 7-14' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_order_bucket.c_7_14_html._rendered_value}} </p>;;
   }
 
   measure: d_14_25 {
     type: number
     sql: max(case when ${TABLE}.order_bucket = 'd. 14-25' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_order_bucket.d_14_25_html._rendered_value}} </p>;;
   }
 
   measure: e_25 {
     type: number
     sql: max(case when ${TABLE}.order_bucket = 'e. >25' then ${TABLE}.users  end) / ${users};;
     value_format: "0.0%"
+    html: <p> {{vas_ageing_order_bucket.e_25_html._rendered_value}} </p>;;
   }
 
   measure: average_orders {

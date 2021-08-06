@@ -59,26 +59,31 @@ view: vas_ageing_aov_bucket {
   measure: 0_25_html {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'a. 0-25' then ${TABLE}.orders end) ;;
+    hidden: yes
   }
 
   measure: 25_50_html {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'b. 25-50' then ${TABLE}.orders end) ;;
+    hidden: yes
   }
 
   measure: 50_75_html {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'c. 50-75' then ${TABLE}.orders end) ;;
+    hidden: yes
   }
 
   measure: 75_100_html {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'd. 75-100' then ${TABLE}.orders end) ;;
+    hidden: yes
   }
 
   measure: _100_html {
     type: number
     sql: max(case when ${TABLE}.amount_bucket = 'e. >100' then ${TABLE}.orders end) ;;
+    hidden: yes
   }
 
   measure: 0_25 {
