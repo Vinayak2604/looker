@@ -872,5 +872,17 @@ view: is_cheat_sheet {
           {% endfor %} ;;
   }
 
+  measure: occupancy_wise_price_website {
+    type: string
+    sql: group_concat(distinct(is_cheat_sheet.occupancy_wise_price_website)) ;;
+    html: {% assign words = value | split: ',' %}
+          <ul>
+          {% for word in words %}
+          <li>{{ word }}</li>
+          {% endfor %} ;;
+  }
+
+
+
 
 }
