@@ -235,7 +235,7 @@ view: derived_vas_orders {
     type: number
     sql: ${total_amount} / ${users}  ;;
     value_format: "0.0"
-    html: <p> &#x20B9; {{value}} </p> ;;
+    html: <p> &#x20B9; {{rendered_value}} </p> ;;
   }
 
 
