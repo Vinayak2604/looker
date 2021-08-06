@@ -71,6 +71,11 @@ view: derived_vas_orders {
     sql: ${TABLE}.yr ;;
   }
 
+  dimension: joining_month {
+    type: number
+    sql: ${TABLE}.joining_month ;;
+  }
+
   dimension: mt {
     type: number
     sql: ${TABLE}.mt ;;
@@ -234,7 +239,7 @@ view: derived_vas_orders {
   measure: ARPU {
     type: number
     sql: ${total_amount} / ${users}  ;;
-    value_format: "0.0"
+    value_format: "0"
     html: <p> &#x20B9; {{rendered_value}} </p> ;;
   }
 
