@@ -112,6 +112,18 @@ from stanza.derived_food_cost dfc
     value_format: "#,##0"
   }
 
+  measure: MTD {
+    type: number
+    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date) then ${TABLE}.value else 0 end) ;;
+    value_format: "#,##0"
+  }
+
+  measure: Last_Month {
+    type: number
+    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 then ${TABLE}.value else 0 end) ;;
+    value_format: "#,##0"
+  }
+
   measure: value_sum {
     type: number
     sql: sum(${TABLE}.value) ;;
