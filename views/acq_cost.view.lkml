@@ -200,4 +200,7 @@ where po.committed >0 and am.category_name not like '%Discount'
     ]
     sql: ${TABLE}.updated_at;;
     }
+    # dimension: test {
+
+    # }
 }
