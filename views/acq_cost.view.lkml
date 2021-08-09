@@ -10,8 +10,6 @@ from stanza.erp_cac_service_purchase_order po
 left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
 left join stanza.erp_cac_service_budget b on am.uuid = b.attribue_meta_uuid
 where po.committed >0 and am.category_name not like '%Discount'
-
-
 ;;
   }
 
