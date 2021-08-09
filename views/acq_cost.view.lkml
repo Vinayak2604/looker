@@ -1,23 +1,16 @@
 view: acq_cost {
   derived_table: {
-    sql: Select DATE(po.updated_at) as updated_at,
-      po.attribute_meta_uuid,
-      DATE(po.po_date) as podate,
-      am.zone as Zone,
-      am.city as City,
-      am.micromarket as MM,
-      am.category_name as Category,
-      am.sub_category_name as Subcategory,
-      po.po_number,
-      po.committed as committed,
-      b.budget_amount*10 as budget,
-      lag(po."committed")over(partition by city,category order by po_date) as comm_old,
-      lag(po.actual)over(partition by city,category order by po_date) as actual_old,
-      po.actual
+    sql:  Select DATE(po.updated_at) as updated_at,DATE(po.po_date) as podate,
+      am.zone as Zone,am.city as City, am.micromarket as MM,am.category_name as Category,
+      am.sub_category_name as Subcategory, po.committed,po.actual,
+      lag(po."committed")over(partition by zone,city,micromarket order by podate)as comm_lag,
+      lag(po.actual)over(partition by zone,city,micromarket order by podate)as actual_lag,
+      b.budget_amount*10 as budget
       from stanza.erp_cac_service_purchase_order po
       left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
-      left join stanza.erp_cac_service_budget b on po.attribute_meta_uuid = b.attribue_meta_uuid
-      where am.category_name not like '%Discount%' and po_date >= '2021-04-01' and po.committed >0;;
+      left join stanza.erp_cac_service_budget b on am.uuid = b.attribue_meta_uuid
+      where po.committed >0 and am.category_name not like '%Discount'
+      ;;
   }
 
   dimension: zone {
@@ -39,17 +32,17 @@ view: acq_cost {
     sql: ${TABLE}.category ;;
     html:{% if value == 'Manpower' %}
 
-    <p style="color: black;font-size:100%; text-align:center">{{ rendered_value }}</p>
+          <p style="color: black;font-size:100%; text-align:center">{{ rendered_value }}</p>
 
-    {% elsif value == 'Commission' %}
+          {% elsif value == 'Commission' %}
 
-    <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
 
-    {% else %}
+          {% else %}
 
-    <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
 
-    {% endif %} ;;
+          {% endif %} ;;
   }
 
   dimension: subcategory {
@@ -83,8 +76,8 @@ view: acq_cost {
   }
 
   measure: budget {
-    type: number
-    sql: sum(distinct(${TABLE}.budget))/10^5 ;;
+    type: sum
+    sql: distinct(${TABLE}.budget)/10^5 ;;
     value_format: "#,##0.0"
   }
   dimension: primary_key {
@@ -118,9 +111,9 @@ view: acq_cost {
 
   measure: Committed_delta {
     type: sum
-    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_old)/10^5,0) ;;
+    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) ;;
     value_format: "0.0"
-    html: {% if value < -0.01 && value > 0.01 %}
+    html: {% if value <= -0.01 or value >= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
     {% else %}
@@ -131,9 +124,9 @@ view: acq_cost {
 
   measure: Actual_delta {
     type: sum
-    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_old)/10^5,0) ;;
+    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_lag)/10^7,0) ;;
     value_format: "0.0"
-    html: {% if value < -0.001 && value > 0.001 %}
+    html: {% if value >= -0.01 or value <= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
     {% else %}
@@ -173,12 +166,12 @@ view: acq_cost {
     sql: COALESCE(${committed}/nullif(${budget},0),0) ;;
     value_format: "0.0%"
     html: {% if value > 0 %}
-    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-    {% else %}
-    <p style="color: black"> - </p>
+          {% else %}
+          <p style="color: black"> - </p>
 
-    {% endif %};;
+          {% endif %};;
   }
 
   measure: Actual_by_committed {
@@ -186,11 +179,28 @@ view: acq_cost {
     sql: COALESCE(${actual}/nullif(${committed},0),0) ;;
     value_format: "0.0%"
     html: {% if value > 0 %}
-    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-    {% else %}
-    <p style="color: black"> - </p>
+          {% else %}
+          <p style="color: black"> - </p>
 
-    {% endif %};;
-    }
+          {% endif %};;
+  }
+
+  dimension_group: updated_at {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.updated_at;;
+  }
+  # dimension: test {
+
+  # }
 }

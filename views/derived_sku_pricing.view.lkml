@@ -65,4 +65,15 @@ view: derived_sku_pricing {
     type: count
     drill_fields: []
   }
+
+  dimension: primary_key {
+    primary_key: yes
+    sql:  ${micromarket} ;;
+  }
+
+  measure: total_beds {
+    type: sum
+    sql: ${beds} ;;
+  }
+
 }

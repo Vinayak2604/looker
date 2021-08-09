@@ -92,7 +92,7 @@ view: derived_inventory_pricing {
   }
 
   measure: No_of_beds {
-    type: sum_distinct
+    type: sum
     sql: ${number_of_beds} ;;
   }
 
@@ -101,8 +101,8 @@ view: derived_inventory_pricing {
     sql: ${base_price} ;;
   }
 
-  measure: Dead_bed_count {
-    type: count_distinct
-    sql: ${dead};;
-  }
+  #measure: Dead_bed_count {
+   # type: count
+    #sql: ${dead};;
+  #}
 }

@@ -68,13 +68,13 @@ view: derived_vas_bucket_table {
   }
 
   measure: m2_month_users {
-    type: string
+    type: number
     sql: ${TABLE}.m2_month_users ;;
   }
 
 
   measure: m1_month_users {
-    type: string
+    type: number
     sql: ${TABLE}.m1_month_users ;;
   }
 
