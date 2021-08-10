@@ -170,7 +170,9 @@ where po.committed >0 and am.category_name not like '%Discount'
 
           {% else %}
           <p style="color: black"> - </p>
-    }
+
+          {% endif %};;
+  }
 
 
    dimension_group: updated_at {
