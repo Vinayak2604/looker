@@ -254,10 +254,15 @@ view: derived_social_media_complaints {
         ELSE 'N'
         END ;;
   }
-  # dimension:  aging_new {
-  #   sql: IF(is_null(${TABLE}.ticket_id), '',
-  #   IF (is_null(${TABLE}.date_of_resolution),diff_days(date_trunc(now()),${TABLE}.fd_ticket_created_date ),
-  #   diff_days(${TABLE}.date_of_resolution,${TABLE}.fd_ticket_created_date )))
 
-  # }
+  dimension: aging_new {
+
+    sql:  IF(is_null(${ticket_id}),'',
+    IF(is_null(${date_of_resolution_date}),days_diff(date_trunc(now()),${fd_ticket_created_date}),
+    days_diff(${date_of_resolution_date},${fd_ticket_created_date})))
+
+    ;;
+
+  }
+
 }
