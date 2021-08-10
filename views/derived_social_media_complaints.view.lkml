@@ -127,7 +127,7 @@ view: derived_social_media_complaints {
   }
 
   dimension: justified_unjustified {
-    type: string
+    type: number
     sql: ${TABLE}.justified_unjustified ;;
   }
 
