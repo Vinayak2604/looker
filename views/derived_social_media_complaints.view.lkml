@@ -265,5 +265,10 @@ view: derived_social_media_complaints {
 
   }
 
+  measure: justi_count {
+    type: number
+    sql: sum(${TABLE}.justified_unjustified) ;;
+    value_format: "#,##0"
+  }
 
 }
