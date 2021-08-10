@@ -82,3 +82,5 @@ explore: derived_dish_feedback {
 #     sql_on: ${users.id} = ${orders.user_id} ;;
 #   }
 # }
+
+explore: derived_social_media_complaints {}
