@@ -278,6 +278,7 @@ where a.rn = 1;;
   measure: onboarded_beds {
     type: sum
     sql: ${TABLE}.onboarded_beds ;;
+    value_format: "#,##0"
     html: {% if value > 0 %}
     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
