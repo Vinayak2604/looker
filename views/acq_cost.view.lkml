@@ -32,17 +32,17 @@ where po.committed >0 and am.category_name not like '%Discount'
     sql: ${TABLE}.category ;;
     html:{% if value == 'Manpower' %}
 
-    <p style="color: black;font-size:100%; text-align:center">{{ rendered_value }}</p>
+          <p style="color: black;font-size:100%; text-align:center">{{ rendered_value }}</p>
 
-    {% elsif value == 'Commission' %}
+          {% elsif value == 'Commission' %}
 
-    <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
 
-    {% else %}
+          {% else %}
 
-    <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%; text-align:center">{{ rendered_value }}</p>
 
-    {% endif %} ;;
+          {% endif %} ;;
   }
 
   dimension: subcategory {
@@ -52,23 +52,11 @@ where po.committed >0 and am.category_name not like '%Discount'
 
   measure: actual {
     type: sum
-# <<<<<<< HEAD
     sql: ${TABLE}.actual/10^5;;
     value_format: "#,##0.0"
-#     html: {% if value > 0.09 %}
-#       <p style="color: black; font-size:100%; text-align:right">{{ rendered_value }}</p>
-# # =======
-#     sql: CASE WHEN ${TABLE}.actual/10^5 IS NOT NULL THEN ${TABLE}.actual/10^5 ELSE 0 END;;
-#     value_format: "0.0"
-#     # html:
-# # >>>>>>> branch 'master' of git@github.com:llooker/stanzaliving.git
-
-#     {% else %}
-#       <p style="color: black"> - </p>
-
-#     {% endif %};;
 
   }
+
   measure: committed {
     type: sum
     sql: ${TABLE}.committed/10^5 ;;
@@ -111,7 +99,7 @@ where po.committed >0 and am.category_name not like '%Discount'
 
   measure: Committed_delta {
     type: sum
-    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^5,0) ;;
+    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) ;;
     value_format: "0.0"
     html: {% if value <= -0.01 or value >= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
@@ -124,7 +112,7 @@ where po.committed >0 and am.category_name not like '%Discount'
 
   measure: Actual_delta {
     type: sum
-    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_lag)/10^5,0) ;;
+    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_lag)/10^7,0) ;;
     value_format: "0.0"
     html: {% if value >= -0.01 or value <= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
@@ -166,28 +154,26 @@ where po.committed >0 and am.category_name not like '%Discount'
     sql: COALESCE(${committed}/nullif(${budget},0),0) ;;
     value_format: "0.0%"
     html: {% if value > 0 %}
-    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-    {% else %}
-    <p style="color: black"> - </p>
+          {% else %}
+          <p style="color: black"> - </p>
 
-    {% endif %};;
+          {% endif %};;
   }
-
   measure: Actual_by_committed {
     type: number
     sql: COALESCE(${actual}/nullif(${committed},0),0) ;;
     value_format: "0.0%"
     html: {% if value > 0 %}
-    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
-    {% else %}
-    <p style="color: black"> - </p>
-
-    {% endif %};;
+          {% else %}
+          <p style="color: black"> - </p>
     }
 
-  dimension_group: updated_at {
+
+   dimension_group: updated_at {
     type: time
     timeframes: [
       raw,
@@ -199,8 +185,5 @@ where po.committed >0 and am.category_name not like '%Discount'
       year
     ]
     sql: ${TABLE}.updated_at;;
-    }
-    # dimension: test {
-
-    # }
+  }
 }

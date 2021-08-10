@@ -230,4 +230,28 @@ view: derived_social_media_complaints {
     type: count
     drill_fields: [name]
   }
+
+  dimension: l30 {
+
+    sql: CASE
+        WHEN ${TABLE}.date > add_days(-30,date_trunc(now)) THEN 'Y'
+        ELSE 'N'
+        END ;;
+  }
+
+  dimension: l7 {
+
+    sql: CASE
+        WHEN ${TABLE}.date > add_days(-7,date_trunc(now)) THEN 'Y'
+        ELSE 'N'
+        END ;;
+  }
+
+  dimension: l1 {
+
+    sql: CASE
+        WHEN ${TABLE}.date > add_days(-1,date_trunc(now)) THEN 'Y'
+        ELSE 'N'
+        END ;;
+  }
 }

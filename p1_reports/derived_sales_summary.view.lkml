@@ -3,7 +3,8 @@ view: derived_sales_summary {
     sql:
     with a as (select distinct *, row_number() over (partition by residence_id order by date desc) as rn
 from derived_sales_summary
-where {% condition date %} date {% endcondition %}),
+where {% condition date %} date {% endcondition %}
+and {% condition residence_category %} residence_category {% endcondition %}),
 b as (select residence_id,
 sum(bookings) as filtered_period_bookings,
 sum(case when rn > 1 and rn <= 2 then bookings else 0 end) as yesterday_bookings,
@@ -277,6 +278,7 @@ where a.rn = 1;;
   measure: onboarded_beds {
     type: sum
     sql: ${TABLE}.onboarded_beds ;;
+    value_format: "#,##0"
     html: {% if value > 0 %}
     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
@@ -410,4 +412,15 @@ where a.rn = 1;;
       {% endif %};;
 
   }
+
+  # dimension: residence_category {
+  #   type: string
+  #   sql: ${TABLE}.residence_category ;;
+  # }
+
+  filter: residence_category {
+    type: string
+    suggestions: ["Scholar","Suits","Studio"]
+  }
+
 }
