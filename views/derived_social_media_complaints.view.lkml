@@ -242,7 +242,7 @@ view: derived_social_media_complaints {
   dimension: l7 {
 
     sql: CASE
-        WHEN ${TABLE}.date > add_days(-7,date_trunc(now)) THEN 'Y'
+        WHEN ${TABLE}.date > add_days(-7,date_trunc(now())) THEN 'Y'
         ELSE 'N'
         END ;;
   }
@@ -250,8 +250,14 @@ view: derived_social_media_complaints {
   dimension: l1 {
 
     sql: CASE
-        WHEN ${TABLE}.date > add_days(-1,date_trunc(now)) THEN 'Y'
+        WHEN ${TABLE}.date > add_days(-1,date_trunc(now())) THEN 'Y'
         ELSE 'N'
         END ;;
   }
+  # dimension:  aging_new {
+  #   sql: IF(is_null(${TABLE}.ticket_id), '',
+  #   IF (is_null(${TABLE}.date_of_resolution),diff_days(date_trunc(now()),${TABLE}.fd_ticket_created_date ),
+  #   diff_days(${TABLE}.date_of_resolution,${TABLE}.fd_ticket_created_date )))
+
+  # }
 }
