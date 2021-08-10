@@ -111,7 +111,7 @@ where po.committed >0 and am.category_name not like '%Discount'
 
   measure: Committed_delta {
     type: sum
-    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) ;;
+    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^5,0) ;;
     value_format: "0.0"
     html: {% if value <= -0.01 or value >= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>
@@ -124,7 +124,7 @@ where po.committed >0 and am.category_name not like '%Discount'
 
   measure: Actual_delta {
     type: sum
-    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_lag)/10^7,0) ;;
+    sql: COALESCE((${TABLE}.actual-${TABLE}.actual_lag)/10^5,0) ;;
     value_format: "0.0"
     html: {% if value >= -0.01 or value <= 0.01 %}
       <p style="color: black; font-size:100%">{{ rendered_value }}</p>

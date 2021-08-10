@@ -37,6 +37,11 @@ view: derived_inventory_pricing {
   }
 
   dimension: dead {
+    type: number
+    sql: ${TABLE}.dead ;;
+  }
+
+  dimension: dead2 {
     type: yesno
     sql: ${TABLE}.dead ;;
   }
@@ -79,6 +84,7 @@ view: derived_inventory_pricing {
   dimension: number_of_beds {
     type: number
     sql: ${TABLE}.number_of_beds ;;
+
   }
 
   dimension: room_number {
@@ -94,11 +100,21 @@ view: derived_inventory_pricing {
   measure: No_of_beds {
     type: sum
     sql: ${number_of_beds} ;;
+    value_format: "#,##0.0"
   }
 
   measure: Base_price {
     type: sum
     sql: ${base_price} ;;
+  }
+  dimension: primary_key {
+    primary_key: yes
+    sql: ${inventory_id}) ;;
+  }
+
+  measure: Available_beds{
+    type: sum
+    sql: ${number_of_beds} ;;
   }
 
   #measure: Dead_bed_count {
