@@ -9,7 +9,7 @@ view: vas_order_mrr_graph {
       count(distinct case when preference_available = 1 then id end) as preference_available_meals
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01'
-      and cafe_availability_flag = 1
+      and cafe_availability = 1
       group by 1,2,3,4,5),
 
 
