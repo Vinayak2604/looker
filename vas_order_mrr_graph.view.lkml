@@ -9,7 +9,7 @@ view: vas_order_mrr_graph {
       count(distinct case when preference_available = 1 then id end) as preference_available_meals
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01'
-      and date(move_in_date) >= '2021-01-01'
+      and cafe_availiability_flag = 1
       group by 1,2,3,4,5),
 
 
@@ -24,16 +24,20 @@ view: vas_order_mrr_graph {
 
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2020-10-01'
-      and date(move_in_date) >= '2021-01-01'
-        )
+        ),
 
-        select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
+   b   (select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
         lag(vo.yr) over(partition by vo.user_id order by vo.date) yr_l1,lag(vo.mt) over(partition by vo.user_id order by vo.date) mt_l1,
         lag(vo.yr,2) over(partition by vo.user_id order by vo.date) yr_l2,lag(vo.mt,2) over(partition by vo.user_id order by vo.date) mt_l2,
         upr1.joined_residents
         from vo
         join upr on vo.residence=upr.residence and vo.mt=upr.mt and vo.yr=upr.yr
-        left join upr1 on vo.residence=upr1.residence and vo.mt=upr1.mt and vo.yr=upr1.yr
+        left join upr1 on vo.residence=upr1.residence and vo.mt=upr1.mt and vo.yr=upr1.yr)
+
+    select distinct upr.yr, upr.mt, upr.date, upr.city, upr.micromarket, upr.residence, upr.user_id,upr.user_id as ordered_user_id ,b.first_order,b.order_code, b.move_in_date, b.moved_in_residents,
+        b.yr_l1, b.mt_l1, b.yr_l2, b.mt_l2,b.joined_residents
+    from upr
+    left join b on upr.residence=b.residence and upr.mt=b.mt and upr.yr=b.yr and upr.user_id=b.user_id
         ;;
 
     }
@@ -70,6 +74,11 @@ view: vas_order_mrr_graph {
   dimension: user_id {
     type: string
     sql: ${TABLE}.user_id ;;
+  }
+
+  dimension: ordered_user_id {
+    type: string
+    sql: ${TABLE}.ordered_user_id ;;
   }
 
   dimension: first_order {
@@ -131,47 +140,55 @@ view: vas_order_mrr_graph {
     sql: sum( distinct ${joined_residents}) ;;
   }
 
-  measure: order_user {
+  measure: total_user {
     type: count_distinct
     sql: ${user_id} ;;
   }
 
+  measure: ordered_user {
+    type: count_distinct
+    sql: ${ordered_user_id} ;;
+  }
+
   measure: joined_order_user {
     type: count_distinct
-    sql: case when ${mt} = extract(month from ${move_in_date}) then ${user_id} end ;;
+    sql: case when ${mt} = extract(month from ${move_in_date}) then ${ordered_user_id} end ;;
   }
 
   measure: new {
     type: count_distinct
-    sql: case when ${yr} = extract(year from ${first_order}) and ${mt} = extract(month from ${first_order}) then ${user_id} end ;;
+    sql: case when ${yr} = extract(year from ${first_order}) and ${mt} = extract(month from ${first_order}) then ${ordered_user_id} end ;;
   }
 
   measure: retained {
     type: count_distinct
-    sql: case when ( ${mt} = 1 and ${mt_l1} = 12 ) or ${mt_l1} = ${mt} -1  then ${user_id} end ;;
+    sql: case when ( ${mt} = 1 and ${mt_l1} = 12 ) or ${mt_l1} = ${mt} -1  then ${ordered_user_id} end ;;
   }
 
-  measure: non_vas_activated {
-    type: number
-    sql: (${joined_residents1} - ${joined_order_user})  ;;
-  }
 
   measure: resurrected {
     type: count_distinct
-    sql: case when (( ${mt} = 1 and ${mt_l1} != 12) or (${mt_l1} != (${mt} - 1))) then ${user_id} end ;;
+    sql: case when (( ${mt} = 1 and ${mt_l1} != 12) or (${mt_l1} != (${mt} - 1))) then ${ordered_user_id} end ;;
   }
+
 
   measure: churned_data {
     type: count_distinct
-    sql: case when (( ${mt} = 1 and ${mt_l1} not in (12,11) and ${mt_l2} != 11 ) or (((${mt_l1} != (${mt} - 1)) or (${mt_l1} != (${mt} - 2))) and ${mt_l2} != (${mt} - 2))) then ${user_id} end ;;
+    sql: case when (${yr} > extract(year from ${first_order})) or (${yr} = extract(year from ${first_order}) and ${mt} > extract(month from ${first_order})) then ${ordered_user_id} end ;;
     hidden: yes
   }
 
   measure: churned {
     type: number
     sql: (0 - ${churned_data}) ;;
-
   }
+
+
+  measure: non_vas_activated {
+    type: number
+    sql: (${total_user} - ${ordered_user_id})  ;;
+  }
+
 
   measure: quick_ratio {
     type: number
