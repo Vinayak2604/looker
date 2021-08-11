@@ -15,12 +15,12 @@ from stanza.derived_food_cost dfc
 
 union
 
-select '1. Total' as scope,'4. Budget - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, menu_rate as value,(actual_blended_order+actual_sl_blended_order) as bo
+select '1. Total' as scope,'4. Budget - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, menu_rate*(actual_blended_order+actual_sl_blended_order) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '1. Total' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost/nullif((actual_blended_order+actual_sl_blended_order),0) as value,(actual_blended_order+actual_sl_blended_order) as bo
+select '1. Total' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -102,12 +102,18 @@ from stanza.derived_food_cost dfc
     sql: ${TABLE}.vendor_name ;;
   }
 
-  measure: l7d {
+  measure: l7d_sum {
     type: number
-    sql:sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Sum' then ${TABLE}.value
-    when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Avg' then ${TABLE}.value/${TABLE}.bo else 0 end);;
+    sql:sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Sum' then ${TABLE}.value else 0 end);;
     value_format: "#,##0"
   }
+
+  measure: l7d_avg {
+    type: number
+    sql:sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Avg' then ${TABLE}.bo else 0 end),0);;
+    value_format: "#,##0"
+  }
+
 
   measure: l7d_14d {
     type: number

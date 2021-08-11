@@ -417,6 +417,7 @@ left join upr on vo.residence = upr.residence) x ;;
     measure: total_amount1 {
       type: sum
       sql: ${TABLE}.total_amount ;;
+      html: <p> &#x20B9; {{rendered_value}}</p> ;;
     }
 
   dimension: order_users {
@@ -472,6 +473,7 @@ left join upr on vo.residence = upr.residence) x ;;
   measure: aov1 {
     type: number
     sql: ${total_amount1}/${total_orders1} ;;
+    html: <p> &#x20B9; {{rendered_value}}</p> ;;
     value_format: "00"
 
     link: {
