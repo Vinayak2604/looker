@@ -26,7 +26,7 @@ view: vas_order_mrr_graph {
       where vo.date >= '2020-10-01'
         ),
 
-   b   (select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
+   b  as (select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
         lag(vo.yr) over(partition by vo.user_id order by vo.date) yr_l1,lag(vo.mt) over(partition by vo.user_id order by vo.date) mt_l1,
         lag(vo.yr,2) over(partition by vo.user_id order by vo.date) yr_l2,lag(vo.mt,2) over(partition by vo.user_id order by vo.date) mt_l2,
         upr1.joined_residents

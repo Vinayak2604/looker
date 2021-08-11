@@ -20,9 +20,8 @@ from stanza.derived_food_cost dfc
 
 union
 
-select '1. Total' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, sum(house_wise_actual_cost)/nullif(sum((actual_blended_order+actual_sl_blended_order)),0) as value,sum((actual_blended_order+actual_sl_blended_order)) as bo
+select '1. Total' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost/nullif((actual_blended_order+actual_sl_blended_order),0) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
-group by 1,2,3,4,5
 
 union
 
