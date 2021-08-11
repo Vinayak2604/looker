@@ -131,7 +131,7 @@ view: vas_order_graph {
 
     measure: order_users_per {
       type: number
-      sql: ${order_users}/ ${order_users} ;;
+      sql: ${order_users}/ ${moved_in_residents} ;;
       value_format: "0.0%"
     }
 

@@ -9,6 +9,7 @@ view: vas_order_mrr_graph {
       count(distinct case when preference_available = 1 then id end) as preference_available_meals
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01'
+      and date(move_in_date) >= '2021-01-01'
       group by 1,2,3,4,5),
 
 
@@ -23,6 +24,7 @@ view: vas_order_mrr_graph {
 
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2020-10-01'
+      and date(move_in_date) >= '2021-01-01'
         )
 
         select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
@@ -177,6 +179,14 @@ view: vas_order_mrr_graph {
     value_format: "0.0"
 
   }
+
+  measure: total_data {
+    type: number
+    sql: (${new}+${retained}+${non_vas_activated}+${resurrected}+$(${churned_data});;
+    hidden: yes
+  }
+
+
 
 
   }

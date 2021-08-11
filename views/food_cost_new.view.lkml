@@ -1,63 +1,73 @@
 view: food_cost_new {
   derived_table: {
-    sql:select '1. Total' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate as value
+    sql:select '1. Total' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '1. Total' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost as value
+select '1. Total' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '1. Total' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate - (house_wise_actual_cost) as value
+select '1. Total' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate - (house_wise_actual_cost) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '2. COGS' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost  as value
+select '1. Total' as scope,'4. Budget - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, menu_rate as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '2. COGS' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_cogs as value
+select '1. Total' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, sum(house_wise_actual_cost)/nullif(sum((actual_blended_order+actual_sl_blended_order)),0) as value,sum((actual_blended_order+actual_sl_blended_order)) as bo
+from stanza.derived_food_cost dfc
+group by 1,2,3,4,5
+
+union
+
+select '2. COGS' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost  as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '2. COGS' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost - (house_wise_actual_cost_cogs) as value
+select '2. COGS' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_cogs as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '3. Utility' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost  as value
+select '2. COGS' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost - (house_wise_actual_cost_cogs) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '3. Utility' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_util as value
+select '3. Utility' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost  as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '3. Utility' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost - (house_wise_actual_cost_util) as value
+select '3. Utility' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_util as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '4. Packaging' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost  as value
+select '3. Utility' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost - (house_wise_actual_cost_util) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '4. Packaging' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging as value
+select '4. Packaging' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost  as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select '4. Packaging' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost - (house_wise_actual_cost_packaging) as value
+select '4. Packaging' as scope,'2. Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
+union
+
+select '4. Packaging' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost - (house_wise_actual_cost_packaging) as value,(actual_blended_order+actual_sl_blended_order) as bo
+from stanza.derived_food_cost dfc
 ;;
   }
 
@@ -95,7 +105,8 @@ from stanza.derived_food_cost dfc
 
   measure: l7d {
     type: number
-    sql:sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then ${TABLE}.value else 0 end);;
+    sql:sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Sum' then ${TABLE}.value
+    when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Avg' then ${TABLE}.value/${TABLE}.bo else 0 end);;
     value_format: "#,##0"
   }
 
