@@ -151,7 +151,7 @@ view: vas_order_mrr_graph {
 
   measure: non_vas_activated {
     type: number
-    sql: (${joined_residents1} - ${order_user})  ;;
+    sql: (${joined_residents1} - ${joined_order_user})  ;;
   }
 
   measure: resurrected {
