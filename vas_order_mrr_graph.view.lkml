@@ -11,6 +11,13 @@ view: vas_order_mrr_graph {
       where upr.date >= '2021-01-01'
       group by 1,2,3,4,5),
 
+
+      upr1 as (select extract(year from upr.move_in_date) yr,extract(month from upr.move_in_date) mt,upr.city, upr.micromarket, upr.residence,
+      count( distinct upr.user_id) as joined_residents
+      from looker_demo.derived_user_preference_rating upr
+      where upr.date >= '2021-01-01'
+      group by 1,2,3,4,5)
+
       vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt,vo.date, city, micromarket,residence,user_id, min(vo.date) over(partition by user_id order by date) first_order,
       order_code, move_in_date
 
@@ -20,9 +27,11 @@ view: vas_order_mrr_graph {
 
         select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
         lag(vo.yr) over(partition by vo.user_id order by vo.date) yr_l1,lag(vo.mt) over(partition by vo.user_id order by vo.date) mt_l1,
-        lag(vo.yr,2) over(partition by vo.user_id order by vo.date) yr_l2,lag(vo.mt,2) over(partition by vo.user_id order by vo.date) mt_l2
+        lag(vo.yr,2) over(partition by vo.user_id order by vo.date) yr_l2,lag(vo.mt,2) over(partition by vo.user_id order by vo.date) mt_l2,
+        upr1.joined_residents
         from vo
         join upr on vo.residence=upr.residence and vo.mt=upr.mt and vo.yr=upr.yr
+        join upr1 on vo.residence=upr1.residence and vo.mt=upr1.mt and vo.yr=upr1.yr
         ;;
 
     }
@@ -81,6 +90,7 @@ view: vas_order_mrr_graph {
     sql: ${TABLE}.moved_in_residents ;;
   }
 
+
   dimension: yr_l1 {
     type: number
     sql: ${TABLE}.yr_l1 ;;
@@ -104,9 +114,19 @@ view: vas_order_mrr_graph {
     sql: ${TABLE}.mt_l2 ;;
   }
 
+  dimension: joined_residents {
+    type: number
+    sql: ${TABLE}.joined_residents ;;
+  }
+
   measure: moved_in_residents1 {
     type: number
     sql: sum( distinct ${moved_in_residents}) ;;
+  }
+
+  measure: joined_residents1 {
+    type: number
+    sql: sum( distinct ${joined_residents}) ;;
   }
 
   measure: order_user {
@@ -126,7 +146,7 @@ view: vas_order_mrr_graph {
 
   measure: non_vas_activated {
     type: number
-    sql: (${moved_in_residents1} - ${order_user})  ;;
+    sql: (${joined_residents1} - ${order_user})  ;;
   }
 
   measure: resurrected {
