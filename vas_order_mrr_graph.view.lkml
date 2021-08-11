@@ -40,7 +40,7 @@ view: vas_order_mrr_graph {
         join upr on vo.residence=upr.residence and vo.mt=upr.mt and vo.yr=upr.yr
         left join upr1 on vo.residence=upr1.residence and vo.mt=upr1.mt and vo.yr=upr1.yr)
 
-    select distinct upr_u.yr, upr_u.mt, upr_u.city, upr_u.micromarket, upr_u.residence, upr_u.user_id,vo.user_id as ordered_user_id ,b.first_order,b.order_code, b.move_in_date, b.moved_in_residents,
+    select distinct upr_u.yr, upr_u.mt, upr_u.city, upr_u.micromarket, upr_u.residence, upr_u.user_id,b.user_id as ordered_user_id ,b.first_order,b.order_code, b.move_in_date, b.moved_in_residents,
         b.yr_l1, b.mt_l1, b.yr_l2, b.mt_l2,b.joined_residents
     from upr_u
     left join b on upr_u.residence=b.residence and upr_u.mt=b.mt and upr_u.yr=b.yr and upr_u.user_id=b.user_id

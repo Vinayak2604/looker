@@ -104,8 +104,9 @@ from stanza.derived_food_cost dfc
 
   measure: l7d {
     type: number
-    sql:sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Sum' then ${TABLE}.value
-    when ${menu_date}<current_date and ${menu_date}>=current_date-7 and ${value_field}='Avg' then ${TABLE}.value/${TABLE}.bo else 0 end);;
+    sql:case when ${value_field}='Sum' then sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then ${TABLE}.value else 0 end)
+    when ${value_field}='Avg' then sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then ${TABLE}.value else 0 end)/sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then ${TABLE}.bo else 0 end)
+    else null end;;
     value_format: "#,##0"
   }
 

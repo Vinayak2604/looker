@@ -169,6 +169,11 @@ view: derived_social_media_complaints {
     sql: ${TABLE}.reason_that_resident_escalate_on_sm ;;
   }
 
+  dimension:overall {
+    type: string
+    sql: "overall" ;;
+  }
+
   dimension_group: resolution_provided_by_the_city_team {
     type: time
     timeframes: [
