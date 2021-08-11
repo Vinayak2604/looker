@@ -1,10 +1,14 @@
 view: derived_social_media_complaints {
+  sql_table_name: derived_social_media_complaints ;;
 
-  derived_table: {
-    sql: select *, 'overall' as overall FROM stanza.derived_social_media_complaints;;
-    }
+  # derived_table: {
+  #   sql: select *, 'overall' as overall FROM stanza.derived_social_media_complaints;;
+  #   }
 
-
+  dimension: overall {
+    type: string
+    sql: "overall" ;;
+  }
   dimension: aging {
     type: string
     sql: ${TABLE}.aging ;;
@@ -173,14 +177,14 @@ view: derived_social_media_complaints {
     sql: ${TABLE}.reason_that_resident_escalate_on_sm ;;
   }
 
-  dimension:overall {
-    type: string
-    link: {
-      label: "Zone Wise"
-      url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.Justified_Complaints,derived_social_media_complaints.Unjustified_Complaints,derived_social_media_complaints.zone&f[derived_social_media_complaints.city]=-NULL&f[derived_social_media_complaints.sub_category]=-NULL&sorts=derived_social_media_complaints.Justified_Complaints+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22series_colors%22%3A%7B%22derived_social_media_complaints.Unjustified_Complaints%22%3A%22%23928%22%7D%2C%22label_color%22%3A%5B%22%2300000%22%5D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%22derived_social_media_complaints.city%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%2C%22derived_social_media_complaints.sub_category%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A1%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&f[derived_social_media_complaints.sub_category]={{ derived_social_media_complaints.sub_category._value }}"
-    }
-    sql: ${TABLE}.overall;;
-  }
+  # dimension:overall {
+  #   type: string
+  #   sql: ${TABLE}.overall;;
+  #   link: {
+  #     label: "Zone Wise"
+  #     url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.Justified_Complaints,derived_social_media_complaints.Unjustified_Complaints,derived_social_media_complaints.zone&f[derived_social_media_complaints.city]=-NULL&f[derived_social_media_complaints.sub_category]=-NULL&sorts=derived_social_media_complaints.Justified_Complaints+desc&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22series_colors%22%3A%7B%22derived_social_media_complaints.Unjustified_Complaints%22%3A%22%23928%22%7D%2C%22label_color%22%3A%5B%22%2300000%22%5D%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%22derived_social_media_complaints.city%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A0%2C%22error%22%3Afalse%7D%5D%2C%22derived_social_media_complaints.sub_category%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A1%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&f[derived_social_media_complaints.sub_category]={{ derived_social_media_complaints.sub_category._value }}"
+  #   }
+  # }
 
   dimension_group: resolution_provided_by_the_city_team {
     type: time
