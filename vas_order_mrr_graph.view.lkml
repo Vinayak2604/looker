@@ -171,4 +171,11 @@ view: vas_order_mrr_graph {
 
   }
 
+  measure: quick_ratio {
+    type: number
+    sql: ((${new}+${resurrected}) / ${churned}) ;;
+
+  }
+
+
   }
