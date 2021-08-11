@@ -45,6 +45,11 @@ view: derived_food_invoice {
     sql: ${TABLE}.item_category_label ;;
   }
 
+  dimension: item_sub_category_label {
+    type: string
+    sql: ${TABLE}.item_sub_category_label ;;
+  }
+
   dimension: item_code {
     type: string
     sql: ${TABLE}.item_code ;;
