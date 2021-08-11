@@ -104,5 +104,10 @@ view: vas_order_mrr_graph {
     sql: (${moved_in_residents1} - ${order_user})  ;;
   }
 
+  measure: resurrected {
+    type: number
+    sql: (${moved_in_residents1} - ${order_user})  ;;
+  }
+
 
   }
