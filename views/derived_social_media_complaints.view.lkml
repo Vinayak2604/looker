@@ -1,8 +1,6 @@
 view: derived_social_media_complaints {
   sql_table_name: derived_social_media_complaints ;;
 
-
-
   dimension: aging {
     type: string
     sql: ${TABLE}.aging ;;
@@ -260,39 +258,39 @@ measure: count {
     }
   }
 
-  dimension: l30 {
+  # dimension: l30 {
 
-    sql: CASE
-        WHEN ${TABLE}.date > add_days(-30,date_trunc(now)) THEN 'Y'
-        ELSE 'N'
-        END ;;
-  }
+  #   sql: CASE
+  #       WHEN ${TABLE}.date > add_days(-30,date_trunc(now)) THEN 'Y'
+  #       ELSE 'N'
+  #       END ;;
+  # }
 
-  dimension: l7 {
+  # dimension: l7 {
 
-    sql: CASE
-        WHEN ${TABLE}.date > add_days(-7,date_trunc(now())) THEN 'Y'
-        ELSE 'N'
-        END ;;
-  }
+  #   sql: CASE
+  #       WHEN ${TABLE}.date > add_days(-7,date_trunc(now())) THEN 'Y'
+  #       ELSE 'N'
+  #       END ;;
+  # }
 
-  dimension: l1 {
+  # dimension: l1 {
 
-    sql: CASE
-        WHEN ${TABLE}.date > add_days(-1,date_trunc(now())) THEN 'Y'
-        ELSE 'N'
-        END ;;
-  }
+  #   sql: CASE
+  #       WHEN ${TABLE}.date > add_days(-1,date_trunc(now())) THEN 'Y'
+  #       ELSE 'N'
+  #       END ;;
+  # }
 
-  dimension: aging_new {
+  # dimension: aging_new {
 
-    sql:  IF(is_null(${ticket_id}),'',
-    IF(is_null(${date_of_resolution_date}),days_diff(date_trunc(now()),${fd_ticket_created_date}),
-    days_diff(${date_of_resolution_date},${fd_ticket_created_date})))
+  #   sql:  IF(is_null(${ticket_id}),'',
+  #   IF(is_null(${date_of_resolution_date}),days_diff(date_trunc(now()),${fd_ticket_created_date}),
+  #   days_diff(${date_of_resolution_date},${fd_ticket_created_date})))
 
-    ;;
+  #   ;;
 
-  }
+  # }
 
 
 
