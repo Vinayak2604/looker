@@ -53,7 +53,7 @@ explore: derived_food_invoice {
 join: consumption_in_kitchen {
   sql_on: ${derived_food_invoice.item_name}=${consumption_in_kitchen.item_name} and ${derived_food_invoice.property}=${consumption_in_kitchen.Property};;
   relationship: one_to_one
-  type: left_outer
+  type: inner
 }
 
 }
