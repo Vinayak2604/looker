@@ -34,7 +34,7 @@ view: vas_order_mrr_graph {
         join upr on vo.residence=upr.residence and vo.mt=upr.mt and vo.yr=upr.yr
         left join upr1 on vo.residence=upr1.residence and vo.mt=upr1.mt and vo.yr=upr1.yr)
 
-    select distinct upr.yr, upr.mt, upr.date, upr.city, upr.micromarket, upr.residence, upr.user_id,upr.user_id as ordered_user_id ,b.first_order,b.order_code, b.move_in_date, b.moved_in_residents,
+    select distinct upr.yr, upr.mt, upr.city, upr.micromarket, upr.residence, upr.user_id,upr.user_id as ordered_user_id ,b.first_order,b.order_code, b.move_in_date, b.moved_in_residents,
         b.yr_l1, b.mt_l1, b.yr_l2, b.mt_l2,b.joined_residents
     from upr
     left join b on upr.residence=b.residence and upr.mt=b.mt and upr.yr=b.yr and upr.user_id=b.user_id
@@ -52,10 +52,7 @@ view: vas_order_mrr_graph {
     sql: ${TABLE}.mt ;;
   }
 
-  dimension: date {
-    type: date
-    sql: ${TABLE}.date ;;
-  }
+
 
   dimension: city {
     type: string
