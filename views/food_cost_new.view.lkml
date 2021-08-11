@@ -245,14 +245,14 @@ from stanza.derived_food_cost dfc
 
 
   measure: value_sum {
-    type: sum
-    sql: ${TABLE}.value ;;
+    type: number
+    sql: sum(case when ${value_field}='Sum' then ${TABLE}.value else 0 end) ;;
     value_format: "#,##0"
   }
 
   measure: value_avg {
-    type: average
-    sql: ${TABLE}.value ;;
+    type: number
+    sql: sum(case when ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when ${value_field}='Avg' then ${TABLE}.bo else 0 end),0);;
     value_format: "#,##0"
   }
 
