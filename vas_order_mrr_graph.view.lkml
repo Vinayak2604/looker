@@ -134,6 +134,11 @@ view: vas_order_mrr_graph {
     sql: ${user_id} ;;
   }
 
+  measure: joined_order_user {
+    type: count_distinct
+    sql: case when ${mt} = extract(month from ${move_in_date}) then ${user_id} end ;;
+  }
+
   measure: new {
     type: count_distinct
     sql: case when ${yr} = extract(year from ${first_order}) and ${mt} = extract(month from ${first_order}) then ${user_id} end ;;
