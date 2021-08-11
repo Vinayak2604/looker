@@ -18,10 +18,12 @@ view: vas_order_mrr_graph {
       where vo.date >= '2020-10-01'
         )
 
-        select vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents
+        select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
+        lag(vo.yr) over(partition by vo.user_id order by vo.created_at) yr_l1,lag(vo.mt) over(partition by vo.user_id order by vo.created_at) mt_l1,
+        lag(vo.yr,2) over(partition by vo.user_id order by vo.created_at) yr_l2,lag(vo.mt,2) over(partition by vo.user_id order by vo.created_at) mt_l2
         from vo
         join upr on vo.residence=upr.residence and vo.mt=upr.mt and vo.yr=upr.yr
-        group by 1,2,3,4,5,6,7,8,9,10,11;;
+        ;;
 
     }
 
@@ -79,6 +81,29 @@ view: vas_order_mrr_graph {
     sql: ${TABLE}.moved_in_residents ;;
   }
 
+  dimension: yr_l1 {
+    type: number
+    sql: ${TABLE}.yr_l1 ;;
+  }
+
+
+  dimension: mt_l1 {
+    type: number
+    sql: ${TABLE}.mt_l1 ;;
+  }
+
+
+  dimension: yr_l2 {
+    type: number
+    sql: ${TABLE}.yr_l2 ;;
+  }
+
+
+  dimension: mt_l2 {
+    type: number
+    sql: ${TABLE}.mt_l2 ;;
+  }
+
   measure: moved_in_residents1 {
     type: sum
     sql: ${TABLE}.moved_in_residents ;;
@@ -105,9 +130,13 @@ view: vas_order_mrr_graph {
   }
 
   measure: resurrected {
-    type: number
-    sql: (${moved_in_residents1} - ${order_user})  ;;
+    type: count_distinct
+    sql: case when (( ${mt} = 1 and ${mt_l1} != 12) or (${mt_l1} != (${mt} - 1))) then ${user_id} end ;;
   }
 
+  measure: churned {
+    type: count_distinct
+    sql: case when (( ${mt} = 1 and ${mt_l1} != 12 and ${mt_l2} != 11 ) or (${mt_l1} != (${mt} - 1) and ${mt_l2} != (${mt} - 2))) then ${user_id} end ;;
+  }
 
   }
