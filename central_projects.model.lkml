@@ -51,7 +51,6 @@ join: next_week_items {
 }
 explore: derived_food_invoice {
 
-
 }
 
 explore: derived_food_cost {}

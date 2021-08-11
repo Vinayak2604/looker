@@ -43,7 +43,7 @@ group by
     sql: ${TABLE}.location_uuid;;
   }
 
-  dimension: location_name {
+  dimension: Property {
     type: string
     sql: ${TABLE}.location_name;;
   }
@@ -61,6 +61,7 @@ group by
   dimension: total_consumption {
     type: number
     sql: ${TABLE}.value;;
+    value_format: "0"
   }
 
   dimension: quantity {

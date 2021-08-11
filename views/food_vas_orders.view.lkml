@@ -104,6 +104,12 @@ join stanza.core_food_service_cafe_master cm on co.cafe_id = cm.uuid;;
     sql: ${TABLE}.order_date ;;
   }
 
+  dimension: order_date_lw {
+    type: date
+    sql: ${TABLE}.order_date ;;
+    html: {{ rendered_value | date: "%d-%b" }} ;;
+  }
+
   dimension: order_code {
     type: string
     sql: ${TABLE}.order_code ;;

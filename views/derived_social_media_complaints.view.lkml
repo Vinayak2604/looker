@@ -228,7 +228,11 @@ view: derived_social_media_complaints {
 
   measure: count {
     type: count
-    drill_fields: [name]
+    # drill_fields: [name]
+    link: {
+      label: "City Wise"
+      url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.city,derived_social_media_complaints.count,derived_social_media_complaints.justified_unjustified&f[derived_social_media_complaints.justified_unjustified]={{ derived_social_media_complaints.justified_unjustified._value }}&f[derived_social_media_complaints.sub_category]={{ derived_social_media_complaints.sub_category._value }}&sorts=derived_social_media_complaints.count+desc,derived_social_media_complaints.justified_unjustified&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%2C%22hidden_fields%22%3A%5B%22derived_social_media_complaints.justified_unjustified%22%5D%7D&filter_config=%7B%22derived_social_media_complaints.justified_unjustified%22%3A%5B%7B%22type%22%3A%22%3D%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22Justified%22%7D%2C%7B%7D%5D%2C%22id%22%3A2%2C%22error%22%3Afalse%7D%5D%2C%22derived_social_media_complaints.sub_category%22%3A%5B%7B%22type%22%3A%22%3D%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22Refund+Related%22%7D%2C%7B%7D%5D%2C%22id%22%3A3%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded"
+    }
   }
 
   dimension: l30 {
@@ -263,6 +267,18 @@ view: derived_social_media_complaints {
 
     ;;
 
+  }
+
+
+
+  measure: Justified_Complaints{
+    type: count
+    filters: [justified_unjustified: "Justified"]
+  }
+
+  measure: Unjustified_Complaints{
+    type: count
+    filters: [justified_unjustified: "Unjustified"]
   }
 
 }
