@@ -134,9 +134,16 @@ view: vas_order_mrr_graph {
     sql: case when (( ${mt} = 1 and ${mt_l1} != 12) or (${mt_l1} != (${mt} - 1))) then ${user_id} end ;;
   }
 
-  measure: churned {
+  measure: churned_data {
     type: count_distinct
     sql: case when (( ${mt} = 1 and ${mt_l1} != 12 and ${mt_l2} != 11 ) or (${mt_l1} != (${mt} - 1) and ${mt_l2} != (${mt} - 2))) then ${user_id} end ;;
+    hidden: yes
+  }
+
+  measure: churned {
+    type: number
+    sql: (0 - ${churned_data}) ;;
+
   }
 
   }
