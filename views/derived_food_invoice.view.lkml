@@ -151,7 +151,7 @@ view: derived_food_invoice {
   dimension: subtotal_amount {
     type: number
     sql: ${TABLE}.subtotal_amount ;;
-    value_format: "0"
+    value_format: "#,##0"
   }
 
   dimension: time_taken {
