@@ -105,8 +105,8 @@ view: vas_order_mrr_graph {
   }
 
   measure: moved_in_residents1 {
-    type: sum
-    sql: ${TABLE}.moved_in_residents ;;
+    type: number
+    sql: sum( distinct ${moved_in_residents}) ;;
   }
 
   measure: order_user {
@@ -136,7 +136,7 @@ view: vas_order_mrr_graph {
 
   measure: churned_data {
     type: count_distinct
-    sql: case when (( ${mt} = 1 and ${mt_l1} not in (12,11) and ${mt_l2} != 11 ) or ((${mt_l1} != (${mt} - 1) or (${mt_l1} != (${mt} - 2))) and ${mt_l2} != (${mt} - 2))) then ${user_id} end ;;
+    sql: case when (( ${mt} = 1 and ${mt_l1} not in (12,11) and ${mt_l2} != 11 ) or (((${mt_l1} != (${mt} - 1)) or (${mt_l1} != (${mt} - 2))) and ${mt_l2} != (${mt} - 2))) then ${user_id} end ;;
     hidden: yes
   }
 
