@@ -173,7 +173,8 @@ view: vas_order_mrr_graph {
 
   measure: quick_ratio {
     type: number
-    sql: ((${new}+${resurrected}) / ${churned}) ;;
+    sql: ((${new}+${resurrected}) / ${churned_data}) ;;
+    value_format: "0.0"
 
   }
 
