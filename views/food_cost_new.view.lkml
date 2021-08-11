@@ -40,6 +40,16 @@ from stanza.derived_food_cost dfc
 
 union
 
+select '2. COGS' as scope,'4. Budget - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost as value,(actual_blended_order+actual_sl_blended_order) as bo
+from stanza.derived_food_cost dfc
+
+union
+
+select '2. COGS' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_cogs as value,(actual_blended_order+actual_sl_blended_order) as bo
+from stanza.derived_food_cost dfc
+
+union
+
 select '3. Utility' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost  as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
@@ -51,6 +61,16 @@ from stanza.derived_food_cost dfc
 union
 
 select '3. Utility' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost - (house_wise_actual_cost_util) as value,(actual_blended_order+actual_sl_blended_order) as bo
+from stanza.derived_food_cost dfc
+
+union
+
+select '3. Utility' as scope,'4. Budget - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost as value,(actual_blended_order+actual_sl_blended_order) as bo
+from stanza.derived_food_cost dfc
+
+union
+
+select '3. Utility' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_util as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -67,6 +87,17 @@ union
 
 select '4. Packaging' as scope,'3. Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost - (house_wise_actual_cost_packaging) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
+
+union
+
+select '4. Packaging' as scope,'4. Budget - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost as value,(actual_blended_order+actual_sl_blended_order) as bo
+from stanza.derived_food_cost dfc
+
+union
+
+select '4. Packaging' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging as value,(actual_blended_order+actual_sl_blended_order) as bo
+from stanza.derived_food_cost dfc
+
 ;;
   }
 

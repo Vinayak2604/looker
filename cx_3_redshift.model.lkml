@@ -19,4 +19,4 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 #   }
 # }
 
-explore: derived_social_media_complaints {}
+explore: derived_social_media_complaints { }
