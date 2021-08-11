@@ -16,7 +16,7 @@ view: vas_order_mrr_graph {
       count( distinct upr.user_id) as joined_residents
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01'
-      group by 1,2,3,4,5)
+      group by 1,2,3,4,5),
 
       vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt,vo.date, city, micromarket,residence,user_id, min(vo.date) over(partition by user_id order by date) first_order,
       order_code, move_in_date
