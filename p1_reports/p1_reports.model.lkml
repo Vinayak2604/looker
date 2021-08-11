@@ -8,6 +8,8 @@ include: "/p1_reports/*.view.lkml"                # include all views in the vie
 # # and define the joins that connect them together.
 #
 explore: derived_sales_summary {
+
+  persist_for: "12 hours"
   # join: bookings_prebookings {
   #   relationship: one_to_many
   #   sql_on: ${derived_sales_summary.residence_id} = ${bookings_prebookings.residence_id} ;;
@@ -19,4 +21,6 @@ explore: derived_sales_summary {
 #   }
 }
 
-explore: bookings_prebookings {}
+explore: bookings_prebookings {
+  persist_for: "12 hours"
+}

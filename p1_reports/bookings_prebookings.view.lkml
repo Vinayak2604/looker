@@ -1,11 +1,11 @@
 view: bookings_prebookings {
-  # sql_table_name: derived_sales_summary ;;
-  derived_table: {
-    sql:
-    select *
-    from derived_sales_summary
-    where {% condition residence_category %} residence_category {% endcondition %};;
-  }
+  sql_table_name: derived_sales_summary ;;
+  # derived_table: {
+  #   sql:
+  #   select *
+  #   from derived_sales_summary
+  #   where {% condition residence_category %} residence_category {% endcondition %};;
+  # }
 
   dimension: id {
     primary_key: yes
@@ -119,9 +119,14 @@ view: bookings_prebookings {
   #   }
   # }
 
-  filter: residence_category {
+  # filter: residence_category {
+  #   type: string
+  #   suggestions: ["Scholar","Suits","Studio"]
+  # }
+
+  dimension: residence_category {
     type: string
-    suggestions: ["Scholar","Suits","Studio"]
+    sql: ${TABLE}.residence_category ;;
   }
 
   # measure: moving_avg {
