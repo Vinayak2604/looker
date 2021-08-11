@@ -13,7 +13,8 @@ view: vas_ageing_aov_bucket {
 
           select ageing, case when final_total_amount <=25 then 'a. 0-25' when final_total_amount <=50 then 'b. 25-50'
           when final_total_amount <=75 then 'c. 50-75' when final_total_amount <=100 then 'd. 75-100'
-          when final_total_amount >100 then 'e. >100' end as amount_bucket,  count(distinct order_code) orders , sum(final_total_amount) total_amount
+          when final_total_amount >100 then 'e. >100' end as amount_bucket,  count(distinct order_code) orders , sum(final_total_amount) total_amount,
+          count(distinct user_id) users
           from a
           group by 1,2 ;;
   }
@@ -43,6 +44,11 @@ view: vas_ageing_aov_bucket {
   measure: orders {
     type: sum
     sql: ${TABLE}.orders ;;
+  }
+
+  measure: users {
+    type: sum
+    sql: ${TABLE}.users ;;
   }
 
   measure: total_amount {

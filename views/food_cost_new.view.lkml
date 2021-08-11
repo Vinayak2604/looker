@@ -15,17 +15,6 @@ from stanza.derived_food_cost dfc
 
 union
 
-select '1. Total' as scope,'4. Budget - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, menu_rate as value
-from stanza.derived_food_cost dfc
-
-union
-
-select '1. Total' as scope,'5. Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, sum(house_wise_actual_cost)/nullif(sum((actual_blended_order+actual_sl_blended_order)),0) as value
-from stanza.derived_food_cost dfc
-group by 1,2,3,4,5
-
-union
-
 select '2. COGS' as scope,'1. Budget' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost  as value
 from stanza.derived_food_cost dfc
 
@@ -148,9 +137,16 @@ from stanza.derived_food_cost dfc
 
 
   measure: value_sum {
-    type: number
-    sql: sum(${TABLE}.value) ;;
+    type: sum
+    sql: ${TABLE}.value ;;
     value_format: "#,##0"
   }
+
+  measure: value_avg {
+    type: average
+    sql: ${TABLE}.value ;;
+    value_format: "#,##0"
+  }
+
 
 }
