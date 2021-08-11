@@ -115,35 +115,96 @@ from stanza.derived_food_cost dfc
   }
 
 
-  measure: l7d_14d {
+  measure: l7d_14d_sum {
     type: number
-    sql: sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 then ${TABLE}.value else 0 end);;
+    sql: sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 and ${value_field}='Sum' then ${TABLE}.value else 0 end);;
     value_format: "#,##0"
   }
 
-  measure: l14d_21d {
+  measure: l7d_14d_avg {
     type: number
-    sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 then ${TABLE}.value else 0 end);;
+    sql:sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 and ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 and ${value_field}='Avg' then ${TABLE}.bo else 0 end),0);;
     value_format: "#,##0"
   }
 
-  measure: l21d_28d {
+
+  # measure: l14d_21d {
+  #   type: number
+  #   sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 then ${TABLE}.value else 0 end);;
+  #   value_format: "#,##0"
+  # }
+
+  measure: l14d_21d_sum {
     type: number
-    sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 then ${TABLE}.value else 0 end);;
+    sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 and ${value_field}='Sum' then ${TABLE}.value else 0 end);;
     value_format: "#,##0"
   }
 
-  measure: MTD {
+  measure: l14d_21d_avg {
     type: number
-    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date) and date_part(year,${menu_date})=date_part(year,current_date) then ${TABLE}.value else 0 end) ;;
+    sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 and ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 and ${value_field}='Avg' then ${TABLE}.bo else 0 end),0);;
     value_format: "#,##0"
   }
 
-  measure: Last_Month {
+
+  # measure: l21d_28d {
+  #   type: number
+  #   sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 then ${TABLE}.value else 0 end);;
+  #   value_format: "#,##0"
+  # }
+
+  measure: l21d_28d_sum {
     type: number
-    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 then ${TABLE}.value else 0 end) ;;
+    sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 and ${value_field}='Sum' then ${TABLE}.value else 0 end);;
     value_format: "#,##0"
   }
+
+  measure: l21d_28d_avg {
+    type: number
+    sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 and ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 and ${value_field}='Avg' then ${TABLE}.bo else 0 end),0);;
+    value_format: "#,##0"
+  }
+
+
+  # measure: MTD {
+  #   type: number
+  #   sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date) and date_part(year,${menu_date})=date_part(year,current_date) then ${TABLE}.value else 0 end) ;;
+  #   value_format: "#,##0"
+  # }
+
+  measure: MTD_sum {
+    type: number
+    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date) and date_part(year,${menu_date})=date_part(year,current_date) and ${value_field}='Sum' then ${TABLE}.value else 0 end) ;;
+    value_format: "#,##0"
+  }
+
+  measure: MTD_avg {
+    type: number
+    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date) and date_part(year,${menu_date})=date_part(year,current_date) and ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when date_part(mon,${menu_date})=date_part(mon,current_date) and date_part(year,${menu_date})=date_part(year,current_date) and ${value_field}='Avg' then ${TABLE}.bo else 0 end),0) ;;
+    value_format: "#,##0"
+  }
+
+
+  # measure: Last_Month {
+  #   type: number
+  #   sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 then ${TABLE}.value else 0 end) ;;
+  #   value_format: "#,##0"
+  # }
+
+  measure: Last_Month_sum {
+    type: number
+    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 and ${value_field}='Sum' then ${TABLE}.value else 0 end) ;;
+    value_format: "#,##0"
+  }
+
+  measure: Last_Month_avg {
+    type: number
+    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 and ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 and ${value_field}='Avg' then ${TABLE}.bo else 0 end),0) ;;
+    value_format: "#,##0"
+  }
+
+
+
 
   # measure: YTD {
   #   type: number
