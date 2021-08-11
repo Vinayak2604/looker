@@ -121,7 +121,7 @@ view: vas_order_mrr_graph {
 
   measure: retained {
     type: count_distinct
-    sql: case when ((${yr} = extract(year from ${first_order}) and ${mt} > extract(month from ${first_order})) or ${yr} > extract(year from ${first_order})) then ${user_id} end ;;
+    sql: case when ( ${mt} = 1 and ${mt_l1} = 12 ) or ${mt_l1} = ${mt} -1  then ${user_id} end ;;
   }
 
   measure: non_vas_activated {
@@ -136,7 +136,7 @@ view: vas_order_mrr_graph {
 
   measure: churned_data {
     type: count_distinct
-    sql: case when (( ${mt} = 1 and ${mt_l1} != 12 and ${mt_l2} != 11 ) or (${mt_l1} != (${mt} - 1) and ${mt_l2} != (${mt} - 2))) then ${user_id} end ;;
+    sql: case when (( ${mt} = 1 and ${mt_l1} not in (12,11) and ${mt_l2} != 11 ) or ((${mt_l1} != (${mt} - 1) or (${mt_l1} != (${mt} - 2))) and ${mt_l2} != (${mt} - 2))) then ${user_id} end ;;
     hidden: yes
   }
 
