@@ -2,6 +2,7 @@ connection: "redshift"
 
 include: "/views/*.view.lkml"
 include: "/food_inventory/*.view.lkml"
+include: "/food_cost/*.view.lkml"
 # include all views in the views/ folder in this project
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
@@ -65,7 +66,18 @@ explore: inventory_ledger {}
 
 explore: next_week_items {}
 
-explore: vendor_prices {}
+explore: vendor_prices {
+  join: derived_food_invoice {
+    sql_on: ${vendor_prices.company_name}=${derived_food_invoice.vendor_name};;
+    relationship: one_to_one
+    type: left_outer
+  }
+  join: consumption_in_kitchen {
+    sql_on: ${derived_food_invoice.item_sub_category_label}=${consumption_in_kitchen.item_sub_category_label} and ${derived_food_invoice.property}=${consumption_in_kitchen.Property};;
+    relationship: one_to_one
+    type: left_outer
+  }
+}
 
 explore: po_invoice{}
 

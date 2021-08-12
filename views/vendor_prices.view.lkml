@@ -129,4 +129,10 @@ view: vendor_prices {
     type: count_distinct
     sql: ${TABLE}.item_category_label ;;
   }
+
+  measure: item_count {
+    type: count_distinct
+    sql: ${TABLE}.item_name ;;
+  }
+
  }

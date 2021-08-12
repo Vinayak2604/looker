@@ -1,79 +1,72 @@
 view: derived_food_cost {
   sql_table_name: stanza.derived_food_cost ;;
 
-  measure: actual_blended_order {
+  dimension: actual_blended_order {
     type: number
     sql: ${TABLE}.actual_blended_order ;;
-    value_format: "0"
   }
 
-  measure: actual_cost {
-    type: sum
-    sql: (${TABLE}.actual_cost) ;;
-    value_format: "0"
-  }
-
-  measure: actual_nonsl_blended_order {
+  dimension: actual_nonsl_blended_order {
     type: number
     sql: ${TABLE}.actual_nonsl_blended_order ;;
   }
 
-  measure: actual_sl_blended_order {
+  dimension: actual_sl_blended_order {
     type: number
     sql: ${TABLE}.actual_sl_blended_order ;;
   }
 
-  measure: breakfast_cost {
+  dimension: breakfast_cost {
     type: number
     sql: ${TABLE}.breakfast_cost ;;
   }
 
-  measure: breakfast_meal {
+  dimension: breakfast_meal {
     type: number
     sql: ${TABLE}.breakfast_meal ;;
   }
 
-  measure: breakfast_nonsl_cost {
+  dimension: breakfast_nonsl_cost {
     type: number
     sql: ${TABLE}.breakfast_nonsl_cost ;;
   }
 
-  measure: breakfast_nonsl_orders {
+  dimension: breakfast_nonsl_orders {
     type: number
     sql: ${TABLE}.breakfast_nonsl_orders ;;
   }
 
-  measure: breakfast_nonsl_price_1 {
+  dimension: breakfast_nonsl_price_1 {
     type: number
     sql: ${TABLE}.breakfast_nonsl_price_1 ;;
   }
 
-  measure: breakfast_orders {
+  dimension: breakfast_orders {
     type: number
     sql: ${TABLE}.breakfast_orders ;;
   }
 
-  measure: breakfast_price {
+  dimension: breakfast_price {
     type: number
     sql: ${TABLE}.breakfast_price ;;
   }
 
-  measure: breakfast_price_1 {
+  dimension: breakfast_price_1 {
     type: number
     sql: ${TABLE}.breakfast_price_1 ;;
   }
 
-  measure: breakfast_rate {
+  dimension: breakfast_rate {
     type: number
     sql: ${TABLE}.breakfast_rate ;;
   }
 
-  measure: breakfast_sl_orders {
+  dimension: breakfast_sl_orders {
     type: number
     sql: ${TABLE}.breakfast_sl_orders ;;
   }
 
-  measure: breakfast_sl_price_1 {
+  dimension: breakfast_sl_price_1 {
     type: number
     sql: ${TABLE}.breakfast_sl_price_1 ;;
   }
@@ -83,10 +76,9 @@ view: derived_food_cost {
     sql: ${TABLE}.budget_blended_order ;;
   }
 
-  measure: budget_cost {
-    type: sum
+  dimension: budget_cost {
+    type: number
     sql: ${TABLE}.budget_cost ;;
-    value_format: "0"
   }
 
   dimension: city {
@@ -94,123 +86,117 @@ view: derived_food_cost {
     sql: ${TABLE}.city ;;
   }
 
-  measure: daily_cost {
-    type: average
-    sql: ${TABLE}.daily_cost ;;
-    value_format: "0"
-  }
-
-  measure: dinner_cost {
+  dimension: dinner_cost {
     type: number
     sql: ${TABLE}.dinner_cost ;;
   }
 
-  measure: dinner_meal {
+  dimension: dinner_meal {
     type: number
     sql: ${TABLE}.dinner_meal ;;
   }
 
-  measure: dinner_nonsl_cost {
+  dimension: dinner_nonsl_cost {
     type: number
     sql: ${TABLE}.dinner_nonsl_cost ;;
   }
 
-  measure: dinner_nonsl_orders {
+  dimension: dinner_nonsl_orders {
     type: number
     sql: ${TABLE}.dinner_nonsl_orders ;;
   }
 
-  measure: dinner_nonsl_price_1 {
+  dimension: dinner_nonsl_price_1 {
     type: number
     sql: ${TABLE}.dinner_nonsl_price_1 ;;
   }
 
-  measure: dinner_orders {
+  dimension: dinner_orders {
     type: number
     sql: ${TABLE}.dinner_orders ;;
   }
 
-  measure: dinner_price {
+  dimension: dinner_price {
     type: number
     sql: ${TABLE}.dinner_price ;;
   }
 
-  measure: dinner_price_1 {
+  dimension: dinner_price_1 {
     type: number
     sql: ${TABLE}.dinner_price_1 ;;
   }
 
-  measure: dinner_rate {
+  dimension: dinner_rate {
     type: number
     sql: ${TABLE}.dinner_rate ;;
   }
 
-  measure: dinner_sl_orders {
+  dimension: dinner_sl_orders {
     type: number
     sql: ${TABLE}.dinner_sl_orders ;;
   }
 
-  measure: dinner_sl_price_1 {
+  dimension: dinner_sl_price_1 {
     type: number
     sql: ${TABLE}.dinner_sl_price_1 ;;
   }
 
-  measure: es_cost {
+  dimension: es_cost {
     type: number
     sql: ${TABLE}.es_cost ;;
   }
 
-  measure: es_meal {
+  dimension: es_meal {
     type: number
     sql: ${TABLE}.es_meal ;;
   }
 
-  measure: es_nonsl_cost {
+  dimension: es_nonsl_cost {
     type: number
     sql: ${TABLE}.es_nonsl_cost ;;
   }
 
-  measure: es_nonsl_orders {
+  dimension: es_nonsl_orders {
     type: number
     sql: ${TABLE}.es_nonsl_orders ;;
   }
 
-  measure: es_nonsl_price_1 {
+  dimension: es_nonsl_price_1 {
     type: number
     sql: ${TABLE}.es_nonsl_price_1 ;;
   }
 
-  measure: es_orders {
+  dimension: es_orders {
     type: number
     sql: ${TABLE}.es_orders ;;
   }
 
-  measure: es_price {
+  dimension: es_price {
     type: number
     sql: ${TABLE}.es_price ;;
   }
 
-  measure: es_price_1 {
+  dimension: es_price_1 {
     type: number
     sql: ${TABLE}.es_price_1 ;;
   }
 
-  measure: es_rate {
+  dimension: es_rate {
     type: number
     sql: ${TABLE}.es_rate ;;
   }
 
-  measure: es_sl_orders {
+  dimension: es_sl_orders {
     type: number
     sql: ${TABLE}.es_sl_orders ;;
   }
 
-  measure: es_sl_price_1 {
+  dimension: es_sl_price_1 {
     type: number
     sql: ${TABLE}.es_sl_price_1 ;;
   }
 
-  measure: food_margin {
+  dimension: food_margin {
     type: number
     sql: ${TABLE}.food_margin ;;
   }
@@ -220,70 +206,84 @@ view: derived_food_cost {
     sql: ${TABLE}.hostel_name ;;
   }
 
-  measure: house_wise_actual_cost {
-    type: sum
+  dimension: house_wise_actual_cost {
+    type: number
     sql: ${TABLE}.house_wise_actual_cost ;;
-    value_format: "0"
   }
 
-  measure: lunch_cost {
+  dimension: house_wise_actual_cost_cogs {
+    type: number
+    sql: ${TABLE}.house_wise_actual_cost_cogs ;;
+  }
+
+  dimension: house_wise_actual_cost_packaging {
+    type: number
+    sql: ${TABLE}.house_wise_actual_cost_packaging ;;
+  }
+
+  dimension: house_wise_actual_cost_util {
+    type: number
+    sql: ${TABLE}.house_wise_actual_cost_util ;;
+  }
+
+  dimension: lunch_cost {
     type: number
     sql: ${TABLE}.lunch_cost ;;
   }
 
-  measure: lunch_meal {
+  dimension: lunch_meal {
     type: number
     sql: ${TABLE}.lunch_meal ;;
   }
 
-  measure: lunch_nonsl_cost {
+  dimension: lunch_nonsl_cost {
     type: number
     sql: ${TABLE}.lunch_nonsl_cost ;;
   }
 
-  measure: lunch_nonsl_orders {
+  dimension: lunch_nonsl_orders {
     type: number
     sql: ${TABLE}.lunch_nonsl_orders ;;
   }
 
-  measure: lunch_nonsl_price_1 {
+  dimension: lunch_nonsl_price_1 {
     type: number
     sql: ${TABLE}.lunch_nonsl_price_1 ;;
   }
 
-  measure: lunch_orders {
+  dimension: lunch_orders {
     type: number
     sql: ${TABLE}.lunch_orders ;;
   }
 
-  measure: lunch_price {
+  dimension: lunch_price {
     type: number
     sql: ${TABLE}.lunch_price ;;
   }
 
-  measure: lunch_price_1 {
+  dimension: lunch_price_1 {
     type: number
     sql: ${TABLE}.lunch_price_1 ;;
   }
 
-  measure: lunch_rate {
+  dimension: lunch_rate {
     type: number
     sql: ${TABLE}.lunch_rate ;;
   }
 
-  measure: lunch_sl_orders {
+  dimension: lunch_sl_orders {
     type: number
     sql: ${TABLE}.lunch_sl_orders ;;
   }
 
-  measure: lunch_sl_price_1 {
+  dimension: lunch_sl_price_1 {
     type: number
     sql: ${TABLE}.lunch_sl_price_1 ;;
   }
 
-  measure: max_exp_cost {
+  dimension: max_rn {
     type: number
-    sql: ${TABLE}.max_exp_cost ;;
+    sql: ${TABLE}.max_rn ;;
   }
 
   dimension: mc_name {
@@ -291,10 +291,9 @@ view: derived_food_cost {
     sql: ${TABLE}.mc_name ;;
   }
 
-  measure: menu_cost {
-    type: sum
+  dimension: menu_cost {
+    type: number
     sql: ${TABLE}.menu_cost ;;
-    value_format: "0.0"
   }
 
   dimension_group: menu {
@@ -312,30 +311,24 @@ view: derived_food_cost {
     sql: ${TABLE}.menu_date ;;
   }
 
-  measure: menu_nonsl_cost_1 {
+  dimension: menu_nonsl_cost_1 {
     type: number
     sql: ${TABLE}.menu_nonsl_cost_1 ;;
   }
 
-  measure: menu_price {
+  dimension: menu_price {
     type: number
     sql: ${TABLE}.menu_price ;;
   }
 
-  measure: menu_price_1 {
+  dimension: menu_price_1 {
     type: number
     sql: ${TABLE}.menu_price_1 ;;
   }
 
-  measure: menu_rate {
+  dimension: menu_rate {
     type: number
     sql: ${TABLE}.menu_rate ;;
-    value_format: "0"
-  }
-
-  dimension: menu_type {
-    type: string
-    sql: ${TABLE}.menu_type ;;
   }
 
   dimension: micromarket_name {
@@ -343,57 +336,59 @@ view: derived_food_cost {
     sql: ${TABLE}.micromarket_name ;;
   }
 
-  measure: nonsl_total_cost {
+  dimension: non_sl_kitchen_orders {
+    type: number
+    sql: ${TABLE}.non_sl_kitchen_orders ;;
+  }
+
+  dimension: non_sl_kitchen_price {
+    type: number
+    sql: ${TABLE}.non_sl_kitchen_price ;;
+  }
+
+  dimension: nonsl_total_cost {
     type: number
     sql: ${TABLE}.nonsl_total_cost ;;
   }
 
-  measure: packaging_cost {
-    type: sum
+  dimension: packaging_cost {
+    type: number
     sql: ${TABLE}.packaging_cost ;;
-    value_format: "0.0"
   }
 
-  dimension: ratio {
+  dimension: res_and_sl_orders {
     type: number
-    sql: ${TABLE}.ratio ;;
+    sql: ${TABLE}.res_and_sl_orders ;;
   }
 
-  dimension: residence_id {
-    type: string
-    sql: ${TABLE}.residence_id ;;
-    primary_key: yes
-  }
-
-  dimension: sum_budget_cost {
+  dimension: sl_kitchen_orders {
     type: number
-    sql: ${TABLE}.sum_budget_cost ;;
+    sql: ${TABLE}.sl_kitchen_orders ;;
   }
 
-  measure: total_cost {
+  dimension: sl_kitchen_price {
+    type: number
+    sql: ${TABLE}.sl_kitchen_price ;;
+  }
+
+  dimension: total_cost {
     type: number
     sql: ${TABLE}.total_cost ;;
   }
 
-  measure: total_meal {
+  dimension: total_meal {
     type: number
     sql: ${TABLE}.total_meal ;;
   }
 
-  measure: total_sl_cost {
+  dimension: total_sl_cost {
     type: number
     sql: ${TABLE}.total_sl_cost ;;
   }
 
-  measure: utility_cost {
-    type: sum
+  dimension: utility_cost {
+    type: number
     sql: ${TABLE}.utility_cost ;;
-    value_format: "0.0"
-  }
-
-  dimension: vendor_id {
-    type: string
-    sql: ${TABLE}.vendor_id ;;
   }
 
   dimension: vendor_master_id {
@@ -410,96 +405,4 @@ view: derived_food_cost {
     type: count
     drill_fields: [micromarket_name, hostel_name, mc_name, vendor_name]
   }
-  measure: total_blended_order  {
-    type: number
-    sql: sum(${TABLE}.actual_blended_order)+sum(${TABLE}.actual_sl_blended_order) ;;
-    value_format: "0"
-  }
-  measure: sl_budget {
-    type: sum
-    sql: (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) ;;
-    value_format: "0"
-  }
-  measure: resident_budget {
-    type: sum
-    sql: (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) ;;
-    value_format: "0"
-  }
-  measure: total_budget {
-    type: number
-    sql: (${resident_budget})+(${sl_budget}) ;;
-    value_format: "0"
-  }
-  measure: delta {
-    type: number
-    sql: sum(${TABLE}.house_wise_actual_cost)/nullif((${total_budget}),0) ;;
-    value_format: "0.00"
-  }
-  measure: month_status {
-    type: number
-    sql: case when month(${TABLE}.menu_date)=month(current_date()) then ${total_budget} end ;;
-  }
-
-
-
-  measure: total_budget_l7d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
-    value_format: "0"
-  }
-
-  measure: total_budget_l7d_14d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
-    value_format: "0"
-  }
-
-  measure: total_budget_l14d_21d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
-    value_format: "0"
-  }
-
-
-  measure: total_budget_l21d_28d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 then (${TABLE}.actual_blended_order)*(${TABLE}.menu_rate) + (${TABLE}.actual_sl_blended_order)*(${TABLE}.menu_rate) else 0 end);;
-    value_format: "0"
-  }
-
-
-
-
-  measure: total_actual_l7d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date and ${menu_date}>=current_date-7 then ${TABLE}.house_wise_actual_cost else 0 end);;
-    value_format: "0"
-  }
-
-  measure: total_actual_l7d_14d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date-7 and ${menu_date}>=current_date-14 then ${TABLE}.house_wise_actual_cost else 0 end);;
-    value_format: "0"
-  }
-
-  measure: total_actual_l14d_21d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date-14 and ${menu_date}>=current_date-21 then ${TABLE}.house_wise_actual_cost else 0 end);;
-    value_format: "0"
-  }
-
-  measure: total_actual_l21d_28d {
-    type: number
-    sql: sum(case when ${menu_date}<current_date-21 and ${menu_date}>=current_date-28 then ${TABLE}.house_wise_actual_cost else 0 end);;
-    value_format: "0"
-  }
-
-
-
-
-  # dimension: l7d {
-  #   type: string
-  #   sql: case when  ;;
-  # }
-
 }
