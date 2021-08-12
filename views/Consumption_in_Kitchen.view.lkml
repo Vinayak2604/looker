@@ -3,8 +3,6 @@ view: consumption_in_kitchen {
     sql: select
   m.location_uuid uuid,
   m.location_name location_name,
-  t.item_uuid,
-  c.item_name,
   c.item_sub_category_label,
   sum(t.effective_price * t.quantity) value,
   sum(t.quantity) qty
@@ -34,9 +32,7 @@ where
 group by
   1,
   2,
-  3,
-  4,
-  5;;
+  3;;
   }
 
   dimension: location_id {
@@ -48,16 +44,6 @@ group by
   dimension: Property {
     type: string
     sql: ${TABLE}.location_name;;
-  }
-
-  dimension: item_id {
-    type: string
-    sql: ${TABLE}.item_uuid;;
-  }
-
-  dimension: item_name {
-    type: string
-    sql: ${TABLE}.item_name;;
   }
 
   dimension: item_sub_category_label {
