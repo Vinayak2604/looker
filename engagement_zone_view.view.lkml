@@ -217,6 +217,32 @@ join stanza.erp_transformation_master_zones z on c.zone_uuid =z.uuid )
     type: date
   }
 
+  dimension: category {
+    type: string
+    sql: ${TABLE}.category ;;
+  }
+
+  dimension: city {
+    type: string
+    sql: ${TABLE}.city ;;
+  }
+
+  dimension: type {
+    type: string
+    sql: ${TABLE}.type ;;
+  }
+
+  dimension: micromarket {
+    type: string
+    sql: ${TABLE}.micromarket ;;
+  }
+
+
+  dimension: month_number {
+    type: number
+    sql: ${TABLE}.month_number ;;
+  }
+
   dimension: zone_name {
     type: string
     sql: ${TABLE}.zone_name ;;
