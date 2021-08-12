@@ -5,6 +5,7 @@ include: "user_engagement_pareto.view.lkml"                 # include all views 
 include: "user_engagement_categories.view.lkml"
 include: "user_engagement_categories_residence.view.lkml"
 include: "user_engagement_line_segment.view.lkml"
+include: "engagement_zone_view.view.lkml"
 # include: "derived_vas_bucket_table.view.lkml"
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
@@ -20,4 +21,5 @@ explore: user_engagement_categories_residence {}
 explore: user_engagement_line_segment {}
 explore: derived_user_engagement_score_analysis {}
 explore: derived_user_engagement_score_analysis_combined {}
+explore: engagement_zone_view {}
 # explore: derived_vas_bucket_table {}
