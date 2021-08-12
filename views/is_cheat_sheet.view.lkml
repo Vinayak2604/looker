@@ -883,6 +883,23 @@ view: is_cheat_sheet {
   }
 
 
+  measure: website_property_features {
+    type: string
+    sql: group_concat(distinct(is_cheat_sheet.website_property_features)) ;;
+    html: {% assign words = value | split: ',' %}
+          <ul>
+          {% for word in words %}
+          <li>{{ word }}</li>
+          {% endfor %} ;;
+  }
+
+
+  measure: student_advance_rental {
+    type: number
+    sql: ${TABLE}.student_advance_rental ;;
+  }
+
+
 
 
 }
