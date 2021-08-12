@@ -56,6 +56,11 @@ join: consumption_in_kitchen {
   relationship: one_to_one
   type: left_outer
 }
+join: vendor_prices {
+  sql_on: ${derived_food_invoice.item_sub_category_label}=${vendor_prices.item_subcategory} and ${derived_food_invoice.vendor_name}=${vendor_prices.company_name} ;;
+  relationship: one_to_one
+  type: left_outer
+}
 }
 
 explore: derived_food_cost {}
@@ -66,18 +71,7 @@ explore: inventory_ledger {}
 
 explore: next_week_items {}
 
-explore: vendor_prices {
-  join: derived_food_invoice {
-    sql_on: ${vendor_prices.company_name}=${derived_food_invoice.vendor_name};;
-    relationship: one_to_one
-    type: left_outer
-  }
-  join: consumption_in_kitchen {
-    sql_on: ${derived_food_invoice.item_sub_category_label}=${consumption_in_kitchen.item_sub_category_label} and ${derived_food_invoice.property}=${consumption_in_kitchen.Property};;
-    relationship: one_to_one
-    type: left_outer
-  }
-}
+explore: vendor_prices {}
 
 explore: po_invoice{}
 

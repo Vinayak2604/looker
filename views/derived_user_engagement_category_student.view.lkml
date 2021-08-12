@@ -82,6 +82,11 @@ view: derived_user_engagement_category_student {
     sql: ${TABLE}.student_id ;;
   }
 
+  dimension: zone_name {
+    type: string
+    sql: ${TABLE}.zone_name ;;
+  }
+
   measure: scores {
     type: average
     sql: ${score};;

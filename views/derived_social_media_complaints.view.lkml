@@ -76,7 +76,7 @@ dimension_group: date {
     type : string
     link: {
       label: "House Deep Dive"
-      url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.count,derived_social_media_complaints.date_date,derived_social_media_complaints.hostel&pivots=derived_social_media_complaints.hostel&fill_fields=derived_social_media_complaints.date_date&sorts=derived_social_media_complaints.count+desc+0,derived_social_media_complaints.hostel&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[derived_social_media_complaints.date]={{ derived_social_media_complaints.date._value }}"
+      url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.count,derived_social_media_complaints.date_date,derived_social_media_complaints.hostel2&pivots=derived_social_media_complaints.hostel2&fill_fields=derived_social_media_complaints.date_date&sorts=derived_social_media_complaints.count+desc+0,derived_social_media_complaints.hostel2&limit=500&vis=%7B%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_view_names%22%3Afalse%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22limit_displayed_rows%22%3Afalse%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Atrue%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22type%22%3A%22looker_column%22%2C%22defaults_version%22%3A1%7D&filter_config=%7B%7D&origin=share-expanded&f[derived_social_media_complaints.date_line]={{ derived_social_media_complaints.date_line._value }}"
     }
     sql: ${TABLE}.date ;;
 
@@ -163,6 +163,11 @@ dimension: hostel {
   type: string
   sql: ${TABLE}.hostel ;;
 }
+
+  dimension: hostel2 {
+    type: string
+    sql: ${TABLE}.hostel ;;
+  }
 
 dimension: justified_unjustified {
   type: string
