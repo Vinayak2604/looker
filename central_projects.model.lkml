@@ -56,11 +56,6 @@ join: consumption_in_kitchen {
   relationship: one_to_one
   type: left_outer
 }
-join: vendor_prices {
-  sql_on: ${derived_food_invoice.item_sub_category_label}=${vendor_prices.item_subcategory} and ${derived_food_invoice.vendor_name}=${vendor_prices.company_name} ;;
-  relationship: one_to_one
-  type: left_outer
-}
 }
 
 explore: derived_food_cost {}

@@ -169,10 +169,10 @@ view: derived_food_invoice {
     sql: ${TABLE}.vendor_name ;;
   }
 
-  # measure: count {
-    # type: count
-    # drill_fields: [item_name, vendor_name, city_name]
-  # }
+  measure: item_count {
+    type: count_distinct
+    sql: ${TABLE}.item_name ;;
+   }
 
   measure: distinct_po {
     type: count_distinct

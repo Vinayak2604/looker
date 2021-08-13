@@ -24,7 +24,6 @@ where
     and (location_name like '%Store%' or location_name like '%Manipal%'))
   and (p.food_cost_type = 'Normal B2C'
     or p.food_cost_type = 'Normal' )
-  and DATE(t.updated_at) >= DATEADD(day,-28,CURRENT_DATE-1)
   and c.__hevo__marked_deleted = false
   and t.__hevo__marked_deleted = false
   and m.__hevo__marked_deleted = false
