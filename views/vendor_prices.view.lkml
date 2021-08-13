@@ -123,11 +123,8 @@ view: vendor_prices {
     sql: ${TABLE}.item_sub_category_label ;;
   }
   measure: item_subcategory_count {
-    type: count
-  }
-  measure: item_category_count {
     type: count_distinct
-    sql: ${TABLE}.item_category_label ;;
+    sql: ${TABLE}.item_sub_category_label ;;
   }
 
   measure: item_count {
