@@ -266,6 +266,10 @@ dimension: status {
 dimension: sub_category {
   type: string
   sql: ${TABLE}.sub_category ;;
+  link: {
+    label: "Raw Details"
+    url: "https://stanzaliving.cloud.looker.com/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.category,derived_social_media_complaints.date_date,derived_social_media_complaints.do_we_have_alredy_fresh_desk_ticket,derived_social_media_complaints.escalation_type,derived_social_media_complaints.city,derived_social_media_complaints.mm,derived_social_media_complaints.platform,derived_social_media_complaints.sub_category,derived_social_media_complaints.tat,derived_social_media_complaints.ticket_id,derived_social_media_complaints.zone&f[derived_social_media_complaints.sub_category]=-NULL&f[derived_social_media_complaints.platform]=-NULL&sorts=derived_social_media_complaints.date_date+desc&limit=500&vis=%7B%22show_view_names%22%3Afalse%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22limit_displayed_rows%22%3Afalse%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22type%22%3A%22looker_grid%22%2C%22series_types%22%3A%7B%7D%2C%22defaults_version%22%3A1%7D&filter_config=%7B%22derived_social_media_complaints.sub_category%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A1%2C%22error%22%3Afalse%7D%5D%2C%22derived_social_media_complaints.platform%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A2%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded}&f[derived_social_media_complaints.sub_category]={{derived_social_media_complaints.sub_category._value}"
+  }
 }
 
 dimension: tat {

@@ -174,6 +174,11 @@ view: derived_food_invoice {
     sql: ${TABLE}.item_name ;;
    }
 
+  measure: item_subcategory_count {
+    type: count_distinct
+    sql: ${TABLE}.item_sub_category_label ;;
+  }
+
   measure: distinct_po {
     type: count_distinct
     sql: ${TABLE}.po_number ;;
