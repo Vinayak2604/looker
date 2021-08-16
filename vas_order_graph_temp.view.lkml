@@ -1,4 +1,4 @@
-view: vas_order_graph {
+view: vas_order_graph_temp {
   derived_table: {
     sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket, upr.residence, count(distinct upr.user_id) as moved_in_residents, count(distinct upr.id) as consumed_meals,
       count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
@@ -8,7 +8,7 @@ view: vas_order_graph {
       count(distinct case when system_generated = 0 and preference_available = 1 then id end) as preference_meals,
       count(distinct case when preference_available = 1 then id end) as preference_available_meals
       from looker_demo.derived_user_preference_rating upr
-      where upr.date >= '2021-01-01 00:00:00'
+      where upr.date >= '2021-01-01'
       and {% condition meal_type %} meal_type {% endcondition %}
       and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
       and {% condition preference_availability_flag %} preference_available {% endcondition %}
@@ -17,7 +17,7 @@ view: vas_order_graph {
       vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
       avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
       from looker_demo.derived_vas_orders vo
-      where vo.date >= '2021-01-01 00:00:00'
+      where vo.date >= '2021-01-01'
       group by 1,2,3,4,5)
 
 
@@ -57,10 +57,10 @@ view: vas_order_graph {
       type: string
     }
 
-  dimension: yr {
-    type: string
-    sql: ${TABLE}.yr ;;
-  }
+    dimension: yr {
+      type: string
+      sql: ${TABLE}.yr ;;
+    }
 
     dimension: mt {
       type: number
