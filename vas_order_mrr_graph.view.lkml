@@ -1,6 +1,8 @@
 view: vas_order_mrr_graph {
   derived_table: {
-    sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket, upr.residence, count(distinct upr.user_id) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+    sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city,
+    case when  move_in_date >= '2021-01-01' then extract(month from move_in_date) end as move_in_month,
+    ,upr.micromarket, upr.residence, count(distinct upr.user_id) as moved_in_residents, count(distinct upr.id) as consumed_meals,
       count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
       count(distinct user_id) as meal_users,
       count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
@@ -10,24 +12,26 @@ view: vas_order_mrr_graph {
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01'
       and cafe_availability = 1
-      group by 1,2,3,4,5),
+      group by 1,2,3,4,5,6 ),
 
-      upr_u as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket, upr.residence,user_id
+      upr_u as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket, upr.residence,user_id,
+      case when  move_in_date >= '2021-01-01' then extract(month from move_in_date) end as move_in_month
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01'
       and cafe_availability = 1
-      group by 1,2,3,4,5,6),
+      group by 1,2,3,4,5,6,7),
 
 
-      upr1 as (select extract(year from upr.move_in_date) yr,extract(month from upr.move_in_date) mt,upr.city, upr.micromarket, upr.residence,
+      upr1 as (select extract(year from upr.move_in_date) yr,extract(month from upr.move_in_date) mt,
+      case when  move_in_date >= '2021-01-01' then extract(month from move_in_date) end as move_in_month ,upr.city, upr.micromarket, upr.residence,
       count(distinct upr.user_id) as joined_residents
       from looker_demo.derived_user_preference_rating upr
       where date(move_in_date) >= '2021-01-01'
       and cafe_availability = 1
-      group by 1,2,3,4,5),
+      group by 1,2,3,4,5,6),
 
       vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt,vo.date, city, micromarket,residence,user_id, min(vo.date) over(partition by user_id order by date) first_order,
-      order_code, move_in_date
+      order_code, move_in_date,case when  move_in_date >= '2021-01-01' then extract(month from move_in_date) end as move_in_month
 
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2020-10-01'
@@ -36,13 +40,13 @@ view: vas_order_mrr_graph {
    b  as (select distinct vo.yr, vo.mt, vo.date, vo.city, vo.micromarket, vo.residence, vo.user_id, vo.first_order,vo.order_code, vo.move_in_date, upr.moved_in_residents,
         lag(vo.yr) over(partition by vo.user_id order by vo.date) yr_l1,lag(vo.mt) over(partition by vo.user_id order by vo.date) mt_l1,
         lag(vo.yr,2) over(partition by vo.user_id order by vo.date) yr_l2,lag(vo.mt,2) over(partition by vo.user_id order by vo.date) mt_l2,
-        upr1.joined_residents
+        upr1.joined_residents,upr.move_in_month
         from vo
         join upr on vo.residence=upr.residence and vo.mt=upr.mt and vo.yr=upr.yr
         left join upr1 on vo.residence=upr1.residence and vo.mt=upr1.mt and vo.yr=upr1.yr)
 
     select distinct upr_u.yr, upr_u.mt, upr_u.city, upr_u.micromarket, upr_u.residence, upr_u.user_id,b.user_id as ordered_user_id ,b.first_order,b.order_code, b.move_in_date, b.moved_in_residents,
-        b.yr_l1, b.mt_l1, b.yr_l2, b.mt_l2,b.joined_residents
+        b.yr_l1, b.mt_l1, b.yr_l2, b.mt_l2,b.joined_residents,upr_u.move_in_month
     from upr_u
     left join b on upr_u.residence=b.residence and upr_u.mt=b.mt and upr_u.yr=b.yr and upr_u.user_id=b.user_id
         ;;
@@ -57,6 +61,11 @@ view: vas_order_mrr_graph {
   dimension: mt {
     type: number
     sql: ${TABLE}.mt ;;
+  }
+
+  dimension: move_in_month {
+    type: number
+    sql: ${TABLE}.move_in_month ;;
   }
 
 
