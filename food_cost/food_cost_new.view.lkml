@@ -234,7 +234,7 @@ from stanza.derived_food_cost dfc
 
   measure: Last_Month_sum {
     type: number
-    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 and ${value_field}='Sum' then ${TABLE}.value else 0 end) ;;
+    sql: sum(case when date_part(mon,${menu_date})=date_part(mon,current_date)-1 and date_part(year,${menu_date})=date_part(year,current_date) and ${value_field}='Sum' then ${TABLE}.value else 0 end) ;;
     value_format: "#,##0"
   }
 
