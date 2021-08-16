@@ -85,21 +85,38 @@ view: vas_order_graph {
     }
 
 
-    measure: moved_in_residents {
-      type: sum
-      sql: ${TABLE}.moved_in_residents ;;
-    }
+  dimension: moved_in_residents {
+    type: number
+    sql: ${TABLE}.moved_in_residents ;;
+  }
 
 
-    measure: total_orders {
-      type: sum
-      sql: ${TABLE}.total_orders ;;
-    }
+  dimension: total_orders {
+    type: number
+    sql: ${TABLE}.total_orders ;;
+  }
 
-    measure: order_users {
-      type: sum
-      sql: ${TABLE}.order_users ;;
-    }
+  dimension: order_users {
+    type: number
+    sql: ${TABLE}.order_users ;;
+  }
+
+
+    # measure: moved_in_residents {
+    #   type: sum
+    #   sql: ${TABLE}.moved_in_residents ;;
+    # }
+
+
+    # measure: total_orders {
+    #   type: sum
+    #   sql: ${TABLE}.total_orders ;;
+    # }
+
+    # measure: order_users {
+    #   type: sum
+    #   sql: ${TABLE}.order_users ;;
+    # }
 
     measure: total_amount {
       type: sum
