@@ -173,6 +173,11 @@ view: derived_food_invoice {
     }
   }
 
+  dimension: vendor {
+    type: string
+    sql: ${TABLE}.vendor_name ;;
+  }
+
   measure: item_count {
     type: count_distinct
     sql: ${TABLE}.item_name ;;

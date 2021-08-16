@@ -3,6 +3,7 @@ connection: "redshift"
 include: "/views/*.view.lkml"
 include: "/food_inventory/*.view.lkml"
 include: "/food_cost/*.view.lkml"
+include: "food_test.dashboard.lookml"
 # include all views in the views/ folder in this project
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
@@ -77,3 +78,5 @@ explore: consumption_in_kitchen {}
 explore: food_vas_orders {}
 
 explore: dish_level_vas {}
+
+explore: invoice_details {}

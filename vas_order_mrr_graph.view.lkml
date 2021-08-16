@@ -1,6 +1,6 @@
 view: vas_order_mrr_graph {
   derived_table: {
-    sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket, upr.residence, max(upr.moved_in_residents) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+    sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket, upr.residence, count(distinct upr.user_id) as moved_in_residents, count(distinct upr.id) as consumed_meals,
       count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
       count(distinct user_id) as meal_users,
       count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,

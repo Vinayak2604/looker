@@ -662,12 +662,13 @@
     height: 161
   - name: Stanza Living
     type: text
-    title_text: Stanza
-    subtitle_text: Level
-    body_text: ''
+    title_text:
+    subtitle_text: ''
+    body_text: '> **Stanza Living**
+               <img border = "0" src="https://res.cloudinary.com/stanza-living/image/upload/f_auto,q_auto/v1583405334/NewWebsite/Stanza_Living_Logo_3x.png" width ="70" height="50">'
     row: 0
     col: 0
-    width: 3
+    width: 2
     height: 13
   - name: Kitchen
     type: text
