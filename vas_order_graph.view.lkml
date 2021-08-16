@@ -24,7 +24,7 @@ view: vas_order_graph {
       select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
       from
       upr
-      left join vo on upr.residence = vo.residence and upr.mt = vo.mt;;
+      join vo on upr.residence = vo.residence and upr.mt = vo.mt;;
 
     }
 
