@@ -219,4 +219,45 @@ view: vas_order_mrr_graph {
 
 
 
+
+  measure: new_{
+    type: count_distinct
+    sql: case when ${yr} = extract(year from ${first_order}) and ${move_in_month} = extract(month from ${first_order}) then ${ordered_user_id} end ;;
+  }
+
+  measure: retained_ {
+    type: count_distinct
+    sql: case when ( ${move_in_month} = 1 and ${mt_l1} = 12 ) or ${mt_l1} = ${move_in_month} -1  then ${ordered_user_id} end ;;
+  }
+
+
+  measure: resurrected_ {
+    type: count_distinct
+    sql: case when (( ${move_in_month} = 1 and ${mt_l1} != 12) or (${mt_l1} != (${move_in_month} - 1))) then ${ordered_user_id} end ;;
+  }
+
+
+  measure: churned_data_ {
+    type: count_distinct
+    sql: case when (${yr} > extract(year from ${first_order})) or (${yr} = extract(year from ${first_order}) and ${move_in_month} > extract(month from ${first_order})) then ${ordered_user_id} end ;;
+    hidden: yes
+  }
+
+  measure: churned_ {
+    type: number
+    sql: (0 - ${churned_data_}) ;;
+  }
+
+
+
+  measure: quick_ratio_ {
+    type: number
+    sql: ((${new_}+${resurrected_}) / ${churned_data_}) ;;
+    value_format: "0.0"
+
+  }
+
+
+
+
   }
