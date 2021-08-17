@@ -100,7 +100,7 @@ view: food_cost_items {
                 bf_res_sl_cost + lunch_res_sl_cost + es_res_sl_cost + dinner_res_sl_cost as total_res_non_sl_cost,
                 (sum(total_res_non_sl_cost) over (partition by vendor_master_id,menu_date))/(sum(total_res_non_sl_cost + sl_kitchen_price + non_sl_kitchen_price) over (partition by vendor_master_id,menu_date)) as app_component
                 from stanza.derived_food_cost) dfc
-                on iq.menu_date = dfc.menu_date and iq.vendor_id = dfc.vendor_master_id and iq.residence_name = dfc.hostel_name
+                on iq.menu_date = dfc.menu_date and iq.vendor_id = dfc.vendor_id and iq.residence_name = dfc.hostel_name
           order by 1 desc,2,3 ;;
   }
 

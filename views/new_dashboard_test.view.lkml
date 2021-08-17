@@ -491,9 +491,9 @@ left join upr on vo.residence = upr.residence) x ;;
 
   measure:arpu_mir  {
     type: number
-    sql: ${total_amount1} / ${moved_in_residents1} ;;
+    sql: ${total_amount1} / ${meal_users1} ;;
     value_format: "0"
-    html: <p> &#x20B9; {{rendered_value}} ({{new_dashboard_test.moved_in_residents1._rendered_value}}) </p> ;;
+    html: <p> &#x20B9; {{rendered_value}} ({{new_dashboard_test.meal_users1._rendered_value}}) </p> ;;
   }
 
 }
