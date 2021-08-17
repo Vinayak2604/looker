@@ -80,3 +80,5 @@ explore: food_vas_orders {}
 explore: dish_level_vas {}
 
 explore: invoice_details {}
+
+explore: food_cost_items {}

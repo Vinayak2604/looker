@@ -187,7 +187,7 @@ where
   ibd.status = 1
   and po_dept = 'FOOD_OPS'
   and l1_approval_at is not null
-  and DATE(pd.po_start_date) >= '2021-05-01'
+  and DATE(pd.po_start_date) >= DATEADD(month,-3,CURRENT_DATE-1)
   --and ibd.invoice_code ='RG_FB_8612'
 order by
   pp.created_at ;;
@@ -401,22 +401,26 @@ order by
 
   measure: weighted_avg_grn_to_l1_approval {
     type: number
-    sql: ROUND(SUM(${TABLE}.total_amount*${grn_to_l1_approval})/SUM(${TABLE}.total_amount),2) ;;
+    sql: SUM(${TABLE}.total_amount*${grn_to_l1_approval})/SUM(${TABLE}.total_amount) ;;
+    value_format: "0.00"
   }
 
   measure: weighted_avg_l1_to_l2_approval {
     type: number
-    sql: ROUND(SUM(${TABLE}.total_amount*${l1_to_l2_approval})/SUM(${TABLE}.total_amount),2) ;;
+    sql: SUM(${TABLE}.total_amount*${l1_to_l2_approval})/SUM(${TABLE}.total_amount) ;;
+    value_format: "0.00"
   }
 
   measure: weighted_avg_grn_to_l1_rejection {
     type: number
-    sql: ROUND(SUM(${TABLE}.total_amount*${grn_to_l1_rejection})/SUM(${TABLE}.total_amount),2) ;;
+    sql: SUM(${TABLE}.total_amount*${grn_to_l1_rejection})/SUM(${TABLE}.total_amount) ;;
+    value_format: "0.00"
   }
 
   measure: weighted_avg_l1_to_l2_rejection {
     type: number
-    sql: ROUND(SUM(${TABLE}.total_amount*${l1_to_l2_rejection})/SUM(${TABLE}.total_amount),2) ;;
+    sql: SUM(${TABLE}.total_amount*${l1_to_l2_rejection})/SUM(${TABLE}.total_amount) ;;
+    value_format: "0.00"
   }
 
 }

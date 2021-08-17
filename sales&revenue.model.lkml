@@ -23,8 +23,7 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
       }
   }
 
-  explore: acq_cost {
-  }
+  explore: acq_cost {  }
 
   explore: derived_inventory_pricing {
     join: derived_sku_pricing {
