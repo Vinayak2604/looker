@@ -203,8 +203,8 @@ view: derived_food_invoice {
   }
 
   measure: weighted_avg_lead_time {
-    type: number
-    sql: SUM(${TABLE}.subtotal_amount*${TABLE}.time_taken)/SUM(${TABLE}.subtotal_amount) ;;
+    type: sum
+    sql: case when ${time_taken} is not null then (${TABLE}.subtotal_amount*${time_taken})/(${TABLE}.subtotal_amount) end ;;
     value_format: "0.00"
   }
 }

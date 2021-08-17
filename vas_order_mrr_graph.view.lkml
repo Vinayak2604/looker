@@ -222,24 +222,24 @@ view: vas_order_mrr_graph {
 
   measure: new_{
     type: count_distinct
-    sql: case when ${yr} = extract(year from ${first_order}) and ${mt} = extract(month from ${first_order}) then ${ordered_user_id} end ;;
+    sql: case when ${move_in_date} >= '2021-01-01' and ${yr} = extract(year from ${first_order}) and ${mt} = extract(month from ${first_order}) then ${ordered_user_id} end ;;
   }
 
   measure: retained_ {
     type: count_distinct
-    sql: case when ( ${mt} = 1 and ${mt_l1} = 12 ) or ${mt_l1} = ${mt} -1  then ${ordered_user_id} end ;;
+    sql: case when ${move_in_date} >= '2021-01-01' and ( ${mt} = 1 and ${mt_l1} = 12 ) or ${mt_l1} = ${mt} -1  then ${ordered_user_id} end ;;
   }
 
 
   measure: resurrected_ {
     type: count_distinct
-    sql: case when (( ${mt} = 1 and ${mt_l1} != 12) or (${mt_l1} != (${mt} - 1))) then ${ordered_user_id} end ;;
+    sql: case when ${move_in_date} >= '2021-01-01' and (( ${mt} = 1 and ${mt_l1} != 12) or (${mt_l1} != (${mt} - 1))) then ${ordered_user_id} end ;;
   }
 
 
   measure: churned_data_ {
     type: count_distinct
-    sql: case when (${yr} > extract(year from ${first_order})) or (${yr} = extract(year from ${first_order}) and ${mt} > extract(month from ${first_order})) then ${ordered_user_id} end ;;
+    sql: case when ${move_in_date} >= '2021-01-01' and (${yr} > extract(year from ${first_order})) or (${yr} = extract(year from ${first_order}) and ${mt} > extract(month from ${first_order})) then ${ordered_user_id} end ;;
     hidden: yes
   }
 

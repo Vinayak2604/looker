@@ -400,26 +400,26 @@ order by
   }
 
   measure: weighted_avg_grn_to_l1_approval {
-    type: number
-    sql: case when ${grn_to_l1_approval} is not null then SUM(${TABLE}.total_amount*${grn_to_l1_approval})/SUM(${TABLE}.total_amount) end ;;
+    type: sum
+    sql: case when ${grn_to_l1_approval} is not null then (${TABLE}.total_amount*${grn_to_l1_approval})/(${TABLE}.total_amount) end ;;
     value_format: "0.00"
   }
 
   measure: weighted_avg_l1_to_l2_approval {
-    type: number
-    sql: case when ${l1_to_l2_approval} is not null then SUM(${TABLE}.total_amount*${l1_to_l2_approval})/SUM(${TABLE}.total_amount) end ;;
+    type: sum
+    sql: case when ${l1_to_l2_approval} is not null then (${TABLE}.total_amount*${l1_to_l2_approval})/(${TABLE}.total_amount) end ;;
     value_format: "0.00"
   }
 
   measure: weighted_avg_grn_to_l1_rejection {
-    type: number
-    sql: case when ${grn_to_l1_rejection} is not null then SUM(${TABLE}.total_amount*${grn_to_l1_rejection})/SUM(${TABLE}.total_amount) end ;;
+    type: sum
+    sql: case when ${grn_to_l1_rejection} is not null then (${TABLE}.total_amount*${grn_to_l1_rejection})/(${TABLE}.total_amount) end ;;
     value_format: "0.00"
   }
 
   measure: weighted_avg_l1_to_l2_rejection {
-    type: number
-    sql: case when ${l1_to_l2_rejection} is not null then SUM(${TABLE}.total_amount*${l1_to_l2_rejection})/SUM(${TABLE}.total_amount) end ;;
+    type: sum
+    sql: case when ${l1_to_l2_rejection} is not null then (${TABLE}.total_amount*${l1_to_l2_rejection})/(${TABLE}.total_amount) end ;;
     value_format: "0.00"
   }
 
