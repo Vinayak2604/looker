@@ -257,6 +257,12 @@ view: vas_order_mrr_graph {
 
   }
 
+  measure: new_user{
+    type: count_distinct
+    sql: case when ${move_in_month} =${mt} then ${ordered_user_id} end ;;
+  }
+
+
 
 
 

@@ -286,145 +286,145 @@ view: derived_rent_collection {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${jul};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Jul_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_jul};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Jun_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${jun};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Jun_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_jun};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: May_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${may};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: May_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_may};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Apr_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${apr};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Apr_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_apr} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Mar_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${mar};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Mar_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_mar} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Feb_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${feb} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Feb_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_feb} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Aug_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Aug} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Aug_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_aug} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Sep_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Sep} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Sep_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_sep} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Oct_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Oct} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Oct_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_oct} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Nov_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Nov} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Nov_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_nov} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Dec_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Dec} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Dec_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_dec} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Till_jan_Rent {
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${till_jan} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Till_Jan_Rent_Collected{
     type: sum
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${paid_till_jan} ;;
-    value_format:  "0"
+    value_format:  "0.00 \" L\""
   }
   measure: YTD_Rent {
     type: number
@@ -436,85 +436,85 @@ view: derived_rent_collection {
     type: number
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Jul_Rent_Collected} + ${Jun_Rent_Collected} + ${May_Rent_Collected} + ${Apr_Rent_Collected} + ${Mar_Rent_Collected} + ${Feb_Rent_Collected} + ${Till_Jan_Rent_Collected}+${Aug_Rent_Collected}+${Sep_Rent_Collected}+${Oct_Rent_Collected}+${Nov_Rent_Collected}+${Dec_Rent_Collected} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
    measure: YTD_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
      sql: ${YTD_Rent} - ${YTD_Rent_Collected};;
-     value_format: "0"
+     value_format: "0.00 \" L\""
   }
    measure: Jul_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
      sql: ${Jul_Rent} - ${Jul_Rent_Collected} ;;
-     value_format: "0"
+     value_format: "0.00 \" L\""
   }
    measure: Jun_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
      sql: ${Jun_Rent} - ${Jun_Rent_Collected} ;;
-     value_format: "0"
+     value_format: "0.00 \" L\""
   }
    measure: May_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
      sql: ${May_Rent} - ${May_Rent_Collected} ;;
-     value_format: "0"
+     value_format: "0.00 \" L\""
   }
    measure: Apr_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Apr_Rent} - ${Apr_Rent_Collected} ;;
-   value_format: "0"
+   value_format: "0.00 \" L\""
    }
    measure: Mar_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
      sql: ${Mar_Rent} - ${Mar_Rent_Collected} ;;
-     value_format: "0"
+     value_format: "0.00 \" L\""
    }
    measure: Feb_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
      sql: ${Feb_Rent} - ${Feb_Rent_Collected};;
-     value_format: "0"
+     value_format: "0.00 \" L\""
    }
   measure: Aug_pending {
     type: number
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Aug_Rent} - ${Aug_Rent_Collected};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Sep_pending {
     type: number
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Sep_Rent} - ${Sep_Rent_Collected};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Oct_pending {
     type: number
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Oct_Rent} - ${Oct_Rent_Collected};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Nov_pending {
     type: number
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Nov_Rent} - ${Nov_Rent_Collected};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
   measure: Dec_pending {
     type: number
     # drill_fields: [payment_term_name, last_name, first_name]
     sql: ${Dec_Rent} - ${Dec_Rent_Collected};;
-    value_format: "0"
+    value_format: "0.00 \" L\""
   }
    measure: Till_Jan_pending {
      type: number
      # drill_fields: [payment_term_name, last_name, first_name]
      sql: ${Till_jan_Rent} - ${Till_Jan_Rent_Collected} ;;
-    value_format: "0"
+    value_format: "0.00 \" L\""
    }
   parameter:  geographical_cuts {
     type: "string"
