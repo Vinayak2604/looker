@@ -139,5 +139,16 @@ view: food_cost_items {
     sql: ${TABLE}.non_sl_total_qty ;;
   }
 
+  dimension: weeknum {
+    type: number
+    sql: extract(week from ${menu_date}) ;;
+  }
+
+  dimension: yearnum {
+    type: number
+    sql: extract(year from ${menu_date}) ;;
+  }
+
+
 
 }

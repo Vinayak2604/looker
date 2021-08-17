@@ -429,7 +429,7 @@ view: derived_rent_collection {
   measure: YTD_Rent {
     type: number
     # drill_fields: [payment_term_name, last_name, first_name]
-    sql: ${Jul_Rent} + ${Jun_Rent} + ${May_Rent} + ${Apr_Rent} + ${Mar_Rent} + ${Till_jan_Rent} + ${Feb_Rent}+${Aug_Rent}+${Sep_Rent}+${Oct_Rent}+${Nov_Rent}+${Dec_Rent}  ;;
+    sql:( ${Jul_Rent} + ${Jun_Rent} + ${May_Rent} + ${Apr_Rent} + ${Mar_Rent} + ${Till_jan_Rent} + ${Feb_Rent}+${Aug_Rent}+${Sep_Rent}+${Oct_Rent}+${Nov_Rent}+${Dec_Rent})/100000  ;;
     value_format: "0"
   }
   measure: YTD_Rent_Collected{

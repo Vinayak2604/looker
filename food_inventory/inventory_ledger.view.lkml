@@ -95,4 +95,15 @@ view: inventory_ledger {
     sql: ${TABLE}.po_completion_date ;;
   }
 
+  dimension: weeknum {
+    type: number
+    sql: extract(week from ${po_completion_date_date}) ;;
+  }
+
+  dimension: yearnum {
+    type: number
+    sql: extract(year from ${po_completion_date_date}) ;;
+  }
+
+
   }
