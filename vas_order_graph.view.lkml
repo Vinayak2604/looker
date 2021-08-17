@@ -134,7 +134,7 @@ view: vas_order_graph {
 
     measure: aov_user {
       type: number
-      sql: ${total_amount} / ${order_users} ;;
+      sql: ${total_amount} / ${moved_in_residents} ;;
       value_format: "#,##0"
       html: <p> &#x20B9; {{rendered_value}} </p> ;;
     }
