@@ -23,4 +23,5 @@ explore: derived_user_engagement_score_analysis {}
 explore: derived_user_engagement_score_analysis_combined {}
 explore: engagement_zone_view {}
 explore: is_leads_bifurcation_attempted {}
+explore: derived_sales_associate_performance {}
 # explore: derived_vas_bucket_table {}
