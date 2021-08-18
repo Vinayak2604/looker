@@ -22,3 +22,24 @@ include: "/views/*.view.lkml"               # include all views in the views/ fo
 explore: derived_social_media_complaints{}
 
 # Place in `cx_3_redshift` model
+
+# If necessary, uncomment the line below to include explore_source.
+
+# include: "cx_3_redshift.model.lkml"
+
+view: ranked_subcat {
+  derived_table: {
+    explore_source: derived_social_media_complaints {
+      column: count {}
+      column: sub_category {}
+      column: zone4 {}
+      expression_custom_filter: ${derived_social_media_complaints.sub_category}!="" AND
+        ${derived_social_media_complaints.zone_}!="";;
+    }
+  }
+  dimension: count {
+    type: number
+  }
+  dimension: sub_category {}
+  dimension: zone4 {}
+}

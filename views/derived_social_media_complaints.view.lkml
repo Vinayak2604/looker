@@ -421,6 +421,16 @@ dimension: identified {
 }
 
 
+  # dimension: top_sub_cat_5 {
+  #   type: string
+  #   sql: case
+  #       when ${TABLE}.subcategory IN (SELECT ${sub_category} , ${count} as cnt ORDER BY cnt DESC LIMIT 5)
+  #       when ${TABLE}.subcategory IS NOT NULL then ${TABLE}.subcategory
+  #       then 'other' else null
+
+  #       end  ;;
+  # }
+
 measure: Justified_Complaints{
   type: count
   filters: [justified_unjustified: "Justified"]

@@ -258,12 +258,26 @@ from stanza.derived_food_cost dfc
     type: number
     sql: sum(case when ${value_field}='Sum' then ${TABLE}.value else 0 end) ;;
     value_format: "#,##0"
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: green"> {{rendered_value}} </p>
+
+    {% endif %} ;;
   }
 
   measure: value_avg {
     type: number
     sql: sum(case when ${value_field}='Avg' then ${TABLE}.value else 0 end)/nullif(sum(case when ${value_field}='Avg' then ${TABLE}.bo else 0 end),0);;
     value_format: "#,##0"
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: green"> {{rendered_value}} </p>
+
+    {% endif %} ;;
   }
 
 
