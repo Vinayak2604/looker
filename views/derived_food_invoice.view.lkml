@@ -178,6 +178,7 @@ view: derived_food_invoice {
     sql: ${TABLE}.vendor_name ;;
     link: {
       url: "/dashboards-next/39?Vendor%20Name= {{ value }}"
+     # url: "/dashboards-next/39?Vendor%20Name={{ value }}&City%20Name={{ derived_food_invoice.city_name._value }}&Item%20Name={{ derived_food_invoice.item_name._value }} "
       label: "Vendor Details"
     }
   }
@@ -203,8 +204,14 @@ view: derived_food_invoice {
   }
 
   measure: weighted_avg_lead_time {
-    type: sum
+    type: average
     sql: case when ${time_taken} is not null then (${TABLE}.subtotal_amount*${time_taken})/(${TABLE}.subtotal_amount) end ;;
+    value_format: "0.00"
+  }
+
+  dimension: weighted_avg_item_rate {
+    type: number
+    sql: (${TABLE}.unit_rate_rent_per_month*${TABLE}.quantity)/(${TABLE}.quantity) ;;
     value_format: "0.00"
   }
 }
