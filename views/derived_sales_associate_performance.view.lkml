@@ -103,7 +103,7 @@ view: derived_sales_associate_performance {
 
   measure: target {
     type: sum
-    sql: ${target_per_residence} ;;
+    sql: MAX(${target_per_residence}) OVER(PARTITION BY ${email}, ${residence_name} ORDER BY ${created_date} desc)  ;;
   }
 
   measure: count {
