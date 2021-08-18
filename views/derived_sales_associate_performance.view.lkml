@@ -103,7 +103,7 @@ view: derived_sales_associate_performance {
 
   measure: target {
     type: sum
-    sql:  case when date(${created_date}) = date_add(current_date,INTERVAL -1 DAY) then ${target_per_residence} end;;
+    sql:  case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end;;
   }
 
   measure: count {
