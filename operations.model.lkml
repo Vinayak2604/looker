@@ -6,27 +6,14 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
 
 # # # Select the views that should be a part of this model,
 # # # and define the joins that connect them together.
-# #
+
 explore: derived_rent_collection {
-# #   join: orders {
-# #     relationship: many_to_one
-# #     sql_on: ${orders.id} = ${order_items.order_id} ;;
+  join: derived_payment_behaviour {
+    relationship: one_to_one
+    sql_on: ${derived_payment_behaviour.booking_id} = ${derived_rent_collection.booking_id} ;;
+  }
 }
-# #
-# #   join: users {
-# #     relationship: many_to_one
-# #     sql_on: ${users.id} = ${orders.user_id} ;;
-# #   }
-# }
+
 explore: derived_utilities_water_dg
 {
-# #   join: orders {
-# #     relationship: many_to_one
-# #     sql_on: ${orders.id} = ${order_items.order_id} ;;
 }
-# #
-# #   join: users {
-# #     relationship: many_to_one
-# #     sql_on: ${users.id} = ${orders.user_id} ;;
-# #   }
-# }
