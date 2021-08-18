@@ -186,8 +186,46 @@ view: derived_payment_behaviour {
     sql: ${TABLE}.sep_paid_date ;;
   }
 
-  measure: count {
-    type: count
-    drill_fields: []
+  measure: Feb_Rent_Defualter {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when ${feb_paid_date} IS NULL  then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Mar_Rent_Defualter {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when ${mar_paid_date} IS NULL  then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Apr_Rent_Defualter {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when ${apr_paid_date} IS NULL  then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: May_Rent_Defualter {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when ${may_paid_date} IS NULL  then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Jun_Rent_Defualter {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when ${jun_paid_date} IS NULL  then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Jul_Rent_Defualter {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when ${jul_paid_date} IS NULL  then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Aug_Rent_Defualter {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when ${aug_paid_date} IS NULL  then ${booking_id} else null end ;;
+    value_format: "0"
   }
 }
