@@ -133,11 +133,21 @@ view: derived_sales_associate_performance {
 
   measure: beds_achieved {
     type: sum
-    sql: ${bookings}/case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end ;;
+    sql: ${bookings}/target ;;
+    }
+
+  measure: target_achieved {
+    type: sum
+    sql: ${bookings}*${blended_price} ;;
+  }
+
+  measure: running_total_booking {
+    type: running_total
+    sql: ${bookings} ;;
   }
 
   measure: total_booking {
-        type: running_total
+        type: sum
         sql: ${bookings} ;;
       }
 
