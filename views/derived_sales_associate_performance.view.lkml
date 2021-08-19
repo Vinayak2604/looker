@@ -137,7 +137,7 @@ view: derived_sales_associate_performance {
   }
 
   measure: total_booking {
-        type: sum
+        type: running_total
         sql: ${bookings} ;;
       }
 
