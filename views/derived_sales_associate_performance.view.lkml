@@ -121,6 +121,23 @@ view: derived_sales_associate_performance {
     type: max
     sql: ${drop_after_visit} ;;
   }
+
+  measure: Calls_Completed_in_TAT {
+    type: max
+    sql: ${calls_completed_in_tat}/${calls_completed} ;;
+    value_format: "0%"
+  }
+
+  measure: Calls_Completed {
+    type: max
+    sql: ${calls_completed} ;;
+  }
+
+  measure: dropped {
+    type: max
+    sql: ${drop} ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [residence_name]
