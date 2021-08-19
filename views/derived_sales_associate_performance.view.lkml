@@ -155,6 +155,11 @@ view: derived_sales_associate_performance {
     value_format: "0"
   }
 
+  measure: number_of_days {
+    type: number
+    sql: current_date - min(${created_date}) ;;
+  }
+
   measure: running_total_booking {
     type: running_total
     sql: ${bookings} ;;
