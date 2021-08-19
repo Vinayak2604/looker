@@ -106,7 +106,7 @@ view: derived_sales_associate_performance {
     sql:  case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end;;
   }
 
-  measure: Visits_in_TAT {
+  measure: Visits_Completed_in_TAT {
     type: max
     sql: ${visits_in_tat} ;;
   }
