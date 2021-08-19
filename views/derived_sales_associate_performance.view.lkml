@@ -95,49 +95,51 @@ view: derived_sales_associate_performance {
     type: number
     sql: ${TABLE}.visits_in_tat ;;
   }
-
+  dimension: final_selling_price {
+    type: number
+    sql: ${TABLE}.final_selling_price ;;
+  }
   measure: total_booking {
-    type: sum
-    sql: ${bookings} ;;
-  }
+        type: sum
+        sql: ${bookings} ;;
+      }
 
-  measure: target {
-    type: sum
-    sql:  case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end;;
-  }
+    measure: target {
+        type: sum
+        sql:  case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end;;
+      }
 
-  measure: Visits_Completed_in_TAT {
-    type: max
-    sql: ${visits_in_tat}/${visits_completed} ;;
-    value_format: "0%"
-  }
+    measure: Visits_Completed_in_TAT {
+        type: max
+        sql: ${visits_in_tat}/${visits_completed} ;;
+        value_format: "0%"
+      }
 
-  measure: Visits_Completed {
-    type: max
-    sql: ${visits_completed} ;;
-  }
+    measure: Visits_Completed {
+        type: max
+        sql: ${visits_completed} ;;
+      }
 
-  measure: dropped_after_visit {
-    type: max
-    sql: ${drop_after_visit} ;;
-  }
+    measure: dropped_after_visit {
+        type: max
+        sql: ${drop_after_visit} ;;
+      }
 
-  measure: Calls_Completed_in_TAT {
-    type: max
-    sql: ${calls_completed_in_tat}/${calls_completed} ;;
-    value_format: "0%"
-  }
+    measure: Calls_Completed_in_TAT {
+        type: max
+        sql: ${calls_completed_in_tat}/${calls_completed} ;;
+        value_format: "0%"
+      }
 
-  measure: Calls_Completed {
-    type: max
-    sql: ${calls_completed} ;;
-  }
+    measure: Calls_Completed {
+        type: max
+        sql: ${calls_completed} ;;
+      }
 
-  measure: dropped {
-    type: max
-    sql: ${drop} ;;
-  }
-
+    measure: dropped {
+        type: max
+        sql: ${drop} ;;
+      }
   measure: count {
     type: count
     drill_fields: [residence_name]

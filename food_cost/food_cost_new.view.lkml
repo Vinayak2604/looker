@@ -97,7 +97,6 @@ union
 
 select 4 as rank_scope,'Packaging' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
-
 ;;
   }
 
