@@ -143,6 +143,18 @@ view: derived_sales_associate_performance {
     value_format: "0"
   }
 
+  measure: under_written_revenue {
+    type: sum
+    sql: ${bookings}*${under_written_price} ;;
+    value_format: "0"
+  }
+
+  measure: Total_Revenue {
+    type: sum
+    sql: ${final_selling_price} ;;
+    value_format: "0"
+  }
+
   measure: running_total_booking {
     type: running_total
     sql: ${bookings} ;;
