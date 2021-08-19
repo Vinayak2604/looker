@@ -133,13 +133,14 @@ view: derived_sales_associate_performance {
 
   measure: beds_achieved {
     type: sum
-    sql: ${bookings}/case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end ;;
+    sql: ${bookings}/(case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end) ;;
     value_format: "0%"
     }
 
   measure: target_achieved {
     type: sum
     sql: ${bookings}*${blended_price} ;;
+    value_format: "0"
   }
 
   measure: running_total_booking {
@@ -161,7 +162,8 @@ view: derived_sales_associate_performance {
   measure: target_revenue {
     type: sum
     sql:  case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence}*${blended_price} end;;
-  }
+    value_format: "0"
+ }
 
     measure: Visits_Completed_in_TAT {
         type: max
