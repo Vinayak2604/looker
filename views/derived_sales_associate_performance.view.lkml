@@ -111,6 +111,15 @@ view: derived_sales_associate_performance {
     sql: ${visits_in_tat} ;;
   }
 
+  measure: Visits_Completed {
+    type: max
+    sql: ${visits_completed} ;;
+  }
+
+  measure: dropped_after_visit {
+    type: max
+    sql: ${drop_after_visit} ;;
+  }
   measure: count {
     type: count
     drill_fields: [residence_name]
