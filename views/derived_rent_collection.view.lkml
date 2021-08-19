@@ -627,6 +627,84 @@ value_format: "0"
      sql: case when (${till_jan} - ${paid_till_jan})>50 then ${booking_id} else null end ;;
      value_format: "0"
    }
+  measure: YTD_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql:case when ((${till_jan}+${feb}+${mar}+${apr}+${may}+${jun}+${jul}+${Aug}+${Sep}+${Nov}+${Dec}))>0  then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Aug_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${Aug})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Sep_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${Sep})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Oct_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${Oct})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Nov_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${Nov})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Dec_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${Dec})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Jul_Inv {
+    type: count_distinct
+#     # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${jul})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Jun_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${jun})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: May_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${may})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Apr_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${apr})>0 then ${booking_id} else null end;;
+    value_format: "0"
+  }
+  measure: Mar_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${mar})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
+  measure: Feb_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${feb})>0 then ${booking_id} else null end;;
+    value_format: "0"
+  }
+  measure: Till_Jan_Inv {
+    type: count_distinct
+    # drill_fields: [payment_term_name, last_name, first_name]
+    sql: case when (${till_jan})>0 then ${booking_id} else null end ;;
+    value_format: "0"
+  }
   measure: Total_res {
     type: count_distinct
     # drill_fields: [payment_term_name, last_name, first_name]
