@@ -38,3 +38,4 @@ explore: vas_ageing_aov_bucket {}
 explore: vas_ageing_aov_bucket_cm {}
 explore: vas_ageing_order_bucket_cm {}
 explore: vas_order_mrr_graph {}
+explore: vas_ageing_line_graph {}
