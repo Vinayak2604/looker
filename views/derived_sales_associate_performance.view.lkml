@@ -148,11 +148,15 @@ view: derived_sales_associate_performance {
     sql: ${bookings} ;;
   }
 
-  measure: total_booking {
+  measure: full_booking {
         type: sum
         sql: ${bookings} ;;
       }
 
+  measure: pre_bookings {
+    type: sum
+    sql: ${pre_booking} ;;
+  }
     measure: target {
         type: sum
         sql:  case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end;;
@@ -167,8 +171,7 @@ view: derived_sales_associate_performance {
 
     measure: Visits_Completed_in_TAT {
         type: max
-        sql: ${visits_in_tat}/${visits_completed} ;;
-        value_format: "0%"
+        sql: ${visits_in_tat} ;;
       }
 
     measure: Visits_Completed {
