@@ -232,5 +232,9 @@ view: derived_residence_attributes {
     drill_fields: [residence]
   }
 
+  # dimension: test {
+  #   type: string
+  # }
+
 
 }
