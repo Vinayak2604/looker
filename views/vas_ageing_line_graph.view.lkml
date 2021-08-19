@@ -54,61 +54,73 @@ view: vas_ageing_line_graph {
   measure: january_orders {
     type: sum
     sql:case when ${joining_month} = 1 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: february_orders {
     type: sum
     sql:case when ${joining_month} = 2 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: march_orders {
     type: sum
     sql:case when ${joining_month} = 3 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: april_orders {
     type: sum
     sql:case when ${joining_month} = 4 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: may_orders {
     type: sum
     sql:case when ${joining_month} = 5 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: june_orders {
     type: sum
     sql:case when ${joining_month} = 6 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: july_orders {
     type: sum
     sql:case when ${joining_month} = 7 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: august_orders {
     type: sum
     sql:case when ${joining_month} = 8 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: september_orders {
     type: sum
     sql:case when ${joining_month} = 9 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: october_orders {
     type: sum
     sql:case when ${joining_month} = 10 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: november_orders {
     type: sum
     sql:case when ${joining_month} = 11 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: december_orders {
     type: sum
     sql:case when ${joining_month} = 12 then ${orders} end ;;
+    value_format: "0"
   }
 
   measure: total_aov {
@@ -120,61 +132,73 @@ view: vas_ageing_line_graph {
   measure: january_aov {
     type: sum
     sql:case when ${joining_month} = 1 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: february_aov {
     type: sum
     sql:case when ${joining_month} = 2 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: march_aov {
     type: sum
     sql:case when ${joining_month} = 3 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: april_aov {
     type: sum
     sql:case when ${joining_month} = 4 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: may_aov {
     type: sum
     sql:case when ${joining_month} = 5 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: june_aov {
     type: sum
     sql:case when ${joining_month} = 6 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: july_aov {
     type: sum
     sql:case when ${joining_month} = 7 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: august_aov {
     type: sum
     sql:case when ${joining_month} = 8 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: september_aov {
     type: sum
     sql:case when ${joining_month} = 9 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: october_aov {
     type: sum
     sql:case when ${joining_month} = 10 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: november_aov {
     type: sum
     sql:case when ${joining_month} = 11 then ${aov} end ;;
+    value_format: "0.0"
   }
 
   measure: december_aov {
     type: sum
     sql:case when ${joining_month} = 12 then ${aov} end ;;
+    value_format: "0.0"
   }
 
 
