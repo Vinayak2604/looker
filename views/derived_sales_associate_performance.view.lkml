@@ -169,7 +169,17 @@ view: derived_sales_associate_performance {
     value_format: "0"
  }
 
-    measure: Visits_Completed_in_TAT {
+  dimension: Visits_Completed_in_TAT {
+    type: number
+    sql: ${visits_in_tat}/${visits_completed} ;;
+  }
+
+  measure: Visits_Completed_in_TAT_perc {
+    type: max
+    sql: ${Visits_Completed_in_TAT} ;;
+  }
+
+    measure: Visits_in_TAT {
         type: max
         sql: ${visits_in_tat} ;;
       }
