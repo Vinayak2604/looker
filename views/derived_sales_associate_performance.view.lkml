@@ -196,14 +196,18 @@ view: derived_sales_associate_performance {
 
     measure: Calls_Completed_in_TAT {
         type: max
-        sql: ${calls_completed_in_tat}/${calls_completed} ;;
-        value_format: "0%"
+        sql: ${calls_completed_in_tat} ;;
       }
 
     measure: Calls_Completed {
         type: max
         sql: ${calls_completed} ;;
       }
+
+  measure: Moved_Up {
+    type: max
+    sql: ${moved_up} ;;
+  }
 
     measure: dropped {
         type: max
