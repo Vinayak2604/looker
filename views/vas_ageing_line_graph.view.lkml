@@ -51,14 +51,130 @@ view: vas_ageing_line_graph {
     sql: ${TABLE}.aov ;;
   }
 
-  measure: total_orders {
+  measure: january_orders {
     type: running_total
-    sql: ${orders} ;;
+    sql:case when ${joining_month} = 1 then ${orders} end ;;
+  }
+
+  measure: february_orders {
+    type: running_total
+    sql:case when ${joining_month} = 2 then ${orders} end ;;
+  }
+
+  measure: march_orders {
+    type: running_total
+    sql:case when ${joining_month} = 3 then ${orders} end ;;
+  }
+
+  measure: april_orders {
+    type: running_total
+    sql:case when ${joining_month} = 4 then ${orders} end ;;
+  }
+
+  measure: may_orders {
+    type: running_total
+    sql:case when ${joining_month} = 5 then ${orders} end ;;
+  }
+
+  measure: june_orders {
+    type: running_total
+    sql:case when ${joining_month} = 6 then ${orders} end ;;
+  }
+
+  measure: july_orders {
+    type: running_total
+    sql:case when ${joining_month} = 7 then ${orders} end ;;
+  }
+
+  measure: august_orders {
+    type: running_total
+    sql:case when ${joining_month} = 8 then ${orders} end ;;
+  }
+
+  measure: september_orders {
+    type: running_total
+    sql:case when ${joining_month} = 9 then ${orders} end ;;
+  }
+
+  measure: october_orders {
+    type: running_total
+    sql:case when ${joining_month} = 10 then ${orders} end ;;
+  }
+
+  measure: november_orders {
+    type: running_total
+    sql:case when ${joining_month} = 11 then ${orders} end ;;
+  }
+
+  measure: december_orders {
+    type: running_total
+    sql:case when ${joining_month} = 12 then ${orders} end ;;
   }
 
   measure: total_aov {
     type: running_total
     sql: ${aov} ;;
+  }
+
+
+  measure: january_aov {
+    type: running_total
+    sql:case when ${joining_month} = 1 then ${aov} end ;;
+  }
+
+  measure: february_aov {
+    type: running_total
+    sql:case when ${joining_month} = 2 then ${aov} end ;;
+  }
+
+  measure: march_aov {
+    type: running_total
+    sql:case when ${joining_month} = 3 then ${aov} end ;;
+  }
+
+  measure: april_aov {
+    type: running_total
+    sql:case when ${joining_month} = 4 then ${aov} end ;;
+  }
+
+  measure: may_aov {
+    type: running_total
+    sql:case when ${joining_month} = 5 then ${aov} end ;;
+  }
+
+  measure: june_aov {
+    type: running_total
+    sql:case when ${joining_month} = 6 then ${aov} end ;;
+  }
+
+  measure: july_aov {
+    type: running_total
+    sql:case when ${joining_month} = 7 then ${aov} end ;;
+  }
+
+  measure: august_aov {
+    type: running_total
+    sql:case when ${joining_month} = 8 then ${aov} end ;;
+  }
+
+  measure: september_aov {
+    type: running_total
+    sql:case when ${joining_month} = 9 then ${aov} end ;;
+  }
+
+  measure: october_aov {
+    type: running_total
+    sql:case when ${joining_month} = 10 then ${aov} end ;;
+  }
+
+  measure: november_aov {
+    type: running_total
+    sql:case when ${joining_month} = 11 then ${aov} end ;;
+  }
+
+  measure: december_aov {
+    type: running_total
+    sql:case when ${joining_month} = 12 then ${aov} end ;;
   }
 
 
