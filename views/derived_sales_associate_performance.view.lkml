@@ -95,10 +95,42 @@ view: derived_sales_associate_performance {
     type: number
     sql: ${TABLE}.visits_in_tat ;;
   }
+
   dimension: final_selling_price {
     type: number
     sql: ${TABLE}.final_selling_price ;;
   }
+
+  dimension: blended_price {
+    type: number
+    sql: ${TABLE}.blended_price ;;
+  }
+
+  dimension: under_written_price {
+    type: number
+    sql: ${TABLE}.under_written_price ;;
+  }
+
+  dimension: micromarket_name {
+    type: string
+    sql: ${TABLE}.micromarket_name ;;
+  }
+
+  dimension: city_name {
+    type: string
+    sql: ${TABLE}.city_name ;;
+  }
+
+  dimension: zone_name {
+    type: string
+    sql: ${TABLE}.zone_name ;;
+  }
+
+  dimension: name {
+    type: string
+    sql: ${TABLE}.name ;;
+  }
+
   measure: total_booking {
         type: sum
         sql: ${bookings} ;;
