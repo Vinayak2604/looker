@@ -56,6 +56,11 @@ view: seo_data {
     sql: ${TABLE}.june_21 ;;
   }
 
+  dimension: july_21 {
+    type: number
+    sql: ${TABLE}.july_21 ;;
+  }
+
   dimension: keyword {
     type: string
     sql: ${TABLE}.keyword ;;
@@ -186,6 +191,12 @@ view: seo_data {
   measure: june_21_avg {
     type: average
     sql: ${june_21} ;;
+    value_format: "0"
+  }
+
+  measure: july_21_avg {
+    type: average
+    sql: ${july_21} ;;
     value_format: "0"
   }
 
