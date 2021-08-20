@@ -60,14 +60,21 @@ view: vas_orders_per_day {
     sql: ${orders} ;;
   }
 
+  measure: total_users {
+    type: count_distinct
+    sql: ${user_id} ;;
+  }
+
   measure: average_orders_frequency {
     type: average
     sql: ${order_frequency} ;;
+    value_format: "0.0"
   }
 
   measure: median_orders_frequency {
     type: median
     sql: ${order_frequency} ;;
+    value_format: "0.0"
   }
 
 
