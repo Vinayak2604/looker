@@ -114,6 +114,11 @@ view: food_cost_items_budget {
     sql: ${TABLE}.hostel_name ;;
   }
 
+  dimension: Vendor_master_id {
+    type: string
+    sql: ${TABLE}.Vendor_master_id ;;
+  }
+
   dimension: total_qty {
     type: number
     sql: ${TABLE}.total_qty ;;

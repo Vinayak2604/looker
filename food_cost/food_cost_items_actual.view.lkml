@@ -3,7 +3,7 @@ view: food_cost_items_actual {
     sql: select
         date(t.updated_at) as menu_date,
         m.location_uuid uuid,
-        m.location_name location_name,
+        nvl(map.b,m.location_name) location_name,
         nvl(it.name,i.name) as item_name,
         t.effective_price,
         sum(t.quantity) as qty
@@ -14,6 +14,23 @@ view: food_cost_items_actual {
         on p.uuid = t.po_to_uuid
       left join stanza.erp_transformation_master_address_book m
         on m.uuid = t.address_uuid
+      left join (select 'Hyderabad Kitchen' as a,'SL - Hyderabad' as b union all
+        select 'Vadodara Kitchen' as a,'SL - Auckland' as b union all
+        select 'Hamburg Kitchen' as a,'SL - Hamburg' as b union all
+        select 'Coimbatore Kitchen' as a,'SL - Coimbatore' as b union all
+        select 'Manipal - Kitchen' as a,'SL - Brighton' as b union all
+        select 'Cumana Kitchen' as a,'SL - Cumana' as b union all
+        select 'Zagreb Kitchen' as a,'SL - Yelahanka' as b union all
+        select 'GMIT Kitchen' as a,'SL - GMIT' as b union all
+        select 'Pune Kitchen' as a,'SL - Hadapsar' as b union all
+        select 'Dehradun Kitchen' as a,'SL - Dehradun' as b union all
+        select 'Noida Kitchen' as a,'SL - Noida' as b union all
+        select 'Portland Kitchen' as a,'SL - Portland' as b union all
+        select 'Amsterdam Kitchen' as a,'SL - EC 1' as b union all
+        select 'Zagreb Kitchen_DONOT USE' as a,'SL - Yelahanka' as b union all
+        select 'Kitchen - Chennai Zamin Pallavaram' as a,'SL - Chennai' as b union all
+        select 'Indore Kitchen' as a,'SL - Indore' as b)
+        map on map.a = m.location_name
       left join stanza.core_food_service_ingredients i on
         i.name =c.item_name
       left join stanza.core_food_service_ingredient_tag it on
@@ -57,4 +74,8 @@ view: food_cost_items_actual {
     sql: ${TABLE}.qty ;;
   }
 
+  measure: weighted_qty {
+    type:number
+    sql: sum(${price}*${qty})/nullif(sum(${price}),0) ;;
+  }
   }
