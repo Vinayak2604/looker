@@ -88,7 +88,7 @@ view: derived_sales_associate_performance {
 
   dimension: visits_completed {
     type: number
-    sql: colaese(${TABLE}.visits_completed,0) ;;
+    sql: COALESCE(${TABLE}.visits_completed,0) ;;
   }
 
   dimension: visits_in_tat {
