@@ -73,7 +73,7 @@ view: vas_orders_per_day {
 
   measure: repeat_user_per {
     type: number
-    sql: ${total_repeat_users} / ${total_users} end;;
+    sql: ${total_repeat_users} / ${total_users} ;;
     value_format: "0.0%"
   }
 
