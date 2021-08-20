@@ -10,9 +10,6 @@ view: invoice_details {
   end as Vendor_name,
   DATE(ibd.invoice_date) as invoice_date,
   pd.po_number,
-  row_number() over (partition by pd.po_number
-order by
-  jj.L1_approval_at) row_no,
   pd.po_status,
   DATE(pd.po_start_date) as po_start_date,
   DATE(pd.po_end_date) as po_end_date,

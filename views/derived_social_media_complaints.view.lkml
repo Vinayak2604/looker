@@ -376,6 +376,13 @@ dimension: zone {
   }
 measure: count {
   type: count
+  html: {% if value > 0 %}
+  <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="color:black"> - </p>
+
+  {% endif %};;
 }
 
 
@@ -396,10 +403,24 @@ measure: count2 {
     label: "Raw Details"
     url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.category,derived_social_media_complaints.date_date,derived_social_media_complaints.do_we_have_alredy_fresh_desk_ticket,derived_social_media_complaints.escalation_type,derived_social_media_complaints.city,derived_social_media_complaints.mm,derived_social_media_complaints.platform,derived_social_media_complaints.sub_category,derived_social_media_complaints.tat,derived_social_media_complaints.ticket_id,derived_social_media_complaints.zone,derived_social_media_complaints.satisfied_unsatisfied,derived_social_media_complaints.justified_unjustified,derived_social_media_complaints.identified,derived_social_media_complaints.escalation_closed_with_andy_sandeep_and_shaminn_date,derived_social_media_complaints.cx_charter_violated,derived_social_media_complaints.reason_that_resident_escalate_on_sm,derived_social_media_complaints.resolution_provided_by_the_city_team_date&f[derived_social_media_complaints.sub_category]=-NULL&f[derived_social_media_complaints.platform]=-NULL&sorts=derived_social_media_complaints.date_date+desc&limit=500&vis=%7B%22show_view_names%22%3Afalse%2C%22show_row_numbers%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22size_to_fit%22%3Atrue%2C%22table_theme%22%3A%22white%22%2C%22limit_displayed_rows%22%3Afalse%2C%22enable_conditional_formatting%22%3Afalse%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A12%2C%22rows_font_size%22%3A12%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22type%22%3A%22looker_grid%22%2C%22series_types%22%3A%7B%7D%2C%22defaults_version%22%3A1%7D&filter_config=%7B%22derived_social_media_complaints.sub_category%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A1%2C%22error%22%3Afalse%7D%5D%2C%22derived_social_media_complaints.platform%22%3A%5B%7B%22type%22%3A%22%21null%22%2C%22values%22%3A%5B%7B%22constant%22%3A%22%22%7D%2C%7B%7D%5D%2C%22id%22%3A2%2C%22error%22%3Afalse%7D%5D%7D&origin=share-expanded&f[derived_social_media_complaints.sub_category]={{derived_social_media_complaints.sub_category._value}}&f[derived_social_media_complaints.justified_unjustified]={{derived_social_media_complaints.justified_unjustified}}&f[derived_social_media_complaints.identified]={{ _filters['derived_social_media_complaints.identified'] | url_encode }}&f[derived_social_media_complaints.date_date]={{ _filters['derived_social_media_complaints.date_date'] | url_encode}}"
   }
+  html: {% if value > 0 %}
+  <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="color:black"> - </p>
+
+  {% endif %};;
 }
 
   measure: count_line {
     type: count
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
   }
 
 # dimension: l30 {
@@ -458,16 +479,37 @@ dimension: identified {
 measure: Justified_Complaints{
   type: count
   filters: [justified_unjustified: "Justified"]
+  html: {% if value > 0 %}
+  <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="color:black"> - </p>
+
+  {% endif %};;
 }
 
 measure: Unjustified_Complaints{
   type: count
   filters: [justified_unjustified: "Unjustified"]
+  html: {% if value > 0 %}
+  <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="color:black"> - </p>
+
+  {% endif %};;
 }
 
 measure: Justified_Complaints2{
   type: count
   filters: [justified_unjustified: "Justified"]
+  html: {% if value > 0 %}
+  <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="color:black"> - </p>
+
+  {% endif %};;
 }
 
   measure: Justified_Complaints3{
@@ -477,6 +519,13 @@ measure: Justified_Complaints2{
       url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.sub_category,derived_social_media_complaints.Justified_Complaints3&filter_expression=%24%7Bderived_social_media_complaints.sub_category%7D%21%3D%22%22%0A&sorts=derived_social_media_complaints.Justified_Complaints3+desc&limit=500&vis=%7B%22show_view_names%22%3Afalse%2C%22show_row_numbers%22%3Atrue%2C%22truncate_column_names%22%3Afalse%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22table_theme%22%3A%22white%22%2C%22limit_displayed_rows%22%3Afalse%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22limit_displayed_rows_values%22%3A%7B%22show_hide%22%3A%22hide%22%2C%22first_last%22%3A%22first%22%2C%22num_rows%22%3A0%7D%2C%22conditional_formatting%22%3A%5B%7B%22type%22%3A%22along+a+scale...%22%2C%22value%22%3Anull%2C%22background_color%22%3A%22%2362bad4%22%2C%22font_color%22%3Anull%2C%22color_application%22%3A%7B%22collection_id%22%3A%22test%22%2C%22palette_id%22%3A%22test-diverging-0%22%2C%22options%22%3A%7B%22constraints%22%3A%7B%22min%22%3A%7B%22type%22%3A%22minimum%22%7D%2C%22mid%22%3A%7B%22type%22%3A%22number%22%2C%22value%22%3A0%7D%2C%22max%22%3A%7B%22type%22%3A%22maximum%22%7D%7D%2C%22mirror%22%3Atrue%2C%22reverse%22%3Afalse%2C%22stepped%22%3Afalse%7D%7D%2C%22bold%22%3Afalse%2C%22italic%22%3Afalse%2C%22strikethrough%22%3Afalse%2C%22fields%22%3Anull%7D%5D%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22size_to_fit%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22derived_social_media_complaints.Justified_Complaints3%22%3A%7B%22is_active%22%3Atrue%7D%7D%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22type%22%3A%22table%22%2C%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Afalse%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22series_types%22%3A%7B%7D%7D&filter_config=%7B%7D&origin=share-expandedd&f[derived_social_media_complaints.zone4]={{ derived_social_media_complaints.zone4._value }}&f[derived_social_media_complaints.identified]={{ _filters['derived_social_media_complaints.identified'] | url_encode }}&f[derived_social_media_complaints.date_date]={{ _filters['derived_social_media_complaints.date_date'] | url_encode}}"
     }
     filters: [justified_unjustified: "Justified"]
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
 
   }
 
@@ -487,44 +536,100 @@ measure: Justified_Complaints2{
       url: "/explore/cx_3_redshift/derived_social_media_complaints?fields=derived_social_media_complaints.sub_category,derived_social_media_complaints.Justified_Complaints3&filter_expression=%24%7Bderived_social_media_complaints.sub_category%7D%21%3D%22%22%0A&sorts=derived_social_media_complaints.Justified_Complaints3+desc&limit=500&vis=%7B%22show_view_names%22%3Afalse%2C%22show_row_numbers%22%3Atrue%2C%22truncate_column_names%22%3Afalse%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22table_theme%22%3A%22white%22%2C%22limit_displayed_rows%22%3Afalse%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22limit_displayed_rows_values%22%3A%7B%22show_hide%22%3A%22hide%22%2C%22first_last%22%3A%22first%22%2C%22num_rows%22%3A0%7D%2C%22conditional_formatting%22%3A%5B%7B%22type%22%3A%22along+a+scale...%22%2C%22value%22%3Anull%2C%22background_color%22%3A%22%2362bad4%22%2C%22font_color%22%3Anull%2C%22color_application%22%3A%7B%22collection_id%22%3A%22test%22%2C%22palette_id%22%3A%22test-diverging-0%22%2C%22options%22%3A%7B%22constraints%22%3A%7B%22min%22%3A%7B%22type%22%3A%22minimum%22%7D%2C%22mid%22%3A%7B%22type%22%3A%22number%22%2C%22value%22%3A0%7D%2C%22max%22%3A%7B%22type%22%3A%22maximum%22%7D%7D%2C%22mirror%22%3Atrue%2C%22reverse%22%3Afalse%2C%22stepped%22%3Afalse%7D%7D%2C%22bold%22%3Afalse%2C%22italic%22%3Afalse%2C%22strikethrough%22%3Afalse%2C%22fields%22%3Anull%7D%5D%2C%22show_sql_query_menu_options%22%3Afalse%2C%22show_totals%22%3Atrue%2C%22show_row_totals%22%3Atrue%2C%22transpose%22%3Afalse%2C%22truncate_text%22%3Atrue%2C%22size_to_fit%22%3Atrue%2C%22series_cell_visualizations%22%3A%7B%22derived_social_media_complaints.Justified_Complaints3%22%3A%7B%22is_active%22%3Atrue%7D%7D%2C%22header_text_alignment%22%3A%22left%22%2C%22header_font_size%22%3A%2212%22%2C%22rows_font_size%22%3A%2212%22%2C%22type%22%3A%22table%22%2C%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Afalse%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22series_types%22%3A%7B%7D%7D&filter_config=%7B%7D&origin=share-expandedd&f[derived_social_media_complaints.city4]={{ derived_social_media_complaints.city4._value }}&f[derived_social_media_complaints.identified]={{ _filters['derived_social_media_complaints.identified'] | url_encode }}&f[derived_social_media_complaints.date_date]={{ _filters['derived_social_media_complaints.date_date'] | url_encode}}"
     }
     filters: [justified_unjustified: "Justified"]
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
   }
 
 measure: Unjustified_Complaints2{
   type: count
   filters: [justified_unjustified: "Unjustified"]
+  html: {% if value > 0 %}
+  <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="color:black"> - </p>
+
+  {% endif %};;
 }
 
   measure: Unjustified_Complaints3{
     type: count
     filters: [justified_unjustified: "Unjustified"]
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
   }
 
 
   measure: Unjustified_Complaints4{
     type: count
     filters: [justified_unjustified: "Unjustified"]
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
   }
 
 measure: Directly_Social {
   type: count
   filters: [do_we_have_alredy_fresh_desk_ticket: "No"]
+  html: {% if value > 0 %}
+  <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+  {% else %}
+  <p style="color:black"> - </p>
+
+  {% endif %};;
 
 }
 
   measure: FD_Social {
     type: count
     filters: [do_we_have_alredy_fresh_desk_ticket: "Yes"]
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
   }
 
   measure: Public_Complaints{
     type: count
     filters: [escalation_type: "Public"]
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
 
   }
 
   measure: Private_Complaints {
     type: count
     filters: [escalation_type: "Private" ]
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color:black"> - </p>
+
+    {% endif %};;
 
   }
 
