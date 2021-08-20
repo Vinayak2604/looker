@@ -65,6 +65,18 @@ view: vas_orders_per_day {
     sql: ${user_id} ;;
   }
 
+  measure: total_repeat_users {
+    type: count_distinct
+    sql: case when ${orders} > 1 then ${user_id} end;;
+
+  }
+
+  measure: repeat_user_per {
+    type: number
+    sql: ${total_repeat_users} / ${total_users} end;;
+    value_format: "0.0%"
+  }
+
   measure: average_orders_frequency {
     type: average
     sql: ${order_frequency} ;;

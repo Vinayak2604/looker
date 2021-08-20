@@ -242,7 +242,7 @@ view: derived_vas_orders {
     type: number
     sql: ${total_amount} / ${users}  ;;
     value_format: "0"
-    html: <p> &#x20B9; {{rendered_value}} ({{derived_vas_orders.users._rendered_value}}) </p> ;;
+    html: <p> &#x20B9; {{rendered_value}} (users: {{derived_vas_orders.users._rendered_value}}, AOV: {{derived_vas_orders.aov._rendered_value}}) </p> ;;
   }
 
 
