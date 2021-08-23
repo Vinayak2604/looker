@@ -179,7 +179,7 @@ order by
   }
 
   dimension: LP_unit_price {
-    type: string
+    type: number
     sql: ${TABLE}.LP_unit_price ;;
     value_format: "0.00"
   }

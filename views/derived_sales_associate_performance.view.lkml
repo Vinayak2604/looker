@@ -133,7 +133,7 @@ view: derived_sales_associate_performance {
 
   dimension: Name {
     type: string
-    sql: replace(substring(${email},1,char_length(${email})-17),'.',' ') ;;
+    sql: replace(substring(rtrim(${email}),1,char_length(rtrim(${email})-17),'.',' ') ;;
   }
   measure: beds_achieved {
     type: sum
