@@ -131,10 +131,6 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.name ;;
   }
 
-  measure: Name_Derived {
-    type: string
-    sql: replace(substring(rtrim(${email},' '),1,char_length(rtrim(${email},' ')-17),'.',' ') ;;
-  }
   measure: beds_achieved {
     type: sum
     sql: ${bookings}/(case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence} end) ;;
