@@ -134,6 +134,24 @@ view: derived_csat_metrics {
     sql: ${TABLE}.status ;;
   }
 
+  dimension: exclude_3_days {
+    type: string
+    sql: CASE
+    WHEN ${TABLE}.onboarding_date IS NULL THEN NULL
+    WHEN ${created_time_date} - ${onboarding_date}  >3 THEN 'Exclude 3'
+    ELSE 'Only 3'
+    END ;;
+  }
+
+  dimension: only_3_days {
+    type: string
+    sql: CASE
+          WHEN ${TABLE}.onboarding_date IS NULL THEN NULL
+          WHEN ${created_time_date} - ${onboarding_date}  >3 THEN '0'
+          ELSE '3'
+          END ;;
+  }
+
   dimension: student_id {
     type: string
     sql: ${TABLE}.student_id ;;

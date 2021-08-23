@@ -401,6 +401,12 @@ view: derived_food_cost {
     sql: ${TABLE}.vendor_name ;;
   }
 
+  dimension: vendor_name_kv {
+    type: string
+    sql: ${TABLE}.vendor_name ;;
+  }
+
+
   measure: count {
     type: count
     drill_fields: [micromarket_name, hostel_name, mc_name, vendor_name]
