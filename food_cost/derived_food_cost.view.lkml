@@ -408,22 +408,22 @@ view: derived_food_cost {
 
   measure: delta_ratio_total {
     type: number
-    sql: sum((${actual_blended_order}+${actual_sl_blended_order})*${menu_rate})/nullif(sum(${house_wise_actual_cost}),0) ;;
+    sql: sum(${house_wise_actual_cost})/nullif(sum((${actual_blended_order}+${actual_sl_blended_order})*${menu_rate}),0) ;;
   }
 
   measure: delta_ratio_cogs {
     type: number
-    sql: sum((${actual_blended_order}+${actual_sl_blended_order})*${menu_cost})/nullif(sum(${house_wise_actual_cost_cogs}),0) ;;
+    sql: sum(${house_wise_actual_cost_cogs})/nullif(sum((${actual_blended_order}+${actual_sl_blended_order})*${menu_cost}),0) ;;
   }
 
   measure: delta_ratio_util {
     type: number
-    sql: sum((${actual_blended_order}+${actual_sl_blended_order})*${utility_cost})/nullif(sum(${house_wise_actual_cost_util}),0) ;;
+    sql: sum(${house_wise_actual_cost_util})/nullif(sum((${actual_blended_order}+${actual_sl_blended_order})*${utility_cost}),0) ;;
   }
 
   measure: delta_ratio_packaging {
     type: number
-    sql: sum((${actual_blended_order}+${actual_sl_blended_order})*${packaging_cost})/nullif(sum(${house_wise_actual_cost_packaging}),0) ;;
+    sql: sum(${house_wise_actual_cost_packaging})/nullif(sum((${actual_blended_order}+${actual_sl_blended_order})*${packaging_cost}),0) ;;
   }
 
 
