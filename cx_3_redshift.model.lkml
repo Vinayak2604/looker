@@ -43,3 +43,5 @@ view: ranked_subcat {
   dimension: sub_category {}
   dimension: zone4 {}
 }
+
+explore: derived_csat_metrics {}
