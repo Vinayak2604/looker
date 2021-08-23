@@ -131,7 +131,7 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.name ;;
   }
 
-  dimension: Name_Derived {
+  measure: Name_Derived {
     type: string
     sql: replace(substring(rtrim(${email},' '),1,char_length(rtrim(${email},' ')-17),'.',' ') ;;
   }
