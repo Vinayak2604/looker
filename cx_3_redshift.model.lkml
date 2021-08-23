@@ -48,7 +48,7 @@ explore: derived_csat_metrics {
 
   join: complaint_ranking {
     type: inner
-    sql_on: ${complaint_ranking.rank_and_complaint} = ${derived_csat_metrics.complain_cat} ;;
+    sql_on: ${complaint_ranking.complaint} = ${derived_csat_metrics.complain_cat} ;;
     relationship: many_to_one
   }
 }
@@ -57,9 +57,10 @@ view: complaint_ranking {
   derived_table: {
     sql:
           SELECT complain_cat, count(*) as count, RANK() OVER(ORDER BY COUNT(*) DESC) as rank
-          FROM stanza.derived_csat_metrics
-          GROUP BY 1 ;;
-  }
+FROM stanza.derived_csat_metrics
+where  created_time >= current_date -30
+GROUP BY 1 ;;
+}
 
   dimension: complaint {
     type: string
@@ -80,6 +81,6 @@ view: complaint_ranking {
 
   dimension: rank_and_complaint {
     type: string
-    sql: CASE WHEN ${rank} = 'Other' THEN 'Other' ELSE ${rank} || '-' || ${complaint} END;;
+    sql: CASE WHEN ${rank} = 'Other' THEN 'Other' ELSE  ${complaint} END;;
   }
 }

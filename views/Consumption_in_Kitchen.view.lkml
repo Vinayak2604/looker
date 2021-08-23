@@ -53,7 +53,7 @@ group by
   dimension: total_consumption {
     type: number
     sql: ${TABLE}.value;;
-    value_format: "0"
+    value_format: "#,##0"
   }
 
   dimension: quantity {

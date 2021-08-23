@@ -173,5 +173,26 @@ view: derived_csat_metrics {
     filters: [feedback:"NOT NULL"]
   }
 
+  # measure: count_total_mtd {
+  #   type: count
+  #   filters: [created_time_month: ]
+  # }
+
+
+  # measure: feedback_postive_mtd  {
+  #   type: count
+  #   filters: [feedback: "1"]
+  # }
+
+  # measure: feedback_negative_mtd {
+  #   type: count
+  #   filters: [feedback: "0"]
+  # }
+
+  # measure: feedback_given_mtd {
+  #   type: count
+  #   filters: [feedback:"NOT NULL"]
+  # }
+
 
 }

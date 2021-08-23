@@ -1,6 +1,6 @@
 view: food_cost_items {
   derived_table: {
-    sql: select a.menu_date,a.vendor_id,a.vendor_master_id,a.vendor_name,a.ingredient_name,a.hostel_name,
+    sql: select a.menu_date,a.vendor_id,a.vendor_master_id,a.vendor_name,a.ingredient_name,
 a.res_sl_qty,a.non_sl_qty,a.total_qty,b.effective_price,b.qty
 from
 (select menu_date,
@@ -8,7 +8,6 @@ from
      vendor_master_id,
      vendor_name,
      ingredient_name,
-     hostel_name,
      sum(res_sl_total_qty) as res_sl_qty,
      sum(non_sl_total_qty) as non_sl_qty,
      sum(res_sl_total_qty+non_sl_total_qty) as total_qty
@@ -94,7 +93,7 @@ from
         group by 1,2,3,4,5) iq
         join stanza.derived_food_cost dfc
         on iq.menu_date = dfc.menu_date and iq.vendor_id = dfc.vendor_id and iq.residence_name = dfc.hostel_name)
-    group by 1,2,3,4,5,6) a
+    group by 1,2,3,4,5) a
 left join (select
         date(t.updated_at) as menu_date,
         m.location_uuid uuid,
@@ -155,10 +154,10 @@ left join (select
     sql: ${TABLE}.ingredient_name ;;
   }
 
-  dimension: hostel_name {
-    type: string
-    sql: ${TABLE}.hostel_name ;;
-  }
+  # dimension: hostel_name {
+  #   type: string
+  #   sql: ${TABLE}.hostel_name ;;
+  # }
 
   dimension: Vendor_master_id {
     type: string
