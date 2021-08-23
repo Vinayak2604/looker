@@ -174,6 +174,4 @@ view: derived_csat_metrics {
   }
 
 
-
-
 }

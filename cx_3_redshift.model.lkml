@@ -44,9 +44,16 @@ view: ranked_subcat {
   dimension: zone4 {}
 }
 
-explore: derived_csat_metrics {}
+explore: derived_csat_metrics {
 
-view: complaint_rankings {
+  join: complaint_ranking {
+    type: inner
+    sql_on: ${complaint_ranking.rank_and_complaint} = ${derived_csat_metrics.complain_cat} ;;
+    relationship: many_to_one
+  }
+}
+
+view: complaint_ranking {
   derived_table: {
     sql:
           SELECT complain_cat, count(*) as count, RANK() OVER(ORDER BY COUNT(*) DESC) as rank
@@ -63,5 +70,16 @@ view: complaint_rankings {
   dimension: rank_raw {
     type: number
     sql: ${TABLE}.rank ;;
+  }
+
+
+  dimension: rank {
+    type: string
+    sql: CASE WHEN ${rank_raw} <= 5 THEN RIGHT('00' + CAST(${rank_raw} AS VARCHAR), 2) ELSE 'Other' END;;
+  }
+
+  dimension: rank_and_complaint {
+    type: string
+    sql: CASE WHEN ${rank} = 'Other' THEN 'Other' ELSE ${rank} || '-' || ${complaint} END;;
   }
 }

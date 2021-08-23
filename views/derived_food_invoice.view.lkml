@@ -205,8 +205,8 @@ view: derived_food_invoice {
     value_format: "0.00"
   }
 
-  dimension: last_po_created_at {
+  measure: last_po_created_at {
     type: date
-    sql: ${TABLE}.po_created_at ;;
+    sql: max(${TABLE}.po_created_at) ;;
   }
 }
