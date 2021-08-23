@@ -163,7 +163,7 @@ order by
   }
 
   dimension: quantity {
-    type: string
+    type: number
     sql: ${TABLE}.quantity ;;
   }
 
