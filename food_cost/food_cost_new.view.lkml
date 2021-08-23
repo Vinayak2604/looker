@@ -5,12 +5,12 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 1 as rank_scope,'Total' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 1 as rank_scope,'Total' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select 1 as rank_scope,'Total' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate - (house_wise_actual_cost) as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 1 as rank_scope,'Total' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_rate - (house_wise_actual_cost*app_component) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -20,7 +20,7 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 1 as rank_scope,'Total' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 1 as rank_scope,'Total' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -30,12 +30,12 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 2 as rank_scope,'COGS' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_cogs as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 2 as rank_scope,'COGS' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_cogs*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select 2 as rank_scope,'COGS' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost - (house_wise_actual_cost_cogs) as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 2 as rank_scope,'COGS' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*menu_cost - (house_wise_actual_cost_cogs*app_component) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -45,7 +45,7 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 2 as rank_scope,'COGS' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_cogs as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 2 as rank_scope,'COGS' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_cogs*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -55,12 +55,12 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 3 as rank_scope,'Utility' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_util as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 3 as rank_scope,'Utility' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_util*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select 3 as rank_scope,'Utility' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost - (house_wise_actual_cost_util) as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 3 as rank_scope,'Utility' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*utility_cost - (house_wise_actual_cost_util*app_component) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -70,7 +70,7 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 3 as rank_scope,'Utility' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_util as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 3 as rank_scope,'Utility' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_util*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -80,12 +80,12 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 4 as rank_scope,'Packaging' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 4 as rank_scope,'Packaging' as scope,2 as rank_para,'Actual' as parameter,'Sum' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
 
-select 4 as rank_scope,'Packaging' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost - (house_wise_actual_cost_packaging) as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 4 as rank_scope,'Packaging' as scope,3 as rank_para,'Delta' as parameter,'Sum' as value_field,menu_date,vendor_name, (actual_blended_order+actual_sl_blended_order)*packaging_cost - (house_wise_actual_cost_packaging*app_component) as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
 
 union
@@ -95,8 +95,9 @@ from stanza.derived_food_cost dfc
 
 union
 
-select 4 as rank_scope,'Packaging' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging as value,(actual_blended_order+actual_sl_blended_order) as bo
+select 4 as rank_scope,'Packaging' as scope,5 as rank_para,'Actual - INR/Blended Order' as parameter,'Avg' as value_field,menu_date,vendor_name, house_wise_actual_cost_packaging*app_component as value,(actual_blended_order+actual_sl_blended_order) as bo
 from stanza.derived_food_cost dfc
+
 ;;
   }
 
