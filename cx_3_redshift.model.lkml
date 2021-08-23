@@ -45,3 +45,23 @@ view: ranked_subcat {
 }
 
 explore: derived_csat_metrics {}
+
+view: complaint_rankings {
+  derived_table: {
+    sql:
+          SELECT complain_cat, count(*) as count, RANK() OVER(ORDER BY COUNT(*) DESC) as rank
+          FROM stanza.derived_csat_metrics
+          GROUP BY 1 ;;
+  }
+
+  dimension: complaint {
+    type: string
+    primary_key: yes
+    sql: ${TABLE}.complain_cat ;;
+  }
+
+  dimension: rank_raw {
+    type: number
+    sql: ${TABLE}.rank ;;
+  }
+}
