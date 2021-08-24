@@ -233,62 +233,62 @@ view: derived_sales_associate_performance {
 
     measure: Visits_in_TAT {
         type: max
-        sql: ${visits_in_tat} ;;
+        sql: COALESCE(${visits_in_tat},0) ;;
       }
 
     measure: Visits_Completed {
         type: max
-        sql: ${visits_completed} ;;
+        sql: COALESCE(${visits_completed},0) ;;
       }
 
     measure: dropped_after_visit {
         type: max
-        sql: ${drop_after_visit} ;;
+        sql: COALESCE(${drop_after_visit},0) ;;
       }
 
     measure: Calls_Completed_in_TAT {
         type: max
-        sql: ${calls_completed_in_tat} ;;
+        sql: COALESCE(${calls_completed_in_tat},0) ;;
       }
 
     measure: Calls_Completed {
         type: max
-        sql: ${calls_completed} ;;
+        sql: COALESCE(${calls_completed},0) ;;
       }
 
   measure: Moved_Up {
     type: max
-    sql: ${moved_up} ;;
+    sql: COALESCE(${moved_up},0) ;;
   }
 
     measure: dropped {
         type: max
-        sql: ${drop} ;;
+        sql: COALESCE(${drop},0) ;;
       }
 
   measure: L3D_Pre_booking {
     type: max
-    sql: ${L3D_Pre_bookings} ;;
+    sql: COALESCE(${L3D_Pre_bookings},0) ;;
   }
 
   measure:L7D_Pre_booking {
     type: max
-    sql: ${L7D_Pre_bookings} ;;
+    sql: COALESCE(${L7D_Pre_bookings},0) ;;
   }
 
   measure: L14D_Pre_booking {
     type: max
-    sql: ${L14D_Pre_bookings} ;;
+    sql: COALESCE(${L14D_Pre_bookings},0) ;;
   }
 
   measure: L21D_Pre_booking {
     type: max
-    sql: ${L21D_Pre_bookings} ;;
+    sql: COALESCE(${L21D_Pre_bookings},0) ;;
   }
 
   measure: L30D_Pre_booking {
     type: max
-    sql: ${L30D_Pre_bookings} ;;
+    sql: COALESCE(${L30D_Pre_bookings},0) ;;
   }
   measure: count {
     type: count
