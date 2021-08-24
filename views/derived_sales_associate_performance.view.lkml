@@ -176,7 +176,7 @@ view: derived_sales_associate_performance {
   }
   measure: pre_bookings {
     type: max
-    sql: ${pre_booking} ;;
+    sql: COALESCE(${pre_booking},0) ;;
   }
     measure: target {
         type: sum
