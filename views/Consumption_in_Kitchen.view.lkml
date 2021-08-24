@@ -28,6 +28,7 @@ where
   and t.__hevo__marked_deleted = false
   and m.__hevo__marked_deleted = false
   and p.__hevo__marked_deleted = false
+  and {% condition date1 %} DATE(t.updated_at) {% endcondition %}
 group by
   1,
   2,
@@ -38,6 +39,10 @@ group by
     type: string
     primary_key: yes
     sql: ${TABLE}.location_uuid;;
+  }
+
+  parameter: date1 {
+    type: date
   }
 
   dimension: Property {

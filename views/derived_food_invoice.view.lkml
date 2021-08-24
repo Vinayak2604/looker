@@ -1,9 +1,16 @@
 view: derived_food_invoice {
-  sql_table_name: stanza.derived_food_invoice ;;
+  derived_table: {
+    sql: Select * FROM stanza.derived_food_invoice
+    where {% condition date1 %} po_created_at {% endcondition %};;
+  }
 
   dimension: cancelled_flag {
     type: number
     sql: ${TABLE}.cancelled_flag ;;
+  }
+
+  parameter: date1 {
+    type: date
   }
 
   dimension: city_name {
