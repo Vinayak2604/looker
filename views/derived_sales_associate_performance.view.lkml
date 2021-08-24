@@ -157,6 +157,57 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.L30D_Pre_bookings ;;
   }
 
+  dimension: L3D_Calls_Completed {
+    type: number
+    sql: ${TABLE}.L3D_Calls_Completed ;;
+  }
+
+  dimension: L7D_Calls_Completed {
+    type: number
+    sql: ${TABLE}.L7D_Calls_Completed ;;
+  }
+
+  dimension: L14D_Calls_Completed {
+    type: number
+    sql: ${TABLE}.L14D_Calls_Completed ;;
+  }
+
+  dimension: L21D_Calls_Completed {
+    type: number
+    sql: ${TABLE}.L21D_Calls_Completed ;;
+  }
+
+  dimension: L30D_Calls_Completed {
+    type: number
+    sql: ${TABLE}.L30D_Calls_Completed ;;
+  }
+
+  dimension: L3D_Visits_Completed {
+    type: number
+    sql: ${TABLE}.L3D_Visits_Completed ;;
+  }
+
+  dimension: L7D_Visits_Completed {
+    type: number
+    sql: ${TABLE}.L7D_Visits_Completed ;;
+  }
+
+  dimension: L14D_Visits_Completed {
+    type: number
+    sql: ${TABLE}.L14D_Visits_Completed ;;
+  }
+
+  dimension: L21D_Visits_Completed {
+    type: number
+    sql: ${TABLE}.L21D_Visits_Completed ;;
+  }
+
+  dimension: L30D_Visits_Completed {
+    type: number
+    sql: ${TABLE}.L30D_Visits_Completed ;;
+  }
+
+
   dimension: name {
     type: string
     sql: ${TABLE}.name ;;
@@ -266,9 +317,9 @@ view: derived_sales_associate_performance {
         sql: COALESCE(${drop},0) ;;
       }
 
-  measure: L3D_Pre_booking {
-    type: max
-    sql: COALESCE(${L3D_Pre_bookings},0) ;;
+    measure: L3D_Pre_booking {
+        type: max
+         sql: COALESCE(${L3D_Pre_bookings},0) ;;
   }
 
   measure:L7D_Pre_booking {
@@ -290,6 +341,58 @@ view: derived_sales_associate_performance {
     type: max
     sql: COALESCE(${L30D_Pre_bookings},0) ;;
   }
+
+  measure: L3D_CallsCompleted {
+    type: max
+    sql: COALESCE(${L3D_Calls_Completed},0) ;;
+  }
+
+  measure:L7D_CallsCompleted {
+    type: max
+    sql: COALESCE(${L7D_Calls_Completed},0) ;;
+  }
+
+  measure: L14D_CallsCompleted {
+    type: max
+    sql: COALESCE(${L14D_Calls_Completed},0) ;;
+  }
+
+  measure: L21D_CallsCompleted {
+    type: max
+    sql: COALESCE(${L21D_Calls_Completed},0) ;;
+  }
+
+  measure: L30D_CallsCompleted {
+    type: max
+    sql: COALESCE(${L30D_Calls_Completed},0) ;;
+  }
+
+  measure: L3D_VisitsCompleted {
+    type: max
+    sql: COALESCE(${L3D_Visits_Completed},0) ;;
+  }
+
+  measure:L7D_VisitsCompleted {
+    type: max
+    sql: COALESCE(${L7D_Visits_Completed},0) ;;
+  }
+
+  measure: L14D_VisitsCompleted {
+    type: max
+    sql: COALESCE(${L14D_Visits_Completed},0) ;;
+  }
+
+  measure: L21D_VisitsCompleted {
+    type: max
+    sql: COALESCE(${L21D_Visits_Completed},0) ;;
+  }
+
+  measure: L30D_VisitsCompleted {
+    type: max
+    sql: COALESCE(${L30D_Visits_Completed},0) ;;
+  }
+
+
   measure: count {
     type: count
     drill_fields: [residence_name]
