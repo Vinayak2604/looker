@@ -172,7 +172,7 @@ view: derived_sales_associate_performance {
 
   measure: L3D_full_booking {
     type: sum
-    sql: case when date(${created_date}) >= date_add('day',-3,current_date) and date(${created_date}) <= date_add('day',-1,current_date) then ${bookings} end;;
+    sql: case when date(${created_date}) >= date(date_add('day',-3,current_date)) and date(${created_date}) <= date(date_add('day',-1,current_date)) then ${bookings} end;;
   }
   measure: pre_bookings {
     type: max

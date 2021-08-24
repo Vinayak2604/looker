@@ -220,4 +220,9 @@ view: derived_food_invoice {
     type: date
     sql: max(${TABLE}.po_created_at) ;;
   }
+
+  measure: Last_PO_dormant_days {
+    type: number
+    sql: diff_days(${last_po_created_at},DATE(now()) ;;
+  }
 }
