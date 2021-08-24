@@ -132,6 +132,31 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.residence_type ;;
   }
 
+  dimension: L3D_Pre_bookings {
+    type: number
+    sql: ${TABLE}.L3D_Pre_bookings ;;
+  }
+
+  dimension: L7D_Pre_bookings {
+    type: number
+    sql: ${TABLE}.L7D_Pre_bookings ;;
+  }
+
+  dimension: L14D_Pre_bookings {
+    type: number
+    sql: ${TABLE}.L14D_Pre_bookings ;;
+  }
+
+  dimension: L21D_Pre_bookings {
+    type: number
+    sql: ${TABLE}.L21D_Pre_bookings ;;
+  }
+
+  dimension: L30D_Pre_bookings {
+    type: number
+    sql: ${TABLE}.L30D_Pre_bookings ;;
+  }
+
   dimension: name {
     type: string
     sql: ${TABLE}.name ;;
@@ -240,6 +265,31 @@ view: derived_sales_associate_performance {
         type: max
         sql: ${drop} ;;
       }
+
+  measure: L3D_Pre_booking {
+    type: max
+    sql: ${L3D_Pre_bookings} ;;
+  }
+
+  measure:L7D_Pre_booking {
+    type: max
+    sql: ${L7D_Pre_bookings} ;;
+  }
+
+  measure: L14D_Pre_booking {
+    type: max
+    sql: ${L14D_Pre_bookings} ;;
+  }
+
+  measure: L21D_Pre_booking {
+    type: max
+    sql: ${L21D_Pre_bookings} ;;
+  }
+
+  measure: L30D_Pre_booking {
+    type: max
+    sql: ${L30D_Pre_bookings} ;;
+  }
   measure: count {
     type: count
     drill_fields: [residence_name]
