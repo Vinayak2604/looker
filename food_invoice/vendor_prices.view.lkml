@@ -66,7 +66,7 @@ group by
 
   measure: item_count {
     type: count_distinct
-    sql: ${TABLE}.item_uuid ;;
+    sql: ${TABLE}.itemuuid ;;
   }
 
 }

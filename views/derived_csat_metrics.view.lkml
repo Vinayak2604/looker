@@ -189,11 +189,11 @@ view: derived_csat_metrics {
   measure: feedback_given {
     type: count
     filters: [feedback:"NOT NULL"]
+
   }
 
   measure: count_perc_positive {
     sql: ${feedback_postive}/${feedback_given} ;;
-
   }
 
   measure: count_perc_negative {
