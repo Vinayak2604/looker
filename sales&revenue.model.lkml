@@ -23,7 +23,12 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
       }
   }
 
-  explore: acq_cost {  }
+  explore: acq_cost {
+    join: derived_cac_budget{
+      relationship: many_to_one
+      type: full_outer
+      sql_on: ${acq_cost.micromarket}=${derived_cac_budget.micromarket} ;;
+    }}
 
   explore: derived_inventory_pricing {
     join: derived_sku_pricing {

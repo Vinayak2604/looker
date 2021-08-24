@@ -126,6 +126,12 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.zone_name ;;
   }
 
+
+  dimension: residence_type {
+    type: string
+    sql: ${TABLE}.residence_type ;;
+  }
+
   dimension: name {
     type: string
     sql: ${TABLE}.name ;;

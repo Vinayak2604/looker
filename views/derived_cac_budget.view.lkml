@@ -47,7 +47,7 @@ view: derived_cac_budget {
   }
   dimension:primary_key {
     primary_key: yes
-    sql: ${micromarket} ;;
+    sql: CONCAT(${micromarket},${cluster}) ;;
   }
 
   measure: count {

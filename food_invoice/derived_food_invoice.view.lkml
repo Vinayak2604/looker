@@ -1,16 +1,9 @@
 view: derived_food_invoice {
-  derived_table: {
-    sql: Select * FROM stanza.derived_food_invoice
-    where {% condition date1 %} po_created_at {% endcondition %};;
-  }
+  sql_table_name: stanza.derived_food_invoice ;;
 
   dimension: cancelled_flag {
     type: number
     sql: ${TABLE}.cancelled_flag ;;
-  }
-
-  parameter: date1 {
-    type: date
   }
 
   dimension: city_name {
@@ -184,6 +177,11 @@ view: derived_food_invoice {
     }
   }
 
+  measure: Last_PO_dormant_days {
+    type: number
+    sql: datediff(day,${last_po_created_at},DATE(current_date)) ;;
+  }
+
   measure: item_count {
     type: count_distinct
     sql: ${TABLE}.item_name ;;
@@ -219,10 +217,5 @@ view: derived_food_invoice {
   measure: last_po_created_at {
     type: date
     sql: max(${TABLE}.po_created_at) ;;
-  }
-
-  measure: Last_PO_dormant_days {
-    type: number
-    sql: diff_days(${last_po_created_at},DATE(now()) ;;
   }
 }
