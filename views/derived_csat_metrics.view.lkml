@@ -192,15 +192,6 @@ view: derived_csat_metrics {
 
   }
 
-  measure: count_perc_positive {
-    sql: ${feedback_postive}/${feedback_given} ;;
-  }
-
-  measure: count_perc_negative {
-    sql: ${feedback_negative}/${feedback_given} ;;
-  }
-
-  measure: label_creator {}
 
   # measure: count_total_mtd {
   #   type: count

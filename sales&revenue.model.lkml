@@ -35,10 +35,6 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
       relationship: many_to_one
       type: left_outer
       sql_on: ${derived_sku_pricing.micromarket}=${derived_inventory_pricing.micro_market} ;;
-    } join: liveblended_gsheet {
-      relationship: one_to_one
-      type: inner
-      sql_on: ${derived_inventory_pricing.house} = ${liveblended_gsheet.house}  ;;
     }
   }
   # explore: derived_sku_pricing {
