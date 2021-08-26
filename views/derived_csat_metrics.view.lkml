@@ -193,10 +193,17 @@ view: derived_csat_metrics {
   }
 
   dimension: zone {
-    sql: case when ${TABLE}.city_name IN ('Dehradun','Delhi') then 'North'
-    else 'South' end;;
+    sql: case when ${TABLE}.city_name IN ('Dehradun','Delhi','Indore','Noida','New Delhi','Greater Noida','Gurgaon') then 'North'
+              when ${TABLE}.city_name IN ('Bengaluru','Udipi','Bangalore','Davanagere','Manipal') then 'South-1'
+              when ${TABLE}.city_name IN ('Chennai','Coimbatore','Hyderabad','Vijayawada','Vizag','Visakhapatnam') then 'South-2'
+              when ${TABLE}.city_name IN ('Ahmedabad','Baroda','Vidya Nagar','Vadodara','Pune') then 'West'
+    else null end;;
 
   }
+
+# dimension: zone_map {
+#   map_layer_name:
+# }
 
 
   # measure: count_total_mtd {
