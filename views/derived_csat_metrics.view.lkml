@@ -201,6 +201,12 @@ view: derived_csat_metrics {
 
   }
 
+  # dimension: TAT {
+  #   type: number
+  #   sql: DA ;;
+  #   ;;
+  # }
+
 # dimension: zone_map {
 #   map_layer_name:
 # }

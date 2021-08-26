@@ -328,6 +328,13 @@ view: derived_sales_associate_performance {
     measure: L3D_Pre_booking {
         type: max
          sql: COALESCE(${L3D_Pre_bookings},0) ;;
+      html: {% if value > 0 %}
+      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+      {% else %}
+      <p style="color: black"> - </p>
+
+      {% endif %} ;;
   }
 
   measure:L7D_Pre_booking {
