@@ -276,7 +276,7 @@ view: derived_sales_associate_performance {
 
   measure: target_revenue {
     type: sum
-    sql:  (case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence}*${blended_price} end)/100000;;
+    sql:  (case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence}*${blended_price_target} end)/100000;;
     value_format: "0"
  }
 
