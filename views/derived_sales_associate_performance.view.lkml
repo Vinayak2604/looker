@@ -274,6 +274,13 @@ view: derived_sales_associate_performance {
   measure: pre_bookings {
     type: max
     sql: COALESCE(${pre_booking},0) ;;
+    html:   {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
   }
     measure: target {
         type: sum
@@ -300,36 +307,85 @@ view: derived_sales_associate_performance {
     measure: Visits_in_TAT {
         type: max
         sql: COALESCE(${visits_in_tat},0) ;;
+        html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
       }
 
     measure: Visits_Completed {
         type: max
         sql: COALESCE(${visits_completed},0) ;;
+        html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
       }
 
     measure: dropped_after_visit {
         type: max
         sql: COALESCE(${drop_after_visit},0) ;;
+        html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
       }
 
     measure: Calls_Completed_in_TAT {
         type: max
         sql: COALESCE(${calls_completed_in_tat},0) ;;
+        html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
       }
 
     measure: Calls_Completed {
         type: max
         sql: COALESCE(${calls_completed},0) ;;
+        html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
       }
 
   measure: Moved_Up {
     type: max
     sql: COALESCE(${moved_up},0) ;;
+    html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
   }
 
     measure: dropped {
         type: max
         sql: COALESCE(${drop},0) ;;
+        html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
       }
 
     measure: L3D_Pre_booking {
