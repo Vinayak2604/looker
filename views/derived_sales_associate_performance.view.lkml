@@ -258,7 +258,10 @@ view: derived_sales_associate_performance {
     type: count_distinct
     sql: ${residence_name} ;;
   }
-
+  measure: full_booking_1 {
+    type: number
+    sql: ${full_booking}/${count_residence} ;;
+  }
 
   measure: L3D_full_booking {
     type: sum
