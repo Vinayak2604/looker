@@ -340,71 +340,169 @@ view: derived_sales_associate_performance {
   measure:L7D_Pre_booking {
     type: max
     sql: COALESCE(${L7D_Pre_bookings},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L14D_Pre_booking {
     type: max
     sql: COALESCE(${L14D_Pre_bookings},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L21D_Pre_booking {
     type: max
     sql: COALESCE(${L21D_Pre_bookings},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L30D_Pre_booking {
     type: max
     sql: COALESCE(${L30D_Pre_bookings},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L3D_CallsCompleted {
     type: max
     sql: COALESCE(${L3D_Calls_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure:L7D_CallsCompleted {
     type: max
     sql: COALESCE(${L7D_Calls_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L14D_CallsCompleted {
     type: max
     sql: COALESCE(${L14D_Calls_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L21D_CallsCompleted {
     type: max
     sql: COALESCE(${L21D_Calls_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L30D_CallsCompleted {
     type: max
     sql: COALESCE(${L30D_Calls_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L3D_VisitsCompleted {
     type: max
     sql: COALESCE(${L3D_Visits_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure:L7D_VisitsCompleted {
     type: max
     sql: COALESCE(${L7D_Visits_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L14D_VisitsCompleted {
     type: max
     sql: COALESCE(${L14D_Visits_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L21D_VisitsCompleted {
     type: max
     sql: COALESCE(${L21D_Visits_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
   measure: L30D_VisitsCompleted {
     type: max
     sql: COALESCE(${L30D_Visits_Completed},0) ;;
+    html: {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %} ;;
   }
 
 
