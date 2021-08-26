@@ -192,6 +192,12 @@ view: derived_csat_metrics {
 
   }
 
+  dimension: zone {
+    sql: case when ${TABLE}.city_name IN ('Dehradun','Delhi') then 'North'
+    else 'South' end;;
+
+  }
+
 
   # measure: count_total_mtd {
   #   type: count

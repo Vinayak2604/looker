@@ -106,6 +106,10 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.blended_price ;;
   }
 
+  dimension: blended_price_target {
+    type: number
+    sql: ${TABLE}.blended_price_target ;;
+  }
   dimension: under_written_price {
     type: number
     sql: ${TABLE}.under_written_price ;;
@@ -221,13 +225,13 @@ view: derived_sales_associate_performance {
 
   measure: target_achieved {
     type: sum
-    sql: ${bookings}*${blended_price} ;;
+    sql: ${blended_price} ;;
     value_format: "0"
   }
 
   measure: under_written_revenue {
     type: sum
-    sql: ${bookings}*${under_written_price} ;;
+    sql: ${under_written_price} ;;
     value_format: "0"
   }
 
@@ -246,11 +250,15 @@ view: derived_sales_associate_performance {
     type: running_total
     sql: ${bookings} ;;
   }
-
   measure: full_booking {
         type: sum
         sql: ${bookings} ;;
       }
+  measure: count_residence {
+    type: count_distinct
+    sql: ${residence_name} ;;
+  }
+
 
   measure: L3D_full_booking {
     type: sum
