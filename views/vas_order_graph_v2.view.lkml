@@ -21,12 +21,12 @@ view: vas_order_graph_v2 {
 
       select distinct *
       from
-      (select yr, mt, city, micromarket, residence, user_id, id as order_code, "" as final_total_amount, 'meal' as type
+      (select extract(year from date) yr,extract(month from date) mt, city, micromarket, residence, user_id, id as order_code, "" as final_total_amount, 'meal' as type
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01 00:00:00'
       and cafe_availability = true
       union
-      select yr, mt, city, micromarket, residence, user_id, order_code, final_total_amount, 'order' as type
+      select extract(year from date) yr,extract(month from date) mt, city, micromarket, residence, user_id, order_code, final_total_amount, 'order' as type
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2021-01-01 00:00:00'
       ) x;;
