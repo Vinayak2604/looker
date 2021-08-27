@@ -40,3 +40,4 @@ explore: vas_ageing_order_bucket_cm {}
 explore: vas_order_mrr_graph {}
 explore: vas_ageing_line_graph {}
 explore: vas_orders_per_day {}
+explore: vas_order_graph_v2 {}

@@ -35,6 +35,7 @@ view: derived_csat_metrics {
     sql: ${TABLE}.created_time ;;
   }
 
+
   dimension: feedback {
     type: number
     sql: ${TABLE}.feedback ;;
@@ -142,6 +143,18 @@ view: derived_csat_metrics {
     ELSE 'Only 3'
     END ;;
   }
+
+  dimension: ope_rank {
+    type: string
+    sql: CASE
+          WHEN ${TABLE}.ope_filter = 'Pre move-in'  THEN 1
+          WHEN ${TABLE}.ope_filter = 'Onboarded'  THEN 2
+          WHEN ${TABLE}.ope_filter = 'Exited'  THEN 3
+          WHEN ${TABLE}.ope_filter = 'Resident not known'  THEN 4
+          else 5
+          END ;;
+  }
+
 
   dimension: only_3_days {
     type: string
