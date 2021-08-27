@@ -285,6 +285,7 @@ view: derived_sales_associate_performance {
         type: sum
         sql: ${bookings} ;;
       }
+
   measure: count_residence {
     type: count_distinct
     sql: ${residence_name} ;;
