@@ -210,7 +210,8 @@ view: derived_csat_metrics {
               when ${TABLE}.city_name IN ('Bengaluru','Udipi','Bangalore','Davanagere','Manipal') then 'South-1'
               when ${TABLE}.city_name IN ('Chennai','Coimbatore','Hyderabad','Vijayawada','Vizag','Visakhapatnam') then 'South-2'
               when ${TABLE}.city_name IN ('Ahmedabad','Baroda','Vidya Nagar','Vadodara','Pune') then 'West'
-    else null end;;
+    else 'Not Identified' end
+    ;;
 
   }
 

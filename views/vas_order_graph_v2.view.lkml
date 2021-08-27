@@ -26,7 +26,7 @@ view: vas_order_graph_v2 {
       (select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
       from
       upr
-      left join vo on upr.micromarket = vo.micromarket and upr.city = vo.city and upr.mt = vo.mt
+      left join vo on upr.micromarket = vo.micromarket and upr.city = vo.city and upr.mt = vo.mt and upr.residence = vo.residence
       union
 
 
