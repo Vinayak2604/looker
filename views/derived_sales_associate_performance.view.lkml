@@ -86,7 +86,7 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.uuid ;;
   }
 
-  dimension: visits_completed {
+  dimension: visitscompleted {
     type: number
     sql: COALESCE(${TABLE}.visits_completed,0) ;;
   }
@@ -211,6 +211,25 @@ view: derived_sales_associate_performance {
     sql: ${TABLE}.L30D_Visits_Completed ;;
   }
 
+  dimension: contract_months {
+    type: number
+    sql: ${TABLE}.contract_months ;;
+  }
+
+  dimension: lock_in_months {
+    type: number
+    sql: ${TABLE}.lock_in_months ;;
+  }
+
+  dimension: achieved_target {
+    type: number
+    sql: ${TABLE}.achieved_target ;;
+  }
+
+  dimension: count_of_booking_id {
+    type: number
+    sql: ${TABLE}.count_of_booking_id ;;
+  }
 
   dimension: name {
     type: string
@@ -250,6 +269,12 @@ view: derived_sales_associate_performance {
     type: running_total
     sql: ${bookings} ;;
   }
+
+  measure: lock_in_month {
+    type: sum
+    sql: ${lock_in_months} ;;
+  }
+
   measure: full_booking {
         type: sum
         sql: ${bookings} ;;
@@ -258,22 +283,67 @@ view: derived_sales_associate_performance {
     type: count_distinct
     sql: ${residence_name} ;;
   }
-  measure: full_booking_1 {
+
+
+  measure: full_bookings {
     type: number
     sql: ${full_booking}/${count_residence} ;;
+    html:  {% if value > 0 %}
+    <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+    {% else %}
+    <p style="color: black"> - </p>
+
+    {% endif %}  ;;
+    value_format: "0"
+  }
+
+
+
+#  ${target_achieved_1}/(${derived_sales_associate_performance.target_revenue}*100000)
+  measure: Ach_Beds{
+    type: number
+    sql: ${full_bookings}/${target} ;;
+    html:  {% if value > 0 %}
+          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+          {% else %}
+          <p style="color: black"> - </p>
+
+          {% endif %}  ;;
+    value_format: "0%"
+  }
+
+  measure: Ach_Revenue{
+    type: number
+    sql: ${full_bookings}/ (${target_revenue}*100000);;
+    html:  {% if value > 0 %}
+          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+          {% else %}
+          <p style="color: black"> - </p>
+
+          {% endif %}  ;;
+    value_format: "0%"
+  }
+
+  measure: L3Dfullbooking {
+    type: sum
+    sql: case when date(${created_date}) >= date(date_add('day',-3,current_date)) and date(${created_date}) <= date(date_add('day',-1,current_date)) then ${bookings} end;;
   }
 
   measure: L3D_full_booking {
-    type: sum
-    sql: case when date(${created_date}) >= date(date_add('day',-3,current_date)) and date(${created_date}) <= date(date_add('day',-1,current_date)) then ${bookings} end;;
+    type: number
+    sql: ${L3Dfullbooking}/${count_residence};;
     html: {% if value > 0 %}
     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
     {% else %}
     <p style="color: black"> - </p>
 
-    {% endif %} ;;
+    {% endif %}   ;;
   }
+
   measure: pre_bookings {
     type: max
     sql: COALESCE(${pre_booking},0) ;;
@@ -293,7 +363,7 @@ view: derived_sales_associate_performance {
 
   measure: target_revenue {
     type: sum
-    sql:  (case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence}*${blended_price_target} end)/100000;;
+    sql:  (case when date(${created_date}) = date_add('day',-1,current_date) then ${target_per_residence}*${blended_price_target}*12 end)/100000;;
     value_format: "0"
  }
 
@@ -321,7 +391,7 @@ view: derived_sales_associate_performance {
 
     measure: Visits_Completed {
         type: max
-        sql: COALESCE(${visits_completed},0) ;;
+        sql: COALESCE(${visitscompleted},0) ;;
         html:  {% if value > 0 %}
     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
 
@@ -570,7 +640,6 @@ view: derived_sales_associate_performance {
 
     {% endif %} ;;
   }
-
 
   measure: count {
     type: count
