@@ -109,8 +109,13 @@ where po.committed >0 and am.category_name not like '%Discount'
     sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) ;;
     value_format: "0.0"
     html: {% if value <= -0.01 or value >= 0.01 %}
-      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+      {% if value < 0 %}
 
+        <p style="color: black; font-size:100%">{{ rendered_value | replace:"-","" }}</p>
+      {% else %}
+        <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+      {% endif %}
     {% else %}
       <p style="color: red"> - </p>
 
