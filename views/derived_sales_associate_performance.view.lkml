@@ -254,6 +254,12 @@ view: derived_sales_associate_performance {
     value_format: "0"
   }
 
+  measure: Revenue_Booked {
+    type: sum
+    sql: ${achieved_target} ;;
+    value_format: "0"
+  }
+
   measure: Total_Revenue {
     type: sum
     sql: ${final_selling_price} ;;
