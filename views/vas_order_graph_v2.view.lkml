@@ -26,14 +26,14 @@ view: vas_order_graph_v2 {
       (select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
       from
       upr
-      left join vo on upr.micromarket = vo.micromarket and upr.city = vo.city and upr.mt = vo.mt and upr.residence = vo.residence
+      join vo on upr.micromarket = vo.micromarket and upr.city = vo.city and upr.mt = vo.mt and upr.residence = vo.residence
       union
 
 
       select vo.yr, vo.mt, vo.city, vo.micromarket,vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
       from
       vo
-      left join upr on vo.micromarket = upr.micromarket and vo.city = upr.city and vo.mt = upr.mt and vo.residence = upr.residence ) x;;
+      join upr on vo.micromarket = upr.micromarket and vo.city = upr.city and vo.mt = upr.mt and vo.residence = upr.residence ) x;;
 
     }
 
