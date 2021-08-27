@@ -185,7 +185,7 @@ view: derived_csat_metrics {
   }
 
   measure: count_total {
-    type: count
+    type: count_distinct
   }
 
 

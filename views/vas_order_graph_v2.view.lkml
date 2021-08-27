@@ -1,6 +1,6 @@
 view: vas_order_graph_v2 {
   derived_table: {
-    sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket,residence, max(distinct user_id) as moved_in_residents, count(distinct upr.id) as consumed_meals,
+    sql:    with upr as (select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket,residence, count(distinct user_id) as moved_in_residents, count(distinct upr.id) as consumed_meals,
       count(distinct case when upr.rating is not null then upr.id end) as rated_meals,
       count(distinct user_id) as meal_users,
       count(distinct case when system_generated = 0 and preference_available = 1 then user_id end) as preference_users,
@@ -9,9 +9,7 @@ view: vas_order_graph_v2 {
       count(distinct case when preference_available = 1 then id end) as preference_available_meals
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01 00:00:00'
-      and {% condition meal_type %} meal_type {% endcondition %}
-      and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
-      and {% condition preference_availability_flag %} preference_available {% endcondition %}
+      and cafe_availability = true
       group by 1,2,3,4,5),
 
       vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt, city, micromarket,residence, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
@@ -23,39 +21,19 @@ view: vas_order_graph_v2 {
 
       select distinct *
       from
-      (select upr.*, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
-      from
-      upr
-      join vo on upr.micromarket = vo.micromarket and upr.city = vo.city and upr.mt = vo.mt and upr.residence = vo.residence
+      (select yr, mt, city, micromarket, residence, user_id, id as order_code, "" as final_total_amount, 'meal' as type
+      from looker_demo.derived_user_preference_rating upr
+      where upr.date >= '2021-01-01 00:00:00'
+      and cafe_availability = true
       union
-
-
-      select vo.yr, vo.mt, vo.city, vo.micromarket,vo.residence, upr.moved_in_residents, upr.consumed_meals, upr.rated_meals, upr.meal_users, upr.preference_users, upr.preference_available_users, upr.preference_meals, upr.preference_available_meals, vo.total_orders, vo.rated_orders, aov, total_amount, order_users
-      from
-      vo
-      join upr on vo.micromarket = upr.micromarket and vo.city = upr.city and vo.mt = upr.mt and vo.residence = upr.residence ) x;;
+      select yr, mt, city, micromarket, residence, user_id, order_code, final_total_amount, 'order' as type
+      from looker_demo.derived_vas_orders vo
+      where vo.date >= '2021-01-01 00:00:00'
+      ) x;;
 
     }
 
 
-
-    filter: meal_type {
-      # sql: exists (select distinct meal_type from derived_user_preference_rating) ;;
-      suggestions: ["BREAKFAST","LUNCH","DINNER","EVENING_SNACKS"]
-      type: string
-    }
-
-    filter: cafe_availability_flag {
-      # sql: exists (select distinct meal_type from derived_user_preference_rating) ;;
-      suggestions: ["1","0"]
-      type: string
-    }
-
-    filter: preference_availability_flag {
-      # sql: exists (select distinct meal_type from derived_user_preference_rating) ;;
-      suggestions: ["1","0"]
-      type: string
-    }
 
     dimension: yr {
       type: string
@@ -85,42 +63,46 @@ view: vas_order_graph_v2 {
     }
 
 
-    dimension: moved_in_resident {
+    dimension: user_id {
       type: number
-      sql: ${TABLE}.moved_in_residents ;;
+      sql: ${TABLE}.user_id ;;
     }
 
 
-    dimension: total_order {
+    dimension: order_code {
       type: number
-      sql: ${TABLE}.total_orders ;;
+      sql: ${TABLE}.order_code ;;
     }
 
-    dimension: order_user {
+    dimension: final_total_amount {
       type: number
-      sql: ${TABLE}.order_users ;;
+      sql: ${TABLE}.final_total_amount ;;
     }
 
+  dimension: type {
+    type: number
+    sql: ${TABLE}.type ;;
+  }
 
     measure: moved_in_residents {
-      type: sum
-      sql: ${moved_in_resident} ;;
+      type: count_distinct
+      sql: ${user_id} ;;
     }
 
 
     measure: total_orders {
-      type: sum
-      sql: ${total_order};;
+      type: count_distinct
+      sql: case when  ${type} = 'order' then ${order_code} end  ;;
     }
 
     measure: order_users {
-      type: sum
-      sql: ${order_user} ;;
+      type: count_distinct
+      sql: case when  ${type} = 'order' then ${user_id} end ;;
     }
 
     measure: total_amount {
       type: sum
-      sql: ${TABLE}.total_amount ;;
+      sql: ${TABLE}.final_total_amount ;;
       value_format: "#,##0"
       html: <p> &#x20B9; {{rendered_value}} </p> ;;
     }
