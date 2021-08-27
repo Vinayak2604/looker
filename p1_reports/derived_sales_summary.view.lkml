@@ -6,6 +6,7 @@ from derived_sales_summary
 where {% condition date %} date {% endcondition %}),
 b as (select residence_id,
 sum(bookings) as filtered_period_bookings,
+sum(case when rn = 1 then bookings else 0 end) as today_bookings,
 sum(case when rn > 1 and rn <= 2 then bookings else 0 end) as yesterday_bookings,
 sum(case when rn > 1 and rn <= 4 then bookings else 0 end) as l3d_bookings,
 sum(case when rn > 1 and rn <= 8 then bookings else 0 end) as l7d_bookings,
@@ -19,7 +20,7 @@ sum(refunded_prebookings) as filtered_period_refunded_prebookings,
 sum(converted_prebookings) as filtered_period_converted_prebookings
 from a
 group by 1)
-select a.*, b.filtered_period_bookings, b.yesterday_bookings, b.l3d_bookings, b.l7d_bookings, b.l30d_bookings,
+select a.*, b.filtered_period_bookings, b.today_bookings, b.yesterday_bookings, b.l3d_bookings, b.l7d_bookings, b.l30d_bookings,
 b.filtered_period_prebookings, b.yesterday_prebookings, b.l3d_prebookings, b.l7d_prebookings, b.l30d_prebookings, b.filtered_period_refunded_prebookings,
 b.filtered_period_converted_prebookings
 from a
@@ -42,6 +43,18 @@ where a.rn = 1;;
       <p style="color: black"> - </p>
 
     {% endif %} ;;
+  }
+
+  measure: today_bookings {
+    type: sum
+    sql: ${TABLE}.today_bookings ;;
+    html: {% if value > 0 %}
+          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+          {% else %}
+          <p style="color: black"> - </p>
+
+          {% endif %} ;;
   }
 
   measure: yesterday_bookings {
@@ -247,6 +260,14 @@ where a.rn = 1;;
     type: sum
     sql: ${TABLE}.live_beds ;;
     value_format: "#,##0"
+  }
+
+  measure: live_beds_t {
+    type: sum
+    sql: ${TABLE}.live_beds ;;
+    value_format: "#,##0"
+    html:
+    <p style="color: black; font-size:100%"></p> ;;
   }
 
   dimension: live_bookings {
