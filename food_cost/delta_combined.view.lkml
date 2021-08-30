@@ -4,7 +4,7 @@ view: delta_combined {
 from (select vendor_name,
            sum(dfc.house_wise_actual_cost_cogs)/nullif(sum((actual_blended_order + actual_sl_blended_order)*menu_cost),0) as delta_cogs
     from stanza.derived_food_cost dfc
-    where menu_date> current_date - 7 and menu_date<current_date
+    where menu_date> {% condition start_date %} menu_date {% endcondition %} and menu_date <= {% condition end_date %} menu_date {% endcondition %}
     group by 1) a
 
 left join (select vendor_name,
@@ -82,10 +82,20 @@ left join (select vendor_name,
                        on list.b = ap.address_name) b
               on a.vendor_name = b.kitchen_name and a.ingredient_name = b.recipe_tag)
       group by 1,2,3,4,5)
-      where menu_date> current_date - 7 and menu_date<current_date
+      where menu_date> {% condition start_date %} menu_date {% endcondition %} and menu_date <= {% condition end_date %} menu_date {% endcondition %}
       group by 1) b
   on a.vendor_name = b.vendor_name ;;
   }
+
+
+  parameter: start_date {
+    type: date
+  }
+
+  parameter: end_date {
+    type: date
+  }
+
 
   dimension: vendor_name {
     type: string

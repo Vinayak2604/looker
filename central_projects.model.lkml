@@ -87,3 +87,5 @@ explore: food_cost_items {}
 explore: item_price_comparison {}
 
 explore: food_cost_items_dt {}
+
+explore: delta_combined {}

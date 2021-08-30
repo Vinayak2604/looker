@@ -214,6 +214,8 @@ view: derived_csat_metrics {
     ;;
 
   }
+    }
+
 
 
   # dimension: TAT {
@@ -247,6 +249,3 @@ view: derived_csat_metrics {
   #   type: count
   #   filters: [feedback:"NOT NULL"]
   # }
-
-
-}
