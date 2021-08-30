@@ -98,8 +98,8 @@ where po.committed >0 and am.category_name not like '%Discount'
   # }
 
   measure: Committed_delta {
-    type: sum
-    sql: case when COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) is null then "-" else COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) end ;;
+    type: number
+    sql: sum(case when COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) is null then "-" else COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) end) ;;
     value_format: "0.00"
     html: {% if value <= -0.01 or value >= 0.01 %}
       {% if value < 0 %}
