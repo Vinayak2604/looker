@@ -87,3 +87,11 @@ explore: food_cost_items {}
 explore: item_price_comparison {}
 
 explore: food_cost_items_dt {}
+
+explore: delta_cogs_view {
+  join: food_cost_items_dt {
+    sql_on: ${delta_cogs_view.menu_date} = ${food_cost_items_dt.menu_date} and ${delta_cogs_view.vendor_name}=${food_cost_items_dt.vendor_name} ;;
+    relationship: one_to_one
+    type: left_outer
+  }
+}
