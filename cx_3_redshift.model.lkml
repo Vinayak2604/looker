@@ -53,6 +53,18 @@ explore: derived_csat_metrics {
   }
 }
 
+view: zoned_complainted {
+  derived_table: {
+
+    sql: SELECT zone , COUNT(*) as counter
+    FROM stanza.derived_csat_metrics;;
+  }
+  dimension: zone_comp {
+    type: string
+    sql: concat(zone,counter) ;;
+  }
+}
+
 view: complaint_ranking {
   derived_table: {
     sql:
