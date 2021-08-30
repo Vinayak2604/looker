@@ -51,17 +51,19 @@ explore: derived_csat_metrics {
     sql_on: ${complaint_ranking.complaint} = ${derived_csat_metrics.complain_cat} ;;
     relationship: many_to_one
   }
+
 }
+
 
 view: zoned_complainted {
   derived_table: {
 
-    sql: SELECT zone , COUNT(*) as counter
-    FROM stanza.derived_csat_metrics;;
+    sql: SELECT zone as zoner , COUNT(*) as counter
+    FROM ${derived_csat_metrics.SQL_TABLE_NAME};;
   }
   dimension: zone_comp {
     type: string
-    sql: concat(zone,counter) ;;
+    sql: concat(zoner,counter) ;;
   }
 }
 
