@@ -46,8 +46,8 @@
     }
 
     measure: budget {
-      type: number
-      sql: sum(${TABLE}.budget)/10^5 ;;
+      type: sum
+      sql: ${TABLE}.budget)/10^5 ;;
       value_format: "#,##0.0"
     }
 

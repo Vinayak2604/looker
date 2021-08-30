@@ -46,11 +46,11 @@ view: ranked_subcat {
 
 explore: derived_csat_metrics {
 
-  # join: complaint_ranking {
-  #   type: inner
-  #   sql_on: ${complaint_ranking.complaint} = ${derived_csat_metrics.complain_cat} ;;
-  #   relationship: many_to_one
-  # }
+  join: complaint_ranking {
+    type: inner
+    sql_on: ${complaint_ranking.complaint} = ${derived_csat_metrics.complain_cat} ;;
+    relationship: many_to_one
+  }
 }
 
 view: complaint_ranking {

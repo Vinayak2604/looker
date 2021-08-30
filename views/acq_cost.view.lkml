@@ -61,13 +61,6 @@ where po.committed >0 and am.category_name not like '%Discount'
     type: sum
     sql: ${TABLE}.committed/10^5 ;;
     value_format: "#,##0.0"
-    html: {% if value > 0 %}
-    <p style="color: black; font-size:100%"></p>
-
-    {% else %}
-    <p style="color: black"> - </p>
-
-    {% endif %} ;;
   }
 
   measure: budget {
@@ -107,7 +100,7 @@ where po.committed >0 and am.category_name not like '%Discount'
   measure: Committed_delta {
     type: sum
     sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) ;;
-    value_format: "0.0"
+    value_format: "0.00"
     html: {% if value <= -0.01 or value >= 0.01 %}
       {% if value < 0 %}
 
@@ -125,10 +118,15 @@ where po.committed >0 and am.category_name not like '%Discount'
   measure: Actual_delta {
     type: sum
     sql: COALESCE((${TABLE}.actual-${TABLE}.actual_lag)/10^7,0) ;;
-    value_format: "0.0"
-    html: {% if value >= -0.01 or value <= 0.01 %}
-      <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+    value_format: "0.00"
+    html:  {% if value <= -0.01 or value >= 0.01 %}
+      {% if value < 0 %}
 
+        <p style="color: red; font-size:100%">{{ rendered_value | replace:'-','' | prepend:'(' | append:')' }}</p>
+      {% else %}
+        <p style="color: black; font-size:100%">{{ rendered_value }}</p>
+
+      {% endif %}
     {% else %}
       <p style="color: red"> - </p>
 
