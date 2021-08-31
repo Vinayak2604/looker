@@ -8,7 +8,8 @@ from
   (select
     vendor_name,
     property,
-    sum(unit_rate_rent_per_month * quantity) amount_purchased
+    sum(unit_rate_rent_per_month * quantity) amount_purchased_from_vendor,
+    sum(amount_purchased_from_vendor) over (partition by property) store_purchase
   from
     stanza.derived_food_invoice dfi
 where
@@ -47,6 +48,7 @@ left join
     and t.__hevo__marked_deleted = false
     and m.__hevo__marked_deleted = false
     and p.__hevo__marked_deleted = false
+    and DATE(t.updated_at)>='2021-03-01'
     and {% condition date1 %} DATE(t.updated_at) {% endcondition %}
   group by
     1) as b on
@@ -66,7 +68,13 @@ left join
 
   dimension: amount_purchased {
     type: number
-    sql: ${TABLE}.amount_purchased ;;
+    sql: ${TABLE}.amount_purchased_from_vendor ;;
+    value_format: "#,##0"
+  }
+
+  dimension: store_purchase {
+    type: number
+    sql: ${TABLE}.store_purchase ;;
     value_format: "#,##0"
   }
 
@@ -83,6 +91,12 @@ left join
   dimension: consumption_value {
     type: number
     sql: ${TABLE}.value ;;
+    value_format: "#,##0"
+  }
+
+  measure: total_amount_purchased {
+    type: number
+    sql: ${TABLE}.amount_purchased_from_vendor ;;
     value_format: "#,##0"
   }
 }
