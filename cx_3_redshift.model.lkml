@@ -51,17 +51,36 @@ explore: derived_csat_metrics {
     sql_on: ${complaint_ranking.complaint} = ${derived_csat_metrics.complain_cat} ;;
     relationship: many_to_one
   }
-  # join: zoned_complainted {
 
-  #   type: inner
-  #   sql_on: concat(zoner,counter) ;;
-  #   relationship: many_to_one
-  # }
+  join: counted_zone {
+
+    type: inner
+    sql_on: ${derived_csat_metrics.tags} = ${counted_zone.zone_} ;;
+    relationship: many_to_one
+  }
 
 }
 
 
+view: counted_zone {
+  derived_table: {
 
+    sql: select tags , count(*) as zoned_count
+FROM stanza.derived_csat_metrics
+where  created_time >= date_trunc('month', current_date)
+GROUP BY 1
+    ;;
+  }
+
+  dimension: zoned_counted {
+    type: string
+    sql: cast(${TABLE}.tags AS VARCHAR) + '  ||  ' + CAST( ${TABLE}.zoned_count AS VARCHAR) ;;
+  }
+  dimension: zone_ {
+    type: string
+    sql: ${TABLE}.tags  ;;
+  }
+}
 
 
 

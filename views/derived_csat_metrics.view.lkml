@@ -214,6 +214,11 @@ view: derived_csat_metrics {
     ;;
 
   }
+
+  measure: count_percent {
+    type: percent_of_total
+    sql: ${count} ;;
+  }
     }
 
 
