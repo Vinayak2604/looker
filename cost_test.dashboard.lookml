@@ -3725,7 +3725,7 @@
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
     single_value_title: ''
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -4049,7 +4049,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -4519,7 +4519,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -4844,7 +4844,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -5024,7 +5024,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -5354,7 +5354,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -5680,7 +5680,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -6007,7 +6007,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -6334,7 +6334,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -6661,7 +6661,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -6993,7 +6993,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -7321,7 +7321,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -7650,7 +7650,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -7836,7 +7836,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -8170,7 +8170,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -8645,7 +8645,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -8974,7 +8974,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -9303,7 +9303,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -9634,7 +9634,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
@@ -9965,7 +9965,7 @@
     conditional_formatting_include_totals: false
     conditional_formatting_include_nulls: false
     custom_color: "#1f3e5a"
-    value_format: '"₹" 0.000,," M"'
+    value_format: '"₹" #," K"'
     conditional_formatting: []
     font_size_main: '12'
     orientation: auto
