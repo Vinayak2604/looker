@@ -5,6 +5,7 @@ include: "/food_inventory/*.view.lkml"
 include: "/food_cost/*.view.lkml"
 include: "/food_invoice/*.view.lkml"
 include: "food_test.dashboard.lookml"
+include: "cost_test.dashboard.lookml"
 # include all views in the views/ folder in this project
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
@@ -52,13 +53,7 @@ join: next_week_items {
 
 }
 }
-explore: derived_food_invoice {
-join: consumption_in_kitchen {
-  sql_on: ${derived_food_invoice.item_sub_category_label}=${consumption_in_kitchen.item_sub_category_label} and ${derived_food_invoice.property}=${consumption_in_kitchen.Property} ;;
-  relationship: one_to_one
-  type: left_outer
-}
-}
+explore: derived_food_invoice {}
 
 explore: derived_food_cost {}
 
