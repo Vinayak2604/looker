@@ -67,11 +67,12 @@ view: counted_zone {
 
     sql: select tags , count(*) as zoned_count
 FROM stanza.derived_csat_metrics
-where  created_time >= date_trunc('month', current_date-3)
+where  created_time >= date_trunc('month', current_date-1)
        and  merged = 'No' and internal = 'No'
       and complain_cat IS NOT NULL
       and city_name is not NULL
       and complain_cat <> 'Food'
+      and date_trunc('year',created_time) = date_trunc('year',current_date-1)
 GROUP BY 1;;
   }
 
