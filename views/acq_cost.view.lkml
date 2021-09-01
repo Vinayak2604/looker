@@ -117,7 +117,7 @@ where po.committed >0 and am.category_name not like '%Discount'
 
   measure: Committed_delta1 {
     type: string
-    sql: "-" ;;
+    sql: '-' ;;
   }
 
   measure: Committed_delta2 {
