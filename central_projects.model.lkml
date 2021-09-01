@@ -86,3 +86,7 @@ explore: food_cost_items_dt {}
 explore: delta_combined {}
 
 explore: kitchen_consumption {}
+
+explore: item_subcategory_price_comparison {}
+
+explore: vendor_price_comparison {}
