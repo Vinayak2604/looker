@@ -115,6 +115,16 @@ where po.committed >0 and am.category_name not like '%Discount'
     {% endif %}  ;;
   }
 
+  measure: Committed_delta1 {
+    type: string
+    sql: "-" ;;
+  }
+
+  measure: Committed_delta2 {
+    type: string
+    sql: case when ${Committed_delta} is null then ${Committed_delta1} else ${Committed_delta} end ;;
+  }
+
 
 
   measure: Actual_delta {
