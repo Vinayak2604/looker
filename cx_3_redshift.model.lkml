@@ -67,7 +67,7 @@ view: counted_zone {
 
     sql: select tags , count(*) as zoned_count
 FROM stanza.derived_csat_metrics
-where  created_time >= date_trunc('month', current_date-1)
+where  created_time >= date_trunc('month', current_date-2)
        and  merged = 'No' and internal = 'No'
       and complain_cat IS NOT NULL
       and city_name is not NULL
