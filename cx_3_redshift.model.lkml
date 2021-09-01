@@ -67,7 +67,7 @@ view: counted_zone {
 
     sql: select tags , count(*) as zoned_count
 FROM stanza.derived_csat_metrics
-where  created_time >= date_trunc('month', current_date)
+where  created_time >= date_trunc('month', current_date-3)
 GROUP BY 1
     ;;
   }
