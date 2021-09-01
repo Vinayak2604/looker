@@ -70,6 +70,8 @@ FROM stanza.derived_csat_metrics
 where  created_time >= date_trunc('month', current_date-3)
        and  merged = 'No' and internal = 'No'
       and complain_cat IS NOT NULL
+      and city_name is not NULL
+      and complain_cat <> 'Food'
 GROUP BY 1;;
   }
 
