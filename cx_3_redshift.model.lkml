@@ -68,8 +68,9 @@ view: counted_zone {
     sql: select tags , count(*) as zoned_count
 FROM stanza.derived_csat_metrics
 where  created_time >= date_trunc('month', current_date-3)
-GROUP BY 1
-    ;;
+       and  merged = 'No' and internal = 'No'
+      and complain_cat IS NOT NULL
+GROUP BY 1;;
   }
 
   dimension: zoned_counted {
