@@ -111,14 +111,14 @@ view: derived_food_project {
   measure: 1s_per {
     type: number
     sql: 1.00*coalesce(${1s},0) / ${total_rating};;
-    value_format: "0.0"
+    value_format: "0.0%"
     html: <p>{{rendered_value}} ({{derived_food_project.1s._rendered_value}})</p> ;;
   }
 
   measure: 2s_per {
     type: number
     sql: 1.00*coalesce(${2s},0) / ${total_rating};;
-    value_format: "0.0"
+    value_format: "0.0%"
     html: <p>{{rendered_value}} ({{derived_food_project.2s._rendered_value}})</p> ;;
   }
 
@@ -126,21 +126,21 @@ view: derived_food_project {
   measure: 3s_per {
     type: number
     sql: 1.00*coalesce(${3s},0) / ${total_rating};;
-    value_format: "0.0"
+    value_format: "0.0%"
     html: <p>{{rendered_value}} ({{derived_food_project.3s._rendered_value}})</p> ;;
   }
 
   measure: 4s_per {
     type: number
     sql: 1.00*coalesce(${4s},0) / ${total_rating};;
-    value_format: "0.0"
+    value_format: "0.0%"
     html: <p>{{rendered_value}} ({{derived_food_project.4s._rendered_value}})</p> ;;
   }
 
   measure: 5s_per {
     type: number
     sql: 1.00*coalesce(${5s},0) / ${total_rating};;
-    value_format: "0.0"
+    value_format: "0.0%"
     html: <p>{{rendered_value}} ({{derived_food_project.5s._rendered_value}})</p> ;;
   }
 
