@@ -1,17 +1,23 @@
 view: item_price_comparison {
   derived_table: {
     sql: select
-  a.*,
-  b.quantity,
-  b.unit_rate_rent_per_month,
-  b.lp_vendor,
-  b.lp_value
+  a.vendor_name,
+  a.city,
+  a.item_sub_category_label,
+  a.item_name,
+  coalesce(SUM(b.quantity),0) qty,
+  MAX(a.LP_system_vendor) LP_system_vendor,
+  case when SUM(b.quantity)>0 then SUM(a.vendor_rate * b.quantity)/ SUM(b.quantity) else MAX(a.vendor_rate) end system_price,
+  case when SUM(b.quantity)>0 then SUM(a.LP_vendor_rate_system * b.quantity)/ SUM(b.quantity) else MAX(a.LP_vendor_rate_system) end lowest_system_price,
+  coalesce(MAX(b.lp_purchase_vendor),'-') lp_purchase_vendor,
+  coalesce((SUM(b.unit_rate_rent_per_month * b.quantity)/ SUM(b.quantity)),0) purchase_amount,
+  coalesce((SUM(b.lp_value * b.quantity)/ SUM(b.quantity)),0) lowest_purchase_amount
 from
   (
   select
     a.*,
     b.LP_vendor_rate_system,
-    b.LP_vendor_system
+    b.LP_system_vendor
   from
     (
     select
@@ -77,7 +83,7 @@ on
       end LP_vendor_rate_system,
       case
         when row_no = 1 then vendor_name
-      end LP_vendor_system
+      end LP_system_vendor
     from
       stanza.erp_vendor_vendor_details_redshift vd
     left join
@@ -113,12 +119,12 @@ on
     a.city = b.city
     and a.item_name = b.item_name
   where
-    b.LP_vendor_system is not null) as a
+    b.LP_system_vendor is not null) as a
 left join
 (
   select
     a.*,
-    b.LP_vendor,
+    b.LP_purchase_vendor,
     b.LP_value
   from
     (
@@ -191,7 +197,7 @@ left join
       end LP_value,
       case
         when row_no = 1 then pvd.vendor_name
-      end LP_vendor
+      end LP_purchase_vendor
     from
       stanza.erp_purchase_order_po_details pd
     left join (
@@ -239,7 +245,7 @@ left join
     a.item_name = b.item_name
       and a.city_name = b.city_name
     where
-      LP_vendor is not null
+      LP_purchase_vendor is not null
     group by
       1,
       2,
@@ -253,8 +259,15 @@ left join
   a.vendor_name = b.vendor_name
   and a.item_name = b.item_name
   and a.city = b.city_name
-  order by item_name,city ;;
-  }
+group by
+  1,
+  2,
+  3,
+  4
+order by
+  a.item_name,
+  a.city ;;
+}
 
   dimension: Vendor_name {
     type: string
@@ -275,47 +288,58 @@ left join
   dimension: item_subcategory {
     type: string
     sql: ${TABLE}.item_sub_category_label ;;
-  }
-
-  dimension: item_uuid {
-    type: string
-    sql: ${TABLE}.itemuuid ;;
+    link: {
+      url: "/explore/central_projects/item_price_comparison?fields=item_price_comparison.Vendor_name,item_price_comparison.item_name,item_price_comparison.item_subcategory,item_price_comparison.quantity,item_price_comparison.vendor_system_price,item_price_comparison.LP_system_price,item_price_comparison.LP_Vendor_system,item_price_comparison.purchase_amount,item_price_comparison.vendor_lowest_purchase_amount,item_price_comparison.LP_Vendor_purchase&f[item_price_comparison.item_sub_category_label]={{ value }}&sorts=item_price_comparison.item_name&limit=500&vis=%7B%7D&filter_config=%7B%7D&dynamic_fields=%5B%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22round%28%24%7Bitem_price_comparison.vendor_system_price%7D%2F%24%7Bitem_price_comparison.LP_system_price%7D%2C2%29%22%2C%22label%22%3A%22Delta+System+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_system_price%22%2C%22_type_hint%22%3A%22number%22%7D%2C%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22coalesce%28round%28%24%7Bitem_price_comparison.purchase_amount%7D%2F%24%7Bitem_price_comparison.vendor_lowest_purchase_amount%7D%2C2%29%2C0%29%22%2C%22label%22%3A%22Delta+Buying+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_buying_price%22%2C%22_type_hint%22%3A%22number%22%7D%5D&origin=share-expanded"
+      label: "Item Name"
+    }
   }
 
   dimension: quantity {
     type: number
-    sql: ${TABLE}.quantity ;;
+    sql: ${TABLE}.qty ;;
   }
 
-  dimension: buying_price {
+  dimension: purchase_amount {
     type: number
-    sql: ${TABLE}.unit_rate_rent_per_month ;;
+    sql: ${TABLE}.purchase_amount ;;
   }
 
-  dimension: vendor_system_rate {
+  dimension: vendor_system_price {
     type: number
-    sql: ${TABLE}.vendor_rate ;;
+    sql: ${TABLE}.system_price ;;
   }
 
   dimension: LP_Vendor_purchase {
     type: string
-    sql: ${TABLE}.lp_vendor ;;
+    sql: ${TABLE}.lp_purchase_vendor ;;
   }
 
-  dimension: LP_vendor_price_purchase {
+  dimension: vendor_lowest_purchase_amount {
     type: number
-    sql: ${TABLE}.lp_value ;;
+    sql: ${TABLE}.lowest_purchase_amount ;;
     value_format: "0.00"
   }
 
   dimension: LP_Vendor_system {
     type: string
-    sql: ${TABLE}.LP_vendor_system ;;
+    sql: ${TABLE}.LP_system_vendor ;;
   }
 
-  dimension: LP_vendor_rate_system {
+  dimension: LP_system_price {
     type: number
-    sql: ${TABLE}.LP_vendor_rate_system ;;
+    sql: ${TABLE}.lowest_system_price ;;
+    value_format: "0.00"
+  }
+
+  measure: weighted_delta_buying_price {
+    type: number
+    sql: case when SUM(${quantity})>0 then SUM((case when ${vendor_lowest_purchase_amount}>0 then (${purchase_amount}/${vendor_lowest_purchase_amount})else 0 end)*(${quantity}*${purchase_amount}))/SUM(${quantity}*${purchase_amount}) else 0 end ;;
+    value_format: "0.00"
+  }
+
+  measure: weighted_delta_system_price {
+    type: number
+    sql: case when SUM(${quantity})>0 then SUM((${vendor_system_price}/${LP_system_price})*(${quantity}*${vendor_system_price}))/SUM(${quantity}*${vendor_system_price}) else 0 end ;;
     value_format: "0.00"
   }
  }

@@ -1,26 +1,35 @@
 view: item_subcategory_price_comparison {
   derived_table: {
-    sql: select
-  a.*,
-  b.buying_price,
-  b.LP_vendor,
-  b.LP_vendor_value
+    sql: WITH item_price_comparison AS (select
+  a.vendor_name,
+  a.city,
+  a.item_sub_category_label,
+  a.item_name,
+  coalesce(SUM(b.quantity),0) qty,
+  MAX(a.LP_system_vendor) LP_system_vendor,
+  case when SUM(b.quantity)>0 then SUM(a.vendor_rate * b.quantity)/ SUM(b.quantity) else MAX(a.vendor_rate) end system_price,
+  case when SUM(b.quantity)>0 then SUM(a.LP_vendor_rate_system * b.quantity)/ SUM(b.quantity) else MAX(a.LP_vendor_rate_system) end lowest_system_price,
+  coalesce(MAX(b.lp_purchase_vendor),'-') lp_purchase_vendor,
+  coalesce((SUM(b.unit_rate_rent_per_month * b.quantity)/ SUM(b.quantity)),0) purchase_amount,
+  coalesce((SUM(b.lp_value * b.quantity)/ SUM(b.quantity)),0) lowest_purchase_amount
 from
   (
   select
     a.*,
-    b.LP_vendor_system,
-    b.LP_vendor_rate_system
+    b.LP_vendor_rate_system,
+    b.LP_system_vendor
   from
     (
     select
       vd.company_name vendor_name,
+      vi.itemuuid,
       ime.item_sub_category_label,
+      ime.item_name,
       loc.label as city,
-      ROUND(AVG(case
-    when vi.locationwiserate = 0 then vi.vendoritemrate
-    else lri.locationrate
-  end), 2) vendor_rate
+      (case
+        when vi.locationwiserate = 0 then vi.vendoritemrate
+        else lri.locationrate
+      end) vendor_rate
     from
       stanza.erp_vendor_vendor_details_redshift vd
     left join
@@ -49,94 +58,93 @@ on
     group by
       1,
       2,
-      3) as a
+      3,
+      4,
+      5,
+      6) as a
   join
   (
     select
-      a.vendor_name,
-      a.item_sub_category_label,
-      a.city,
-      vendor_rate,
-      row_number() over (partition by a.item_sub_category_label,
-      a.city
+      vd.company_name vendor_name,
+      vi.itemuuid,
+      ime.item_sub_category_label,
+      ime.item_name,
+      loc.label as city,
+      (case
+        when vi.locationwiserate = 0 then vi.vendoritemrate
+        else lri.locationrate
+      end) vendor_rate,
+      row_number() over (partition by ime.item_name,
+      loc.label
     order by
-      a.vendor_rate) row_no,
+      vendor_rate) row_no,
       case
-        when row_no = 1 then a.vendor_rate
+        when row_no = 1 then vendor_rate
       end LP_vendor_rate_system,
       case
-        when row_no = 1 then a.vendor_name
-      end LP_vendor_system
+        when row_no = 1 then vendor_name
+      end LP_system_vendor
     from
-      (
-      select
-        vd.company_name vendor_name,
-        ime.item_sub_category_label,
-        loc.label as city,
-        ROUND(AVG(case
-    when vi.locationwiserate = 0 then vi.vendoritemrate
-    else lri.locationrate
-  end), 2) vendor_rate
-      from
-        stanza.erp_vendor_vendor_details_redshift vd
-      left join
+      stanza.erp_vendor_vendor_details_redshift vd
+    left join
 stanza.erp_vendor_vendor_details_redshift_item_details_itemdetails_vendoritems vi
 on
-        vd.id = vi."__hevo_ref_id"
-      left join stanza.erp_inventory_service_inventory_item_meta_entity ime
+      vd.id = vi."__hevo_ref_id"
+    left join stanza.erp_inventory_service_inventory_item_meta_entity ime
 on
-        vi.itemuuid = ime.item_uuid
-      left join stanza.erp_vendor_vendor_details_redshift_item_details_itemdetails_vendoritems_locationratelist lri
+      vi.itemuuid = ime.item_uuid
+    left join stanza.erp_vendor_vendor_details_redshift_item_details_itemdetails_vendoritems_locationratelist lri
 on
-        vd.id = lri."__hevo_ref_id"
-        and vi."__hevo_array_index" = lri."__hevo_array_index"
-      left join (
-        select
-          distinct value,
-          label
-        from
-          stanza.erp_vendor_vendor_details_redshift_item_details_supplylocations_locations)
+      vd.id = lri."__hevo_ref_id"
+      and vi."__hevo_array_index" = lri."__hevo_array_index"
+    left join (
+      select
+        distinct value,
+        label
+      from
+        stanza.erp_vendor_vendor_details_redshift_item_details_supplylocations_locations)
 loc
 on
-        loc.value = lri.locationuuid
-      where
-        vi.costhead_label = 'OPEX'
-        and lri.locationrate is not null
-      group by
-        1,
-        2,
-        3) as a) as b on
+      loc.value = lri.locationuuid
+    where
+      vi.costhead_label = 'OPEX'
+      and lri.locationrate is not null
+    group by
+      1,
+      2,
+      3,
+      4,
+      5,
+      6) as b on
     a.city = b.city
-    and a.item_sub_category_label = b.item_sub_category_label
+    and a.item_name = b.item_name
   where
-    b.LP_vendor_system is not null
-  group by
-    1,
-    2,
-    3,
-    4,
-    5,
-    6) as a
+    b.LP_system_vendor is not null) as a
 left join
-  (
+(
   select
     a.*,
-    b.LP_vendor,
-    b.LP_vendor_value
+    b.LP_purchase_vendor,
+    b.LP_value
   from
     (
     select
       pvd.vendor_name Vendor_name,
+      yy.po_to_uuid,
       yy.item_sub_category_label,
+      yy.item_name,
       DP.city_name,
-      AVG(yy.buying_price) buying_price
+      yy.quantity,
+      yy.unit_rate_rent_per_month
     from
       stanza.erp_purchase_order_po_details pd
     left join (
       select
         distinct pid.po_to_uuid,
-        pid.item_sub_category_label,
-        AVG(pid.quantity * pid.unit_rate_rent_per_month)/ AVG(pid.quantity) buying_price
+        pid.item_name,
+        pid.unit_rate_rent_per_month,
+        pid.quantity,
+        pid.item_sub_category_label
       from
         stanza.erp_purchase_order_po_to_item_details pid
       where
@@ -144,7 +152,10 @@ left join
         and pid.quantity != 0
       group by
         1,
-        2) as yy on
+        2,
+        3,
+        4,
+        5) as yy on
       yy.po_to_uuid = pd.uuid
     left join (
       select
@@ -160,92 +171,115 @@ left join
       pd.uuid = DP.po_to_uuid
     left join stanza.erp_purchase_order_po_to_vendor_details pvd on
       pd.uuid = pvd.po_to_uuid
+    left join stanza.core_food_service_ingredients i on
+      i.name = yy.item_name
     where
       pd.status = 1
       and pd.mapped_department = 'FOOD_OPS'
       and pd.__hevo__marked_deleted is false
       and (pvd.__hevo__marked_deleted is false
         or pvd.__hevo__marked_deleted is null)
-      and pd.po_type in ('RENTAL', 'NON_RENTAL', 'SERVICE_PO')
-    group by
-      1,
-      2,
-      3) as a
+      and pd.po_type in ('RENTAL', 'NON_RENTAL', 'SERVICE_PO')) as a
   join (
     select
-      a.Vendor_name,
-      a.item_sub_category_label,
-      a.city_name,
-      a.buying_price,
-      row_number() over (partition by a.item_sub_category_label,
-      a.city_name
+      pvd.vendor_name Vendor_name,
+      yy.item_sub_category_label,
+      yy.item_name,
+      DP.city_name,
+      yy.quantity,
+      yy.unit_rate_rent_per_month,
+      row_number() over (partition by yy.item_name,
+      DP.city_name
     order by
-      a.buying_price) row_no,
+      yy.unit_rate_rent_per_month) row_no,
       case
-        when row_no = 1 then a.buying_price
-      end LP_vendor_value,
+        when row_no = 1 then yy.unit_rate_rent_per_month
+      end LP_value,
       case
-        when row_no = 1 then a.Vendor_name
-      end LP_vendor
+        when row_no = 1 then pvd.vendor_name
+      end LP_purchase_vendor
     from
-      (
+      stanza.erp_purchase_order_po_details pd
+    left join (
       select
-        pvd.vendor_name Vendor_name,
-        yy.item_sub_category_label,
-        DP.city_name,
-        AVG(yy.buying_price) buying_price
+        distinct pid.po_to_uuid,
+        pid.item_name,
+        pid.unit_rate_rent_per_month,
+        pid.quantity,
+        pid.item_sub_category_label
       from
-        stanza.erp_purchase_order_po_details pd
-      left join (
-        select
-          distinct pid.po_to_uuid,
-          pid.item_sub_category_label,
-          AVG(pid.quantity * pid.unit_rate_rent_per_month)/ AVG(pid.quantity) buying_price
-        from
-          stanza.erp_purchase_order_po_to_item_details pid
-        where
-          pid.__hevo__marked_deleted is false
-          and pid.quantity != 0
-        group by
-          1,
-          2) as yy on
-        yy.po_to_uuid = pd.uuid
-      left join (
-        select
-          distinct dd.delivery_type,
-          dd.city_name,
-          dd.po_to_uuid
-        from
-          stanza.erp_purchase_order_delivery_details dd
-        where
-          (delivery_type = 'DESTINATION'
-            or delivery_type is null)
-          and dd.__hevo__marked_deleted is false ) as DP on
-        pd.uuid = DP.po_to_uuid
-      left join stanza.erp_purchase_order_po_to_vendor_details pvd on
-        pd.uuid = pvd.po_to_uuid
+        stanza.erp_purchase_order_po_to_item_details pid
       where
-        pd.status = 1
-        and pd.mapped_department = 'FOOD_OPS'
-        and pd.__hevo__marked_deleted is false
-        and (pvd.__hevo__marked_deleted is false
-          or pvd.__hevo__marked_deleted is null)
-        and pd.po_type in ('RENTAL', 'NON_RENTAL', 'SERVICE_PO')
+        pid.__hevo__marked_deleted is false
+        and pid.quantity != 0
       group by
         1,
         2,
-        3) as a) as b on
-    a.item_sub_category_label = b.item_sub_category_label
-    and a.city_name = b.city_name
-  where
-    b.LP_vendor is not null) as b on
-  a.item_sub_category_label = b.item_sub_category_label
-  and a.vendor_name = b.vendor_name
+        3,
+        4,
+        5) as yy on
+      yy.po_to_uuid = pd.uuid
+    left join (
+      select
+        distinct dd.delivery_type,
+        dd.city_name,
+        dd.po_to_uuid
+      from
+        stanza.erp_purchase_order_delivery_details dd
+      where
+        (delivery_type = 'DESTINATION'
+          or delivery_type is null)
+        and dd.__hevo__marked_deleted is false ) as DP on
+      pd.uuid = DP.po_to_uuid
+    left join stanza.erp_purchase_order_po_to_vendor_details pvd on
+      pd.uuid = pvd.po_to_uuid
+    left join stanza.core_food_service_ingredients i on
+      i.name = yy.item_name
+    where
+      pd.status = 1
+      and pd.mapped_department = 'FOOD_OPS'
+      and pd.__hevo__marked_deleted is false
+      and (pvd.__hevo__marked_deleted is false
+        or pvd.__hevo__marked_deleted is null)
+      and pd.po_type in ('RENTAL', 'NON_RENTAL', 'SERVICE_PO')) as b on
+    a.item_name = b.item_name
+      and a.city_name = b.city_name
+    where
+      LP_purchase_vendor is not null
+    group by
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9) as b on
+  a.vendor_name = b.vendor_name
+  and a.item_name = b.item_name
   and a.city = b.city_name
-order by
+group by
+  1,
   2,
   3,
-  1 ;;
+  4
+order by
+  a.item_name,
+  a.city )
+select
+    item_price_comparison.vendor_name,
+    item_price_comparison.item_sub_category_label item_sub_category_label,
+    item_price_comparison.qty quantity,
+    item_price_comparison.system_price system_price,
+    item_price_comparison.purchase_amount purchase_amount,
+    CASE WHEN SUM(item_price_comparison.qty ) > 0 THEN SUM(CASE WHEN (item_price_comparison.lowest_purchase_amount ) > 0 THEN (item_price_comparison.purchase_amount ) / (item_price_comparison.lowest_purchase_amount ) ELSE 0 END * ((item_price_comparison.qty ) * (item_price_comparison.purchase_amount ))) / SUM((item_price_comparison.qty ) * (item_price_comparison.purchase_amount )) ELSE 0 END AS weighted_delta_buying_price,
+    CASE WHEN SUM(item_price_comparison.qty ) > 0 THEN SUM((item_price_comparison.system_price ) / (item_price_comparison.lowest_system_price ) * ((item_price_comparison.qty ) * (item_price_comparison.system_price ))) / SUM((item_price_comparison.qty ) * (item_price_comparison.system_price )) ELSE 0 END AS weighted_delta_system_price
+FROM item_price_comparison
+GROUP BY
+    1,2,3,4,5
+ORDER BY
+    6 DESC ;;
   }
 
   dimension: vendor_name {
@@ -257,48 +291,44 @@ order by
   dimension: item_subcategory_label {
     type: string
     sql: ${TABLE}.item_sub_category_label ;;
-    link: {
-      url: "/explore/central_projects/item_price_comparison?fields=item_price_comparison.item_name,item_price_comparison.LP_Vendor_system,item_price_comparison.buying_price,item_price_comparison.LP_vendor_price_purchase,item_price_comparison.LP_Vendor_purchase,item_price_comparison.vendor_system_rate,item_price_comparison.LP_vendor_rate_system&f[item_price_comparison.item_sub_category_label]={{ value }}&sorts=item_price_comparison.item_subcategory&limit=500&vis=%7B%22show_view_names%22%3Afalse%2C%22show_row_numbers%22%3Atrue%2C%22truncate_column_names%22%3Afalse%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22table_theme%22%3A%22editable%22%2C%22limit_displayed_rows%22%3Afalse%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22type%22%3A%22table%22%2C%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Afalse%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22series_types%22%3A%7B%7D%2C%22hidden_fields%22%3A%5B%5D%2C%22hidden_points_if_no%22%3A%5B%5D%2C%22series_labels%22%3A%7B%7D%7D&filter_config=%7B%7D&dynamic_fields=%5B%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22round%28%24%7Bitem_price_comparison.buying_price%7D%2F%24%7Bitem_price_comparison.LP_vendor_price_purchase%7D%2C2%29%22%2C%22label%22%3A%22Delta+Buying+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_buying_price%22%2C%22_type_hint%22%3A%22number%22%7D%2C%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22round%28%24%7Bitem_price_comparison.vendor_system_rate%7D%2F%24%7Bitem_price_comparison.LP_vendor_rate_system%7D%2C2%29%22%2C%22label%22%3A%22Delta+System+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_system_price%22%2C%22_type_hint%22%3A%22number%22%7D%5D&origin=share-expanded"
-      label: "Item Name"
-    }
   }
 
-  dimension: city {
-    type: string
-    sql: ${TABLE}.city ;;
-  }
-
-  dimension: LP_vendor_system {
-    type: string
-    sql: ${TABLE}.LP_vendor_system ;;
-  }
-
-  dimension: LP_vendor {
-    type: string
-    sql: ${TABLE}.LP_vendor ;;
-  }
-
-  dimension: Buying_price {
+  dimension: quantity {
     type: number
-    sql: ${TABLE}.buying_price ;;
+    sql: ${TABLE}.quantity ;;
     value_format: "0.00"
   }
 
-  dimension: LP_vendor_price {
+  dimension: purchase_amount {
     type: number
-    sql: ${TABLE}.LP_vendor_value ;;
+    sql: ${TABLE}.purchase_amount ;;
     value_format: "0.00"
   }
 
-  dimension: vendor_rate_system {
+  dimension: system_price {
     type: number
-    sql: ${TABLE}.vendor_rate ;;
+    sql: ${TABLE}.system_price ;;
+    value_format: "0.00"
+  }
+  dimension: weighted_delta_buying_price {
+    type: number
+    sql: ${TABLE}.weighted_delta_buying_price ;;
+  }
+
+  dimension: weighted_delta_system_price {
+    type: number
+    sql: ${TABLE}.weighted_delta_system_price ;;
+  }
+
+  measure: delta_buying_price {
+    type: number
+    sql: CASE WHEN SUM(${quantity} ) > 0 THEN SUM(${weighted_delta_buying_price} * (${quantity} ) * (${purchase_amount} )) / SUM((${quantity} ) * (${purchase_amount} )) ELSE 0 END ;;
     value_format: "0.00"
   }
 
-  dimension: LP_vendor_rate_system {
+  measure: delta_system_price {
     type: number
-    sql: ${TABLE}.LP_vendor_rate_system ;;
+    sql: CASE WHEN SUM(${quantity} ) > 0 THEN SUM(${weighted_delta_system_price} * (${quantity} ) * (${system_price} )) / SUM((${quantity} ) * (${system_price} )) ELSE 0 END ;;
     value_format: "0.00"
   }
 }

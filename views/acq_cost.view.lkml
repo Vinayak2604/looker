@@ -61,13 +61,19 @@ where po.committed >0 and am.category_name not like '%Discount'
     type: sum
     sql: ${TABLE}.committed/10^5 ;;
     value_format: "#,##0.0"
+    html: <p style="color: black; font-size:100%"></p>;;
   }
+
 
   measure: budget {
     type: sum
     sql: distinct(${TABLE}.budget)/10^5 ;;
     value_format: "#,##0.0"
+    html: <p style="color: black; font-size:100%"></p>;;
+
   }
+
+
   dimension: primary_key {
     primary_key: yes
     sql: CONCAT(${TABLE}.MM, ${TABLE}.podate) ;;
@@ -114,17 +120,6 @@ where po.committed >0 and am.category_name not like '%Discount'
 
     {% endif %}  ;;
   }
-
-  measure: Committed_delta1 {
-    type: string
-    sql: '-' ;;
-  }
-
-  measure: Committed_delta2 {
-    type: string
-    sql: case when ${Committed_delta} is null then ${Committed_delta1} else ${Committed_delta} end ;;
-  }
-
 
 
   measure: Actual_delta {
@@ -209,19 +204,5 @@ where po.committed >0 and am.category_name not like '%Discount'
       year
     ]
     sql: ${TABLE}.updated_at;;
-  }
-  measure: ExperimentLookMl {
-    type: number
-    sql: if(${acq_cost.budget} = 0,"-",concat(round(${acq_cost.budget},1),"(",round(${acq_cost.Actual_by_budgett}*100,1),"%",")")) ;;
-    value_format: "0.0%"
-    html: {% if value > 0 %}
-          <p style="color: black; font-size:100%">{{ rendered_value }}</p>
-
-          {% else %}
-          <p style="color:black"> - </p>
-
-          {% endif %};;
-  }
-
-
+}
 }
