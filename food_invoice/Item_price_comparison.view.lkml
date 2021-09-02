@@ -342,4 +342,5 @@ order by
     sql: case when SUM(${quantity})>0 then SUM((${vendor_system_price}/${LP_system_price})*(${quantity}*${vendor_system_price}))/SUM(${quantity}*${vendor_system_price}) else 0 end ;;
     value_format: "0.00"
   }
+
  }
