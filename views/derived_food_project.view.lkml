@@ -71,6 +71,11 @@ view: derived_food_project {
     sql: ${TABLE}.ageing ;;
   }
 
+  dimension: zone_name {
+    type: string
+    sql: ${TABLE}.zone_name ;;
+  }
+
   measure: total_users {
     type: count_distinct
     sql: ${student_id} ;;
