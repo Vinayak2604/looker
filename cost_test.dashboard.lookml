@@ -737,6 +737,7 @@
     col: 7
     width: 4
     height: 2
+    border: solid 2px
   - title: Delta
     name: Delta (5)
     model: central_projects
