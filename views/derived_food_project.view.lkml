@@ -84,6 +84,7 @@ view: derived_food_project {
   measure: total_meals {
     type: count_distinct
     sql: ${meal_id} ;;
+    html: <p>{{rendered_value}} (U: {{derived_food_project.total_users._rendered_value}})</p> ;;
   }
 
   measure: total_rating {
@@ -94,6 +95,33 @@ view: derived_food_project {
   measure: total_rating_for_filter {
     type: number
     sql: count(${meal_rating}) ;;
+  }
+
+
+  measure: 1s_user {
+    type: number
+    sql: count(case when ${meal_rating} = 1 then ${student_id} end);;
+  }
+
+  measure: 2s_user {
+    type: number
+    sql: count(case when ${meal_rating} = 2 then ${student_id} end);;
+  }
+
+
+  measure: 3s_user {
+    type: number
+    sql: count(case when ${meal_rating} = 3 then ${student_id} end);;
+  }
+
+  measure: 4s_user {
+    type: number
+    sql: count(case when ${meal_rating} = 4 then ${student_id} end) ;;
+  }
+
+  measure: 5s_user {
+    type: number
+    sql: count(case when ${meal_rating} = 5 then ${student_id} end);;
   }
 
   measure: 1s {
@@ -127,14 +155,14 @@ view: derived_food_project {
     type: number
     sql: 1.00*coalesce(${1s},0) / ${total_rating};;
     value_format: "0.0%"
-    html: <p>{{rendered_value}} ({{derived_food_project.1s._rendered_value}})</p> ;;
+    html: <p>{{rendered_value}} ({{derived_food_project.1s_user._rendered_value}})</p> ;;
   }
 
   measure: 2s_per {
     type: number
     sql: 1.00*coalesce(${2s},0) / ${total_rating};;
     value_format: "0.0%"
-    html: <p>{{rendered_value}} ({{derived_food_project.2s._rendered_value}})</p> ;;
+    html: <p>{{rendered_value}} ({{derived_food_project.2s_user._rendered_value}})</p> ;;
   }
 
 
@@ -142,26 +170,33 @@ view: derived_food_project {
     type: number
     sql: 1.00*coalesce(${3s},0) / ${total_rating};;
     value_format: "0.0%"
-    html: <p>{{rendered_value}} ({{derived_food_project.3s._rendered_value}})</p> ;;
+    html: <p>{{rendered_value}} ({{derived_food_project.3s_user._rendered_value}})</p> ;;
   }
 
   measure: 4s_per {
     type: number
     sql: 1.00*coalesce(${4s},0) / ${total_rating};;
     value_format: "0.0%"
-    html: <p>{{rendered_value}} ({{derived_food_project.4s._rendered_value}})</p> ;;
+    html: <p>{{rendered_value}} ({{derived_food_project.4s_user._rendered_value}})</p> ;;
   }
 
   measure: 5s_per {
     type: number
     sql: 1.00*coalesce(${5s},0) / ${total_rating};;
     value_format: "0.0%"
-    html: <p>{{rendered_value}} ({{derived_food_project.5s._rendered_value}})</p> ;;
+    html: <p>{{rendered_value}} ({{derived_food_project.5s_user._rendered_value}})</p> ;;
   }
 
   measure: rating_per {
     type: number
     sql: 1.00*coalesce(${total_rating},0) / ${total_meals};;
+    value_format: "0.0%"
+  }
+
+
+  measure: FPS {
+    type: number
+    sql: 1.00*coalesce((${5s}+${4s}) - (${1s}+${2s}),0) / ${total_rating};;
     value_format: "0.0%"
   }
 

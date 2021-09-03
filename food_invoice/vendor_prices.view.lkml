@@ -108,6 +108,7 @@ left join
 where
   city not in ('Titan Test', 'Select All', 'Asgard Test')
   and location_name is not null
+  and a.item_sub_category_label IN ('Fruits and Vegetables','Non Veg','Groceries','Dairy','Bakery Items: direct food expense','Cleaning Supplies','General Supplies','Flour: direct food expense','Pulses: direct food expense','Spices & Herbs: direct food expense')
 group by
   1,
   2,
