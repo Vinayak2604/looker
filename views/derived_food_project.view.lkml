@@ -156,7 +156,7 @@ view: derived_food_project {
 
   measure: rating_per {
     type: number
-    sql: 1.00*coalesce(${total_meals},0) / ${total_rating};;
+    sql: 1.00*coalesce(${total_rating},0) / ${total_meals};;
     value_format: "0.0%"
   }
 
