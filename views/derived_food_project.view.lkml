@@ -84,12 +84,13 @@ view: derived_food_project {
   measure: total_meals {
     type: count_distinct
     sql: ${meal_id} ;;
-    html: <p>{{rendered_value}} (U: {{derived_food_project.total_users._rendered_value}})</p> ;;
+
   }
 
   measure: total_rating {
     type: number
     sql: count(case when ${meal_rating} >= 1 then ${meal_rating} end);;
+    html: <p>{{rendered_value}} (U: {{derived_food_project.total_users._rendered_value}})</p> ;;
   }
 
   measure: total_rating_for_filter {
@@ -99,29 +100,29 @@ view: derived_food_project {
 
 
   measure: 1s_user {
-    type: number
-    sql: count(case when ${meal_rating} = 1 then ${student_id} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 1 then ${student_id} end;;
   }
 
   measure: 2s_user {
-    type: number
-    sql: count(case when ${meal_rating} = 2 then ${student_id} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 2 then ${student_id} end;;
   }
 
 
   measure: 3s_user {
-    type: number
-    sql: count(case when ${meal_rating} = 3 then ${student_id} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 3 then ${student_id} end;;
   }
 
   measure: 4s_user {
-    type: number
-    sql: count(case when ${meal_rating} = 4 then ${student_id} end) ;;
+    type: count_distinct
+    sql: case when ${meal_rating} = 4 then ${student_id} end ;;
   }
 
   measure: 5s_user {
-    type: number
-    sql: count(case when ${meal_rating} = 5 then ${student_id} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 5 then ${student_id} end;;
   }
 
   measure: 1s {
