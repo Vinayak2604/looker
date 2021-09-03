@@ -6,6 +6,12 @@ view: derived_food_project {
     sql: ${TABLE}.date ;;
   }
 
+
+  dimension: month_quartile {
+    type: string
+    sql: case when ${date} <= 8 then '1st Quartile' when ${date} <= 16 then '2nd Quartile' when ${date} <= 24 then '3rd Quartile' when ${date} > 24 then '4th Quartile' end;;
+  }
+
   dimension: student_id {
     type: string
     sql: ${TABLE}.student_id ;;
