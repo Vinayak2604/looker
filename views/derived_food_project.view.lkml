@@ -31,6 +31,11 @@ view: derived_food_project {
     sql: ${TABLE}.micromarket_name ;;
   }
 
+  dimension: meal_id {
+    type: string
+    sql: ${TABLE}.meal_id ;;
+  }
+
   dimension: meal_type {
     type: string
     sql: ${TABLE}.meal_type ;;
@@ -69,6 +74,11 @@ view: derived_food_project {
   measure: total_users {
     type: count_distinct
     sql: ${student_id} ;;
+  }
+
+  measure: total_meals {
+    type: count_distinct
+    sql: ${meal_id} ;;
   }
 
   measure: total_rating {
@@ -143,6 +153,13 @@ view: derived_food_project {
     value_format: "0.0%"
     html: <p>{{rendered_value}} ({{derived_food_project.5s._rendered_value}})</p> ;;
   }
+
+  measure: rating_per {
+    type: number
+    sql: 1.00*coalesce(${total_meals},0) / ${total_rating};;
+    value_format: "0.0%"
+  }
+
 
 
 }

@@ -61,7 +61,6 @@ where po.committed >0 and am.category_name not like '%Discount'
     type: sum
     sql: ${TABLE}.committed/10^5 ;;
     value_format: "#,##0.0"
-    html: <p style="color: black; font-size:100%"></p>;;
   }
 
 
@@ -69,9 +68,26 @@ where po.committed >0 and am.category_name not like '%Discount'
     type: sum
     sql: distinct(${TABLE}.budget)/10^5 ;;
     value_format: "#,##0.0"
-    html: <p style="color: black; font-size:100%"></p>;;
 
   }
+
+  measure: committed2 {
+    type: sum
+    sql: ${TABLE}.committed/10^5 ;;
+    value_format: "#,##0.0"
+    html:
+    <p style="color: black; font-size:100%"></p>;;
+  }
+
+
+  measure: budget2 {
+    type: sum
+    sql: distinct(${TABLE}.budget)/10^5 ;;
+    value_format: "#,##0.0"
+    html:
+    <p style="color: black; font-size:100%"></p>;;
+  }
+
 
 
   dimension: primary_key {
