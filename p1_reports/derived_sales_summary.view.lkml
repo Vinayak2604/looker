@@ -1,9 +1,19 @@
 view: derived_sales_summary {
   derived_table: {
     sql:
-    with a as (select distinct *, row_number() over (partition by residence_id order by date desc) as rn
+    with a as (select distinct date, residence_id, residence, micromarket, city, zone, residence_category, max(live_beds) as live_beds,sum(upcoming_move_ins) as upcoming_move_ins,sum(live_bookings) as live_bookings,sum(live_occupancy) as live_occupancy,
+    sum(onboarded_beds) as onboarded_beds,sum(forward_beds_sold) as forward_beds_sold,sum(forward_gross_occupancy) as forward_gross_occupancy,
+    sum(forward_net_occupancy) as forward_net_occupancy,sum(beds_cs_nmi) as beds_cs_nmi,sum(adjusted_live_occupancy) as adjusted_live_occupancy,
+    sum(net_monthly_rent) as net_monthly_rent,sum(live_monthly_rent) as live_monthly_rent,sum(bookings) as bookings,
+    sum(prebookings) as prebookings,sum(refunded_prebookings) as refunded_prebookings,sum(converted_prebookings) as converted_prebookings,
+    sum(prebookings_till_date) as prebookings_till_date,sum(refunded_prebookings_till_date) as refunded_prebookings_till_date,
+    sum(converted_prebookings_till_date) as converted_prebookings_till_date,sum(current_revenue) as current_revenue,sum(forward_revenue) as forward_revenue,
+    sum(forward_net_beds_sold) as forward_net_beds_sold,
+    row_number() over (partition by residence_id order by date desc) as rn
 from derived_sales_summary
-where {% condition date %} date {% endcondition %}),
+where {% condition date %} date {% endcondition %}
+and {% condition booking_type %} booking_type {% endcondition %}
+group by 1,2,3,4,5,6,7),
 b as (select residence_id,
 sum(bookings) as filtered_period_bookings,
 sum(case when rn = 1 then bookings else 0 end) as today_bookings,
@@ -31,6 +41,26 @@ where a.rn = 1;;
   parameter: date {
     type: date
     convert_tz: no
+  }
+
+  # parameter: booking_type {
+  #   type: string
+  #   allowed_value: {
+  #     label: "All"
+  #     value: "1,0"
+  #   }
+  #   allowed_value: {
+  #     label: "B2C"
+  #     value: "0"
+  #   }
+  #   allowed_value: {
+  #     label: "B2B"
+  #     value: "1"
+  #   }
+  # }
+
+  filter: booking_type {
+    suggestions: ["B2C","B2B"]
   }
 
   measure: filtered_period_bookings {
@@ -212,15 +242,15 @@ where a.rn = 1;;
     sql: ${TABLE}.city ;;
   }
 
-  dimension: city_lat {
-    type: string
-    sql: ${TABLE}.city_lat ;;
-  }
+  # dimension: city_lat {
+  #   type: string
+  #   sql: ${TABLE}.city_lat ;;
+  # }
 
-  dimension: city_long {
-    type: string
-    sql: ${TABLE}.city_long ;;
-  }
+  # dimension: city_long {
+  #   type: string
+  #   sql: ${TABLE}.city_long ;;
+  # }
 
   dimension: forward_gross_occupancy {
     type: number
