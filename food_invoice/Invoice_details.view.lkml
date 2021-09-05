@@ -8,14 +8,18 @@ view: Invoice_details {
     or pd.po_type = 'SERVICE_PO' then pvd.vendor_name
   end as Vendor_name,
   DATE(ibd.invoice_date) as invoice_date,
+  row_number() over (partition by pd.po_number order by invoice_date) number_of_invoice,
+  case when number_of_invoice = 1 then DATE(ibd.invoice_date) end first_invoice_date,
   pd.po_number,
   pd.po_status,
   DATE(pd.po_start_date) as po_start_date,
+  DATE(pd.completion_date) po_completion_date,
   DATE(ibd.created_at) as created_at,
   DATE(jj.L1_approval_at) as L1_approval_at,
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
+  COUNT(L1_reject_at) over (partition by pd.po_number) no_of_L1_rejections,
   pd.po_type,
   coalesce((gg.item_base_amount - gg.item_gst),0) as base_amt,
   coalesce((gg.other_fee_base_amount-gg.other_fee_gst),0) as Other_charges,
@@ -233,6 +237,34 @@ where
     sql: ${TABLE}.created_at ;;
   }
 
+  dimension_group: po_completion_at {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.po_completion_date ;;
+  }
+
+  dimension_group: first_invoice_date {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
+    sql: ${TABLE}.first_invoice_date ;;
+  }
+
   dimension_group: L1_approval_at {
     type: time
     timeframes: [
@@ -307,6 +339,16 @@ where
     value_format: "#,##0"
   }
 
+  dimension: grn_to_first_invoice_date {
+    type: number
+    sql: case when ${TABLE}.first_invoice_date is not null and ${first_invoice_date_date}>=${po_completion_at_date} then datediff(day,${po_completion_at_date},${first_invoice_date_date}) end ;;
+  }
+
+  dimension: first_invoice_date_to_L2_approval {
+    type: number
+    sql: case when ${L2_approval_at_date} is null and ${L1_reject_at_date} is not null then datediff(day,${first_invoice_date_date},${L2_approval_at_date}) end ;;
+  }
+
   dimension: grn_to_l1_approval {
     type: number
     sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is null then datediff(day,${invoice_created_at_date},${L1_approval_at_date}) end ;;
@@ -325,6 +367,23 @@ where
   dimension: l1_to_l2_rejection {
     type: number
     sql: case when ${L2_reject_at_date} is not null then datediff(day,${L1_approval_at_date},${L2_reject_at_date}) end ;;
+  }
+
+  dimension: No_of_rejections {
+    type: number
+    sql: ${TABLE}.no_of_l1_rejections ;;
+  }
+
+  measure: weighted_avg_grn_to_first_invoice {
+    type: average
+    sql: case when ${TABLE}.first_invoice_date is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${grn_to_first_invoice_date})/(${TABLE}.total_amount) end ;;
+    value_format: "0.00"
+  }
+
+  measure: weighted_avg_first_invoice_to_l2_approval {
+    type: average
+    sql: case when ${TABLE}.first_invoice_date is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${first_invoice_date_to_L2_approval})/(${TABLE}.total_amount) end ;;
+    value_format: "0.00"
   }
 
   measure: weighted_avg_grn_to_l1_approval {

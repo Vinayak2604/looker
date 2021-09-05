@@ -1,6 +1,6 @@
-view: item_price_comparison {
+view: item_subcategory_price_comparison {
   derived_table: {
-    sql: select
+    sql: WITH item_price_comparison AS (select
   a.vendor_name,
   a.city,
   a.item_sub_category_label,
@@ -266,81 +266,69 @@ group by
   4
 order by
   a.item_name,
-  a.city ;;
-}
+  a.city )
+select
+    item_price_comparison.vendor_name,
+    item_price_comparison.item_sub_category_label item_sub_category_label,
+    item_price_comparison.qty quantity,
+    item_price_comparison.system_price system_price,
+    item_price_comparison.purchase_amount purchase_amount,
+    CASE WHEN SUM(item_price_comparison.qty ) > 0 THEN SUM(CASE WHEN (item_price_comparison.lowest_purchase_amount ) > 0 THEN (item_price_comparison.purchase_amount ) / (item_price_comparison.lowest_purchase_amount ) ELSE 0 END * ((item_price_comparison.qty ) * (item_price_comparison.purchase_amount ))) / SUM((item_price_comparison.qty ) * (item_price_comparison.purchase_amount )) ELSE 0 END AS weighted_delta_buying_price,
+    CASE WHEN SUM(item_price_comparison.qty ) > 0 THEN SUM((item_price_comparison.system_price ) / (item_price_comparison.lowest_system_price ) * ((item_price_comparison.qty ) * (item_price_comparison.system_price ))) / SUM((item_price_comparison.qty ) * (item_price_comparison.system_price )) ELSE 0 END AS weighted_delta_system_price
+FROM item_price_comparison
+GROUP BY
+    1,2,3,4,5
+ORDER BY
+    6 DESC ;;
+  }
 
-  dimension: Vendor_name {
+  dimension: vendor_name {
     type: string
-    sql: ${TABLE}.Vendor_name ;;
+    sql: ${TABLE}.vendor_name ;;
     primary_key: yes
   }
 
-  dimension: item_name {
-    type: string
-    sql: ${TABLE}.item_name ;;
-  }
-
-  dimension: city_name {
-    type: string
-    sql: ${TABLE}.city_name ;;
-  }
-
-  dimension: item_subcategory {
+  dimension: item_subcategory_label {
     type: string
     sql: ${TABLE}.item_sub_category_label ;;
-    link: {
-      url: "/explore/central_projects/item_price_comparison?fields=item_price_comparison.Vendor_name,item_price_comparison.item_name,item_price_comparison.item_subcategory,item_price_comparison.quantity,item_price_comparison.vendor_system_price,item_price_comparison.LP_system_price,item_price_comparison.LP_Vendor_system,item_price_comparison.purchase_amount,item_price_comparison.vendor_lowest_purchase_amount,item_price_comparison.LP_Vendor_purchase&f[item_price_comparison.item_sub_category_label]={{ value }}&sorts=item_price_comparison.item_name&limit=500&vis=%7B%7D&filter_config=%7B%7D&dynamic_fields=%5B%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22round%28%24%7Bitem_price_comparison.vendor_system_price%7D%2F%24%7Bitem_price_comparison.LP_system_price%7D%2C2%29%22%2C%22label%22%3A%22Delta+System+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_system_price%22%2C%22_type_hint%22%3A%22number%22%7D%2C%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22coalesce%28round%28%24%7Bitem_price_comparison.purchase_amount%7D%2F%24%7Bitem_price_comparison.vendor_lowest_purchase_amount%7D%2C2%29%2C0%29%22%2C%22label%22%3A%22Delta+Buying+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_buying_price%22%2C%22_type_hint%22%3A%22number%22%7D%5D&origin=share-expanded"
-      label: "Item Name"
-    }
   }
 
   dimension: quantity {
     type: number
-    sql: ${TABLE}.qty ;;
+    sql: ${TABLE}.quantity ;;
+    value_format: "0.00"
   }
 
   dimension: purchase_amount {
     type: number
     sql: ${TABLE}.purchase_amount ;;
+    value_format: "0.00"
   }
 
-  dimension: vendor_system_price {
+  dimension: system_price {
     type: number
     sql: ${TABLE}.system_price ;;
+    value_format: "0.00"
   }
-
-  dimension: LP_Vendor_purchase {
-    type: string
-    sql: ${TABLE}.lp_purchase_vendor ;;
-  }
-
-  dimension: vendor_lowest_purchase_amount {
+  dimension: weighted_delta_buying_price {
     type: number
-    sql: ${TABLE}.lowest_purchase_amount ;;
+    sql: ${TABLE}.weighted_delta_buying_price ;;
+  }
+
+  dimension: weighted_delta_system_price {
+    type: number
+    sql: ${TABLE}.weighted_delta_system_price ;;
+  }
+
+  measure: delta_buying_price {
+    type: number
+    sql: CASE WHEN SUM(${quantity} ) > 0 THEN SUM(${weighted_delta_buying_price} * (${quantity} ) * (${purchase_amount} )) / SUM((${quantity} ) * (${purchase_amount} )) ELSE 0 END ;;
     value_format: "0.00"
   }
 
-  dimension: LP_Vendor_system {
-    type: string
-    sql: ${TABLE}.LP_system_vendor ;;
-  }
-
-  dimension: LP_system_price {
+  measure: delta_system_price {
     type: number
-    sql: ${TABLE}.lowest_system_price ;;
+    sql: CASE WHEN SUM(${quantity} ) > 0 THEN SUM(${weighted_delta_system_price} * (${quantity} ) * (${system_price} )) / SUM((${quantity} ) * (${system_price} )) ELSE 0 END ;;
     value_format: "0.00"
   }
-
-  measure: weighted_delta_buying_price {
-    type: number
-    sql: case when SUM(${quantity})>0 then SUM((case when ${vendor_lowest_purchase_amount}>0 then (${purchase_amount}/${vendor_lowest_purchase_amount})else 0 end)*(${quantity}*${purchase_amount}))/SUM(${quantity}*${purchase_amount}) else 0 end ;;
-    value_format: "0.00"
-  }
-
-  measure: weighted_delta_system_price {
-    type: number
-    sql: case when SUM(${quantity})>0 then SUM((${vendor_system_price}/${LP_system_price})*(${quantity}*${vendor_system_price}))/SUM(${quantity}*${vendor_system_price}) else 0 end ;;
-    value_format: "0.00"
-  }
-
- }
+}
