@@ -210,7 +210,7 @@ view: derived_food_project {
 
   measure: FPS {
     type: number
-    sql: 1.00*coalesce((${5s}+${4s}) - (${1s}+${2s}),0) / ${total_rating};;
+    sql: nullif(1.00*coalesce((${5s}+${4s}) - (${1s}+${2s}),0),0) / ${total_rating};;
     value_format: "0.0%"
   }
 
