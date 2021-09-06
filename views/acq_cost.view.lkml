@@ -147,7 +147,7 @@ where po.committed >0 and am.category_name not like '%Discount'
       {% else %}
         <p style="color: black; font-size:100%">{{ rendered_value }}</p>
       {% endif %}
-    {% elsif value == null or value == ''%}
+    {% elsif value == null or value == '' or value == "NULL" %}
       <p style="color: red"> - </p>
     {% else %}
       <p style="color: red"> - </p>
