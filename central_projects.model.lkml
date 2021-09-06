@@ -69,8 +69,6 @@ explore: po_invoice{}
 
 explore: food_cost_new {}
 
-explore: consumption_in_kitchen {}
-
 explore: food_vas_orders {}
 
 explore: dish_level_vas {}
@@ -88,5 +86,3 @@ explore: delta_combined {}
 explore: kitchen_consumption {}
 
 explore: item_subcategory_price_comparison {}
-
-explore: vendor_price_comparison {}

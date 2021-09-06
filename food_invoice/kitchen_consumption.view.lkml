@@ -21,7 +21,7 @@ from
   where
     dfi.gsri_done_flag = 1
     and vendor_name not like '%Store%'
-    and (item_sub_category_label in ('Fruits and Vegetables', 'Non Veg', 'Dairy', 'Groceries', 'LPG', 'Packaging')
+    and (item_sub_category_label in ('Fruits and Vegetables', 'Non Veg', 'Dairy', 'Groceries', 'Cleaning Supplies', 'General Supplies')
         or item_sub_category_label like '%direct food expense%')
     and {% condition date1 %} DATE(po_created_at) {% endcondition %}
   group by
