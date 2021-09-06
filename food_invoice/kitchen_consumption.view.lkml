@@ -1,7 +1,7 @@
 view: kitchen_consumption {
   derived_table: {
     sql: select
-  a.vendor_name,
+  case when a.vendor_name = ' ABN Enterprises' then 'ABN Enterprises' else REPLACE(a.vendor_name,'&','and') end vendor_name,
   a.property,
   SUM(amount_purchased) amount_purchased_from_vendor,
   SUM(amount_purchased_from_vendor) over (partition by a.property) store_purchased_amount,

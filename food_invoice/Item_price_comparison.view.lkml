@@ -1,7 +1,7 @@
 view: item_price_comparison {
   derived_table: {
     sql: select
-  a.vendor_name,
+  case when a.vendor_name = ' ABN Enterprises' then 'ABN Enterprises' else REPLACE(a.vendor_name,'&','and') end vendor_name,
   a.city,
   a.item_sub_category_label,
   a.item_name,
@@ -269,9 +269,9 @@ order by
   a.city ;;
 }
 
-  dimension: Vendor_name {
+  dimension: vendor_name {
     type: string
-    sql: ${TABLE}.Vendor_name ;;
+    sql: ${TABLE}.vendor_name ;;
     primary_key: yes
   }
 
@@ -289,7 +289,7 @@ order by
     type: string
     sql: ${TABLE}.item_sub_category_label ;;
     link: {
-      url: "/explore/central_projects/item_price_comparison?fields=item_price_comparison.Vendor_name,item_price_comparison.item_name,item_price_comparison.item_subcategory,item_price_comparison.quantity,item_price_comparison.vendor_system_price,item_price_comparison.LP_system_price,item_price_comparison.LP_Vendor_system,item_price_comparison.purchase_amount,item_price_comparison.vendor_lowest_purchase_amount,item_price_comparison.LP_Vendor_purchase&f[item_price_comparison.item_sub_category_label]={{ value }}&sorts=item_price_comparison.item_name&limit=500&vis=%7B%7D&filter_config=%7B%7D&dynamic_fields=%5B%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22round%28%24%7Bitem_price_comparison.vendor_system_price%7D%2F%24%7Bitem_price_comparison.LP_system_price%7D%2C2%29%22%2C%22label%22%3A%22Delta+System+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_system_price%22%2C%22_type_hint%22%3A%22number%22%7D%2C%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22coalesce%28round%28%24%7Bitem_price_comparison.purchase_amount%7D%2F%24%7Bitem_price_comparison.vendor_lowest_purchase_amount%7D%2C2%29%2C0%29%22%2C%22label%22%3A%22Delta+Buying+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_buying_price%22%2C%22_type_hint%22%3A%22number%22%7D%5D&origin=share-expanded"
+      url: "/explore/central_projects/item_price_comparison?fields=item_price_comparison.Vendor_name,item_price_comparison.item_name,item_price_comparison.item_subcategory,item_price_comparison.quantity,item_price_comparison.vendor_system_price,item_price_comparison.LP_system_price,item_price_comparison.LP_Vendor_system,item_price_comparison.purchase_amount,item_price_comparison.vendor_lowest_purchase_amount,item_price_comparison.LP_Vendor_purchase&f[item_price_comparison.vendor_name]={{ _filters['item_price_comparison.vendor_name'] | url_encode }}&f[item_price_comparison.item_subcategory]={{ value }}&sorts=item_price_comparison.item_name&limit=500&vis=%7B%7D&filter_config=%7B%7D&dynamic_fields=%5B%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22round%28%24%7Bitem_price_comparison.vendor_system_price%7D%2F%24%7Bitem_price_comparison.LP_system_price%7D%2C2%29%22%2C%22label%22%3A%22Delta+System+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_system_price%22%2C%22_type_hint%22%3A%22number%22%7D%2C%7B%22category%22%3A%22table_calculation%22%2C%22expression%22%3A%22coalesce%28round%28%24%7Bitem_price_comparison.purchase_amount%7D%2F%24%7Bitem_price_comparison.vendor_lowest_purchase_amount%7D%2C2%29%2C0%29%22%2C%22label%22%3A%22Delta+Buying+Price%22%2C%22value_format%22%3A%220.00%5C%22x%5C%22%22%2C%22value_format_name%22%3Anull%2C%22_kind_hint%22%3A%22dimension%22%2C%22table_calculation%22%3A%22delta_buying_price%22%2C%22_type_hint%22%3A%22number%22%7D%5D&origin=share-expanded"
       label: "Item Name"
     }
   }

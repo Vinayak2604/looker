@@ -1,12 +1,15 @@
 view: vendor_prices {
   derived_table: {
     sql: select
-  a.*,
+  case when a.vendor_name = ' ABN Enterprises' then 'ABN Enterprises' else a.vendor_name end vendor_name,
+  a.item_sub_category_label item_sub_category_label,
+  a.item_name item_name,
+  a.city city,
   b.location_name
 from
   (
   select
-    vd.company_name vendor_name,
+    REPLACE(vd.company_name,'&','and') vendor_name,
     ime.item_sub_category_label,
     ime.item_name,
     loc.label as city
@@ -42,7 +45,7 @@ on
 left join
 (
   select
-    pvd.vendor_name Vendor_name,
+    REPLACE(pvd.vendor_name,'&','and') vendor_name,
     DP.location_name,
     yy.item_sub_category_label,
     yy.item_name,
@@ -108,6 +111,9 @@ left join
 where
   city not in ('Titan Test', 'Select All', 'Asgard Test')
   and location_name is not null
+  and b.location_name not like '%Kitchen%'
+  and b.location_name not like '%DONOT%'
+  and b.location_name not like '%Dummy%'
   and a.item_sub_category_label IN ('Fruits and Vegetables','Non Veg','Groceries','Dairy','Bakery Items: direct food expense','Cleaning Supplies','General Supplies','Flour: direct food expense','Pulses: direct food expense','Spices & Herbs: direct food expense')
 group by
   1,
@@ -122,7 +128,7 @@ group by
     sql: ${TABLE}.vendor_name ;;
     primary_key: yes
     link: {
-      url: "/explore/central_projects/item_price_comparison?fields=item_price_comparison.item_subcategory,item_price_comparison.weighted_delta_buying_price,item_price_comparison.weighted_delta_system_price&f[item_price_comparison.Vendor_name]={{ value }}&sorts=item_price_comparison.weighted_delta_buying_price&limit=500&vis=%7B%22show_view_names%22%3Afalse%2C%22show_row_numbers%22%3Atrue%2C%22truncate_column_names%22%3Afalse%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22table_theme%22%3A%22unstyled%22%2C%22limit_displayed_rows%22%3Afalse%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22series_labels%22%3A%7B%7D%2C%22type%22%3A%22table%22%2C%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Afalse%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22series_types%22%3A%7B%7D%2C%22hidden_fields%22%3A%5B%5D%2C%22hidden_points_if_no%22%3A%5B%5D%7D&filter_config=%7B%7D&origin=share-expanded"
+      url: "/explore/central_projects/item_price_comparison?fields=item_price_comparison.item_subcategory,item_price_comparison.weighted_delta_buying_price,item_price_comparison.weighted_delta_system_price&f[item_price_comparison.vendor_name]={{ value }}&sorts=item_price_comparison.weighted_delta_buying_price&limit=500&vis=%7B%22show_view_names%22%3Afalse%2C%22show_row_numbers%22%3Atrue%2C%22truncate_column_names%22%3Afalse%2C%22hide_totals%22%3Afalse%2C%22hide_row_totals%22%3Afalse%2C%22table_theme%22%3A%22unstyled%22%2C%22limit_displayed_rows%22%3Afalse%2C%22enable_conditional_formatting%22%3Afalse%2C%22conditional_formatting_include_totals%22%3Afalse%2C%22conditional_formatting_include_nulls%22%3Afalse%2C%22series_labels%22%3A%7B%7D%2C%22type%22%3A%22table%22%2C%22x_axis_gridlines%22%3Afalse%2C%22y_axis_gridlines%22%3Atrue%2C%22show_y_axis_labels%22%3Atrue%2C%22show_y_axis_ticks%22%3Atrue%2C%22y_axis_tick_density%22%3A%22default%22%2C%22y_axis_tick_density_custom%22%3A5%2C%22show_x_axis_label%22%3Atrue%2C%22show_x_axis_ticks%22%3Atrue%2C%22y_axis_scale_mode%22%3A%22linear%22%2C%22x_axis_reversed%22%3Afalse%2C%22y_axis_reversed%22%3Afalse%2C%22plot_size_by_field%22%3Afalse%2C%22trellis%22%3A%22%22%2C%22stacking%22%3A%22%22%2C%22legend_position%22%3A%22center%22%2C%22point_style%22%3A%22none%22%2C%22show_value_labels%22%3Afalse%2C%22label_density%22%3A25%2C%22x_axis_scale%22%3A%22auto%22%2C%22y_axis_combined%22%3Atrue%2C%22ordering%22%3A%22none%22%2C%22show_null_labels%22%3Afalse%2C%22show_totals_labels%22%3Afalse%2C%22show_silhouette%22%3Afalse%2C%22totals_color%22%3A%22%23808080%22%2C%22defaults_version%22%3A1%2C%22series_types%22%3A%7B%7D%2C%22hidden_fields%22%3A%5B%5D%2C%22hidden_points_if_no%22%3A%5B%5D%7D&filter_config=%7B%7D&origin=share-expanded"
       label: "Item Subcategory"
     }
   }
