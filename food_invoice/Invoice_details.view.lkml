@@ -5,7 +5,10 @@ view: Invoice_details {
   case
     when pd.po_type = 'RENTAL'
     or pd.po_type = 'NON_RENTAL'
-    or pd.po_type = 'SERVICE_PO' then pvd.vendor_name
+    or pd.po_type = 'SERVICE_PO' then REPLACE(pvd.vendor_name,'&','and')
+    when pd.po_type = 'RENTAL'
+    or pd.po_type = 'NON_RENTAL'
+    or pd.po_type = 'SERVICE_PO' and pvd.vendor_name = ' ABN Enterprises' then 'ABN Enterprises'
   end as Vendor_name,
   DATE(ibd.invoice_date) as invoice_date,
   row_number() over (partition by pd.po_number order by invoice_date) number_of_invoice,
@@ -165,7 +168,7 @@ where
   ibd.status = 1
   and po_dept = 'FOOD_OPS'
   and l1_approval_at is not null
-  and DATE(pd.po_start_date) >= '2021-05-01'
+  and DATE(pd.po_start_date) >= '2021-04-26'
   order by L2_approval_at ;;
   }
 
@@ -346,7 +349,7 @@ where
 
   dimension: first_invoice_date_to_L2_approval {
     type: number
-    sql: case when ${L2_approval_at_date} is null and ${L1_reject_at_date} is not null then datediff(day,${first_invoice_date_date},${L2_approval_at_date}) end ;;
+    sql: case when ${L2_approval_at_date} is not null and ${L2_reject_at_date} is null then datediff(day,${first_invoice_date_date},${L2_approval_at_date}) end ;;
   }
 
   dimension: grn_to_l1_approval {
