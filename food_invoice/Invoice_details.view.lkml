@@ -5,10 +5,7 @@ view: Invoice_details {
   case
     when pd.po_type = 'RENTAL'
     or pd.po_type = 'NON_RENTAL'
-    or pd.po_type = 'SERVICE_PO' then REPLACE(pvd.vendor_name,'&','and')
-    when pd.po_type = 'RENTAL'
-    or pd.po_type = 'NON_RENTAL'
-    or pd.po_type = 'SERVICE_PO' and pvd.vendor_name = ' ABN Enterprises' then 'ABN Enterprises'
+    or pd.po_type = 'SERVICE_PO' then pvd.vendor_name
   end as Vendor_name,
   DATE(ibd.invoice_date) as invoice_date,
   row_number() over (partition by pd.po_number order by invoice_date) number_of_invoice,
@@ -421,6 +418,21 @@ where
   measure: grn_to_L1_approved_invoice {
     type:  count_distinct
     sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is null and ${L2_approval_at_date} is null then ${TABLE}.po_number end ;;
+  }
+
+  measure: L1_to_L2_approved_invoice {
+    type:  count_distinct
+    sql: case when ${L2_reject_at_date} is null and ${L2_approval_at_date} is not null then ${TABLE}.po_number end ;;
+  }
+
+  measure: grn_to_L1_rejected_invoice {
+    type:  count_distinct
+    sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is not null then ${TABLE}.po_number end ;;
+  }
+
+  measure: L1_to_L2_rejected_invoice {
+    type:  count_distinct
+    sql: case when ${L2_reject_at_date} is not null and ${L2_approval_at_date} is not null then ${TABLE}.po_number end ;;
   }
 
 }

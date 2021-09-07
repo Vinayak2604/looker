@@ -72,6 +72,16 @@ view: derived_food_project {
     sql: ${TABLE}.home_town ;;
   }
 
+  dimension: option_chosen {
+    type: string
+    sql: ${TABLE}.option_chosen ;;
+  }
+
+  dimension: item_name {
+    type: string
+    sql: ${TABLE}.item_name ;;
+  }
+
   dimension: ageing {
     type: number
     sql: ${TABLE}.ageing ;;
