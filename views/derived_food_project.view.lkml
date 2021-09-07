@@ -1,15 +1,29 @@
 view: derived_food_project {
-  sql_table_name: stanza.derived_food_project ;;
+  derived_table: {
+    sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id))),0)
+    / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps
+    from stanza.derived_food_project
+    {% condition date %} date {% endcondition %}
+      ;;
+  }
 
-  dimension: date {
+  parameter: date {
     type: date
-    sql: ${TABLE}.date ;;
   }
 
 
   dimension: month_quartile {
     type: string
     sql: case when extract(day from ${date}) <= 8 then '1st Quartile' when extract(day from ${date}) <= 16 then '2nd Quartile' when extract(day from ${date}) <= 24 then '3rd Quartile' when extract(day from ${date}) > 24 then '4th Quartile' end;;
+  }
+
+  dimension: student_fps {
+    type: string
+    sql: case when ${TABLE}.student_fps >= -1 and ${TABLE}.student_fps < -0.60 then "FPS: -100% to -60%"
+              when ${TABLE}.student_fps >= -60 and ${TABLE}.student_fps < -0.20 then "FPS: -60% to -20%"
+              when ${TABLE}.student_fps >= -20 and ${TABLE}.student_fps < .20 then "FPS: -20% to 20%"
+              when ${TABLE}.student_fps >= 20 and ${TABLE}.student_fps < .60 then "FPS: 20% to 60%"
+              when ${TABLE}.student_fps >= .60 and ${TABLE}.student_fps <= 1 then "FPS: 60% to 100%" end;;
   }
 
   dimension: student_id {
