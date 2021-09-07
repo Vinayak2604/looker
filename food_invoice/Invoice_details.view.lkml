@@ -377,6 +377,11 @@ where
     sql: ${TABLE}.no_of_l1_rejections ;;
   }
 
+  measure: distinct_po{
+    type: count_distinct
+    sql: ${TABLE}.po_number ;;
+  }
+
   measure: weighted_avg_grn_to_first_invoice {
     type: average
     sql: case when ${TABLE}.first_invoice_date is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${grn_to_first_invoice_date})/(${TABLE}.total_amount) end ;;
@@ -411,6 +416,11 @@ where
     type: average
     sql: case when ${l1_to_l2_rejection} is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${l1_to_l2_rejection})/(${TABLE}.total_amount) end ;;
     value_format: "0.00"
+  }
+
+  measure: grn_to_L1_approved_invoice {
+    type:  count_distinct
+    sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is null and ${L2_approval_at_date} is null then ${TABLE}.po_number end ;;
   }
 
 }
