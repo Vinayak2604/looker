@@ -10,8 +10,6 @@ view: po_invoice {
     or pd.po_type = 'SERVICE_PO' then pvd.vendor_name
   end as Vendor_name,
   DATE(ibd.invoice_date) as invoice_date,
-  --  row_number() over (partition by pd.po_number order by invoice_date) number_of_invoice,
-  --  case when number_of_invoice = 1 then DATE(ibd.invoice_date) end first_invoice_date,
   pd.po_status,
   DATE(pd.po_start_date) as po_start_date,
   DATE(pd.completion_date) po_completion_date,
@@ -21,10 +19,7 @@ view: po_invoice {
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
   COUNT(L1_reject_at) over (partition by pd.po_number) no_of_L1_rejections,
-  pd.po_type
-  --  coalesce((gg.item_base_amount - gg.item_gst),0) as base_amt,
-  --  coalesce((gg.other_fee_base_amount-gg.other_fee_gst),0) as Other_charges,
-  --  (base_amt + Other_charges) as total_amount
+  COALESCE(SUM((gg.item_base_amount - gg.item_gst) + (gg.other_fee_base_amount-gg.other_fee_gst)) over (partition by pd.po_number),0) as total_amount
 from
   stanza.erp_erp_invoice_po_invoice_details pid
 left join stanza.erp_purchase_order_po_details pd
@@ -167,8 +162,6 @@ where
   and po_dept = 'FOOD_OPS'
   and l1_approval_at is not null
   and DATE(pd.po_start_date) >= '2021-04-26'
-  --  and DATE(jj.L2_approval_at) is not null
-  --  and DATE(jj.L2_reject_at) is null
   and po_status = 'GSRI_COMPLETED'
   and ibd.id in (
   select
