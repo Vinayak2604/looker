@@ -14,6 +14,7 @@ view: derived_food_project {
   dimension: date {
     type: date
     sql: ${TABLE}.date ;;
+    hidden: yes
   }
 
 
