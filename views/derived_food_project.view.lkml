@@ -3,24 +3,18 @@ view: derived_food_project {
     sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id))),0)
     / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps
     from stanza.derived_food_project
-    where {% condition date1 %} date {% endcondition %}
+    where {% condition date %} date {% endcondition %}
       ;;
   }
 
-  parameter: date1 {
+  parameter: date {
     type: date
-  }
-
-  dimension: date {
-    type: date
-    sql: ${TABLE}.date ;;
-    hidden: yes
   }
 
 
   dimension: month_quartile {
     type: string
-    sql: case when extract(day from ${date}) <= 8 then '1st Quartile' when extract(day from ${date}) <= 16 then '2nd Quartile' when extract(day from ${date}) <= 24 then '3rd Quartile' when extract(day from ${date}) > 24 then '4th Quartile' end;;
+    sql: case when extract(day from ${TABLE}.date) <= 8 then '1st Quartile' when extract(day from $${TABLE}.date) <= 16 then '2nd Quartile' when extract(day from ${TABLE}.date) <= 24 then '3rd Quartile' when extract(day from ${TABLE}.date) > 24 then '4th Quartile' end;;
   }
 
   dimension: student_fps {
