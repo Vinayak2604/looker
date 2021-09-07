@@ -37,6 +37,9 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
       sql_on: ${derived_sku_pricing.micromarket}=${derived_inventory_pricing.micro_market} ;;
     }
   }
+
+    explore: derived_prebookings_dod {
+    }
   # explore: derived_sku_pricing {
   #   join: derived_inventory_pricing {
   #     relationship: one_to_many
