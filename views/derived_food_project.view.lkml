@@ -3,12 +3,17 @@ view: derived_food_project {
     sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id))),0)
     / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps
     from stanza.derived_food_project
-    {% condition date %} date {% endcondition %}
+    where {% condition date1 %} date {% endcondition %}
       ;;
   }
 
-  parameter: date {
+  parameter: date1 {
     type: date
+  }
+
+  dimension: date {
+    type: date
+    sql: ${TABLE}.date ;;
   }
 
 
