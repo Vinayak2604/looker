@@ -33,6 +33,16 @@ view: derived_food_project {
               when ${TABLE}.student_fps >= 0.60 and ${TABLE}.student_fps <= 1 then 'FPS: 60% to 100%' end;;
   }
 
+  dimension: meal_bucket {
+    type: string
+    sql: case when ${TABLE}.student_meal <5 then '1-5'
+              when ${TABLE}.student_meal <10 then '5-10'
+              when ${TABLE}.student_meal <15 then '10-15'
+              when ${TABLE}.student_meal <20 then '15-20'
+              when ${TABLE}.student_meal >=20 then '>=20' end;;
+  }
+
+
   dimension: student_id {
     type: string
     sql: ${TABLE}.student_id ;;
@@ -179,29 +189,29 @@ view: derived_food_project {
   }
 
   measure: 1s {
-    type: number
-    sql: count(case when ${meal_rating} = 1 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 1 then ${meal_id} end;;
   }
 
   measure: 2s {
-    type: number
-    sql: count(case when ${meal_rating} = 2 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 2 then ${meal_id} end;;
   }
 
 
   measure: 3s {
-    type: number
-    sql: count(case when ${meal_rating} = 3 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 3 then ${meal_id} end;;
   }
 
   measure: 4s {
-    type: number
-    sql: count(case when ${meal_rating} = 4 then ${meal_rating} end) ;;
+    type: count_distinct
+    sql: case when ${meal_rating} = 4 then ${meal_id} end ;;
   }
 
   measure: 5s {
-    type: number
-    sql: count(case when ${meal_rating} = 5 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 5 then ${meal_id} end;;
   }
 
 
