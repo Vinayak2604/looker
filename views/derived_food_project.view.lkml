@@ -259,6 +259,18 @@ view: derived_food_project {
     value_format: "0.0%"
   }
 
+  measure: meals_with_preference {
+    type: count_distinct
+    sql: case when ${preference_available} = 1 then ${meal_id} end ;;
+  }
+
+  measure: preference_given {
+    type: count_distinct
+    sql: case when ${preference_available} = 1 and ${item_base_preference} = 1 then ${meal_id} end ;;
+  }
+
+
+
 
 
 }
