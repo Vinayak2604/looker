@@ -189,29 +189,29 @@ view: derived_food_project {
   }
 
   measure: 1s {
-    type: count_distinct
-    sql: case when ${meal_rating} = 1 then ${meal_id} end;;
+    type: number
+    sql: count(case when ${meal_rating} = 1 then ${meal_rating} end);;
   }
 
   measure: 2s {
-    type: count_distinct
-    sql: case when ${meal_rating} = 2 then ${meal_id} end;;
+    type: number
+    sql: count(case when ${meal_rating} = 2 then ${meal_rating} end);;
   }
 
 
   measure: 3s {
-    type: count_distinct
-    sql: case when ${meal_rating} = 3 then ${meal_id} end;;
+    type: number
+    sql: count(case when ${meal_rating} = 3 then ${meal_rating} end);;
   }
 
   measure: 4s {
-    type: count_distinct
-    sql: case when ${meal_rating} = 4 then ${meal_id} end ;;
+    type: number
+    sql: count(case when ${meal_rating} = 4 then ${meal_rating} end);;
   }
 
   measure: 5s {
-    type: count_distinct
-    sql: case when ${meal_rating} = 5 then ${meal_id} end;;
+    type: number
+    sql: count(case when ${meal_rating} = 5 then ${meal_rating} end)  ;;
   }
 
 

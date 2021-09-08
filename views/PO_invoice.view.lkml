@@ -362,7 +362,7 @@ order by
 
   measure: distinct_po{
     type: count_distinct
-    sql: case when ${L1_reject_at_date} is null and ${L2_reject_at_date}is null then ${TABLE}.po_number end ;;
+    sql: case when ${L1_reject_at_date} is null and ${L2_reject_at_date} is null then ${TABLE}.po_number end ;;
   }
 
   measure: grn_to_L1_approved_invoice {
