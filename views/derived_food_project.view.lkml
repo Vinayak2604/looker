@@ -134,7 +134,11 @@ view: derived_food_project {
   measure: total_meals {
     type: count_distinct
     sql: ${meal_id} ;;
+  }
 
+  measure: total_rated_meals {
+    type: count_distinct
+    sql: case when ${meal_rating} >= 1 then ${meal_id} end;;
   }
 
   measure: total_rating {
