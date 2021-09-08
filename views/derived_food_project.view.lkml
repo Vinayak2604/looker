@@ -35,11 +35,11 @@ view: derived_food_project {
 
   dimension: meal_bucket {
     type: string
-    sql: case when ${TABLE}.student_meal <5 then '1-5'
-              when ${TABLE}.student_meal <10 then '5-10'
-              when ${TABLE}.student_meal <15 then '10-15'
-              when ${TABLE}.student_meal <20 then '15-20'
-              when ${TABLE}.student_meal >=20 then '>=20' end;;
+    sql: case when ${TABLE}.student_rated_meal <5 then '1-5'
+              when ${TABLE}.student_rated_meal <10 then '5-10'
+              when ${TABLE}.student_rated_meal <15 then '10-15'
+              when ${TABLE}.student_rated_meal <20 then '15-20'
+              when ${TABLE}.student_rated_meal >=20 then '>=20' end;;
   }
 
 
