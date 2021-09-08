@@ -19,7 +19,8 @@ view: po_invoice {
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
   COUNT(L1_reject_at) over (partition by pd.po_number) no_of_L1_rejections,
-  COALESCE(SUM((gg.item_base_amount - gg.item_gst) + (gg.other_fee_base_amount-gg.other_fee_gst)) over (partition by pd.po_number),0) as total_amount
+  COALESCE(SUM(gg.item_base_amount - gg.item_gst) over (partition by pd.po_number),0) as base_amount,
+  COALESCE(SUM(gg.other_fee_base_amount-gg.other_fee_gst) over (partition by pd.po_number),0) as Other_charges
 from
   stanza.erp_erp_invoice_po_invoice_details pid
 left join stanza.erp_purchase_order_po_details pd
@@ -345,21 +346,15 @@ order by
     sql: ${TABLE}.L2_reject_at ;;
   }
 
-  dimension: base_charges {
+  dimension: base_amount {
     type: number
-    sql: ${TABLE}.base_charges ;;
+    sql: ${TABLE}.base_amount ;;
     value_format: "#,##0"
   }
 
   dimension: other_charges {
     type: number
     sql: ${TABLE}.other_charges ;;
-    value_format: "#,##0"
-  }
-
-  dimension: total_amount {
-    type: number
-    sql: ${TABLE}.total_amount ;;
     value_format: "#,##0"
   }
 
