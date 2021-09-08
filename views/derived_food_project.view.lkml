@@ -252,7 +252,6 @@ view: derived_food_project {
     value_format: "0.0%"
   }
 
-
   measure: FPS {
     type: number
     sql: nullif(1.00*coalesce((${5s}+${4s}) - (${1s}+${2s}),0),0) / ${total_rating};;
@@ -267,6 +266,12 @@ view: derived_food_project {
   measure: preference_given {
     type: count_distinct
     sql: case when ${preference_available} = 1 and ${item_base_preference} = 1 then ${meal_id} end ;;
+  }
+
+  measure: preference_per {
+    type: number
+    sql: nullif(1.00*coalesce(${preference_given},0) / ${meals_with_preference};;
+    value_format: "0.0%"
   }
 
 
