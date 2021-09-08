@@ -270,7 +270,7 @@ view: derived_food_project {
 
   measure: preference_per {
     type: number
-    sql: nullif(1.00*coalesce(${preference_given},0) / ${meals_with_preference};;
+    sql: nullif(1.00*coalesce(${preference_given},0),0) / ${meals_with_preference};;
     value_format: "0.0%"
   }
 

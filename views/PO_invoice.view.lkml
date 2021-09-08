@@ -3,7 +3,6 @@ view: po_invoice {
     sql: select
   distinct pd.po_number po_number,
   ibd.invoice_code,
-  ibd.id,
   case
     when pd.po_type = 'RENTAL'
     or pd.po_type = 'NON_RENTAL'
@@ -18,12 +17,12 @@ view: po_invoice {
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
-  COUNT(L1_reject_at) over (partition by pd.po_number) no_of_L1_rejections,
-  COALESCE(SUM(gg.item_base_amount - gg.item_gst) over (partition by pd.po_number),0) as base_amount,
-  COALESCE(SUM(gg.other_fee_base_amount-gg.other_fee_gst) over (partition by pd.po_number),0) as Other_charges
+  coalesce((gg.item_base_amount - gg.item_gst),0) as base_amount,
+  COALESCE((gg.other_fee_base_amount-gg.other_fee_gst),0) as Other_charges,
+  (base_amount+Other_charges) total_amount
 from
-  stanza.erp_erp_invoice_po_invoice_details pid
-left join stanza.erp_purchase_order_po_details pd
+  stanza.erp_purchase_order_po_details pd
+left join stanza.erp_erp_invoice_po_invoice_details pid
 on
   pid.po_uuid = pd.uuid
 left join stanza.erp_erp_invoice_invoice_basic_details ibd
@@ -159,32 +158,10 @@ left join stanza.erp_transformation_master_states tm
 on
   tm.uuid = pvd.gst_state
 where
-  ibd.status = 1
-  and po_dept = 'FOOD_OPS'
-  and l1_approval_at is not null
-  and DATE(pd.po_start_date) >= '2021-04-26'
-  and po_status = 'GSRI_COMPLETED'
-  and ibd.id in (
-  select
-    a.id
-  from
-    (
-    select
-      pd.po_number po_number,
-      MAX(ibd.id) id
-    from
-      stanza.erp_erp_invoice_po_invoice_details pid
-    left join stanza.erp_purchase_order_po_details pd
-on
-      pid.po_uuid = pd.uuid
-    left join stanza.erp_erp_invoice_invoice_basic_details ibd
-on
-      pd.uuid = ibd.po_uuid
-    left join stanza.erp_purchase_order_po_to_vendor_details pvd
-on
-      pd.uuid = pvd.po_to_uuid
-    group by
-      1) as a)
+  pd.status = 1
+  and pd.mapped_department = 'FOOD_OPS'
+  and DATE(pd.created_at) >= '2021-04-26'
+  and pd.po_status!='IN_DRAFT'
 order by
   po_number ;;
   }
@@ -192,7 +169,6 @@ order by
   dimension: invoice_code {
     type: string
     sql: ${TABLE}.invoice_code ;;
-    primary_key: yes
   }
 
   dimension: Vendor_name {
@@ -200,14 +176,10 @@ order by
     sql: ${TABLE}.Vendor_name ;;
   }
 
-  dimension: id {
-    type: number
-    sql: ${TABLE}.id ;;
-  }
-
   dimension: po_number {
     type: string
     sql: ${TABLE}.po_number ;;
+    primary_key: yes
   }
 
   dimension: po_status {
@@ -388,50 +360,9 @@ order by
     sql: case when ${L2_reject_at_date} is not null then datediff(day,${L1_approval_at_date},${L2_reject_at_date}) end ;;
   }
 
-  dimension: No_of_rejections {
-    type: number
-    sql: ${TABLE}.no_of_l1_rejections ;;
-  }
-
   measure: distinct_po{
     type: count_distinct
-    sql: ${TABLE}.po_number ;;
-  }
-
-  measure: weighted_avg_grn_to_first_invoice {
-    type: average
-    sql: case when ${TABLE}.first_invoice_date is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${grn_to_first_invoice_date})/(${TABLE}.total_amount) end ;;
-    value_format: "0.00"
-  }
-
-  measure: weighted_avg_first_invoice_to_l2_approval {
-    type: average
-    sql: case when ${TABLE}.first_invoice_date is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${first_invoice_date_to_L2_approval})/(${TABLE}.total_amount) end ;;
-    value_format: "0.00"
-  }
-
-  measure: weighted_avg_grn_to_l1_approval {
-    type: average
-    sql: case when ${grn_to_l1_approval} is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${grn_to_l1_approval})/(${TABLE}.total_amount) end ;;
-    value_format: "0.00"
-  }
-
-  measure: weighted_avg_l1_to_l2_approval {
-    type: average
-    sql: case when ${l1_to_l2_approval} is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${l1_to_l2_approval})/(${TABLE}.total_amount) end ;;
-    value_format: "0.00"
-  }
-
-  measure: weighted_avg_grn_to_l1_rejection {
-    type: average
-    sql: case when ${grn_to_l1_rejection} is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${grn_to_l1_rejection})/(${TABLE}.total_amount) end ;;
-    value_format: "0.00"
-  }
-
-  measure: weighted_avg_l1_to_l2_rejection {
-    type: average
-    sql: case when ${l1_to_l2_rejection} is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${l1_to_l2_rejection})/(${TABLE}.total_amount) end ;;
-    value_format: "0.00"
+    sql: case when ${L1_reject_at_date} is null and ${L2_reject_at_date}is null then ${TABLE}.po_number end ;;
   }
 
   measure: grn_to_L1_approved_invoice {
