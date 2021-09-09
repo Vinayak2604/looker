@@ -157,8 +157,8 @@ view: derived_food_project {
   }
 
   measure: total_rating_for_filter {
-    type: number
-    sql: count(${meal_rating}) ;;
+    type: count_distinct
+    sql: case when ${meal_rating} >= 1 then ${meal_id} end;;
   }
 
 
@@ -189,29 +189,29 @@ view: derived_food_project {
   }
 
   measure: 1s {
-    type: number
-    sql: count(case when ${meal_rating} = 1 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 1 then ${meal_id} end;;
   }
 
   measure: 2s {
-    type: number
-    sql: count(case when ${meal_rating} = 2 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 2 then ${meal_id} end;;
   }
 
 
   measure: 3s {
-    type: number
-    sql: count(case when ${meal_rating} = 3 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 3 then ${meal_id} end;;
   }
 
   measure: 4s {
-    type: number
-    sql: count(case when ${meal_rating} = 4 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 4 then ${meal_id} end;;
   }
 
   measure: 5s {
-    type: number
-    sql: count(case when ${meal_rating} = 5 then ${meal_rating} end)  ;;
+    type: count_distinct
+    sql: case when ${meal_rating} = 5 then ${meal_id} end  ;;
   }
 
 
