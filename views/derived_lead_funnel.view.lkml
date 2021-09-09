@@ -193,6 +193,4 @@ view: derived_lead_funnel {
   }
 
 
-
-
 }
