@@ -98,6 +98,11 @@ view: derived_food_project {
     sql: ${TABLE}.preference_available ;;
   }
 
+  dimension: vendor_name {
+    type: string
+    sql: ${TABLE}.vendor_name ;;
+  }
+
   dimension: home_town {
     type: string
     sql: ${TABLE}.home_town ;;
