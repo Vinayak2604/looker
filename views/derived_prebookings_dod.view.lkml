@@ -2,7 +2,7 @@ view: derived_prebookings_dod {
   derived_table: {
     sql: select *
       from stanza.derived_prebookings_dod
-      where {% condition date %} date {% endcondition %}
+      where date = current_date
        ;;
   }
 
