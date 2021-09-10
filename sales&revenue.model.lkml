@@ -38,6 +38,13 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
     }
   }
 
+  # explore: status_tracker{
+  # # join:  estate_level_view {
+  #   relationship: many_to_one
+  #   type: left_outer
+  #   sql_on:  ;;
+  # }
+  # }
     # explore: derived_prebookings_dod {
     # }
 
