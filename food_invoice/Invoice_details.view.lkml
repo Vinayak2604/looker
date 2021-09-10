@@ -165,7 +165,7 @@ where
   ibd.status = 1
   and po_dept = 'FOOD_OPS'
   and l1_approval_at is not null
-  and DATE(pd.po_start_date) >= '2021-05-01'
+  and DATE(pd.po_start_date) >= '2021-04-26'
   order by L2_approval_at ;;
   }
 
@@ -346,7 +346,7 @@ where
 
   dimension: first_invoice_date_to_L2_approval {
     type: number
-    sql: case when ${L2_approval_at_date} is null and ${L1_reject_at_date} is not null then datediff(day,${first_invoice_date_date},${L2_approval_at_date}) end ;;
+    sql: case when ${L2_approval_at_date} is not null and ${L2_reject_at_date} is null then datediff(day,${first_invoice_date_date},${L2_approval_at_date}) end ;;
   }
 
   dimension: grn_to_l1_approval {
@@ -372,6 +372,11 @@ where
   dimension: No_of_rejections {
     type: number
     sql: ${TABLE}.no_of_l1_rejections ;;
+  }
+
+  measure: distinct_po{
+    type: count_distinct
+    sql: ${TABLE}.po_number ;;
   }
 
   measure: weighted_avg_grn_to_first_invoice {
@@ -408,6 +413,26 @@ where
     type: average
     sql: case when ${l1_to_l2_rejection} is not null and ${TABLE}.total_amount!=0 then (${TABLE}.total_amount*${l1_to_l2_rejection})/(${TABLE}.total_amount) end ;;
     value_format: "0.00"
+  }
+
+  measure: grn_to_L1_approved_invoice {
+    type:  count_distinct
+    sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is null and ${L2_approval_at_date} is null then ${TABLE}.po_number end ;;
+  }
+
+  measure: L1_to_L2_approved_invoice {
+    type:  count_distinct
+    sql: case when ${L2_reject_at_date} is null and ${L2_approval_at_date} is not null then ${TABLE}.po_number end ;;
+  }
+
+  measure: grn_to_L1_rejected_invoice {
+    type:  count_distinct
+    sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is not null then ${TABLE}.po_number end ;;
+  }
+
+  measure: L1_to_L2_rejected_invoice {
+    type:  count_distinct
+    sql: case when ${L2_reject_at_date} is not null and ${L2_approval_at_date} is not null then ${TABLE}.po_number end ;;
   }
 
 }

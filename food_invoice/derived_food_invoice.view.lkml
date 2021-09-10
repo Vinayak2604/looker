@@ -166,7 +166,7 @@ view: derived_food_invoice {
 
   dimension: vendor_name {
     type: string
-    sql: ${TABLE}.vendor_name ;;
+    sql: case when ${TABLE}.vendor_name = ' ABN Enterprises' then 'ABN Enterprises' else REPLACE(${TABLE}.vendor_name,'&','and') end ;;
   }
 
   measure: Last_PO_dormant_days {

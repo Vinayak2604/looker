@@ -268,7 +268,7 @@ order by
   a.item_name,
   a.city )
 select
-    item_price_comparison.vendor_name,
+    item_price_comparison.vendor_name vendor_name,
     item_price_comparison.item_sub_category_label item_sub_category_label,
     item_price_comparison.qty quantity,
     item_price_comparison.system_price system_price,

@@ -38,9 +38,11 @@ include: "/views/*.view.lkml"                # include all views in the views/ f
     }
   }
 
-    explore: derived_prebookings_dod {
-    }
-  # explore: derived_sku_pricing {
+    # explore: derived_prebookings_dod {
+    # }
+
+
+  # explore: derived_sku_pricing
   #   join: derived_inventory_pricing {
   #     relationship: one_to_many
   #     type: left_outer

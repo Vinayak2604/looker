@@ -26,3 +26,4 @@ explore: is_leads_bifurcation_attempted {}
 explore: derived_sales_associate_performance {}
 # explore: derived_vas_bucket_table {}
 explore: derived_food_project {}
+explore: derived_lead_funnel {}

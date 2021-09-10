@@ -1,9 +1,21 @@
 view: derived_food_project {
-  sql_table_name: stanza.derived_food_project ;;
+  derived_table: {
+    sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id))),0)
+    / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps,
+    count(case when meal_rating >= 1 then meal_id end) over(partition by student_id) student_rated_meal
+    from stanza.derived_food_project
+    where {% condition date_for_filter %} date {% endcondition %}
+      ;;
+  }
+
+  parameter: date_for_filter {
+    type: date
+  }
 
   dimension: date {
     type: date
     sql: ${TABLE}.date ;;
+    hidden: yes
   }
 
 
@@ -11,6 +23,25 @@ view: derived_food_project {
     type: string
     sql: case when extract(day from ${date}) <= 8 then '1st Quartile' when extract(day from ${date}) <= 16 then '2nd Quartile' when extract(day from ${date}) <= 24 then '3rd Quartile' when extract(day from ${date}) > 24 then '4th Quartile' end;;
   }
+
+  dimension: student_fps {
+    type: string
+    sql: case when ${TABLE}.student_fps >= -1 and ${TABLE}.student_fps < -0.60 then 'FPS: -100% to -60%'
+              when ${TABLE}.student_fps >= -0.60 and ${TABLE}.student_fps < -0.20 then 'FPS: -60% to -20%'
+              when ${TABLE}.student_fps >= -0.20 and ${TABLE}.student_fps < 0.20 then 'FPS: -20% to 20%'
+              when ${TABLE}.student_fps >= 0.20 and ${TABLE}.student_fps < 0.60 then 'FPS: 20% to 60%'
+              when ${TABLE}.student_fps >= 0.60 and ${TABLE}.student_fps <= 1 then 'FPS: 60% to 100%' end;;
+  }
+
+  dimension: meal_bucket {
+    type: string
+    sql: case when ${TABLE}.student_rated_meal <5 then '1-5'
+              when ${TABLE}.student_rated_meal <10 then '5-10'
+              when ${TABLE}.student_rated_meal <15 then '10-15'
+              when ${TABLE}.student_rated_meal <20 then '15-20'
+              when ${TABLE}.student_rated_meal >=20 then '>=20' end;;
+  }
+
 
   dimension: student_id {
     type: string
@@ -67,9 +98,24 @@ view: derived_food_project {
     sql: ${TABLE}.preference_available ;;
   }
 
+  dimension: vendor_name {
+    type: string
+    sql: ${TABLE}.vendor_name ;;
+  }
+
   dimension: home_town {
     type: string
     sql: ${TABLE}.home_town ;;
+  }
+
+  dimension: option_chosen {
+    type: string
+    sql: ${TABLE}.option_chosen ;;
+  }
+
+  dimension: item_name {
+    type: string
+    sql: ${TABLE}.item_name ;;
   }
 
   dimension: ageing {
@@ -103,17 +149,21 @@ view: derived_food_project {
   measure: total_meals {
     type: count_distinct
     sql: ${meal_id} ;;
+  }
 
+  measure: total_rated_meals {
+    type: count_distinct
+    sql: case when ${meal_rating} >= 1 then ${meal_id} end;;
   }
 
   measure: total_rating {
-    type: number
-    sql: count(case when ${meal_rating} >= 1 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} >= 1 then ${meal_id} end;;
   }
 
   measure: total_rating_for_filter {
-    type: number
-    sql: count(${meal_rating}) ;;
+    type: count_distinct
+    sql: case when ${meal_rating} >= 1 then ${meal_id} end;;
   }
 
 
@@ -144,29 +194,29 @@ view: derived_food_project {
   }
 
   measure: 1s {
-    type: number
-    sql: count(case when ${meal_rating} = 1 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 1 then ${meal_id} end;;
   }
 
   measure: 2s {
-    type: number
-    sql: count(case when ${meal_rating} = 2 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 2 then ${meal_id} end;;
   }
 
 
   measure: 3s {
-    type: number
-    sql: count(case when ${meal_rating} = 3 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 3 then ${meal_id} end;;
   }
 
   measure: 4s {
-    type: number
-    sql: count(case when ${meal_rating} = 4 then ${meal_rating} end) ;;
+    type: count_distinct
+    sql: case when ${meal_rating} = 4 then ${meal_id} end;;
   }
 
   measure: 5s {
-    type: number
-    sql: count(case when ${meal_rating} = 5 then ${meal_rating} end);;
+    type: count_distinct
+    sql: case when ${meal_rating} = 5 then ${meal_id} end  ;;
   }
 
 
@@ -207,12 +257,29 @@ view: derived_food_project {
     value_format: "0.0%"
   }
 
-
   measure: FPS {
     type: number
     sql: nullif(1.00*coalesce((${5s}+${4s}) - (${1s}+${2s}),0),0) / ${total_rating};;
     value_format: "0.0%"
   }
+
+  measure: meals_with_preference {
+    type: count_distinct
+    sql: case when ${preference_available} = 1 then ${meal_id} end ;;
+  }
+
+  measure: preference_given {
+    type: count_distinct
+    sql: case when ${preference_available} = 1 and ${item_base_preference} = 1 then ${meal_id} end ;;
+  }
+
+  measure: preference_per {
+    type: number
+    sql: nullif(1.00*coalesce(${preference_given},0),0) / ${meals_with_preference};;
+    value_format: "0.0%"
+  }
+
+
 
 
 

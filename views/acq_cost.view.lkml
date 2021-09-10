@@ -9,7 +9,7 @@ b.budget_amount*10 as budget
 from stanza.erp_cac_service_purchase_order po
 left join stanza.erp_cac_service_attribute_meta am on po.attribute_meta_uuid = am.uuid
 left join stanza.erp_cac_service_budget b on am.uuid = b.attribue_meta_uuid
-where po.committed >0 and am.category_name not like '%Discount'
+where (po.committed >0 or po.committed is null) and am.category_name not like '%Discount'
 ;;
   }
 
@@ -135,6 +135,16 @@ where po.committed >0 and am.category_name not like '%Discount'
       <p style="color: red"> - </p>
 
     {% endif %}  ;;
+  }
+
+  measure: Committed_delta_test {
+    type: sum
+    sql: COALESCE((${TABLE}.committed-${TABLE}.comm_lag)/10^7,0) ;;
+    value_format: "0.00"
+    html: {% if value == null or value == '' or value == "NULL" %}
+      <p style="color: red"> - </p>
+
+    {% endif %};;
   }
 
 
