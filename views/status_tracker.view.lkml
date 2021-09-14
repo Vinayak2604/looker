@@ -76,7 +76,7 @@ view: status_tracker {
 
   dimension: primary_key {
     primary_key: yes
-    sql: ${context_uuid};;
+    sql: CONCAT(${status},${context_uuid}) ;;
   }
 
   set: detail {

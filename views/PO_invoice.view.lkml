@@ -10,21 +10,31 @@ view: po_invoice {
   end as Vendor_name,
   DATE(ibd.invoice_date) as invoice_date,
   pd.po_status,
-  DATE(pd.po_start_date) as po_start_date,
+  pd.po_subtotal_amount,
+  (ptid.unit_rate_rent_per_month*ptid.quantity) grn_amount,
+  DATE(pd.created_at) po_start_date,
   DATE(pd.completion_date) po_completion_date,
   DATE(ibd.created_at) as created_at,
+  case when DATE(ibd.created_at)>='2021-05-01' then 1 else 0 end invoice_done_flag,
   DATE(jj.L1_approval_at) as L1_approval_at,
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
+  case when po_completion_date is null then datediff(day,po_start_date,current_date)
+       when po_completion_date is not null and ibd.created_at is null then datediff(day,po_completion_date,current_date)
+       when (ibd.created_at is not null and L1_approval_at is null) or (L1_reject_at is not null) or (L2_reject_at is not null) then datediff(day,ibd.created_at ,current_date)
+       when L1_approval_at is not null and L1_reject_at is null and L2_approval_at is null then datediff(day,L1_approval_at,current_date)
+       when L2_approval_at is not null and L2_reject_at is null then 0 end aging,
   coalesce((gg.item_base_amount - gg.item_gst),0) as base_amount,
   COALESCE((gg.other_fee_base_amount-gg.other_fee_gst),0) as Other_charges,
-  (base_amount+Other_charges) total_amount
+  (base_amount+Other_charges) invoice_amount
 from
   stanza.erp_purchase_order_po_details pd
 left join stanza.erp_erp_invoice_po_invoice_details pid
 on
   pid.po_uuid = pd.uuid
+left join stanza.erp_purchase_order_po_to_item_details as ptid
+on pd.uuid=ptid.po_to_uuid
 left join stanza.erp_erp_invoice_invoice_basic_details ibd
 on
   pd.uuid = ibd.po_uuid
@@ -160,8 +170,9 @@ on
 where
   pd.status = 1
   and pd.mapped_department = 'FOOD_OPS'
-  and DATE(pd.created_at) >= '2021-04-26'
+  and DATE(pd.created_at) >= '2021-05-01'
   and pd.po_status!='IN_DRAFT'
+  and po_number not like '%TOFB%'
 order by
   po_number ;;
   }
@@ -318,6 +329,11 @@ order by
     sql: ${TABLE}.L2_reject_at ;;
   }
 
+  dimension: aging {
+    type: number
+    sql: ${TABLE}.aging ;;
+  }
+
   dimension: base_amount {
     type: number
     sql: ${TABLE}.base_amount ;;
@@ -328,6 +344,29 @@ order by
     type: number
     sql: ${TABLE}.other_charges ;;
     value_format: "#,##0"
+  }
+
+  dimension: invoice_amount {
+    type: number
+    sql: ${TABLE}.invoice_amount ;;
+    value_format: "#,##0"
+  }
+
+  dimension: po_amount {
+    type: number
+    sql: ${TABLE}.po_subtotal_amount ;;
+    value_format: "#,##0"
+  }
+
+  dimension: grn_amount {
+    type: number
+    sql: ${TABLE}.grn_amount ;;
+    value_format: "#,##0"
+  }
+
+  dimension: invoice_done_flag {
+    type: number
+    sql: ${TABLE}.invoice_done_flag ;;
   }
 
   dimension: grn_to_first_invoice_date {
@@ -365,7 +404,27 @@ order by
     sql: case when ${L1_reject_at_date} is null and ${L2_reject_at_date} is null then ${TABLE}.po_number end ;;
   }
 
-  measure: grn_to_L1_approved_invoice {
+  measure: total_po_pending {
+    type: number
+    sql: ${distinct_po} - ${L1_to_L2_approved_invoice} ;;
+  }
+
+  measure: grn_pending {
+    type:  count_distinct
+    sql: case when ${po_completion_at_date} is null then ${TABLE}.po_number end ;;
+  }
+
+  measure: grn_to_invoice_pending {
+    type:  count_distinct
+    sql: case when ${po_completion_at_date} is not null and ${invoice_created_at_date} is null then ${TABLE}.po_number end ;;
+  }
+
+  measure: invoice_to_L1_pending {
+    type:  count_distinct
+    sql: case when ${invoice_created_at_date} is not null and ${L1_approval_at_date} is null and ${invoice_created_at_date} is not null then ${TABLE}.po_number end ;;
+  }
+
+  measure: L1_to_L2_pending {
     type:  count_distinct
     sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is null and ${L2_approval_at_date} is null then ${TABLE}.po_number end ;;
   }
@@ -373,15 +432,5 @@ order by
   measure: L1_to_L2_approved_invoice {
     type:  count_distinct
     sql: case when ${L2_reject_at_date} is null and ${L2_approval_at_date} is not null then ${TABLE}.po_number end ;;
-  }
-
-  measure: grn_to_L1_rejected_invoice {
-    type:  count_distinct
-    sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is not null then ${TABLE}.po_number end ;;
-  }
-
-  measure: L1_to_L2_rejected_invoice {
-    type:  count_distinct
-    sql: case when ${L2_reject_at_date} is not null and ${L2_approval_at_date} is not null then ${TABLE}.po_number end ;;
   }
 }
