@@ -10,6 +10,7 @@ view: po_invoice {
   end as Vendor_name,
   DATE(ibd.invoice_date) as invoice_date,
   pd.po_status,
+  jj.new_status invoice_status,
   pd.po_subtotal_amount,
   (ptid.unit_rate_rent_per_month*ptid.quantity) grn_amount,
   DATE(pd.created_at) po_start_date,
@@ -20,8 +21,8 @@ view: po_invoice {
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
-  case when po_completion_date is null then datediff(day,po_start_date,current_date)
-       when po_completion_date is not null and ibd.created_at is null then datediff(day,po_completion_date,current_date)
+  case when po_status not in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') then datediff(day,po_start_date,current_date)
+       when po_status in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') and ibd.created_at is null then datediff(day,po_completion_date,current_date)
        when (ibd.created_at is not null and L1_approval_at is null) or (L1_reject_at is not null) or (L2_reject_at is not null) then datediff(day,ibd.created_at ,current_date)
        when L1_approval_at is not null and L1_reject_at is null and L2_approval_at is null then datediff(day,L1_approval_at,current_date)
        when L2_approval_at is not null and L2_reject_at is null then 0 end aging,
@@ -45,6 +46,7 @@ left join
 (
   select
     cc.invoice_uuid,
+    cc.new_status,
     mm.L1_approval_at,
     nn.L2_approval_at,
     bb.L2_reject_at,
@@ -52,7 +54,8 @@ left join
   from
     (
     select
-      distinct iaa.invoice_uuid
+      distinct iaa.invoice_uuid,
+      iaa.new_status
     from
       stanza.erp_erp_invoice_invoice_approvals iaa
     where
@@ -196,6 +199,11 @@ order by
   dimension: po_status {
     type: string
     sql: ${TABLE}.po_status ;;
+  }
+
+  dimension: invoice_status {
+    type: string
+    sql: ${TABLE}.invoice_status ;;
   }
 
   dimension: po_type {
@@ -411,17 +419,17 @@ order by
 
   measure: grn_pending {
     type:  count_distinct
-    sql: case when ${po_completion_at_date} is null then ${TABLE}.po_number end ;;
+    sql: case when ${po_status} not in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') then ${TABLE}.po_number end ;;
   }
 
   measure: grn_to_invoice_pending {
     type:  count_distinct
-    sql: case when ${po_completion_at_date} is not null and ${invoice_created_at_date} is null then ${TABLE}.po_number end ;;
+    sql: case when ${po_status} in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') and ${invoice_created_at_date} is null then ${TABLE}.po_number end ;;
   }
 
   measure: invoice_to_L1_pending {
     type:  count_distinct
-    sql: case when ${invoice_created_at_date} is not null and ${L1_approval_at_date} is null and ${invoice_created_at_date} is not null then ${TABLE}.po_number end ;;
+    sql: case when ${invoice_created_at_date} is not null and ${L1_approval_at_date} is null then ${TABLE}.po_number end ;;
   }
 
   measure: L1_to_L2_pending {
