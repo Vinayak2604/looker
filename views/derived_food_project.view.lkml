@@ -1,6 +1,6 @@
 view: derived_food_project {
   derived_table: {
-    sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id))),0)
+    sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id))),0)
     / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps,
     count(case when meal_rating >= 1 then meal_id end) over(partition by student_id) student_rated_meal
     from stanza.derived_food_project
@@ -259,7 +259,7 @@ view: derived_food_project {
 
   measure: FPS {
     type: number
-    sql: nullif(1.00*coalesce((${5s}+${4s}) - (${1s}+${2s}),0),0) / ${total_rating};;
+    sql: nullif(1.00*coalesce((${5s}+${4s}+${3s}) - (${1s}+${2s}+${3s}),0),0) / ${total_rating};;
     value_format: "0.0%"
   }
 
