@@ -28,7 +28,7 @@ view: derived_food_project {
     type: string
     sql: case when ${TABLE}.student_fps >= -1 and ${TABLE}.student_fps < -0.60 then 'FPS: -100% to -60%'
               when ${TABLE}.student_fps >= -0.60 and ${TABLE}.student_fps < -0.20 then 'FPS: -60% to -20%'
-              when ${TABLE}.student_fps >= -0.20 and ${TABLE}.student_fps < 0.20 then 'FPS: -20% to 20%'
+              when ((${TABLE}.student_fps >= -0.20 and ${TABLE}.student_fps < 0.20) or (student_rated_meal <> 0 and student_fps is null))  then 'FPS: -20% to 20%'
               when ${TABLE}.student_fps >= 0.20 and ${TABLE}.student_fps < 0.60 then 'FPS: 20% to 60%'
               when ${TABLE}.student_fps >= 0.60 and ${TABLE}.student_fps <= 1 then 'FPS: 60% to 100%' end;;
   }
