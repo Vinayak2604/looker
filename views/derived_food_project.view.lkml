@@ -1,6 +1,6 @@
 view: derived_food_project {
   derived_table: {
-    sql:  with a as (Select *,
+    sql:  with a as (Select *
     from stanza.derived_food_project
     where {% condition date_for_filter %} date {% endcondition %}),
 
