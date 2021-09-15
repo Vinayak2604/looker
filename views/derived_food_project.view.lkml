@@ -1,10 +1,19 @@
 view: derived_food_project {
   derived_table: {
-    sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id))),0)
-    / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps,
-    count(case when meal_rating >= 1 then meal_id end) over(partition by student_id) student_rated_meal
+    sql:  with a as (Select *,
+    from stanza.derived_food_project
+    where {% condition date_for_filter %} date {% endcondition %}),
+
+    b as (select student_id,1.00*nullif(((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end) +count(distinct case when meal_rating = 3 then meal_id end) )-(count(distinct case when meal_rating = 1 then meal_id end) +count(distinct case when meal_rating = 2 then meal_id end) +count(distinct case when meal_rating = 3 then meal_id end) )),0)
+    / (count(distinct case when meal_rating = 1 then meal_id end) +count(distinct case when meal_rating = 2 then meal_id end) +count(distinct case when meal_rating = 3 then meal_id end) +count(distinct case when meal_rating = 4 then meal_id end) +count(distinct case when meal_rating = 5 then meal_id end) ) as student_fps,
+    count(distinct case when meal_rating >= 1 then meal_id end)  student_rated_meal
     from stanza.derived_food_project
     where {% condition date_for_filter %} date {% endcondition %}
+    group by 1)
+
+    select a.*,b.student_fps, b.student_rated_meal
+    from a
+    join b on a.student_id=b.student_id
       ;;
   }
 
