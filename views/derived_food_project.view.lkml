@@ -1,8 +1,18 @@
 view: derived_food_project {
   derived_table: {
-    sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id))),0)
-    / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps,
-    count(case when meal_rating >= 1 then meal_id end) over(partition by student_id) student_rated_meal
+    sql:  Select *,
+    1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+-(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
+    from stanza.derived_food_project d2
+where stanza.derived_food_project.student_id=d2.student_id
+and {% condition date_for_filter %} date {% endcondition %}),0)
+    / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+where stanza.derived_food_project.student_id=d2.student_id
+and {% condition date_for_filter %} date {% endcondition %}) as student_fps,
+
+(select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+where stanza.derived_food_project.student_id=d2.student_id
+and {% condition date_for_filter %} date {% endcondition %}) student_rated_meal
     from stanza.derived_food_project
     where {% condition date_for_filter %} date {% endcondition %}
       ;;
