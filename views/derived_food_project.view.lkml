@@ -1,8 +1,18 @@
 view: derived_food_project {
   derived_table: {
-    sql:  Select *, 1.00*nullif(((count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id))-(count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id))),0)
-    / (count(case when meal_rating = 1 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 2 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 3 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 4 then meal_rating end) over(partition by student_id)+count(case when meal_rating = 5 then meal_rating end) over(partition by student_id)) as student_fps,
-    count(case when meal_rating >= 1 then meal_id end) over(partition by student_id) student_rated_meal
+    sql:  Select *,
+    1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+-(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
+    from stanza.derived_food_project d2
+where stanza.derived_food_project.student_id=d2.student_id
+and {% condition date_for_filter %} date {% endcondition %}),0)
+    / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+where stanza.derived_food_project.student_id=d2.student_id
+and {% condition date_for_filter %} date {% endcondition %}) as student_fps,
+
+(select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+where stanza.derived_food_project.student_id=d2.student_id
+and {% condition date_for_filter %} date {% endcondition %}) student_rated_meal
     from stanza.derived_food_project
     where {% condition date_for_filter %} date {% endcondition %}
       ;;
@@ -28,7 +38,7 @@ view: derived_food_project {
     type: string
     sql: case when ${TABLE}.student_fps >= -1 and ${TABLE}.student_fps < -0.60 then 'FPS: -100% to -60%'
               when ${TABLE}.student_fps >= -0.60 and ${TABLE}.student_fps < -0.20 then 'FPS: -60% to -20%'
-              when ${TABLE}.student_fps >= -0.20 and ${TABLE}.student_fps < 0.20 then 'FPS: -20% to 20%'
+              when ((${TABLE}.student_fps >= -0.20 and ${TABLE}.student_fps < 0.20) or (student_rated_meal <> 0 and student_fps is null))  then 'FPS: -20% to 20%'
               when ${TABLE}.student_fps >= 0.20 and ${TABLE}.student_fps < 0.60 then 'FPS: 20% to 60%'
               when ${TABLE}.student_fps >= 0.60 and ${TABLE}.student_fps <= 1 then 'FPS: 60% to 100%' end;;
   }
@@ -259,7 +269,7 @@ view: derived_food_project {
 
   measure: FPS {
     type: number
-    sql: nullif(1.00*coalesce((${5s}+${4s}) - (${1s}+${2s}),0),0) / ${total_rating};;
+    sql: nullif(1.00*coalesce((${5s}+${4s}+${3s}) - (${1s}+${2s}+${3s}),0),0) / ${total_rating};;
     value_format: "0.0%"
   }
 
