@@ -382,6 +382,7 @@ where a.rn = 1;;
   measure: pre_and_full_bookings {
     type: number
     sql: ${filtered_period_bookings} + ${filtered_period_prebookings} ;;
+    value_format: "#,##0"
     label: "Pre & Full Bookings"
     html: {% if value > 0 %}
     <p style="color: black; font-size:100%">{{ rendered_value }}</p>
