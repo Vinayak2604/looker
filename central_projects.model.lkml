@@ -86,3 +86,7 @@ explore: delta_combined {}
 explore: kitchen_consumption {}
 
 explore: item_subcategory_price_comparison {}
+
+explore: l1_rejected_pos {}
+
+explore: l2_rejected_pos {}
