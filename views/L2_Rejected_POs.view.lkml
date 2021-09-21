@@ -14,12 +14,9 @@ view: l2_rejected_pos {
   ptid.item_sub_category_label item_sub_category_label,
   jj.id,
   jj.invoice_uuid,
-  pd.po_subtotal_amount,
-  (ptid.unit_rate_rent_per_month*ptid.quantity) grn_amount,
   DATE(pd.created_at) po_start_date,
   DATE(pd.updated_at) po_completion_date,
   DATE(ibd.created_at) as created_at,
-  case when DATE(ibd.created_at)>='2021-05-01' then 1 else 0 end invoice_done_flag,
   DATE(jj.L1_approval_at) as L1_approval_at,
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
@@ -30,10 +27,7 @@ view: l2_rejected_pos {
        when L1_approval_at is not null and L1_reject_at is not null then datediff(day,ibd.created_at,L1_reject_at)
        when L1_approval_at is not null and L1_reject_at is null and L2_approval_at is null then datediff(day,L1_approval_at,current_date)
        when L2_approval_at is not null and L2_reject_at is not null then datediff(day,ibd.created_at,L2_reject_at)
-       when L2_approval_at is not null and L2_reject_at is null then 0 end ageing,
-  coalesce((gg.item_base_amount - gg.item_gst),0) as base_amount,
-  coalesce((gg.other_fee_base_amount-gg.other_fee_gst),0) as Other_charges,
-  (base_amount+Other_charges) invoice_amount
+       when L2_approval_at is not null and L2_reject_at is null then 0 end ageing
 from
   stanza.erp_purchase_order_po_details pd
 left join stanza.erp_erp_invoice_po_invoice_details pid
@@ -126,57 +120,6 @@ on
     )as jj
 on
   jj.invoice_uuid = ibd.uuid
-left join(
-  select
-    kk.invoice_uuid,
-    kk.item_gst,
-    dd.other_fee_gst,
-    kk.item_base_amount,
-    dd.other_fee_base_amount
-  from
-    (
-    select
-      invoice_uuid,
-      gst_slab,
-      round(Sum(item_total-(item_total /(1 +(coalesce(gst_pct, 0)/ 100)))), 2) as item_gst,
-      sum(item_total) as item_base_amount
-    from
-      stanza.erp_erp_invoice_invoice_item_details ed
-    where
-      ed.__hevo__marked_deleted is false
-    group by
-      invoice_uuid,
-      gst_slab)as kk
-  left join
-(
-    select
-      invoice_uuid,
-      case
-        when round((po_fee_gst / po_fee_amount_wo_tax), 2) = 0 then 'ZERO'
-        when round((po_fee_gst / po_fee_amount_wo_tax), 2) = 0.05 then 'FIVE'
-        when round((po_fee_gst / po_fee_amount_wo_tax), 2) = 0.12 then 'TWELVE'
-        when round((po_fee_gst / po_fee_amount_wo_tax), 2) = 0.14 then 'FOURTEEN'
-        when round((po_fee_gst / po_fee_amount_wo_tax), 2) = 0.18 then 'EIGHTEEN'
-        when round((po_fee_gst / po_fee_amount_wo_tax), 2) = 0.28 then 'TWENTY_EIGHT'
-        else 'NA'
-      end as gst_slab,
-      round(Sum(invoiced_other_fee-(invoiced_other_fee /(1 +(coalesce((po_fee_gst / po_fee_amount_wo_tax), 0))))), 2) as other_fee_gst,
-      sum(invoiced_other_fee) as other_fee_base_amount
-    from
-      stanza.erp_erp_invoice_invoice_fee_details ed
-    where
-      ed.__hevo__marked_deleted is false
-    group by
-      invoice_uuid,
-      gst_slab)as dd
-on
-    kk.invoice_uuid = dd.invoice_uuid
-    and kk.gst_slab = dd.gst_slab) as gg
-on
-  gg.invoice_uuid = ibd.uuid
-left join stanza.erp_transformation_master_states tm
-on
-  tm.uuid = pvd.gst_state
 where
   pd.status = 1
   and pd.mapped_department = 'FOOD_OPS'
@@ -199,7 +142,125 @@ join stanza.erp_erp_invoice_invoice_approvals iaa on ibd.uuid=iaa.invoice_uuid
   and DATE(pd.created_at) >= '2021-05-01'
   and pd.po_status!='IN_DRAFT'
   and po_number not like '%TOFB%'
-  group by 1)) and invoice_status = 'L2_REJECTED' ;;
+  group by 1)) and invoice_status = 'L2_REJECTED'
+  and po_number not in (with invoice_created_after_rejection as (WITH po_invoice AS (select
+  distinct pd.po_number po_number,
+  ibd.invoice_code,
+  case
+    when pd.po_type = 'RENTAL'
+    or pd.po_type = 'NON_RENTAL'
+    or pd.po_type = 'SERVICE_PO' then pvd.vendor_name
+  end as Vendor_name,
+  DATE(ibd.invoice_date) as invoice_date,
+  pd.po_status,
+  jj.new_status invoice_status,
+  DATE(pd.created_at) po_start_date,
+  DATE(pd.updated_at) po_completion_date,
+  DATE(ibd.created_at) as created_at
+from
+  stanza.erp_purchase_order_po_details pd
+left join stanza.erp_erp_invoice_po_invoice_details pid
+on
+  pid.po_uuid = pd.uuid
+left join stanza.erp_purchase_order_po_to_item_details as ptid
+on pd.uuid=ptid.po_to_uuid
+left join stanza.erp_erp_invoice_invoice_basic_details ibd
+on
+  pd.uuid = ibd.po_uuid
+left join stanza.erp_purchase_order_po_to_vendor_details pvd
+on
+  pd.uuid = pvd.po_to_uuid
+left join
+(select
+      distinct iaa.invoice_uuid,
+      iaa.new_status
+    from
+      stanza.erp_erp_invoice_invoice_approvals iaa
+    where
+      iaa.__hevo__marked_deleted is false)as jj
+on
+  jj.invoice_uuid = ibd.uuid
+where
+  pd.status = 1
+  and pd.mapped_department = 'FOOD_OPS'
+  and DATE(pd.created_at) >= '2021-05-01'
+  and pd.po_status!='IN_DRAFT'
+  and po_number not like '%TOFB%'
+  and (ptid.item_sub_category_label in ('Fruits and Vegetables','Dairy','Non Veg','Groceries','General Supplies','LPG','Packaging')
+     or ptid.item_sub_category_label like '%direct food expense%')
+order by
+  po_number )
+SELECT
+    *
+FROM po_invoice
+WHERE ((( po_invoice.created_at  ) IS NOT NULL))
+and po_number in (WITH l2_rejected_pos AS (WITH po_invoice AS (select
+  distinct pd.po_number po_number,
+  ibd.invoice_code,
+  case
+    when pd.po_type = 'RENTAL'
+    or pd.po_type = 'NON_RENTAL'
+    or pd.po_type = 'SERVICE_PO' then pvd.vendor_name
+  end as Vendor_name,
+  DATE(ibd.invoice_date) as invoice_date,
+  pd.po_status,
+  jj.new_status invoice_status,
+  jj.id,
+  jj.invoice_uuid,
+  DATE(pd.created_at) po_start_date,
+  DATE(pd.updated_at) po_completion_date,
+  DATE(ibd.created_at) as created_at
+from
+  stanza.erp_purchase_order_po_details pd
+left join stanza.erp_erp_invoice_po_invoice_details pid
+on
+  pid.po_uuid = pd.uuid
+left join stanza.erp_purchase_order_po_to_item_details as ptid
+on pd.uuid=ptid.po_to_uuid
+left join stanza.erp_erp_invoice_invoice_basic_details ibd
+on
+  pd.uuid = ibd.po_uuid
+left join stanza.erp_purchase_order_po_to_vendor_details pvd
+on
+  pd.uuid = pvd.po_to_uuid
+left join
+(select
+      distinct iaa.invoice_uuid,
+      iaa.id,
+      iaa.new_status
+    from
+      stanza.erp_erp_invoice_invoice_approvals iaa
+    where
+      iaa.__hevo__marked_deleted is false)as jj
+on
+  jj.invoice_uuid = ibd.uuid
+where
+  pd.status = 1
+  and pd.mapped_department = 'FOOD_OPS'
+  and DATE(pd.created_at) >= '2021-05-01'
+  and pd.po_status!='IN_DRAFT'
+  and po_number not like '%TOFB%'
+  and (ptid.item_sub_category_label in ('Fruits and Vegetables','Dairy','Non Veg','Groceries','General Supplies','LPG','Packaging')
+     or ptid.item_sub_category_label like '%direct food expense%')
+order by
+  po_number )
+SELECT
+*
+FROM po_invoice
+where id in (select id from (select po_number,MAX(new_status) status,max(iaa.id) id from stanza.erp_purchase_order_po_details as pd join stanza.erp_erp_invoice_invoice_basic_details ibd
+on
+  pd.uuid = ibd.po_uuid
+join stanza.erp_erp_invoice_invoice_approvals iaa on ibd.uuid=iaa.invoice_uuid
+  and pd.status = 1
+  and pd.mapped_department = 'FOOD_OPS'
+  and DATE(pd.created_at) >= '2021-05-01'
+  and pd.po_status!='IN_DRAFT'
+  and po_number not like '%TOFB%'
+  group by 1)) and invoice_status = 'L2_REJECTED' )
+SELECT
+    DISTINCT l2_rejected_pos.po_number
+FROM l2_rejected_pos))
+select distinct po_number from invoice_created_after_rejection where invoice_status is null) ;;
   }
 
   dimension: invoice_code {
