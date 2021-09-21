@@ -372,6 +372,20 @@ select distinct po_number from invoice_created_after_rejection where invoice_sta
       quarter,
       year
     ]
+    sql: ${TABLE}.created_at ;;#filter
+  }
+
+  dimension_group: invoice_created_at_t {
+    type: time
+    timeframes: [
+      raw,
+      time,
+      date,
+      week,
+      month,
+      quarter,
+      year
+    ]
     sql: ${TABLE}.created_at ;;
   }
 
