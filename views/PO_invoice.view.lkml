@@ -22,7 +22,7 @@ view: po_invoice {
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
-  case when po_status not in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') then datediff(day,po_start_date,current_date)
+  case when po_status not in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') then datediff(day,po_start_date,po_completion_date)
        when po_status in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') and ibd.created_at is null then datediff(day,po_completion_date,current_date)
        when (ibd.created_at is not null and L1_approval_at is null) then datediff(day,ibd.created_at ,current_date)
        when L1_approval_at is not null and L1_reject_at is not null then datediff(day,ibd.created_at,L1_reject_at)
@@ -439,6 +439,16 @@ order by
   dimension: grn_to_l1_approval {
     type: number
     sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is null then datediff(day,${invoice_created_at_date},${L1_approval_at_date}) end ;;
+  }
+
+  measure: grn_to_invoice_created {
+    type: count_distinct
+    sql: case when ${invoice_created_at_date} is not null then ${po_number} end ;;
+  }
+
+  measure: invoice_to_L1_created {
+    type: count_distinct
+    sql: case when ${L1_approval_at_date} is not null and ${L1_reject_at_date} is null and ${L2_reject_at_date} is null then ${po_number} end ;;
   }
 
   dimension: l1_to_l2_approval {

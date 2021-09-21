@@ -11,10 +11,11 @@ view: l2_rejected_pos {
   DATE(ibd.invoice_date) as invoice_date,
   pd.po_status,
   jj.new_status invoice_status,
+  ptid.item_sub_category_label item_sub_category_label,
   jj.id,
   jj.invoice_uuid,
   pd.po_subtotal_amount,
---  (ptid.unit_rate_rent_per_month*ptid.quantity) grn_amount,
+  (ptid.unit_rate_rent_per_month*ptid.quantity) grn_amount,
   DATE(pd.created_at) po_start_date,
   DATE(pd.updated_at) po_completion_date,
   DATE(ibd.created_at) as created_at,
@@ -23,16 +24,16 @@ view: l2_rejected_pos {
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
   DATE(jj.L2_reject_at) as L2_reject_at,
-  case when po_status not in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') then datediff(day,po_start_date,current_date)
+  case when po_status not in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') then datediff(day,po_start_date,po_completion_date)
        when po_status in ('GSRI_COMPLETED','APPROVED','SHORTCLOSED') and ibd.created_at is null then datediff(day,po_completion_date,current_date)
        when (ibd.created_at is not null and L1_approval_at is null) then datediff(day,ibd.created_at ,current_date)
        when L1_approval_at is not null and L1_reject_at is not null then datediff(day,ibd.created_at,L1_reject_at)
        when L1_approval_at is not null and L1_reject_at is null and L2_approval_at is null then datediff(day,L1_approval_at,current_date)
        when L2_approval_at is not null and L2_reject_at is not null then datediff(day,ibd.created_at,L2_reject_at)
-       when L2_approval_at is not null and L2_reject_at is null then 0 end ageing
---  coalesce((gg.item_base_amount - gg.item_gst),0) as base_amount,
---  coalesce((gg.other_fee_base_amount-gg.other_fee_gst),0) as Other_charges,
---  (base_amount+Other_charges) invoice_amount
+       when L2_approval_at is not null and L2_reject_at is null then 0 end ageing,
+  coalesce((gg.item_base_amount - gg.item_gst),0) as base_amount,
+  coalesce((gg.other_fee_base_amount-gg.other_fee_gst),0) as Other_charges,
+  (base_amount+Other_charges) invoice_amount
 from
   stanza.erp_purchase_order_po_details pd
 left join stanza.erp_erp_invoice_po_invoice_details pid
@@ -182,12 +183,14 @@ where
   and DATE(pd.created_at) >= '2021-05-01'
   and pd.po_status!='IN_DRAFT'
   and po_number not like '%TOFB%'
+  and (ptid.item_sub_category_label in ('Fruits and Vegetables','Dairy','Non Veg','Groceries','General Supplies','LPG','Packaging')
+     or ptid.item_sub_category_label like '%direct food expense%')
 order by
   po_number )
 SELECT
 *
 FROM po_invoice
-where id in (select a.id from (select po_number,MAX(new_status) status,max(iaa.id) id from stanza.erp_purchase_order_po_details as pd join stanza.erp_erp_invoice_invoice_basic_details ibd
+where id in (select id from (select po_number,MAX(new_status) status,max(iaa.id) id from stanza.erp_purchase_order_po_details as pd join stanza.erp_erp_invoice_invoice_basic_details ibd
 on
   pd.uuid = ibd.po_uuid
 join stanza.erp_erp_invoice_invoice_approvals iaa on ibd.uuid=iaa.invoice_uuid
@@ -196,7 +199,7 @@ join stanza.erp_erp_invoice_invoice_approvals iaa on ibd.uuid=iaa.invoice_uuid
   and DATE(pd.created_at) >= '2021-05-01'
   and pd.po_status!='IN_DRAFT'
   and po_number not like '%TOFB%'
-  group by 1) as a where a.status = 'L2_REJECTED' ) ;;
+  group by 1)) and invoice_status = 'L2_REJECTED' ;;
   }
 
   dimension: invoice_code {
@@ -238,6 +241,16 @@ join stanza.erp_erp_invoice_invoice_approvals iaa on ibd.uuid=iaa.invoice_uuid
   dimension: Invoice_status {
     type: string
     sql: ${TABLE}.invoice_status ;;##filter
+  }
+
+  dimension: item_subcategory_t {
+    type: string
+    sql: ${TABLE}.item_sub_category_label ;;
+  }
+
+  dimension: item_subcategory {
+    type: string
+    sql: ${TABLE}.item_sub_category_label ;;##filter
   }
 
   dimension: po_type {
@@ -327,6 +340,16 @@ join stanza.erp_erp_invoice_invoice_approvals iaa on ibd.uuid=iaa.invoice_uuid
       year
     ]
     sql: ${TABLE}.first_invoice_date ;;
+  }
+
+  dimension: ageing_t {
+    type: number
+    sql: ${TABLE}.ageing ;;
+  }
+
+  dimension: Ageing {
+    type: number
+    sql: ${TABLE}.ageing ;;#filter
   }
 
   measure: distinct_po{
