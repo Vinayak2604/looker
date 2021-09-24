@@ -1,21 +1,62 @@
 view: derived_food_project {
   derived_table: {
     sql:  Select *,
+          1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
+          from stanza.derived_food_project d2
+      where stanza.derived_food_project.student_id=d2.student_id
+      and {% condition date_for_filter %} date {% endcondition %}),0)
+          / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+      where stanza.derived_food_project.student_id=d2.student_id
+      and {% condition date_for_filter %} date {% endcondition %}) as student_fps,
+
+      (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+      where stanza.derived_food_project.student_id=d2.student_id
+      and {% condition date_for_filter %} date {% endcondition %}) student_rated_meal,
+
+
+          1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
+          from stanza.derived_food_project d2
+      where stanza.derived_food_project.vendor_name=d2.vendor_name
+      and {% condition date_for_filter %} date {% endcondition %}),0)
+          / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+      where stanza.derived_food_project.vendor_name=d2.vendor_name
+      and {% condition date_for_filter %} date {% endcondition %}) as vendor_fps,
+      (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+      where stanza.derived_food_project.vendor_name=d2.vendor_name
+      and {% condition date_for_filter %} date {% endcondition %}) vendor_rated_meal,
+
+
     1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
 -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
     from stanza.derived_food_project d2
-where stanza.derived_food_project.student_id=d2.student_id
+where stanza.derived_food_project.city_name=d2.city_name
 and {% condition date_for_filter %} date {% endcondition %}),0)
     / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-where stanza.derived_food_project.student_id=d2.student_id
-and {% condition date_for_filter %} date {% endcondition %}) as student_fps,
-
+where stanza.derived_food_project.city_name=d2.city_name
+and {% condition date_for_filter %} date {% endcondition %}) as city_fps,
 (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-where stanza.derived_food_project.student_id=d2.student_id
-and {% condition date_for_filter %} date {% endcondition %}) student_rated_meal
-    from stanza.derived_food_project
-    where {% condition date_for_filter %} date {% endcondition %}
-      ;;
+where stanza.derived_food_project.city_name=d2.city_name
+and {% condition date_for_filter %} date {% endcondition %}) city_rated_meal,
+
+
+    1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+-(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
+    from stanza.derived_food_project d2
+where stanza.derived_food_project.micromarket_name=d2.micromarket_name
+and {% condition date_for_filter %} date {% endcondition %}),0)
+    / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+where stanza.derived_food_project.micromarket_name=d2.micromarket_name
+and {% condition date_for_filter %} date {% endcondition %}) as micromarket_fps,
+(select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
+where stanza.derived_food_project.micromarket_name=d2.micromarket_name
+and {% condition date_for_filter %} date {% endcondition %}) micromarket_rated_meal
+
+
+          from stanza.derived_food_project
+          where {% condition date_for_filter %} date {% endcondition %}
+            ;;
   }
 
   parameter: date_for_filter {
@@ -43,6 +84,28 @@ and {% condition date_for_filter %} date {% endcondition %}) student_rated_meal
               when ${TABLE}.student_fps >= 0.60 and ${TABLE}.student_fps <= 1 then 'FPS: 60% to 100%' end;;
   }
 
+  dimension: vendor_fps {
+    type: string
+    sql: case when ((${TABLE}.vendor_fps < -0.30 or (vendor_rated_meal <> 0 and vendor_fps is null))  then 'FPS: <30%'
+              when ${TABLE}.vendor_fps >= 0.30 and ${TABLE}.vendor_fps < 0.60 then 'FPS: <60%'
+              when ${TABLE}.vendor_fps >= 0.60 and ${TABLE}.vendor_fps <= 1 then 'FPS: >= 60%' end;;
+  }
+
+  dimension: city_fps {
+    type: string
+    sql: case when ((${TABLE}.city_fps < -0.30 or (city_rated_meal <> 0 and city_fps is null))  then 'FPS: <30%'
+              when ${TABLE}.city_fps >= 0.30 and ${TABLE}.city_fps < 0.60 then 'FPS: <60%'
+              when ${TABLE}.city_fps >= 0.60 and ${TABLE}.city_fps <= 1 then 'FPS: >= 60%' end;;
+  }
+
+  dimension: micromarket_fps {
+    type: string
+    sql: case when ((${TABLE}.micromarket_fps < -0.30 or (micromarket_rated_meal <> 0 and micromarket_fps is null))  then 'FPS: <30%'
+              when ${TABLE}.micromarket_fps >= 0.30 and ${TABLE}.micromarket_fps < 0.60 then 'FPS: <60%'
+              when ${TABLE}.micromarket_fps >= 0.60 and ${TABLE}.micromarket_fps <= 1 then 'FPS: >= 60%' end;;
+  }
+
+
   dimension: meal_bucket {
     type: string
     sql: case when ${TABLE}.student_rated_meal <5 then '1-5'
@@ -56,6 +119,11 @@ and {% condition date_for_filter %} date {% endcondition %}) student_rated_meal
   dimension: student_id {
     type: string
     sql: ${TABLE}.student_id ;;
+  }
+
+  dimension: vendor_type {
+    type: string
+    sql: ${TABLE}.vendor_type ;;
   }
 
   dimension_group: move_in_date {
