@@ -86,21 +86,21 @@ and {% condition date_for_filter %} date {% endcondition %}) micromarket_rated_m
 
   dimension: vendor_fps {
     type: string
-    sql: case when ((${TABLE}.vendor_fps < -0.30 or (vendor_rated_meal <> 0 and vendor_fps is null))  then 'FPS: <30%'
+    sql: case when ((${TABLE}.vendor_fps < -0.30 or (${TABLE}.vendor_rated_meal <> 0 and ${TABLE}.vendor_fps is null)) then 'FPS: <30%'
               when ${TABLE}.vendor_fps >= 0.30 and ${TABLE}.vendor_fps < 0.60 then 'FPS: <60%'
               when ${TABLE}.vendor_fps >= 0.60 and ${TABLE}.vendor_fps <= 1 then 'FPS: >= 60%' end;;
   }
 
   dimension: city_fps {
     type: string
-    sql: case when ((${TABLE}.city_fps < -0.30 or (city_rated_meal <> 0 and city_fps is null))  then 'FPS: <30%'
+    sql: case when ((${TABLE}.city_fps < -0.30 or (${TABLE}.city_rated_meal <> 0 and ${TABLE}.city_fps is null))  then 'FPS: <30%'
               when ${TABLE}.city_fps >= 0.30 and ${TABLE}.city_fps < 0.60 then 'FPS: <60%'
               when ${TABLE}.city_fps >= 0.60 and ${TABLE}.city_fps <= 1 then 'FPS: >= 60%' end;;
   }
 
   dimension: micromarket_fps {
     type: string
-    sql: case when ((${TABLE}.micromarket_fps < -0.30 or (micromarket_rated_meal <> 0 and micromarket_fps is null))  then 'FPS: <30%'
+    sql: case when ((${TABLE}.micromarket_fps < -0.30 or (${TABLE}.micromarket_rated_meal <> 0 and ${TABLE}.micromarket_fps is null))  then 'FPS: <30%'
               when ${TABLE}.micromarket_fps >= 0.30 and ${TABLE}.micromarket_fps < 0.60 then 'FPS: <60%'
               when ${TABLE}.micromarket_fps >= 0.60 and ${TABLE}.micromarket_fps <= 1 then 'FPS: >= 60%' end;;
   }
