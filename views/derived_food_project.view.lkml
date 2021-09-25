@@ -1,60 +1,45 @@
 view: derived_food_project {
   derived_table: {
-    sql:  Select *,
-          1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
-      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
+    sql: with student as (SELECT student_id, 1.00*nullif((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)),0)
+      / count(distinct case when meal_rating >= 1 then meal_id end) student_fps,
+      count(distinct case when meal_rating >= 1 then meal_id end) student_rated_meal
+      from stanza.derived_food_project
+      where {% condition date_for_filter %} date {% endcondition %}
+      group by 1),
+
+      vendor as (SELECT vendor_name, 1.00*nullif((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)),0)
+      / count(distinct case when meal_rating >= 1 then meal_id end) vendor_fps,
+      count(distinct case when meal_rating >= 1 then meal_id end) vendor_rated_meal
+      from stanza.derived_food_project
+      where {% condition date_for_filter %} date {% endcondition %}
+      group by 1),
+
+      city as (SELECT city_name, 1.00*nullif((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)),0)
+      / count(distinct case when meal_rating >= 1 then meal_id end) city_fps,
+      count(distinct case when meal_rating >= 1 then meal_id end) city_rated_meal
+      from stanza.derived_food_project
+      where {% condition date_for_filter %} date {% endcondition %}
+      group by 1),
+
+      micromarket as (SELECT micromarket_name, 1.00*nullif((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
+      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)),0)
+      / count(distinct case when meal_rating >= 1 then meal_id end) micromarket_fps,
+      count(distinct case when meal_rating >= 1 then meal_id end) micromarket_rated_meal
+      from stanza.derived_food_project
+      where {% condition date_for_filter %} date {% endcondition %}
+      group by 1)
+
+
+
+    Select d2.*, student_fps, student_rated_meal, vendor_fps, vendor_rated_meal, city_fps, city_rated_meal, micromarket_fps, micromarket_rated_meal
           from stanza.derived_food_project d2
-      where stanza.derived_food_project.student_id=d2.student_id
-      and {% condition date_for_filter %} date {% endcondition %}),0)
-          / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-      where stanza.derived_food_project.student_id=d2.student_id
-      and {% condition date_for_filter %} date {% endcondition %}) as student_fps,
-
-      (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-      where stanza.derived_food_project.student_id=d2.student_id
-      and {% condition date_for_filter %} date {% endcondition %}) student_rated_meal,
-
-
-          1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
-      -(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
-          from stanza.derived_food_project d2
-      where stanza.derived_food_project.vendor_name=d2.vendor_name
-      and {% condition date_for_filter %} date {% endcondition %}),0)
-          / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-      where stanza.derived_food_project.vendor_name=d2.vendor_name
-      and {% condition date_for_filter %} date {% endcondition %}) as vendor_fps,
-      (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-      where stanza.derived_food_project.vendor_name=d2.vendor_name
-      and {% condition date_for_filter %} date {% endcondition %}) vendor_rated_meal,
-
-
-    1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
--(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
-    from stanza.derived_food_project d2
-where stanza.derived_food_project.city_name=d2.city_name
-and {% condition date_for_filter %} date {% endcondition %}),0)
-    / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-where stanza.derived_food_project.city_name=d2.city_name
-and {% condition date_for_filter %} date {% endcondition %}) as city_fps,
-(select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-where stanza.derived_food_project.city_name=d2.city_name
-and {% condition date_for_filter %} date {% endcondition %}) city_rated_meal,
-
-
-    1.00*nullif((select ((count(distinct case when meal_rating = 5 then meal_id end)+count(distinct case when meal_rating = 4 then meal_id end))
--(count(distinct case when meal_rating = 1 then meal_id end)+count(distinct case when meal_rating = 2 then meal_id end)))
-    from stanza.derived_food_project d2
-where stanza.derived_food_project.micromarket_name=d2.micromarket_name
-and {% condition date_for_filter %} date {% endcondition %}),0)
-    / (select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-where stanza.derived_food_project.micromarket_name=d2.micromarket_name
-and {% condition date_for_filter %} date {% endcondition %}) as micromarket_fps,
-(select count(distinct case when meal_rating >= 1 then meal_id end) from stanza.derived_food_project d2
-where stanza.derived_food_project.micromarket_name=d2.micromarket_name
-and {% condition date_for_filter %} date {% endcondition %}) micromarket_rated_meal
-
-
-          from stanza.derived_food_project
+          left join student on d2.student_id=student.student_id
+          left join vendor on d2.vendor_name=vendor.vendor_name
+          left join city on d2.city_name=city.city_name
+          left join micromarket on d2.micromarket_name = micromarket.micromarket_name
           where {% condition date_for_filter %} date {% endcondition %}
             ;;
   }
@@ -86,21 +71,21 @@ and {% condition date_for_filter %} date {% endcondition %}) micromarket_rated_m
 
   dimension: vendor_fps {
     type: string
-    sql: case when ((${TABLE}.vendor_fps < -0.30 or (${TABLE}.vendor_rated_meal <> 0 and ${TABLE}.vendor_fps is null)) then 'FPS: <30%'
+    sql: case when (${TABLE}.vendor_fps < 0.30 or (${TABLE}.vendor_rated_meal <> 0 and ${TABLE}.vendor_fps is null)) then 'FPS: <30%'
               when ${TABLE}.vendor_fps >= 0.30 and ${TABLE}.vendor_fps < 0.60 then 'FPS: <60%'
               when ${TABLE}.vendor_fps >= 0.60 and ${TABLE}.vendor_fps <= 1 then 'FPS: >= 60%' end;;
   }
 
   dimension: city_fps {
     type: string
-    sql: case when ((${TABLE}.city_fps < -0.30 or (${TABLE}.city_rated_meal <> 0 and ${TABLE}.city_fps is null))  then 'FPS: <30%'
+    sql: case when (${TABLE}.city_fps < 0.30 or (${TABLE}.city_rated_meal <> 0 and ${TABLE}.city_fps is null))  then 'FPS: <30%'
               when ${TABLE}.city_fps >= 0.30 and ${TABLE}.city_fps < 0.60 then 'FPS: <60%'
               when ${TABLE}.city_fps >= 0.60 and ${TABLE}.city_fps <= 1 then 'FPS: >= 60%' end;;
   }
 
   dimension: micromarket_fps {
     type: string
-    sql: case when ((${TABLE}.micromarket_fps < -0.30 or (${TABLE}.micromarket_rated_meal <> 0 and ${TABLE}.micromarket_fps is null))  then 'FPS: <30%'
+    sql: case when (${TABLE}.micromarket_fps < 0.30 or (${TABLE}.micromarket_rated_meal <> 0 and ${TABLE}.micromarket_fps is null))  then 'FPS: <30%'
               when ${TABLE}.micromarket_fps >= 0.30 and ${TABLE}.micromarket_fps < 0.60 then 'FPS: <60%'
               when ${TABLE}.micromarket_fps >= 0.60 and ${TABLE}.micromarket_fps <= 1 then 'FPS: >= 60%' end;;
   }
@@ -220,6 +205,11 @@ and {% condition date_for_filter %} date {% endcondition %}) micromarket_rated_m
     type: number
     sql: 1.00*coalesce(${total_rated_users},0) /  ${total_users}  ;;
     value_format: "0.0%"
+  }
+
+  measure: total_residence {
+    type: count_distinct
+    sql: ${residence_name} ;;
   }
 
 
