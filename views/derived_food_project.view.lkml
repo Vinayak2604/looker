@@ -212,8 +212,6 @@ view: derived_food_project {
     sql: ${residence_name} ;;
   }
 
-
-
   measure: total_meals {
     type: count_distinct
     sql: ${meal_id} ;;
