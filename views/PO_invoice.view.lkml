@@ -27,6 +27,7 @@ derived_table: {
     when DATE(ibd.created_at)>= '2021-05-01' then 1
     else 0
   end invoice_done_flag,
+  datediff(day,pd.created_at,pd.updated_at) lead_time,
   DATE(jj.L1_approval_at) as L1_approval_at,
   DATE(jj.L2_approval_at) as L2_approval_at,
   DATE(jj.L1_reject_at) as L1_reject_at,
@@ -470,14 +471,25 @@ dimension_group: L2_reject_at {
   sql: ${TABLE}.L2_reject_at ;;
 }
 
-measure: distinct_invoice {
-  type: count_distinct
-  sql: ${TABLE}.invoice_code ;;
-}
+  measure: distinct_invoice {
+    type: count_distinct
+    sql: ${TABLE}.invoice_code ;;
+  }
 
   measure: distinct_rejected_invoice {
     type: count_distinct
     sql: case when ${invoice_status_t} in ('L1_REJECTED','L2_REJECTED') then ${TABLE}.invoice_code end ;;
+  }
+
+  dimension: lead_time {
+    type: number
+    sql: ${TABLE}.lead_time ;;
+  }
+
+  measure: weighted_avg_lead_time {
+    type: average
+    sql: case when ${lead_time} is not null then (${TABLE}.po_subtotal_amount*${lead_time})/(${TABLE}.po_subtotal_amount) else 0 end ;;
+    value_format: "0.00"
   }
 
 dimension: ageing_t {
@@ -602,7 +614,7 @@ measure: L1_to_L2_approved_invoice {
 
 measure: distinct_po_grn_pending {
   type: count_distinct
-  sql: case when ${po_status_t} != 'GSRI_COMPLETED' and ${invoice_created_at_date} is null then ${TABLE}.po_number end ;;
+  sql: case when ${po_status_t} in ('APPROVED','SHORTCLOSED') and ${invoice_created_at_date} is null then ${TABLE}.po_number end ;;
 }
 
 measure: distinct_po_invoice_pending {
