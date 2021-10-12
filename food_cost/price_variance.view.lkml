@@ -39,19 +39,24 @@ view: price_variance {
               select 'Tiffins Etc' as a,'Tiffins Etc' as b,'Tiffins Etc' as c union all
               select 'Hitarth Patel' as a,'Hitarth Patel' as b,'Hitarth Patel' as c union all
               select 'Green Park Hospitality Pvt Ltd' as a,'Green Park Hospitality Pvt Ltd' as b,'Green Park Hospitality Pvt Ltd' as c union all
-              select 'Green Park Hospitality Services Private Limited' as a,'Green Park Hospitality Pvt Ltd' as b,'Green Park Hospitality Pvt Ltd' as c)
+              select 'Green Park Hospitality Services Private Limited' as a,'Green Park Hospitality Pvt Ltd' as b,'Green Park Hospitality Pvt Ltd' as c),
 
-        select a.*,m.b as clean_kitchen
-        from a
-        left join m on a.kitchen = m.a
-        where a.flag = 0
 
-        union
+b as (select a.*,m.b as clean_kitchen
+      from a
+      left join m on a.kitchen = m.a
+      where a.flag = 0 and m.b is not null
 
-        select a.*,m.b as clean_kitchen
-        from a
-        left join m on a.kitchen = m.a
-        where a.price_date = '2021-09-08';;
+      union
+
+      select a.*,m.b as clean_kitchen
+      from a
+      left join m on a.kitchen = m.a
+      where a.price_date = '2021-09-08' and m.b is not null)
+
+select *, min(standard_quantity_cost) over (partition by price_date, ig_uuid) as min_price,
+     (standard_quantity_cost - min_price) /nullif( min_price ,0)as deviation
+from b;;
   }
 
   dimension: ig_uuid {
@@ -92,6 +97,16 @@ view: price_variance {
   dimension: item_cost {
     type: number
     sql: ${TABLE}.standard_quantity_cost ;;
+  }
+
+  dimension: min_price {
+    type: number
+    sql: ${TABLE}.min_price ;;
+  }
+
+  dimension: deviation {
+    type: number
+    sql: ${TABLE}.deviation ;;
   }
 
   }

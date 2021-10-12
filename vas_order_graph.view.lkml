@@ -11,6 +11,7 @@ view: vas_order_graph {
       where upr.date >= '2021-01-01 00:00:00'
       and {% condition meal_type %} meal_type {% endcondition %}
       and {% condition cafe_availability_flag %} cafe_availability {% endcondition %}
+      and {% condition profession_flag %} profession {% endcondition %}
       and {% condition preference_availability_flag %} preference_available {% endcondition %}
       group by 1,2,3,4),
 
@@ -18,6 +19,7 @@ view: vas_order_graph {
       avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2021-01-01 00:00:00'
+      and {% condition profession_flag %} profession {% endcondition %}
       group by 1,2,3,4)
 
 
@@ -44,6 +46,12 @@ view: vas_order_graph {
       suggestions: ["BREAKFAST","LUNCH","DINNER","EVENING_SNACKS"]
       type: string
     }
+
+  filter: profession_flag {
+    # sql: exists (select distinct meal_type from derived_user_preference_rating) ;;
+    suggestions: ["Working Professional","College Student","Other Student"]
+    type: string
+  }
 
     filter: cafe_availability_flag {
       # sql: exists (select distinct meal_type from derived_user_preference_rating) ;;
