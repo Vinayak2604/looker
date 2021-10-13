@@ -60,6 +60,11 @@ view: inventory_ledger {
     sql: nvl(${TABLE}.ingredient_tag,${TABLE}.item_name) ;;
   }
 
+  dimension:original_item  {
+    type: string
+    sql: ${TABLE}.item_name ;;
+  }
+
   dimension: rate {
     type: number
     sql: ${TABLE}.unit_rate_rent_per_month ;;
