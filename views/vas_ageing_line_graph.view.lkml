@@ -11,7 +11,7 @@ view: vas_ageing_line_graph {
 
           ),
 
-          upr as (select extract(month from move_in_date) joining_month,ageing
+          upr as (select extract(month from move_in_date) joining_month,ageing,
           count(distinct upr.user_id) as moved_in_residents
       from looker_demo.derived_user_preference_rating upr
       where upr.date >= '2021-01-01 00:00:00'
@@ -22,7 +22,7 @@ view: vas_ageing_line_graph {
       group by 1,2),
 
 
-          select  distinct m.joining_month, m.ageing,upr.moved_in_residents, avg(orders) orders, avg(amount) aov, count(m.user_id) order_user
+          select m.joining_month, m.ageing,upr.moved_in_residents, avg(orders) orders, avg(amount) aov, count(distinct m.user_id) order_user
           from (select extract(month from move_in_date) joining_month, user_id,ageing,
           count(distinct order_code) orders, sum(final_total_amount) amount
           from a
