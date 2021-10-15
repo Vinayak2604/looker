@@ -4,6 +4,7 @@ view: vas_order_graph_stack {
       avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2021-01-01 00:00:00'
+      and vo.move_in_date >= '2021-01-01 00:00:00'
       and {% condition profession_flag %} profession {% endcondition %}
       group by 1,2,3,4,5;;
 
