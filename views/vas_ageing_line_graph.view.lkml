@@ -7,6 +7,7 @@ view: vas_ageing_line_graph {
           where {% condition residence %} residence {% endcondition %}
           and {% condition city %} city {% endcondition %}
           and {% condition micromarket %} micromarket {% endcondition %}
+          and {% condition profession_flag %} profession {% endcondition %}
           and move_in_date >= '2021-01-01 00:00:00'
 
           ),
@@ -19,6 +20,7 @@ view: vas_ageing_line_graph {
       and {% condition residence %} residence {% endcondition %}
       and {% condition city %} city {% endcondition %}
       and {% condition micromarket %} micromarket {% endcondition %}
+      and {% condition profession_flag %} profession {% endcondition %}
       group by 1,2)
 
 
@@ -36,6 +38,12 @@ view: vas_ageing_line_graph {
   }
 
   parameter: city {
+    type: string
+  }
+
+  filter: profession_flag {
+    # sql: exists (select distinct meal_type from derived_user_preference_rating) ;;
+    suggestions: ["Working Professional","College Student","Other Student"]
     type: string
   }
 
@@ -81,7 +89,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: january_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 1 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -93,7 +101,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: february_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 2 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -105,7 +113,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: march_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 3 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -117,7 +125,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: april_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 4 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -129,7 +137,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: may_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 5 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -141,7 +149,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: june_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 6 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -153,7 +161,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: july_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 7 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -165,7 +173,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: august_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 8 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -177,7 +185,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: september_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 9 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -189,7 +197,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: october_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 10 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -201,7 +209,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: november_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 11 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
@@ -213,7 +221,7 @@ view: vas_ageing_line_graph {
   }
 
   measure: december_order_user_per {
-    type: number
+    type: max
     sql: case when ${joining_month} = 12 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
     value_format: "0.0%"
   }
