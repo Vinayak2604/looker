@@ -74,10 +74,16 @@ view: vas_ageing_line_graph {
     sql: ${TABLE}.aov ;;
   }
 
-  measure: january_orders {
+  measure: january__orders {
     type: sum
     sql:case when ${joining_month} = 1 then ${orders} end ;;
     value_format: "0"
+  }
+
+  measure: january_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 1 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
   }
 
   measure: february_orders {
@@ -86,10 +92,22 @@ view: vas_ageing_line_graph {
     value_format: "0"
   }
 
+  measure: february_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 2 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
+  }
+
   measure: march_orders {
     type: sum
     sql:case when ${joining_month} = 3 then ${orders} end ;;
     value_format: "0"
+  }
+
+  measure: march_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 3 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
   }
 
   measure: april_orders {
@@ -98,10 +116,22 @@ view: vas_ageing_line_graph {
     value_format: "0"
   }
 
+  measure: april_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 4 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
+  }
+
   measure: may_orders {
     type: sum
     sql:case when ${joining_month} = 5 then ${orders} end ;;
     value_format: "0"
+  }
+
+  measure: may_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 5 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
   }
 
   measure: june_orders {
@@ -110,10 +140,22 @@ view: vas_ageing_line_graph {
     value_format: "0"
   }
 
+  measure: june_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 6 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
+  }
+
   measure: july_orders {
     type: sum
     sql:case when ${joining_month} = 7 then ${orders} end ;;
     value_format: "0"
+  }
+
+  measure: july_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 7 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
   }
 
   measure: august_orders {
@@ -122,10 +164,22 @@ view: vas_ageing_line_graph {
     value_format: "0"
   }
 
+  measure: august_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 8 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
+  }
+
   measure: september_orders {
     type: sum
     sql:case when ${joining_month} = 9 then ${orders} end ;;
     value_format: "0"
+  }
+
+  measure: september_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 9 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
   }
 
   measure: october_orders {
@@ -134,16 +188,34 @@ view: vas_ageing_line_graph {
     value_format: "0"
   }
 
+  measure: october_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 10 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
+  }
+
   measure: november_orders {
     type: sum
     sql:case when ${joining_month} = 11 then ${orders} end ;;
     value_format: "0"
   }
 
+  measure: november_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 11 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
+  }
+
   measure: december_orders {
     type: sum
     sql:case when ${joining_month} = 12 then ${orders} end ;;
     value_format: "0"
+  }
+
+  measure: december_order_user_per {
+    type: number
+    sql: case when ${joining_month} = 12 then (coalesce(${order_user},0)/ ${moved_in_residents}) end ;;
+    value_format: "0.0%"
   }
 
   measure: total_aov {
@@ -226,7 +298,7 @@ view: vas_ageing_line_graph {
 
   measure: order_user_per {
     type: number
-    sql: ${order_user}/ ${moved_in_residents} ;;
+    sql: (coalesce(${order_user},0)/ ${moved_in_residents}) ;;
     value_format: "0.0%"
   }
 
