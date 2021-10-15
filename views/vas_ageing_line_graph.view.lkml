@@ -19,7 +19,7 @@ view: vas_ageing_line_graph {
       and {% condition residence %} residence {% endcondition %}
       and {% condition city %} city {% endcondition %}
       and {% condition micromarket %} micromarket {% endcondition %}
-      group by 1,2),
+      group by 1,2)
 
 
           select m.joining_month, m.ageing,upr.moved_in_residents, avg(orders) orders, avg(amount) aov, count(distinct m.user_id) order_user
