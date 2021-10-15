@@ -1,12 +1,13 @@
 view: vas_order_graph_stack {
   derived_table: {
-    sql:select extract(year from vo.date) yr,extract(month from vo.date) mt, city, micromarket, ageing, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
-      avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
-      from looker_demo.derived_vas_orders vo
-      where vo.date >= '2021-01-01 00:00:00'
-      and vo.move_in_date >= '2021-01-01 00:00:00'
+    sql:select extract(year from upr.date) yr,extract(month from upr.date) mt,upr.city, upr.micromarket,
+    ageing, count(distinct upr.user_id) as moved_in_residents
+      from looker_demo.derived_user_preference_rating upr
+      where upr.date >= '2021-01-01 00:00:00'
+      and upr.move_in_date >= '2021-01-01 00:00:00'
+      and cafe_availability =1
       and {% condition profession_flag %} profession {% endcondition %}
-      group by 1,2,3,4,5;;
+      group by 1,2,3,4;;
 
     }
 
@@ -43,40 +44,17 @@ view: vas_order_graph_stack {
     }
 
 
-    dimension: total_order {
+    dimension: moved_in_residents {
       type: number
-      sql: ${TABLE}.total_orders ;;
-    }
-
-    dimension: order_user {
-      type: number
-      sql: ${TABLE}.order_users ;;
+      sql: ${TABLE}.moved_in_residents ;;
     }
 
 
-    measure: total_orders {
+    measure: moved_in_residentss {
       type: sum
-      sql: ${total_order};;
+      sql: ${moved_in_residents};;
     }
 
-    measure: order_users {
-      type: sum
-      sql: ${order_user} ;;
-    }
-
-    measure: total_amount {
-      type: sum
-      sql: ${TABLE}.total_amount ;;
-      value_format: "#,##0"
-      html: <p> &#x20B9; {{rendered_value}} </p> ;;
-    }
-
-    measure: aov {
-      type: number
-      sql: ${total_amount} / ${total_orders} ;;
-      value_format: "#,##0"
-      html: <p> &#x20B9; {{rendered_value}} </p> ;;
-    }
 
 
   }
