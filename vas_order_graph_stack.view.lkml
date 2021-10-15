@@ -7,7 +7,7 @@ view: vas_order_graph_stack {
       and upr.move_in_date >= '2021-01-01 00:00:00'
       and cafe_availability =1
       and {% condition profession_flag %} profession {% endcondition %}
-      group by 1,2,3,4;;
+      group by 1,2,3,4,5;;
 
     }
 
