@@ -9,13 +9,26 @@ view: vas_ageing_line_graph {
           and {% condition micromarket %} micromarket {% endcondition %}
           and move_in_date >= '2021-01-01 00:00:00'
 
-          )
+          ),
 
-          select joining_month, ageing, avg(orders) orders, avg(amount) aov
-          from (select extract(month from move_in_date) joining_month, user_id,ageing, count(distinct order_code) orders, sum(final_total_amount) amount
+          upr as (select extract(month from move_in_date) joining_month,ageing
+          count(distinct upr.user_id) as moved_in_residents
+      from looker_demo.derived_user_preference_rating upr
+      where upr.date >= '2021-01-01 00:00:00'
+      and cafe_availability = 1
+      and {% condition residence %} residence {% endcondition %}
+      and {% condition city %} city {% endcondition %}
+      and {% condition micromarket %} micromarket {% endcondition %}
+      group by 1,2),
+
+
+          select m.joining_month, m.ageing,upr.moved_in_residents, avg(orders) orders, avg(amount) aov, count(distinct m.user_id) order_user
+          from (select extract(month from move_in_date) joining_month, user_id,ageing,
+          count(distinct order_code) orders, sum(final_total_amount) amount
           from a
           group by 1,2,3) m
-          group by 1,2 ;;
+          left join upr on m.joining_month=upr.joining_month and m.ageing=upr.ageing
+          group by 1,2,3 ;;
   }
 
   parameter: residence {
@@ -43,6 +56,16 @@ view: vas_ageing_line_graph {
   dimension: orders {
     type: number
     sql: ${TABLE}.orders ;;
+  }
+
+  dimension: moved_in_residents {
+    type: number
+    sql: ${TABLE}.moved_in_residents ;;
+  }
+
+  dimension: order_user {
+    type: number
+    sql: ${TABLE}.order_user ;;
   }
 
 
@@ -200,6 +223,13 @@ view: vas_ageing_line_graph {
     sql:case when ${joining_month} = 12 then ${aov} end ;;
     value_format: "0.0"
   }
+
+  measure: order_user_per {
+    type: number
+    sql: ${order_user}/ ${moved_in_residents} ;;
+    value_format: "0.0%"
+  }
+
 
 
 }
