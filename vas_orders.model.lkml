@@ -11,6 +11,7 @@ include: "vas_ageing_aov_bucket.view.lkml"
 include: "vas_ageing_order_bucket_cm.view.lkml"
 include: "vas_ageing_aov_bucket_cm.view.lkml"
 include: "vas_order_mrr_graph.view.lkml"
+include: "vas_order_graph_stack.view.lkml"
 # include: "/**/*.view.lkml"                 # include all views in this project
 # include: "my_dashboard.dashboard.lookml"   # include a LookML dashboard called my_dashboard
 
@@ -41,3 +42,4 @@ explore: vas_order_mrr_graph {}
 explore: vas_ageing_line_graph {}
 explore: vas_orders_per_day {}
 explore: vas_order_graph_v2 {}
+explore: vas_order_graph_stack {}
