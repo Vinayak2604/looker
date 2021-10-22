@@ -1,6 +1,6 @@
 view: vas_orders_per_day {
   derived_table: {
-    sql: with a as (select id,yr,mt, date,  residence,  micromarket,  city, cafe, mealtime, order_code, user_type,  order_type,
+    sql: with a as (select  date,  residence,  micromarket,  city, cafe, mealtime, order_code, user_type,  order_type,
           order_status, final_total_amount, delivery_time,  expected_delivery_time, in_room service_mode, rating, feedback_for, feedback, user_id,  phone name, email,
           gender, profession, ageing,move_in_date
           from looker_demo.derived_vas_orders
@@ -8,7 +8,7 @@ view: vas_orders_per_day {
           and {% condition city %} city {% endcondition %}
           and {% condition micromarket %} micromarket {% endcondition %}
           and {% condition date %} date {% endcondition %}
-          and date >= '2021-01-01 00:00:00'
+
 
           )
 
