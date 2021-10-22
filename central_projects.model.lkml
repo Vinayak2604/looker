@@ -94,3 +94,5 @@ explore: l2_rejected_pos {}
 explore: inventory_v2 {}
 
 explore: price_variance {}
+
+explore: fps {}

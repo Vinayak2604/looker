@@ -182,4 +182,12 @@ view: derived_attribution_leads_dump {
 
   }
 
+
+  measure: total_leads_as_attribution
+  {
+    type: count_distinct
+    sql: case when ${classification} = 'Paid' then ${v_phone} end ;;
+
+  }
+
 }
