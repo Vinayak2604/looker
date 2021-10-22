@@ -15,7 +15,7 @@ view: vas_order_graph {
       and {% condition preference_availability_flag %} preference_available {% endcondition %}
       group by 1,2,3,4),
 
-      vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt, city, micromarket, count(distinct vo.id) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
+      vo as (select extract(year from vo.date) yr,extract(month from vo.date) mt, city, micromarket, count(distinct vo.order_code) as total_orders, sum(case when rating is not null then 1 else 0 end) as rated_orders,
       avg(vo.final_total_amount) as aov, sum(vo.final_total_amount) as total_amount, count(distinct vo.user_id) as order_users
       from looker_demo.derived_vas_orders vo
       where vo.date >= '2021-01-01 00:00:00'
