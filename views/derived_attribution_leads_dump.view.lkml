@@ -1,4 +1,4 @@
-view: derived_attributed_leads_dump {
+view: derived_attribution_leads_dump {
   derived_table: {
     sql: select *
     from stanza.derived_attributed_leads_dump
