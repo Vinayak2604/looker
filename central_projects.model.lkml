@@ -96,3 +96,5 @@ explore: inventory_v2 {}
 explore: price_variance {}
 
 explore: fps {}
+
+explore: price_variance_custom_dates {}
