@@ -59,30 +59,50 @@ view: price_variance_custom_dates {
 
           t1 as (select a.*
                 from a
-                where a.price_date = '2021-10-12'),
+                WHERE ( coalesce( a.price_date = {% date_start date_filter %}, TRUE) )
+                ),
 
           t2 as (select a.*
                 from a
-                where a.price_date = '2021-10-22')
+                WHERE ( coalesce( a.price_date = {% date_end date_filter %}, TRUE) )
+                ),
 
-          select t1.*,t2.standard_quantity_cost as new_cost,t2.price_date as later_date,m.b as clean_kitchen,m.c as store,sc.item_sub_category_label
+          cons as (select fv.vendor_master_uuid as vendor_id,
+                          it.uuid as recipe_tag_uuid,
+                          SUM(t.effective_price*t.quantity) total_act
+                  from stanza.erp_inventory_service_inventory_item_meta_entity c
+                  left join stanza.erp_inventory_service_inventory_movement_tracker t on t.item_uuid = c.item_uuid
+                  left join stanza.erp_purchase_order_po_details p on p.uuid = t.po_to_uuid
+                  left join stanza.erp_transformation_master_address_book m on m.uuid = t.address_uuid
+                  left join stanza.core_food_service_food_vendor fv on m.location_uuid = fv.vendor_master_uuid
+                  join stanza.core_food_service_ingredient_tag it on it.uuid = c.recipe_tag
+
+                  where c.item_dept = 'FOOD_OPS'
+                  and c.item_name not like 'Meal%'
+                  and t.event_type = 'IN'
+                  and (p.food_cost_type = 'Normal B2C' or p.food_cost_type = 'Normal')
+                  and m.location_name like '%Kitchen%'
+                  and ( coalesce( date(t.updated_at) >= {% date_start date_filter %}, TRUE) )
+                  and ( coalesce( date(t.updated_at) <= {% date_end date_filter %}, TRUE) )
+
+              group by 1,2)
+
+          select t1.*,t2.standard_quantity_cost as new_cost,t2.price_date as later_date,m.b as clean_kitchen,m.c as store,sc.item_sub_category_label,cons.total_act
 
           from t1
           join t2 on t1.ig_uuid = t2.ig_uuid and t1.vendor_id = t2.vendor_id
           left join m on t1.kitchen = m.a
           left join sc on sc.recipe_tag = t1.ig_uuid
+          left join cons on cons.vendor_id = t1.vendor_id and cons.recipe_tag_uuid = t1.ig_uuid
 
           where m.b is not null
           order by t1.ingredient_name, t1.kitchen ;;
   }
 
-  parameter: start_date {
+  parameter: date_filter {
     type: date
   }
 
-  parameter: End_date {
-    type: date
-  }
 
   dimension: ig_uuid {
     type: string
@@ -137,6 +157,11 @@ view: price_variance_custom_dates {
   dimension: new_cost {
     type: number
     sql: ${TABLE}.new_cost ;;
+  }
+
+  dimension: consumption {
+    type: number
+    sql: ${TABLE}.total_act ;;
   }
 
 
