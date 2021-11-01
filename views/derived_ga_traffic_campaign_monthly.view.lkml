@@ -21,6 +21,11 @@ view: derived_ga_traffic_campaign_monthly {
     sql: ${TABLE}.campaign ;;
   }
 
+  dimension: branding_drill {
+    type: string
+    sql:case when lower(${campaign}) like '%branding%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${source} end ;;
+  }
+
   dimension: source {
     type: string
     sql: ${TABLE}.source ;;
