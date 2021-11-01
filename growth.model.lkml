@@ -28,4 +28,5 @@ explore: derived_sales_associate_performance {}
 explore: derived_food_project {}
 explore: derived_lead_funnel {}
 explore: derived_attribution_leads_dump {}
-explore: derived_ga_weekly_overall {}
+explore: derived_ga_traffic_weekly {}
+explore: derived_ga_traffic_monthly {}
