@@ -47,6 +47,16 @@ view: derived_ga_traffic_weekly {
     type: sum
     sql: case when lower(${medium}) = 'organic' then  ${users} end  ;;
   }
+  measure: paid_traffic {
+    type: sum
+    sql: case when lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end  ;;
+  }
+
+  measure: referral_traffic {
+    type: sum
+    sql: case when lower(${medium}) in ('referral') then  ${users} end  ;;
+  }
+
 
 
 }
