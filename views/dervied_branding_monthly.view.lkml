@@ -1,7 +1,7 @@
 view: dervied_branding_monthly {
   derived_table: {
     sql: select *
-      from stanza.derived_branding_monthly
+      from stanza.dervied_branding_monthly
        ;;
   }
 
