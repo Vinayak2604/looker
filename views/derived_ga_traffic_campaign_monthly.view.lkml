@@ -36,10 +36,16 @@ view: derived_ga_traffic_campaign_monthly {
     sql: ${TABLE}.users ;;
   }
 
-  measure: branding {
+  measure: S21 {
     type: sum
     sql: case when lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end and lower(${campaign} like '%s21%')
     ;;
+  }
+
+  measure: branding {
+    type: sum
+    sql: case when lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end and lower(${campaign} like '%branding%')
+      ;;
   }
 
 
