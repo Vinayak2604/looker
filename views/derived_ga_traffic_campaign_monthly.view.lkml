@@ -52,6 +52,16 @@ view: derived_ga_traffic_campaign_monthly {
 
   }
 
+  measure: performance {
+    type: sum
+    sql:case when lower(${campaign}) like '%performance%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
+  }
+
+  measure: performance_and_s21{
+    type: sum
+    sql:case when (lower(${campaign}) like '%s21%' or lower(${campaign}) like '%performance%') and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
+  }
+
 
 
 }
