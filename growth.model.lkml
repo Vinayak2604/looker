@@ -31,3 +31,4 @@ explore: derived_attribution_leads_dump {}
 explore: derived_ga_traffic_weekly {}
 explore: derived_ga_traffic_monthly {}
 explore: derived_ga_traffic_campaign_monthly {}
+explore: derived_ga_traffic_campaign_weekly {}
