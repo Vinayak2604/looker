@@ -33,3 +33,4 @@ explore: derived_ga_traffic_monthly {}
 explore: derived_ga_traffic_campaign_monthly {}
 explore: derived_ga_traffic_campaign_weekly {}
 explore: dervied_branding_monthly {}
+explore: derived_branding_weekly {}
