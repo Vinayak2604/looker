@@ -30,6 +30,11 @@ view: derived_branding_weekly {
     sql: ${TABLE}.medium ;;
   }
 
+  dimension: week {
+    type: string
+    sql: ${TABLE}.week ;;
+  }
+
   dimension: referralpath {
     type: string
     sql: ${TABLE}.referralpath ;;
