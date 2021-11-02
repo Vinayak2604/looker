@@ -61,7 +61,7 @@ view: derived_branding_monthly {
 
   measure: branding {
     type: sum
-    sql: case when (lower(${source}) like '%facebool%' or lower(${source}) in ('youtube','instagram','ig story','linkedin','social')) and lower(${landingpagepath}) like '%bestplacetostay%' then  ${users} end;;
+    sql: case when (lower(${source}) like '%facebook%' or lower(${source}) in ('youtube','instagram','ig story','linkedin','social')) and lower(${landingpagepath}) like '%bestplacetostay%' then  ${users} end;;
 
   }
 
