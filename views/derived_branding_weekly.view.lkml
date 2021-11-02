@@ -52,7 +52,7 @@ view: derived_branding_weekly {
 
   dimension: branding_source {
     type: string
-    sql: case when lower(${source}) like '%facebook%' then 'Facebook'
+    sql: case when lower(${source}) = 'facebook' then 'Facebook'
           when lower(${source}) like '%youtube%' then 'Youtube'
           when (lower(${source}) like '%instagram%' or lower(${source}) like '%ig story%') then 'Instagram'
           when lower(${source}) like '%linkedin%' then 'LinkedIn'
@@ -66,13 +66,13 @@ view: derived_branding_weekly {
 
   measure: branding {
     type: sum
-    sql: case when (lower(${campaign}) like '%brand%' or lower(${source}) in ('youtube','instagram','ig story','linkedin','social')) and lower(${landingpagepath}) like '%bestplacetostay%' then  ${users} end;;
+    sql: case when (lower(${source}) like '%facebook%' or lower(${source}) in ('youtube','instagram','ig story','linkedin','social')) and lower(${landingpagepath}) like '%bestplacetostay%' then  ${users} end;;
 
   }
 
   measure: performance {
     type: sum
-    sql:case when lower(${campaign}) not like '%brand%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
+    sql:case when lower(${campaign}) not like '%brand%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') and lower(${landingpagepath}) not like '%bestplacetostay%' then  ${users} end;;
   }
 
 
