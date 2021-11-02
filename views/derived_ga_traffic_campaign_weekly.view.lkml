@@ -52,7 +52,7 @@ view: derived_ga_traffic_campaign_weekly {
 
   measure: branding {
     type: sum
-    sql: case when lower(${campaign}) like '%branding%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
+    sql: case when (lower(${campaign}) like '%brand%' or lower(${source}) in ('youtube','instagram','ig story','linkedin','social') ) then  ${users} end;;
 
   }
 

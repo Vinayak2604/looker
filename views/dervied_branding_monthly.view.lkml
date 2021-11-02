@@ -48,7 +48,6 @@ view: dervied_branding_monthly {
   dimension: branding_source {
     type: string
     sql: case when lower(${source}) like '%facebook%' then 'Facebook'
-    when lower(${source}) like '%google%' then 'Google'
     when lower(${source}) like '%youtube%' then 'Youtube'
     when (lower(${source}) like '%instagram%' or lower(${source}) like '%ig story%') then 'Instagram'
     when lower(${source}) like '%linkedin%' then 'LinkedIn'
