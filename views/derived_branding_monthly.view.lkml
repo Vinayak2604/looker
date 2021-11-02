@@ -61,13 +61,13 @@ view: derived_branding_monthly {
 
   measure: branding {
     type: sum
-    sql: case when (lower(${campaign}) like '%brand%' or lower(${source}) in ('youtube','instagram','ig story','linkedin','social')) and lower(${landingpagepath}) like '%bestplacetostay%' then  ${users} end;;
+    sql: case when (lower(${source}) like '%facebool%' or lower(${source}) in ('youtube','instagram','ig story','linkedin','social')) and lower(${landingpagepath}) like '%bestplacetostay%' then  ${users} end;;
 
   }
 
   measure: performance {
     type: sum
-    sql:case when lower(${campaign}) not like '%brand%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
+    sql:case when lower(${campaign}) not like '%brand%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') and lower(${landingpagepath}) not like '%bestplacetostay%' then  ${users} end;;
   }
 
 
