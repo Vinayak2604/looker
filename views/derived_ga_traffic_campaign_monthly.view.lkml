@@ -45,12 +45,6 @@ view: derived_ga_traffic_campaign_monthly {
     type: sum
     sql: case when lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end ;;
   }
-
-  measure: S21 {
-    type: sum
-    sql:case when lower(${campaign}) like '%s21%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
-  }
-
   measure: branding {
     type: sum
     sql: case when lower(${campaign}) like '%branding%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
@@ -59,14 +53,7 @@ view: derived_ga_traffic_campaign_monthly {
 
   measure: performance {
     type: sum
-    sql:case when lower(${campaign}) like '%performance%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
+    sql:case when lower(${campaign}) not like '%branding%' and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
   }
-
-  measure: performance_and_s21{
-    type: sum
-    sql:case when (lower(${campaign}) like '%s21%' or lower(${campaign}) like '%performance%') and lower(${medium}) in ('cpc', 'ppc', 'cpa', 'cpm', 'cpv', 'cpp') then  ${users} end;;
-  }
-
-
 
 }
