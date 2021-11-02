@@ -1,4 +1,4 @@
-view: dervied_branding_monthly {
+view: derived_branding_monthly {
   derived_table: {
     sql: select *
       from stanza.derived_branding_monthly
