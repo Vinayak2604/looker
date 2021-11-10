@@ -53,8 +53,8 @@ inv as (select m.b as kitchen, dfi.ingredient_tag, sum(dfi.avail_stock_value) as
 sc as (select distinct z.*,t.name
     from (select recipe_tag,item_sub_category_label,rank() over (partition by recipe_tag order by created_at desc) as rnk
           from stanza.erp_inventory_service_inventory_item_meta_entity
-        where active=1) z
-    join stanza.core_food_service_ingredient_tag t on t.uuid = z.recipe_tag
+        ) z
+    left join stanza.core_food_service_ingredient_tag t on t.uuid = z.recipe_tag
     where rnk=1),
 
 
@@ -74,14 +74,18 @@ b as (select a.*,m.b as clean_kitchen,m.c as store,sc.item_sub_category_label
 
       left join m on a.kitchen = m.a
       left join sc on sc.recipe_tag = a.ig_uuid
-      where a.price_date = '2021-09-08' and m.b is not null)
+      where a.price_date = '2021-09-08' and m.b is not null),
 
-select b.*, min(standard_quantity_cost) over (partition by price_date, ig_uuid) as min_price,
-     (standard_quantity_cost - min_price) /nullif( min_price ,0) as deviation,
+c as (select b.*, min(standard_quantity_cost) over (partition by price_date, ig_uuid) as min_price,
+     coalesce ((standard_quantity_cost - min_price) /nullif( min_price ,0),0) as deviation,
      coalesce (inv.total_value,0) as total_value
-from b
-left join inv on b.clean_kitchen = inv.kitchen and b.ingredient_name = inv.ingredient_tag
 
+from b
+left join inv on b.clean_kitchen = inv.kitchen and b.ingredient_name = inv.ingredient_tag)
+
+
+select *, sum(total_value*deviation) over (partition by price_date, ig_uuid)/nullif(sum(total_value) over (partition by price_date, ig_uuid),0) as wt_deviation
+from c
 ;;
   }
 
@@ -143,6 +147,11 @@ left join inv on b.clean_kitchen = inv.kitchen and b.ingredient_name = inv.ingre
   dimension: deviation {
     type: number
     sql: ${TABLE}.deviation ;;
+  }
+
+  dimension: wt_deviation {
+    type: number
+    sql: ${TABLE}.wt_deviation ;;
   }
 
   dimension: total_value {

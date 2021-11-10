@@ -162,6 +162,19 @@ view: price_variance_custom_dates {
   dimension: consumption {
     type: number
     sql: ${TABLE}.total_act ;;
+    value_format: "0.0"
+  }
+
+  measure: weighted_new_cost {
+    type: number
+    sql: case when sum(${consumption})>0 then sum(${new_cost}*${consumption})/sum(${consumption}) end ;;
+    value_format: "0.0"
+  }
+
+  measure: weighted_old_cost {
+    type: number
+    sql: case when sum(${consumption})>0 then sum(${old_cost}*${consumption})/sum(${consumption}) end ;;
+    value_format: "0.0"
   }
 
 
