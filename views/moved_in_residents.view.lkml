@@ -2,7 +2,7 @@ view: moved_in_residents {
   # sql_table_name: looker_demo.derived_user_preference_rating ;;
   derived_table: {
     sql:
-    select distinct  date, city, micromarket, residence, moved_in_residents as residents
+    select distinct  date, city, micromarket, residence, user_id as residents
     from looker_demo.derived_user_preference_rating ;;
   }
 
@@ -61,7 +61,7 @@ view: moved_in_residents {
   # }
 
   measure: moved_in_residents {
-    type: max
+    type: count_distinct
     sql: ${TABLE}.residents ;;
   }
 }
