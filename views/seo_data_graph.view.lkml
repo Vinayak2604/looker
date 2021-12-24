@@ -67,9 +67,8 @@ view: seo_data_graph {
   }
 
   measure: total_organic_traffic {
-    type: min
+    type: max
     sql: ${organic_traffic} ;;
-    value_format: "0"
   }
 
 }
