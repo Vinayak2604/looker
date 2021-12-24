@@ -204,6 +204,11 @@ view: derived_food_inventory {
     sql: ${TABLE}.cons_value ;;
   }
 
+  measure: total_consumption_value {
+    type: sum
+    sql: ${TABLE}.cons_value ;;
+  }
+
   dimension: consumption_qty {
     type: number
     sql: ${TABLE}.cons_qty ;;

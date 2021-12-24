@@ -245,7 +245,7 @@ where
   and DATE(pd.created_at) >= '2021-05-01'
   and pd.po_status != 'IN_DRAFT'
   and po_number not like '%TOFB%'
-  and (ptid.item_sub_category_label in ('Fruits and Vegetables', 'Dairy', 'Non Veg', 'Groceries', 'General Supplies', 'LPG', 'Packaging')
+  and (ptid.item_sub_category_label in ('Fruits and Vegetables', 'Dairy', 'Non Veg', 'Groceries', 'General Supplies', 'LPG', 'Packaging', 'Flour', 'Pulses', 'Spices & Herbs', 'Bakery', 'Edible oil', 'Cereals', 'FMCG')
     or ptid.item_sub_category_label like '%direct food expense%')
 order by
   po_number ;;

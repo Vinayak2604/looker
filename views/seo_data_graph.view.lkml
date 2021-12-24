@@ -45,6 +45,11 @@ view: seo_data_graph {
     sql: ${TABLE}.score ;;
   }
 
+  dimension: organic_traffic {
+    type: number
+    sql: ${TABLE}.organic_traffic ;;
+  }
+
   measure: count {
     type: count
     drill_fields: [city_name]
@@ -59,6 +64,12 @@ view: seo_data_graph {
   measure: total_keyword {
     type: count_distinct
     sql: ${keyword}  ;;
+  }
+
+  measure: total_organic_traffic {
+    type: min
+    sql: ${organic_traffic} ;;
+    value_format: "0"
   }
 
 }
